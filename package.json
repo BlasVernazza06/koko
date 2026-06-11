@@ -12,6 +12,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.4.6"
+    "@astrojs/svelte": "^8.1.2",
+    "@lucide/svelte": "^1.17.0",
+    "@selemondev/svgl-svelte": "^2.15.0",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.4.6",
+    "svelte": "^5.56.3",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3"
   }
 }
