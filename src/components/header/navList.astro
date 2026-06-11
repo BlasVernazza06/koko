@@ -1,0 +1,23 @@
+---
+const NavItems = [
+  { label: 'Docs', href: '#docs' },
+  { label: 'Builder', href: '#builder' },
+  { label: 'Showcase', href: '#showcase', isHighlighted: true },
+  { label: 'Demo', href: '#terminal' }
+];
+---
+
+<nav class="flex items-center gap-6 select-none">
+  {NavItems.map((item) => (
+    <a 
+      href={item.href}
+      class={`text-[13px] font-medium transition-colors duration-200 hover:text-text-main
+        ${item.isHighlighted 
+          ? 'text-brand-secondary hover:text-brand-secondary/80' 
+          : 'text-text-muted'
+        }`}
+    >
+      {item.label}
+    </a>
+  ))}
+</nav>

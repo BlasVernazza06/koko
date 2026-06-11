@@ -1,11 +1,96 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from '@/layouts/Layout.astro';
+import TerminalSimulator from '@/components/TerminalSimulator.svelte';
+import { Terminal, Shield, Cpu, Sparkles } from '@lucide/svelte';
 ---
 
 <Layout>
-	<Welcome />
+  <div class="min-h-screen bg-bg-base text-text-main selection:bg-brand-primary/20 transition-colors duration-300">
+    
+    <!-- Hero Section -->
+    <main class="max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col items-center justify-center">
+      
+      <!-- Top announcement badge -->
+      <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-bg-surface border border-border-subtle text-xs text-text-muted select-none">
+        <span class="flex h-2 w-2 rounded-full bg-brand-primary animate-pulse"></span>
+        <span>Claw CLI v0.1.0 is now live</span>
+      </div>
+
+      <!-- Heading -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h1 class="text-4xl sm:text-5xl md:text-[64px] font-extrabold tracking-tight leading-[1.1] mb-6 font-sans">
+          Scaffold your projects <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">with speed.</span>
+        </h1>
+        <p class="text-base sm:text-lg text-text-muted leading-relaxed max-w-2xl mx-auto">
+          Claw is an ultra-fast CLI scaffolding tool built to automate repository setups. Maintain clean, standardized structures across all your engineering teams.
+        </p>
+      </div>
+
+      <!-- Svelte Interactive Terminal Simulator -->
+      <section id="terminal" class="w-full max-w-2xl">
+        <TerminalSimulator client:load />
+      </section>
+
+      <!-- Divider line -->
+      <div class="w-full max-w-5xl h-px bg-border-subtle my-20"></div>
+
+      <!-- Features Section -->
+      <section id="features" class="w-full max-w-5xl">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl font-bold tracking-tight mb-2">Designed for modern workflows</h2>
+          <p class="text-sm text-text-muted">Everything you need to prevent configuration drift.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Feature 1 -->
+          <div class="p-6 rounded-2xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/75 hover:border-brand-primary/20 transition-all duration-300">
+            <div class="p-3 w-fit rounded-xl bg-brand-primary/10 text-brand-primary mb-4">
+              <Cpu size={22} strokeWidth={2.5} />
+            </div>
+            <h3 class="text-base font-bold mb-2">Instant Initialization</h3>
+            <p class="text-xs text-text-muted leading-relaxed">
+              Run simple interactive wizards to generate standardized configurations and files without manual directory setup.
+            </p>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="p-6 rounded-2xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/75 hover:border-brand-primary/20 transition-all duration-300">
+            <div class="p-3 w-fit rounded-xl bg-brand-secondary/10 text-brand-secondary mb-4">
+              <Shield size={22} strokeWidth={2.5} />
+            </div>
+            <h3 class="text-base font-bold mb-2">Unified Boilerplates</h3>
+            <p class="text-xs text-text-muted leading-relaxed">
+              Keep your team's codebase layout completely unified. Easily import structural blueprints to spin up microservices or client apps.
+            </p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="p-6 rounded-2xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/75 hover:border-brand-primary/20 transition-all duration-300">
+            <div class="p-3 w-fit rounded-xl bg-brand-primary/10 text-brand-primary mb-4">
+              <Terminal size={22} strokeWidth={2.5} />
+            </div>
+            <h3 class="text-base font-bold mb-2">Developer Ergonomics</h3>
+            <p class="text-xs text-text-muted leading-relaxed">
+              Clean command syntax, clear warning and success logs, and robust validation warnings before any file generation.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border-subtle py-8 bg-bg-surface/30">
+      <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-[12px] text-text-muted">
+          © {new Date().getFullYear()} Claw CLI. Powered by Astro, Svelte and Tailwind.
+        </div>
+        <div class="flex gap-6 text-[12px] text-text-muted">
+          <a href="#" class="hover:text-text-main transition-colors">Privacy Policy</a>
+          <a href="#" class="hover:text-text-main transition-colors">Terms of Service</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
 </Layout>

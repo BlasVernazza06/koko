@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@theme {
+  /* Expose our custom semantic color variables to Tailwind */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface: var(--bg-surface);
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
+  --color-border-subtle: var(--border-subtle);
+  
+  --font-sans: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* -------------------------------------------------------------
+   COLOR SYSTEM
+   Theme: "Oxide Steel" (Rust Orange & Deep Iris)
+   Provides industrial grit, readability and premium tech aesthetic.
+   ------------------------------------------------------------- */
+
+:root {
+  /* LIGHT MODE (Warm Editorial / Industrial Studio) */
+  --brand-primary: #c23d1a;      /* Terracota oxidada / Rust Orange */
+  --brand-secondary: #4338ca;    /* Deep Iris Indigo */
+  --bg-base: #fcfbf9;            /* Papel cálido / Off-white bone */
+  --bg-surface: #f4f2ee;         /* Piedra suave / Soft stone grey */
+  --text-main: #141412;          /* Carbón / Deep ink black */
+  --text-muted: #5c5c56;         /* Asfalto medio */
+  --border-subtle: #e5e2da;      /* Borde de costura sutil */
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* DARK MODE (Oxidized Obsidian / Iron & Rust) */
+    --brand-primary: #e05a36;    /* Cobre encendido / Oxide Orange */
+    --brand-secondary: #818cf8;  /* Iris metálico / Soft Lavender */
+    --bg-base: #0b0c0e;          /* Acero oxidado profundo / Obsidian slate */
+    --bg-surface: #121418;       /* Carbón mineral */
+    --text-main: #f3f4f6;        /* Platino brillante */
+    --text-muted: #8e95a2;       /* Gris ceniza */
+    --border-subtle: #1f232b;    /* Borde de unión metálica */
+    color-scheme: dark;
+  }
+}
+
+/* Support for explicit user overrides using data-theme attribute */
+[data-theme="light"] {
+  --brand-primary: #c23d1a;
+  --brand-secondary: #4338ca;
+  --bg-base: #fcfbf9;
+  --bg-surface: #f4f2ee;
+  --text-main: #141412;
+  --text-muted: #5c5c56;
+  --border-subtle: #e5e2da;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --brand-primary: #e05a36;
+  --brand-secondary: #818cf8;
+  --bg-base: #0b0c0e;
+  --bg-surface: #121418;
+  --text-main: #f3f4f6;
+  --text-muted: #8e95a2;
+  --border-subtle: #1f232b;
+  color-scheme: dark;
+}
+
+/* Base Styles */
+body {
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
