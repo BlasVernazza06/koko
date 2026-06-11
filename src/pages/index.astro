@@ -1,14 +1,23 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import TerminalSimulator from '@/components/TerminalSimulator.svelte';
-import { Terminal, Shield, Cpu, Sparkles } from '@lucide/svelte';
+import CopyCommand from '@/components/landing/copyCommand.svelte';
+import FeaturesSec from '@/components/landing/featuresSec.astro';
 ---
 
 <Layout>
-  <div class="min-h-screen bg-bg-base text-text-main selection:bg-brand-primary/20 transition-colors duration-300">
+  <div class="min-h-screen bg-bg-base text-text-main selection:bg-brand-primary/20 transition-colors duration-300 relative overflow-hidden">
     
+    <!-- Ambient brand background glows (Full Page Aura) -->
+    <div class="hero-bg-glow">
+      <div class="glow-primary"></div>
+      <div class="glow-secondary-left"></div>
+      <div class="glow-secondary-right"></div>
+      <div class="glow-wash"></div>
+    </div>
+
     <!-- Hero Section -->
-    <main class="max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col items-center justify-center">
+    <main class="max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col items-center justify-center relative z-10">
       
       <!-- Top announcement badge -->
       <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-bg-surface border border-border-subtle text-xs text-text-muted select-none">
@@ -26,8 +35,17 @@ import { Terminal, Shield, Cpu, Sparkles } from '@lucide/svelte';
         </p>
       </div>
 
+      <div class="max-w-sm mx-auto my-8 font-sans gap-3 flex flex-col items-center justify-center w-full">
+        <a href="#terminal" class="flex items-center justify-center bg-brand-primary hover:bg-brand-primary/95 transition-colors w-full py-4 rounded-xl shadow-lg shadow-brand-primary/10 cursor-pointer">
+          <span class="text-white font-semibold">Get Started</span>
+        </a>
+        <section class="w-full max-w-3xl">
+          <CopyCommand client:load />
+        </section>
+      </div>
+
       <!-- Svelte Interactive Terminal Simulator -->
-      <section id="terminal" class="w-full max-w-2xl">
+      <section id="terminal" class="w-full max-w-5xl">
         <TerminalSimulator client:load />
       </section>
 
@@ -35,47 +53,7 @@ import { Terminal, Shield, Cpu, Sparkles } from '@lucide/svelte';
       <div class="w-full max-w-5xl h-px bg-border-subtle my-20"></div>
 
       <!-- Features Section -->
-      <section id="features" class="w-full max-w-5xl">
-        <div class="text-center mb-12">
-          <h2 class="text-2xl font-bold tracking-tight mb-2">Designed for modern workflows</h2>
-          <p class="text-sm text-text-muted">Everything you need to prevent configuration drift.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- Feature 1 -->
-          <div class="p-6 rounded-2xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/75 hover:border-brand-primary/20 transition-all duration-300">
-            <div class="p-3 w-fit rounded-xl bg-brand-primary/10 text-brand-primary mb-4">
-              <Cpu size={22} strokeWidth={2.5} />
-            </div>
-            <h3 class="text-base font-bold mb-2">Instant Initialization</h3>
-            <p class="text-xs text-text-muted leading-relaxed">
-              Run simple interactive wizards to generate standardized configurations and files without manual directory setup.
-            </p>
-          </div>
-
-          <!-- Feature 2 -->
-          <div class="p-6 rounded-2xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/75 hover:border-brand-primary/20 transition-all duration-300">
-            <div class="p-3 w-fit rounded-xl bg-brand-secondary/10 text-brand-secondary mb-4">
-              <Shield size={22} strokeWidth={2.5} />
-            </div>
-            <h3 class="text-base font-bold mb-2">Unified Boilerplates</h3>
-            <p class="text-xs text-text-muted leading-relaxed">
-              Keep your team's codebase layout completely unified. Easily import structural blueprints to spin up microservices or client apps.
-            </p>
-          </div>
-
-          <!-- Feature 3 -->
-          <div class="p-6 rounded-2xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/75 hover:border-brand-primary/20 transition-all duration-300">
-            <div class="p-3 w-fit rounded-xl bg-brand-primary/10 text-brand-primary mb-4">
-              <Terminal size={22} strokeWidth={2.5} />
-            </div>
-            <h3 class="text-base font-bold mb-2">Developer Ergonomics</h3>
-            <p class="text-xs text-text-muted leading-relaxed">
-              Clean command syntax, clear warning and success logs, and robust validation warnings before any file generation.
-            </p>
-          </div>
-        </div>
-      </section>
+      <FeaturesSec />
 
     </main>
 
@@ -94,3 +72,54 @@ import { Terminal, Shield, Cpu, Sparkles } from '@lucide/svelte';
 
   </div>
 </Layout>
+
+<style>
+  .hero-bg-glow {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    height: 900px;
+    pointer-events: none;
+    overflow: hidden;
+    user-select: none;
+    z-index: 1;
+    mask-image: linear-gradient(to bottom, transparent, black 15%, black 40%, transparent 95%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 40%, transparent 95%);
+  }
+  .glow-primary {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, var(--brand-primary) 0%, transparent 50%);
+    opacity: 0.28;
+    transition: opacity 0.3s ease;
+  }
+  .glow-secondary-left {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 5% 0%, var(--brand-secondary) 0%, transparent 40%);
+    opacity: 0.18;
+    transition: opacity 0.3s ease;
+  }
+  .glow-secondary-right {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 95% 0%, var(--brand-secondary) 0%, transparent 40%);
+    opacity: 0.18;
+    transition: opacity 0.3s ease;
+  }
+  .glow-wash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 400px;
+    background: linear-gradient(to bottom, var(--brand-primary), transparent);
+    opacity: 0.04;
+  }
+
+  :global([data-theme="dark"]) .glow-primary { opacity: 0.12; }
+  :global([data-theme="dark"]) .glow-secondary-left { opacity: 0.08; }
+  :global([data-theme="dark"]) .glow-secondary-right { opacity: 0.08; }
+  :global([data-theme="dark"]) .glow-wash { opacity: 0.02; }
+</style>

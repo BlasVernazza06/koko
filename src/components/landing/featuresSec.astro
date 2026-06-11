@@ -1,0 +1,49 @@
+---
+import { Cpu, Shield, Terminal } from "@lucide/svelte";
+
+const featuresCards = [
+    {
+        icon: Cpu, 
+        title: 'Instant Initialization', 
+        description: 'Run simple interactive wizards to generate standardized configurations and files without manual directory setup.',
+        color: 'text-indigo-400',
+        hoverBorder: 'hover:border-indigo-400/30'
+    },
+    {
+        icon: Shield, 
+        title: 'Unified Boilerplates', 
+        description: 'Keep your teams codebase layout completely unified. Easily import structural blueprints to spin up microservices or client apps.',
+        color: 'text-rose-400',
+        hoverBorder: 'hover:border-rose-400/30'
+    },
+    {
+        icon: Terminal, 
+        title: 'Developer Ergonomics', 
+        description: 'Clean command syntax, clear warning and success logs, and robust validation warnings before any file generation.',
+        color: 'text-emerald-400',
+        hoverBorder: 'hover:border-emerald-400/30'
+    }
+]
+
+---
+
+<section id="features" class="w-full max-w-5xl">
+    <div class="text-center mb-12">
+      <h2 class="text-2xl font-bold tracking-tight mb-2">Designed for modern workflows</h2>
+      <p class="text-sm text-text-muted">Everything you need to prevent configuration drift.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {featuresCards.map((item) => (
+            <div class={`flex flex-col justify-center items-center p-6 rounded-2xl hover:bg-bg-surface/75 transition-all duration-300 ${item.hoverBorder}`}>
+                <div class={`p-3 w-fit rounded-xl mb-4 ${item.color}`}>
+                    <item.icon size={22} strokeWidth={2.5} />
+                </div>
+                <h3 class="text-base font-bold mb-2 text-text-main">{item.title}</h3>
+                <p class="text-xs text-text-muted text-center">
+                    {item.description}
+                </p>
+            </div>
+        ))}
+    </div>
+  </section>
