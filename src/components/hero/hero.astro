@@ -1,0 +1,53 @@
+---
+import CopyCommand from "@/components/landing/copyCommand.svelte";
+import FeaturesSec from "@/components/landing/featuresSec.astro";
+import TerminalSimulator from "@/components/TerminalSimulator.svelte";
+import FaqSec from "@/components/landing/faqSec.astro";
+import CtaSec from "@/components/landing/ctaSec.astro";
+---
+
+<main class="max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col items-center justify-center relative z-10">
+      
+    <!-- Top announcement badge -->
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-bg-surface border border-border-subtle text-xs text-text-muted select-none">
+      <span class="flex h-2 w-2 rounded-full bg-brand-primary animate-pulse"></span>
+      <span>Claw CLI v0.1.0 is now live</span>
+    </div>
+
+    <!-- Heading -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h1 class="text-4xl sm:text-5xl md:text-[64px] font-extrabold tracking-tight leading-[1.1] mb-6 font-sans">
+        Scaffold your projects <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">with speed.</span>
+      </h1>
+      <p class="text-base sm:text-lg text-text-muted leading-relaxed max-w-2xl mx-auto">
+        Claw is an ultra-fast CLI scaffolding tool built to automate repository setups. Maintain clean, standardized structures across all your engineering teams.
+      </p>
+    </div>
+
+    <div class="max-w-sm mx-auto my-8 font-sans gap-3 flex flex-col items-center justify-center w-full">
+      <a href="#terminal" class="flex items-center justify-center bg-brand-primary hover:bg-brand-primary/95 transition-colors w-full py-4 rounded-xl shadow-lg shadow-brand-primary/10 cursor-pointer">
+        <span class="text-white font-semibold">Get Started</span>
+      </a>
+      <section class="w-full max-w-3xl">
+        <CopyCommand client:load />
+      </section>
+    </div>
+
+    <!-- Svelte Interactive Terminal Simulator -->
+    <section id="terminal" class="w-full max-w-5xl">
+      <TerminalSimulator client:load />
+    </section>
+
+    <!-- Divider line -->
+    <div class="w-full max-w-5xl h-px bg-border-subtle my-20"></div>
+
+    <!-- Features Section -->
+    <FeaturesSec />
+
+    <!-- FAQ Section -->
+    <FaqSec />
+
+    <!-- CTA Section -->
+    <CtaSec />
+
+</main>

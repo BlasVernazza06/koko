@@ -157,7 +157,7 @@
   <div class="relative w-full rounded-3xl overflow-hidden border border-border-subtle/50 bg-gradient-to-tr from-brand-secondary/15 via-bg-surface/70 to-brand-primary/15 p-6 sm:p-12 md:py-16 shadow-2xl shadow-slate-900/5 dark:shadow-black/40">
     
     <!-- macOS Top Menu Bar simulation -->
-    <div class="absolute top-0 left-0 right-0 h-9 px-6 flex items-center justify-between text-[11px] font-sans font-medium text-slate-700/80 backdrop-blur-md bg-white/25 border-b border-slate-200/10">
+    <div class="absolute top-0 left-0 right-0 h-9 px-6 flex items-center justify-between text-[11px] font-sans font-medium text-slate-700/90 dark:text-slate-200/90 backdrop-blur-md bg-white/30 dark:bg-black/40 border-b border-slate-200/10 dark:border-white/5">
       <div class="flex items-center gap-4">
         <span class="text-sm font-bold opacity-90"></span>
         <span class="font-semibold tracking-wide">ClawOS</span>
