@@ -32,18 +32,18 @@
 >
   <!-- Sliding indicator bubble -->
   <div 
-    class="absolute w-7 h-7 rounded-full bg-brand-primary shadow-md transition-transform duration-300 ease-out"
+    class="absolute w-7 h-7 rounded-full bg-brand-primary shadow-md transition-transform duration-200 ease-out"
     class:translate-x-0={theme === 'light'}
     class:translate-x-7={theme === 'dark'}
   ></div>
 
   <!-- Sun Icon -->
-  <span class="z-10 pl-1.5 flex items-center justify-center text-text-muted transition-colors duration-200" class:text-text-main={theme === 'light'}>
+  <span class="z-10 pl-1.5 flex items-center justify-center text-text-muted transition-colors duration-150" class:text-white={theme === 'light'}>
     <Sun size={15} strokeWidth={2.5} />
   </span>
 
   <!-- Moon Icon -->
-  <span class="z-10 pr-1 flex items-center justify-center text-text-muted transition-colors duration-200" class:text-text-main={theme === 'dark'}>
+  <span class="z-10 pr-1 flex items-center justify-center text-text-muted transition-colors duration-150" class:text-white={theme === 'dark'}>
     <Moon size={15} strokeWidth={2.5} />
   </span>
 </button>

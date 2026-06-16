@@ -21,17 +21,6 @@ import { Search } from '@lucide/svelte';
     <!-- Right Section: Search, Theme Toggle, Socials -->
     <div class="flex items-center gap-4">
       
-      <!-- Search pill (matches screenshot) -->
-      <div class="hidden sm:flex items-center justify-between w-52 px-3 py-1.5 rounded-full bg-bg-surface border border-border-subtle hover:border-text-muted/30 transition-all cursor-pointer group">
-        <div class="flex items-center gap-1.5 text-text-muted group-hover:text-text-main transition-colors">
-          <Search size={13} strokeWidth={2.5} />
-          <span class="text-[12px] font-medium">Search</span>
-        </div>
-        <kbd class="flex items-center text-[10px] font-mono text-text-muted border border-border-subtle bg-bg-base px-1.5 py-0.5 rounded-md shadow-sm">
-          Ctrl K
-        </kbd>
-      </div>
-
       <!-- Theme Switcher -->
       <ThemeToggle client:load />
 
