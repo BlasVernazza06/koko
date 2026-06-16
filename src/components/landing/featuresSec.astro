@@ -1,49 +1,520 @@
 ---
-import { Cpu, Shield, Terminal } from "@lucide/svelte";
-
-const featuresCards = [
-    {
-        icon: Cpu, 
-        title: 'Instant Initialization', 
-        description: 'Run simple interactive wizards to generate standardized configurations and files without manual directory setup.',
-        color: 'text-indigo-400',
-        hoverBorder: 'hover:border-indigo-400/30'
-    },
-    {
-        icon: Shield, 
-        title: 'Unified Boilerplates', 
-        description: 'Keep your teams codebase layout completely unified. Easily import structural blueprints to spin up microservices or client apps.',
-        color: 'text-rose-400',
-        hoverBorder: 'hover:border-rose-400/30'
-    },
-    {
-        icon: Terminal, 
-        title: 'Developer Ergonomics', 
-        description: 'Clean command syntax, clear warning and success logs, and robust validation warnings before any file generation.',
-        color: 'text-emerald-400',
-        hoverBorder: 'hover:border-emerald-400/30'
-    }
-]
-
+import { 
+  Sparkles, 
+  Terminal, 
+  Clock, 
+  FolderTree, 
+  Share2, 
+  CheckCircle2, 
+  ArrowRight, 
+  FileCode, 
+  ChevronRight, 
+  Activity,
+  RotateCw
+} from "@lucide/svelte";
 ---
 
-<section id="features" class="w-full max-w-5xl">
-    <div class="text-center mb-12">
-      <h2 class="text-2xl font-bold tracking-tight mb-2">Designed for modern workflows</h2>
-      <p class="text-sm text-text-muted">Everything you need to prevent configuration drift.</p>
+<section id="features" class="w-full max-w-5xl px-4 py-16 mx-auto">
+  <!-- Section Badge & Header -->
+  <div class="text-center mb-16 flex flex-col items-center">
+    <div class="inline-flex items-center gap-1.5 px-3 py-1 mb-4 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-xs font-semibold text-brand-primary tracking-wide uppercase select-none">
+      <Sparkles size={12} class="animate-pulse" />
+      <span>Interactive Features</span>
+    </div>
+    
+    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-text-main max-w-2xl font-sans leading-tight">
+      Keep your codebase structured <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">in one place.</span>
+    </h2>
+    
+    <p class="text-sm sm:text-base text-text-muted max-w-xl">
+      Claw replaces manual setup with a robust, instant templating engine. Click on the cards below to test our configuration system live!
+    </p>
+  </div>
+
+  <!-- Bento Grid Layout -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 auto-rows-[minmax(380px,_auto)]">
+    
+    <!-- CARD 1: TECH SELECTION (Spans 2 columns on MD+) -->
+    <div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-secondary/5 hover:border-brand-secondary/30">
+      <div class="absolute inset-0 bg-gradient-to-tr from-brand-secondary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+      
+      <!-- Card Visual Mockup -->
+      <div class="relative w-full flex-1 flex items-center justify-center min-h-[220px] mb-6">
+        <div class="w-full max-w-md bg-bg-base/90 rounded-2xl border border-border-subtle shadow-md p-5 font-sans relative overflow-hidden transition-all duration-300 group-hover:translate-y-[-4px]">
+          <!-- Top bar decoration -->
+          <div class="flex items-center justify-between border-b border-border-subtle pb-3 mb-4 select-none">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+            </div>
+            <div class="text-[10px] text-text-muted font-mono tracking-wider">interactive_wizard.sh</div>
+          </div>
+          
+          <!-- Stack Selection content mock -->
+          <div class="space-y-4 text-xs sm:text-sm">
+            <!-- Selector 1 -->
+            <div>
+              <div class="flex justify-between items-center text-text-muted text-[10px] mb-2 font-bold tracking-wider select-none">
+                <span>FRONTEND FRAMEWORK</span>
+                <span class="text-brand-secondary font-mono">Step 1 of 3</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2">
+                <button class="frontend-option flex items-center justify-between px-3 py-2 rounded-lg bg-brand-secondary/10 border border-brand-secondary/30 text-brand-secondary font-bold transition-all cursor-pointer active:scale-95" data-framework="React">
+                  <span>React</span>
+                  <CheckCircle2 size={12} class="check-icon text-brand-secondary" />
+                </button>
+                <button class="frontend-option flex items-center justify-between px-3 py-2 rounded-lg bg-bg-surface border border-border-subtle text-text-muted transition-all cursor-pointer active:scale-95" data-framework="Svelte">
+                  <span>Svelte</span>
+                  <CheckCircle2 size={12} class="check-icon text-brand-secondary hidden" />
+                </button>
+                <button class="frontend-option flex items-center justify-between px-3 py-2 rounded-lg bg-bg-surface border border-border-subtle text-text-muted transition-all cursor-pointer active:scale-95" data-framework="Vue">
+                  <span>Vue</span>
+                  <CheckCircle2 size={12} class="check-icon text-brand-secondary hidden" />
+                </button>
+              </div>
+            </div>
+            
+            <!-- Selector 2 -->
+            <div>
+              <div class="flex justify-between items-center text-text-muted text-[10px] mb-2 font-bold tracking-wider select-none">
+                <span>BACKEND TEMPLATE</span>
+                <span class="text-brand-primary font-mono">Step 2 of 3</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2">
+                <button class="backend-option flex items-center justify-between px-3 py-2 rounded-lg bg-bg-surface border border-border-subtle text-text-muted transition-all cursor-pointer active:scale-95" data-backend="Node">
+                  <span>Node.js</span>
+                  <CheckCircle2 size={12} class="check-icon text-brand-primary hidden" />
+                </button>
+                <button class="backend-option flex items-center justify-between px-3 py-2 rounded-lg bg-brand-primary/10 border border-brand-primary/30 text-brand-primary font-bold transition-all cursor-pointer active:scale-95" data-backend="Go">
+                  <span>Go (Fiber)</span>
+                  <CheckCircle2 size={12} class="check-icon text-brand-primary" />
+                </button>
+                <button class="backend-option flex items-center justify-between px-3 py-2 rounded-lg bg-bg-surface border border-border-subtle text-text-muted transition-all cursor-pointer active:scale-95" data-backend="Rust">
+                  <span>Rust</span>
+                  <CheckCircle2 size={12} class="check-icon text-brand-primary hidden" />
+                </button>
+              </div>
+            </div>
+
+            <!-- Selector 3 -->
+            <div>
+              <div class="flex justify-between items-center text-text-muted text-[10px] mb-2 font-bold tracking-wider select-none">
+                <span>EXTRA TOOLING (TOGGLE)</span>
+                <span class="text-text-muted font-mono">Step 3 of 3</span>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button class="tool-option px-2.5 py-1.5 rounded-full bg-brand-secondary/5 border border-brand-secondary/15 text-[11px] font-semibold text-brand-secondary flex items-center gap-1 cursor-pointer active:scale-95 transition-all" data-selected="true" data-color="secondary">
+                  <span class="tool-text">✓ TypeScript</span>
+                </button>
+                <button class="tool-option px-2.5 py-1.5 rounded-full bg-brand-secondary/5 border border-brand-secondary/15 text-[11px] font-semibold text-brand-secondary flex items-center gap-1 cursor-pointer active:scale-95 transition-all" data-selected="true" data-color="secondary">
+                  <span class="tool-text">✓ ESLint</span>
+                </button>
+                <button class="tool-option px-2.5 py-1.5 rounded-full bg-brand-primary/5 border border-brand-primary/15 text-[11px] font-semibold text-brand-primary flex items-center gap-1 cursor-pointer active:scale-95 transition-all" data-selected="true" data-color="primary">
+                  <span class="tool-text">✓ Tailwind CSS</span>
+                </button>
+                <button class="tool-option px-2.5 py-1.5 rounded-full bg-bg-surface border border-border-subtle text-[11px] font-semibold text-text-muted flex items-center gap-1 cursor-pointer active:scale-95 transition-all" data-selected="false" data-color="secondary">
+                  <span class="tool-text">Prettier</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Card Copy -->
+      <div class="mt-auto relative z-15 select-none">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="p-1.5 rounded-lg bg-brand-secondary/10 text-brand-secondary">
+            <Terminal size={18} />
+          </div>
+          <h3 class="text-lg font-bold text-text-main">Interactive Stack Wizard</h3>
+        </div>
+        <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
+          Configure frontend structures, backend engines, and utility toolchains in seconds with direct choices. Tap items to customize code configuration live.
+        </p>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {featuresCards.map((item) => (
-            <div class={`flex flex-col justify-center items-center p-6 rounded-2xl hover:bg-bg-surface/75 transition-all duration-300 ${item.hoverBorder}`}>
-                <div class={`p-3 w-fit rounded-xl mb-4 ${item.color}`}>
-                    <item.icon size={22} strokeWidth={2.5} />
-                </div>
-                <h3 class="text-base font-bold mb-2 text-text-main">{item.title}</h3>
-                <p class="text-xs text-text-muted text-center">
-                    {item.description}
-                </p>
+    <!-- CARD 2: GRAPH (Spans 1 column) -->
+    <div class="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-primary/5 hover:border-brand-primary/30">
+      <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+      <!-- Card Visual Mockup (Graph showing time saved) -->
+      <div class="relative w-full flex-1 flex flex-col items-center justify-center min-h-[220px] mb-6">
+        <div class="w-full bg-bg-base/90 rounded-2xl border border-border-subtle p-5 font-sans space-y-4 group-hover:translate-y-[-4px] transition-transform duration-300">
+          <div class="flex items-center justify-between border-b border-border-subtle pb-2.5 select-none">
+            <span class="text-xs font-semibold text-text-main flex items-center gap-1.5">
+              <Activity size={14} class="text-brand-primary" />
+              Onboarding Time saved
+            </span>
+            <span class="text-[10px] text-brand-primary bg-brand-primary/10 px-2 py-0.5 rounded-full font-bold animate-pulse">
+              -98.5%
+            </span>
+          </div>
+
+          <!-- The Graph Bars -->
+          <div class="space-y-3">
+            <!-- Manual Setup Bar -->
+            <div class="hover:scale-[1.02] transition-transform duration-200 cursor-help" title="Manual file setups are slow">
+              <div class="flex justify-between text-[10px] text-text-muted mb-1.5 font-medium select-none">
+                <span>Manual Setup & Config</span>
+                <span class="font-mono">~45 minutes</span>
+              </div>
+              <div class="w-full h-3 bg-bg-surface rounded-full overflow-hidden">
+                <div class="h-full bg-text-muted/30 rounded-full w-[85%]"></div>
+              </div>
             </div>
-        ))}
+
+            <!-- Claw CLI Bar -->
+            <div class="hover:scale-[1.02] transition-transform duration-200 cursor-pointer">
+              <div class="flex justify-between text-[10px] text-text-main mb-1.5 font-bold select-none">
+                <span>With Claw CLI</span>
+                <span class="font-mono text-brand-primary">~3 seconds</span>
+              </div>
+              <div class="w-full h-3 bg-bg-surface rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-brand-primary to-brand-secondary rounded-full w-[5%] animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Highlight metrics -->
+          <div class="pt-2 grid grid-cols-2 gap-2 border-t border-border-subtle text-center select-none">
+            <div>
+              <div class="text-[9px] text-text-muted">MANUAL STEPS</div>
+              <div class="text-base font-bold text-text-main">20+ Steps</div>
+            </div>
+            <div>
+              <div class="text-[9px] text-text-muted">CLAW COMMANDS</div>
+              <div class="text-base font-bold text-brand-primary">1 Command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Copy -->
+      <div class="mt-auto relative z-15 select-none">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="p-1.5 rounded-lg bg-brand-primary/10 text-brand-primary">
+            <Clock size={18} />
+          </div>
+          <h3 class="text-lg font-bold text-text-main">Blazing Fast Scaffolding</h3>
+        </div>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Skip installing loaders, transpilers, linter scripts, config routers, or structure templates manually. Boot it all instantly.
+        </p>
+      </div>
     </div>
-  </section>
+
+    <!-- CARD 3: FILE SYSTEM (Spans 1 column) -->
+    <div class="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-primary/5 hover:border-brand-primary/30">
+      <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+      <!-- Card Visual Mockup (File Explorer) -->
+      <div class="relative w-full flex-1 flex items-center justify-center min-h-[220px] mb-6">
+        <div class="w-full bg-bg-base/90 rounded-2xl border border-border-subtle p-5 font-mono text-[11px] leading-relaxed text-text-muted group-hover:translate-y-[-4px] transition-transform duration-300 shadow-sm">
+          <div class="flex items-center gap-1.5 text-text-main font-bold border-b border-border-subtle pb-2 mb-3 select-none">
+            <FolderTree size={14} class="text-brand-secondary" />
+            <span>Workspace Layout <span class="text-[9px] font-normal text-text-muted ml-1">(click to collapse)</span></span>
+          </div>
+          
+          <div class="space-y-1.5 select-none">
+            <!-- App folder -->
+            <div class="folder-row flex items-center gap-1.5 text-text-main font-bold cursor-pointer hover:text-brand-secondary transition-colors" data-target="app-content">
+              <span class="folder-indicator">📂</span>
+              <span>app</span>
+            </div>
+            
+            <div class="app-content transition-all duration-300">
+              <div class="folder-row pl-4 border-l border-border-subtle flex items-center gap-1.5 text-text-main cursor-pointer hover:text-brand-secondary transition-colors" data-target="src-content">
+                <span class="folder-indicator">📂</span>
+                <span>src</span>
+              </div>
+              
+              <div class="src-content pl-8 border-l border-border-subtle transition-all duration-300">
+                <div class="flex items-center gap-1.5 py-0.5 rounded px-1 hover:bg-bg-surface transition-colors cursor-pointer text-text-muted hover:text-text-main">
+                  <FileCode size={11} class="text-indigo-400" />
+                  <span>main.tsx</span>
+                </div>
+                <div class="flex items-center gap-1.5 py-0.5 rounded px-1 hover:bg-bg-surface transition-colors cursor-pointer text-text-muted hover:text-text-main">
+                  <FileCode size={11} class="text-indigo-400" />
+                  <span>router.tsx</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Api folder -->
+            <div class="folder-row flex items-center gap-1.5 text-text-main font-bold cursor-pointer hover:text-brand-secondary transition-colors" data-target="api-content">
+              <span class="folder-indicator">📂</span>
+              <span>api</span>
+            </div>
+            
+            <div class="api-content pl-4 border-l border-border-subtle transition-all duration-300">
+              <div class="flex items-center gap-1.5 py-0.5 rounded px-1 hover:bg-bg-surface transition-colors cursor-pointer text-text-muted hover:text-text-main">
+                <FileCode size={11} class="text-emerald-400" />
+                <span>main.go</span>
+              </div>
+            </div>
+
+            <!-- Root configs -->
+            <div class="flex items-center gap-1.5 text-brand-primary font-bold py-0.5 rounded px-1 hover:bg-brand-primary/5 transition-colors cursor-pointer">
+              <FileCode size={11} />
+              <span>claw.config.json</span>
+              <span class="text-[8px] bg-brand-primary/10 text-brand-primary px-1.5 py-0.2 rounded font-semibold ml-1">Config</span>
+            </div>
+            <div class="flex items-center gap-1.5 py-0.5 rounded px-1 hover:bg-bg-surface transition-colors cursor-pointer text-text-muted hover:text-text-main">
+              <FileCode size={11} class="text-text-muted" />
+              <span>package.json</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Copy -->
+      <div class="mt-auto relative z-15 select-none">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="p-1.5 rounded-lg bg-brand-primary/10 text-brand-primary">
+            <FolderTree size={18} />
+          </div>
+          <h3 class="text-lg font-bold text-text-main">Standardized Layouts</h3>
+        </div>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Generates strict directory structures with unified naming conventions. Prevents developers from writing custom project frameworks.
+        </p>
+      </div>
+    </div>
+
+    <!-- CARD 4: BLUEPRINT SYNC (Spans 2 columns on MD+) -->
+    <div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-secondary/5 hover:border-brand-secondary/30">
+      <div class="absolute inset-0 bg-gradient-to-tr from-brand-secondary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+      <!-- Card Visual Mockup -->
+      <div class="relative w-full flex-1 flex items-center justify-center min-h-[220px] mb-6">
+        <div class="w-full max-w-md bg-bg-base/90 rounded-2xl border border-border-subtle p-5 font-sans space-y-4 group-hover:translate-y-[-4px] transition-transform duration-300 shadow-sm relative overflow-hidden">
+          <div class="flex items-center justify-between border-b border-border-subtle pb-3 select-none">
+            <div class="flex items-center gap-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-brand-secondary animate-ping"></div>
+              <span class="text-xs font-bold text-text-main">Blueprint Compliance Monitor</span>
+            </div>
+            
+            <!-- Interactive Sync Trigger Button -->
+            <button id="sync-trigger" class="flex items-center gap-1.5 text-[10px] text-brand-secondary bg-brand-secondary/10 hover:bg-brand-secondary/20 transition-colors px-2.5 py-1 rounded font-bold cursor-pointer select-none">
+              <RotateCw size={10} id="sync-icon" />
+              <span>Sync Rules</span>
+            </button>
+          </div>
+
+          <!-- Remote Sync visualization -->
+          <div class="space-y-3 select-none">
+            <!-- Repo 1 -->
+            <div class="repo-row flex items-center justify-between p-2 rounded-xl bg-bg-surface border border-border-subtle cursor-pointer hover:border-brand-secondary/40 transition-colors">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-brand-secondary/15 text-brand-secondary flex items-center justify-center text-[10px] font-bold font-mono">
+                  AS
+                </div>
+                <div>
+                  <div class="text-[11px] font-bold text-text-main">auth-service</div>
+                  <div class="text-[9px] text-text-muted">Go microservice</div>
+                </div>
+              </div>
+              <div class="sync-status flex items-center gap-1 text-[10px] font-medium text-emerald-500 transition-all duration-300">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span>Synced</span>
+              </div>
+            </div>
+
+            <!-- Repo 2 -->
+            <div class="repo-row flex items-center justify-between p-2 rounded-xl bg-bg-surface border border-border-subtle cursor-pointer hover:border-brand-primary/40 transition-colors">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-brand-primary/15 text-brand-primary flex items-center justify-center text-[10px] font-bold font-mono">
+                  WD
+                </div>
+                <div>
+                  <div class="text-[11px] font-bold text-text-main">web-dashboard</div>
+                  <div class="text-[9px] text-text-muted">React + Tailwind SPA</div>
+                </div>
+              </div>
+              <div class="sync-status flex items-center gap-1 text-[10px] font-medium text-emerald-500 transition-all duration-300">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span>Synced</span>
+              </div>
+            </div>
+
+            <!-- Repo 3 -->
+            <div class="repo-row flex items-center justify-between p-2 rounded-xl bg-bg-surface border border-border-subtle cursor-pointer hover:border-indigo-400/40 transition-colors">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-indigo-500/15 text-indigo-400 flex items-center justify-center text-[10px] font-bold font-mono">
+                  PG
+                </div>
+                <div>
+                  <div class="text-[11px] font-bold text-text-main">payment-gateway</div>
+                  <div class="text-[9px] text-text-muted">Node.js API</div>
+                </div>
+              </div>
+              <div class="sync-status flex items-center gap-1 text-[10px] font-medium text-emerald-500 transition-all duration-300">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span>Synced</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Copy -->
+      <div class="mt-auto relative z-15 select-none">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="p-1.5 rounded-lg bg-brand-secondary/10 text-brand-secondary">
+            <Share2 size={18} />
+          </div>
+          <h3 class="text-lg font-bold text-text-main">Centralized Blueprint Sharing</h3>
+        </div>
+        <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
+          Distribute rules, file templates, and configs from centralized locations. Tap "Sync Rules" to simulate a real-time policy update check on your projects.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bento footer note -->
+  <div class="text-center mt-12">
+    <p class="text-xs text-text-muted font-medium inline-flex items-center gap-1 cursor-pointer hover:text-brand-primary transition-colors">
+      <span>And much more developer-centric options...</span>
+      <ArrowRight size={12} />
+    </p>
+  </div>
+</section>
+
+<!-- Interactive Script for Bento Grid Components -->
+<script>
+  function initBentoInteractivity() {
+    // 1. Frontend selections
+    const frontendOptions = document.querySelectorAll('.frontend-option');
+    frontendOptions.forEach(opt => {
+      opt.addEventListener('click', () => {
+        frontendOptions.forEach(o => {
+          o.classList.remove('bg-brand-secondary/10', 'border-brand-secondary/30', 'text-brand-secondary', 'font-bold');
+          o.classList.add('bg-bg-surface', 'border-border-subtle', 'text-text-muted');
+          const icon = o.querySelector('.check-icon');
+          if (icon) icon.classList.add('hidden');
+        });
+        opt.classList.add('bg-brand-secondary/10', 'border-brand-secondary/30', 'text-brand-secondary', 'font-bold');
+        opt.classList.remove('bg-bg-surface', 'border-border-subtle', 'text-text-muted');
+        const icon = opt.querySelector('.check-icon');
+        if (icon) icon.classList.remove('hidden');
+      });
+    });
+
+    // 2. Backend selections
+    const backendOptions = document.querySelectorAll('.backend-option');
+    backendOptions.forEach(opt => {
+      opt.addEventListener('click', () => {
+        backendOptions.forEach(o => {
+          o.classList.remove('bg-brand-primary/10', 'border-brand-primary/30', 'text-brand-primary', 'font-bold');
+          o.classList.add('bg-bg-surface', 'border-border-subtle', 'text-text-muted');
+          const icon = o.querySelector('.check-icon');
+          if (icon) icon.classList.add('hidden');
+        });
+        opt.classList.add('bg-brand-primary/10', 'border-brand-primary/30', 'text-brand-primary', 'font-bold');
+        opt.classList.remove('bg-bg-surface', 'border-border-subtle', 'text-text-muted');
+        const icon = opt.querySelector('.check-icon');
+        if (icon) icon.classList.remove('hidden');
+      });
+    });
+
+    // 3. Tool toggles
+    const toolOptions = document.querySelectorAll('.tool-option');
+    toolOptions.forEach(opt => {
+      opt.addEventListener('click', () => {
+        const isSelected = opt.getAttribute('data-selected') === 'true';
+        const isPrimary = opt.getAttribute('data-color') === 'primary';
+        const textSpan = opt.querySelector('.tool-text');
+        if (!textSpan) return;
+
+        if (isSelected) {
+          opt.setAttribute('data-selected', 'false');
+          opt.classList.remove(
+            'bg-brand-secondary/5', 'border-brand-secondary/15', 'text-brand-secondary',
+            'bg-brand-primary/5', 'border-brand-primary/15', 'text-brand-primary'
+          );
+          opt.classList.add('bg-bg-surface', 'border-border-subtle', 'text-text-muted');
+          textSpan.textContent = textSpan.textContent.replace('✓ ', '');
+        } else {
+          opt.setAttribute('data-selected', 'true');
+          opt.classList.remove('bg-bg-surface', 'border-border-subtle', 'text-text-muted');
+          if (isPrimary) {
+            opt.classList.add('bg-brand-primary/5', 'border-brand-primary/15', 'text-brand-primary');
+          } else {
+            opt.classList.add('bg-brand-secondary/5', 'border-brand-secondary/15', 'text-brand-secondary');
+          }
+          if (!textSpan.textContent.startsWith('✓ ')) {
+            textSpan.textContent = '✓ ' + textSpan.textContent;
+          }
+        }
+      });
+    });
+
+    // 4. File system expand/collapse
+    const folders = document.querySelectorAll('.folder-row');
+    folders.forEach(folder => {
+      folder.addEventListener('click', () => {
+        const targetClass = folder.getAttribute('data-target');
+        const targetEl = document.querySelector(`.${targetClass}`);
+        const indicator = folder.querySelector('.folder-indicator');
+        
+        if (targetEl) {
+          targetEl.classList.toggle('hidden');
+          if (indicator) {
+            indicator.textContent = targetEl.classList.contains('hidden') ? '📁' : '📂';
+          }
+        }
+      });
+    });
+
+    // 5. Rule Sync simulator
+    const syncButton = document.getElementById('sync-trigger');
+    const syncIcon = document.getElementById('sync-icon');
+    const syncStatuses = document.querySelectorAll('.sync-status');
+
+    if (syncButton) {
+      syncButton.addEventListener('click', () => {
+        // Spin icon
+        if (syncIcon) {
+          syncIcon.classList.add('animate-spin');
+        }
+        syncButton.classList.add('opacity-70');
+        
+        // Show scanning state in statuses
+        syncStatuses.forEach(status => {
+          const textSpan = status.querySelector('span');
+          if (textSpan) textSpan.textContent = 'Checking...';
+          status.classList.remove('text-emerald-500');
+          status.classList.add('text-brand-secondary');
+        });
+
+        setTimeout(() => {
+          // Reset button and icon
+          if (syncIcon) {
+            syncIcon.classList.remove('animate-spin');
+          }
+          syncButton.classList.remove('opacity-70');
+
+          // Return to Synced state
+          syncStatuses.forEach(status => {
+            const textSpan = status.querySelector('span');
+            if (textSpan) textSpan.textContent = 'Synced';
+            status.classList.remove('text-brand-secondary');
+            status.classList.add('text-emerald-500');
+            // Little bounce pulse
+            status.classList.add('scale-110');
+            setTimeout(() => status.classList.remove('scale-110'), 250);
+          });
+        }, 1200);
+      });
+    }
+  }
+
+  // Support view transitions and loads
+  document.addEventListener('DOMContentLoaded', initBentoInteractivity);
+  initBentoInteractivity();
+</script>

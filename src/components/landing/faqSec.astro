@@ -1,0 +1,105 @@
+---
+import { ChevronDown, HelpCircle } from "@lucide/svelte";
+
+const faqs = [
+  {
+    question: "Does Claw support private Git repositories for blueprints?",
+    answer: "Yes, absolutely. Claw integrates with your local Git credentials. It supports SSH keys, HTTPS tokens, and works seamlessly with private GitHub, GitLab, Bitbucket, or self-hosted Git repositories."
+  },
+  {
+    question: "How does Claw prevent configuration drift in existing projects?",
+    answer: "By running the `claw sync` command, the CLI compares your current directory layout, dependency versions, and config files against the remote blueprint. It highlights any deviations (drift) so you can fix them before committing."
+  },
+  {
+    question: "Can I use Claw inside a monorepo setup?",
+    answer: "Yes, Claw is monorepo-native. You can execute commands within nested packages (e.g., `/apps` or `/packages`) to scaffold microservices or standalone components, all while inheriting global linting, formatting, and TypeScript parameters from the workspace root."
+  },
+  {
+    question: "Is there any lock-in with Claw CLI?",
+    answer: "None at all. Claw is a developer ergonomics tool. Once it scaffolds your files and configurations, they are standard project directories. You don't need Claw to build, run, or deploy your code."
+  }
+];
+---
+
+<section id="faq" class="w-full max-w-4xl px-4 py-16 mx-auto border-t border-border-subtle/60">
+  <!-- Section Header -->
+  <div class="text-center mb-12 flex flex-col items-center">
+    <div class="inline-flex items-center gap-1.5 px-3 py-1 mb-3 rounded-full bg-brand-secondary/10 border border-brand-secondary/20 text-xs font-semibold text-brand-secondary tracking-wide uppercase select-none">
+      <HelpCircle size={12} />
+      <span>Common Doubts</span>
+    </div>
+    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-text-main font-sans">
+      Frequently Asked Questions
+    </h2>
+    <p class="text-xs sm:text-sm text-text-muted mt-2">
+      Everything you need to know about setting up and syncing your team's code rules.
+    </p>
+  </div>
+
+  <!-- Accordion List -->
+  <div class="space-y-4">
+    {faqs.map((faq, index) => (
+      <div class="faq-item border border-border-subtle bg-bg-surface/30 backdrop-blur-sm rounded-2xl overflow-hidden transition-all duration-300 hover:border-brand-primary/20">
+        <button 
+          class="faq-trigger flex items-center justify-between w-full p-5 text-left font-sans text-sm sm:text-base font-bold text-text-main hover:text-brand-primary transition-colors cursor-pointer select-none"
+          data-index={index}
+        >
+          <span>{faq.question}</span>
+          <span class="faq-icon text-text-muted transition-transform duration-300">
+            <ChevronDown size={18} />
+          </span>
+        </button>
+        
+        <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+          <div class="p-5 pt-0 text-xs sm:text-sm text-text-muted leading-relaxed border-t border-border-subtle/40 bg-bg-base/30">
+            {faq.answer}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  function initFaqAccordions() {
+    const triggers = document.querySelectorAll('.faq-trigger');
+    
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.faq-item');
+        const content = item?.querySelector('.faq-content') as HTMLElement;
+        const icon = item?.querySelector('.faq-icon');
+        
+        if (!content || !item) return;
+
+        // Toggle state
+        const isOpen = item.classList.contains('faq-open');
+        
+        // Close all other FAQs for clean single-accordion behavior
+        document.querySelectorAll('.faq-item').forEach(otherItem => {
+          if (otherItem !== item && otherItem.classList.contains('faq-open')) {
+            otherItem.classList.remove('faq-open');
+            const otherContent = otherItem.querySelector('.faq-content') as HTMLElement;
+            const otherIcon = otherItem.querySelector('.faq-icon');
+            if (otherContent) otherContent.style.maxHeight = '0px';
+            if (otherIcon) otherIcon.classList.remove('rotate-180');
+          }
+        });
+
+        if (isOpen) {
+          item.classList.remove('faq-open');
+          content.style.maxHeight = '0px';
+          if (icon) icon.classList.remove('rotate-180');
+        } else {
+          item.classList.add('faq-open');
+          content.style.maxHeight = content.scrollHeight + 'px';
+          if (icon) icon.classList.add('rotate-180');
+        }
+      });
+    });
+  }
+
+  // Trigger setup
+  document.addEventListener('DOMContentLoaded', initFaqAccordions);
+  initFaqAccordions();
+</script>
