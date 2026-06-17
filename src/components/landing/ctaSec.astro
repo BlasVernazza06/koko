@@ -32,16 +32,16 @@ import { Copy, Check, ArrowUpRight, Terminal, FileText } from "@lucide/svelte";
       </p>
 
       <!-- Copy Command Widget inside CTA -->
-      <div class="w-full flex gap-2 max-w-sm mx-auto font-mono text-xs">
-        <div class="flex items-center justify-between gap-3 bg-bg-base border border-border-subtle p-3.5 rounded-xl group hover:border-brand-primary/30 transition-colors">
+      <div class="w-full flex flex-col sm:flex-row gap-3 max-w-md mx-auto font-mono text-xs items-center justify-center">
+        <div class="flex items-center justify-between gap-3 bg-bg-base border border-border-subtle p-3.5 rounded-xl group hover:border-brand-primary/30 transition-colors w-full sm:w-auto">
           <div class="flex items-center gap-2 text-text-muted">
             <Terminal size={14} class="text-brand-primary" />
-            <span id="cta-install-cmd" class="select-all text-[11px] sm:text-xs text-text-main font-semibold">npm install -g @claw/cli</span>
+            <span id="cta-install-cmd" class="select-all text-[11px] sm:text-xs text-text-main font-semibold">go install github.com/BlasVernazza06/claw@latest</span>
           </div>
           
           <button 
             id="cta-copy-btn" 
-            class="p-1.5 rounded-lg border border-border-subtle bg-bg-surface hover:bg-bg-base transition-colors cursor-pointer text-text-muted hover:text-text-main active:scale-95 flex items-center justify-center"
+            class="p-1.5 rounded-lg border border-border-subtle bg-bg-surface hover:bg-bg-base transition-colors cursor-pointer text-text-muted hover:text-text-main active:scale-95 flex items-center justify-center animate-none"
             aria-label="Copy installation command"
           >
             <span id="cta-copy-icon"><Copy size={13} /></span>
@@ -50,7 +50,7 @@ import { Copy, Check, ArrowUpRight, Terminal, FileText } from "@lucide/svelte";
         </div>
         <a 
           href="#" 
-          class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-brand-primary hover:bg-brand-primary/95  tracking-wide border border-border-subtle text-text-main font-bold text-sm text-center transition-all cursor-pointer flex items-center justify-center gap-1.5 hover:translate-y-[-2px] active:translate-y-[0]"
+          class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-brand-primary hover:bg-brand-primary/95 tracking-wide border border-border-subtle text-text-main font-bold text-sm text-center transition-all cursor-pointer flex items-center justify-center gap-1.5 hover:translate-y-[-2px] active:translate-y-[0]"
         >
           <FileText size={14}/>
           <span>Docs</span>

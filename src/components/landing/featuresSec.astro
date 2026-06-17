@@ -10,7 +10,9 @@ import {
   FileCode, 
   ChevronRight, 
   Activity,
-  RotateCw
+  RotateCw,
+  Cpu,
+  Layers
 } from "@lucide/svelte";
 ---
 
@@ -23,11 +25,11 @@ import {
     </div>
     
     <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-text-main max-w-2xl font-sans leading-tight">
-      Keep your codebase structured <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">in one place.</span>
+      Keep your codebase structured <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">from Day 1 to Day 2.</span>
     </h2>
     
     <p class="text-sm sm:text-base text-text-muted max-w-xl">
-      Claw replaces manual setup with a robust, instant templating engine. Click on the cards below to test our configuration system live!
+      Claw replaces manual configuration and templates with a robust, instant Go-powered developer engine. Click on the cards below to test our configuration system live!
     </p>
   </div>
 
@@ -60,16 +62,16 @@ import {
                 <span class="text-brand-secondary font-mono">Step 1 of 3</span>
               </div>
               <div class="grid grid-cols-3 gap-2">
-                <button class="frontend-option flex items-center justify-between px-3 py-2 rounded-lg bg-brand-secondary/10 border border-brand-secondary/30 text-brand-secondary font-bold transition-all cursor-pointer active:scale-95" data-framework="React">
-                  <span>React</span>
+                <button class="frontend-option flex items-center justify-between px-3 py-2 rounded-lg bg-brand-secondary/10 border border-brand-secondary/30 text-brand-secondary font-bold transition-all cursor-pointer active:scale-95" data-framework="Next.js">
+                  <span>Next.js</span>
                   <CheckCircle2 size={12} class="check-icon text-brand-secondary" />
                 </button>
-                <button class="frontend-option flex items-center justify-between px-3 py-2 rounded-lg bg-bg-surface border border-border-subtle text-text-muted transition-all cursor-pointer active:scale-95" data-framework="Svelte">
-                  <span>Svelte</span>
+                <button class="frontend-option flex items-center justify-between px-3 py-2 rounded-lg bg-bg-surface border border-border-subtle text-text-muted transition-all cursor-pointer active:scale-95" data-framework="React">
+                  <span>React SPA</span>
                   <CheckCircle2 size={12} class="check-icon text-brand-secondary hidden" />
                 </button>
-                <button class="frontend-option flex items-center justify-between px-3 py-2 rounded-lg bg-bg-surface border border-border-subtle text-text-muted transition-all cursor-pointer active:scale-95" data-framework="Vue">
-                  <span>Vue</span>
+                <button class="frontend-option flex items-center justify-between px-3 py-2 rounded-lg bg-bg-surface border border-border-subtle text-text-muted transition-all cursor-pointer active:scale-95" data-framework="None">
+                  <span>None</span>
                   <CheckCircle2 size={12} class="check-icon text-brand-secondary hidden" />
                 </button>
               </div>
@@ -78,20 +80,20 @@ import {
             <!-- Selector 2 -->
             <div>
               <div class="flex justify-between items-center text-text-muted text-[10px] mb-2 font-bold tracking-wider select-none">
-                <span>BACKEND TEMPLATE</span>
+                <span>BACKEND ENGINE</span>
                 <span class="text-brand-primary font-mono">Step 2 of 3</span>
               </div>
               <div class="grid grid-cols-3 gap-2">
                 <button class="backend-option flex items-center justify-between px-3 py-2 rounded-lg bg-bg-surface border border-border-subtle text-text-muted transition-all cursor-pointer active:scale-95" data-backend="Node">
-                  <span>Node.js</span>
+                  <span>Node Express</span>
                   <CheckCircle2 size={12} class="check-icon text-brand-primary hidden" />
                 </button>
                 <button class="backend-option flex items-center justify-between px-3 py-2 rounded-lg bg-brand-primary/10 border border-brand-primary/30 text-brand-primary font-bold transition-all cursor-pointer active:scale-95" data-backend="Go">
-                  <span>Go (Fiber)</span>
+                  <span>Go Fiber</span>
                   <CheckCircle2 size={12} class="check-icon text-brand-primary" />
                 </button>
-                <button class="backend-option flex items-center justify-between px-3 py-2 rounded-lg bg-bg-surface border border-border-subtle text-text-muted transition-all cursor-pointer active:scale-95" data-backend="Rust">
-                  <span>Rust</span>
+                <button class="backend-option flex items-center justify-between px-3 py-2 rounded-lg bg-bg-surface border border-border-subtle text-text-muted transition-all cursor-pointer active:scale-95" data-backend="None">
+                  <span>None</span>
                   <CheckCircle2 size={12} class="check-icon text-brand-primary hidden" />
                 </button>
               </div>
@@ -100,21 +102,21 @@ import {
             <!-- Selector 3 -->
             <div>
               <div class="flex justify-between items-center text-text-muted text-[10px] mb-2 font-bold tracking-wider select-none">
-                <span>EXTRA TOOLING (TOGGLE)</span>
+                <span>LOCAL DATABASE / ORM</span>
                 <span class="text-text-muted font-mono">Step 3 of 3</span>
               </div>
               <div class="flex flex-wrap gap-2">
                 <button class="tool-option px-2.5 py-1.5 rounded-full bg-brand-secondary/5 border border-brand-secondary/15 text-[11px] font-semibold text-brand-secondary flex items-center gap-1 cursor-pointer active:scale-95 transition-all" data-selected="true" data-color="secondary">
-                  <span class="tool-text">✓ TypeScript</span>
+                  <span class="tool-text">✓ PostgreSQL</span>
                 </button>
                 <button class="tool-option px-2.5 py-1.5 rounded-full bg-brand-secondary/5 border border-brand-secondary/15 text-[11px] font-semibold text-brand-secondary flex items-center gap-1 cursor-pointer active:scale-95 transition-all" data-selected="true" data-color="secondary">
-                  <span class="tool-text">✓ ESLint</span>
+                  <span class="tool-text">✓ Prisma ORM</span>
                 </button>
                 <button class="tool-option px-2.5 py-1.5 rounded-full bg-brand-primary/5 border border-brand-primary/15 text-[11px] font-semibold text-brand-primary flex items-center gap-1 cursor-pointer active:scale-95 transition-all" data-selected="true" data-color="primary">
-                  <span class="tool-text">✓ Tailwind CSS</span>
+                  <span class="tool-text">✓ Docker Compose</span>
                 </button>
                 <button class="tool-option px-2.5 py-1.5 rounded-full bg-bg-surface border border-border-subtle text-[11px] font-semibold text-text-muted flex items-center gap-1 cursor-pointer active:scale-95 transition-all" data-selected="false" data-color="secondary">
-                  <span class="tool-text">Prettier</span>
+                  <span class="tool-text">SQLx (Go)</span>
                 </button>
               </div>
             </div>
@@ -128,65 +130,47 @@ import {
           <div class="p-1.5 rounded-lg bg-brand-secondary/10 text-brand-secondary">
             <Terminal size={18} />
           </div>
-          <h3 class="text-lg font-bold text-text-main">Interactive Stack Wizard</h3>
+          <h3 class="text-lg font-bold text-text-main">Interactive Stack Customizer</h3>
         </div>
         <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
-          Configure frontend structures, backend engines, and utility toolchains in seconds with direct choices. Tap items to customize code configuration live.
+          Configure backend models, frontend rendering methods, database containers, and lint environments. Click on options to simulate a tailored manual setup.
         </p>
       </div>
     </div>
 
-    <!-- CARD 2: GRAPH (Spans 1 column) -->
+    <!-- CARD 2: TECH DETAILS (Spans 1 column) -->
     <div class="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-primary/5 hover:border-brand-primary/30">
       <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
-      <!-- Card Visual Mockup (Graph showing time saved) -->
+      <!-- Card Visual Mockup -->
       <div class="relative w-full flex-1 flex flex-col items-center justify-center min-h-[220px] mb-6">
         <div class="w-full bg-bg-base/90 rounded-2xl border border-border-subtle p-5 font-sans space-y-4 group-hover:translate-y-[-4px] transition-transform duration-300">
           <div class="flex items-center justify-between border-b border-border-subtle pb-2.5 select-none">
             <span class="text-xs font-semibold text-text-main flex items-center gap-1.5">
-              <Activity size={14} class="text-brand-primary" />
-              Onboarding Time saved
+              <Cpu size={14} class="text-brand-primary" />
+              Go-Native Architecture
             </span>
-            <span class="text-[10px] text-brand-primary bg-brand-primary/10 px-2 py-0.5 rounded-full font-bold animate-pulse">
-              -98.5%
+            <span class="text-[10px] text-brand-primary bg-brand-primary/10 px-2 py-0.5 rounded-full font-bold">
+              Standalone
             </span>
           </div>
 
-          <!-- The Graph Bars -->
-          <div class="space-y-3">
-            <!-- Manual Setup Bar -->
-            <div class="hover:scale-[1.02] transition-transform duration-200 cursor-help" title="Manual file setups are slow">
-              <div class="flex justify-between text-[10px] text-text-muted mb-1.5 font-medium select-none">
-                <span>Manual Setup & Config</span>
-                <span class="font-mono">~45 minutes</span>
-              </div>
-              <div class="w-full h-3 bg-bg-surface rounded-full overflow-hidden">
-                <div class="h-full bg-text-muted/30 rounded-full w-[85%]"></div>
-              </div>
+          <div class="space-y-3 font-mono text-[11px] text-text-muted">
+            <div class="flex justify-between border-b border-border-subtle/40 pb-1">
+              <span>Binary Type</span>
+              <span class="text-text-main font-bold">Single Native</span>
             </div>
-
-            <!-- Claw CLI Bar -->
-            <div class="hover:scale-[1.02] transition-transform duration-200 cursor-pointer">
-              <div class="flex justify-between text-[10px] text-text-main mb-1.5 font-bold select-none">
-                <span>With Claw CLI</span>
-                <span class="font-mono text-brand-primary">~3 seconds</span>
-              </div>
-              <div class="w-full h-3 bg-bg-surface rounded-full overflow-hidden">
-                <div class="h-full bg-gradient-to-r from-brand-primary to-brand-secondary rounded-full w-[5%] animate-pulse"></div>
-              </div>
+            <div class="flex justify-between border-b border-border-subtle/40 pb-1">
+              <span>Cold Start</span>
+              <span class="text-brand-primary font-bold">0.002s</span>
             </div>
-          </div>
-
-          <!-- Highlight metrics -->
-          <div class="pt-2 grid grid-cols-2 gap-2 border-t border-border-subtle text-center select-none">
-            <div>
-              <div class="text-[9px] text-text-muted">MANUAL STEPS</div>
-              <div class="text-base font-bold text-text-main">20+ Steps</div>
+            <div class="flex justify-between border-b border-border-subtle/40 pb-1">
+              <span>Dependencies</span>
+              <span class="text-text-main font-bold">None (Offline)</span>
             </div>
-            <div>
-              <div class="text-[9px] text-text-muted">CLAW COMMANDS</div>
-              <div class="text-base font-bold text-brand-primary">1 Command</div>
+            <div class="flex justify-between">
+              <span>Distributor</span>
+              <span class="text-text-main">GoReleaser</span>
             </div>
           </div>
         </div>
@@ -198,73 +182,38 @@ import {
           <div class="p-1.5 rounded-lg bg-brand-primary/10 text-brand-primary">
             <Clock size={18} />
           </div>
-          <h3 class="text-lg font-bold text-text-main">Blazing Fast Scaffolding</h3>
+          <h3 class="text-lg font-bold text-text-main">High Performance Go CLI</h3>
         </div>
         <p class="text-xs text-text-muted leading-relaxed">
-          Skip installing loaders, transpilers, linter scripts, config routers, or structure templates manually. Boot it all instantly.
+          Zero dependencies on the user's local system. Compiles down to a single binary for instant load speeds, packaged with Cobra and embedded template systems.
         </p>
       </div>
     </div>
 
-    <!-- CARD 3: FILE SYSTEM (Spans 1 column) -->
+    <!-- CARD 3: DAY 2 EVOLUTION (Spans 1 column) -->
     <div class="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-primary/5 hover:border-brand-primary/30">
       <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
-      <!-- Card Visual Mockup (File Explorer) -->
+      <!-- Card Visual Mockup -->
       <div class="relative w-full flex-1 flex items-center justify-center min-h-[220px] mb-6">
-        <div class="w-full bg-bg-base/90 rounded-2xl border border-border-subtle p-5 font-mono text-[11px] leading-relaxed text-text-muted group-hover:translate-y-[-4px] transition-transform duration-300 shadow-sm">
+        <div class="w-full bg-bg-base/90 rounded-2xl border border-border-subtle p-4 font-mono text-[10px] leading-relaxed text-text-muted group-hover:translate-y-[-4px] transition-transform duration-300 shadow-sm">
           <div class="flex items-center gap-1.5 text-text-main font-bold border-b border-border-subtle pb-2 mb-3 select-none">
-            <FolderTree size={14} class="text-brand-secondary" />
-            <span>Workspace Layout <span class="text-[9px] font-normal text-text-muted ml-1">(click to collapse)</span></span>
+            <Layers size={14} class="text-brand-secondary" />
+            <span>Active Stack Evolution</span>
           </div>
           
-          <div class="space-y-1.5 select-none">
-            <!-- App folder -->
-            <div class="folder-row flex items-center gap-1.5 text-text-main font-bold cursor-pointer hover:text-brand-secondary transition-colors" data-target="app-content">
-              <span class="folder-indicator">📂</span>
-              <span>app</span>
+          <div class="space-y-2 select-none">
+            <div class="p-1.5 bg-bg-surface rounded border border-border-subtle">
+              <div class="text-brand-secondary font-bold">$ claw add auth</div>
+              <div class="text-[9px] text-text-muted mt-0.5">✔ Injected NextAuth boilerplate</div>
             </div>
-            
-            <div class="app-content transition-all duration-300">
-              <div class="folder-row pl-4 border-l border-border-subtle flex items-center gap-1.5 text-text-main cursor-pointer hover:text-brand-secondary transition-colors" data-target="src-content">
-                <span class="folder-indicator">📂</span>
-                <span>src</span>
-              </div>
-              
-              <div class="src-content pl-8 border-l border-border-subtle transition-all duration-300">
-                <div class="flex items-center gap-1.5 py-0.5 rounded px-1 hover:bg-bg-surface transition-colors cursor-pointer text-text-muted hover:text-text-main">
-                  <FileCode size={11} class="text-indigo-400" />
-                  <span>main.tsx</span>
-                </div>
-                <div class="flex items-center gap-1.5 py-0.5 rounded px-1 hover:bg-bg-surface transition-colors cursor-pointer text-text-muted hover:text-text-main">
-                  <FileCode size={11} class="text-indigo-400" />
-                  <span>router.tsx</span>
-                </div>
-              </div>
+            <div class="p-1.5 bg-bg-surface rounded border border-border-subtle">
+              <div class="text-brand-secondary font-bold">$ claw add database</div>
+              <div class="text-[9px] text-text-muted mt-0.5">✔ Appended PostgreSQL config</div>
             </div>
-            
-            <!-- Api folder -->
-            <div class="folder-row flex items-center gap-1.5 text-text-main font-bold cursor-pointer hover:text-brand-secondary transition-colors" data-target="api-content">
-              <span class="folder-indicator">📂</span>
-              <span>api</span>
-            </div>
-            
-            <div class="api-content pl-4 border-l border-border-subtle transition-all duration-300">
-              <div class="flex items-center gap-1.5 py-0.5 rounded px-1 hover:bg-bg-surface transition-colors cursor-pointer text-text-muted hover:text-text-main">
-                <FileCode size={11} class="text-emerald-400" />
-                <span>main.go</span>
-              </div>
-            </div>
-
-            <!-- Root configs -->
-            <div class="flex items-center gap-1.5 text-brand-primary font-bold py-0.5 rounded px-1 hover:bg-brand-primary/5 transition-colors cursor-pointer">
-              <FileCode size={11} />
-              <span>claw.config.json</span>
-              <span class="text-[8px] bg-brand-primary/10 text-brand-primary px-1.5 py-0.2 rounded font-semibold ml-1">Config</span>
-            </div>
-            <div class="flex items-center gap-1.5 py-0.5 rounded px-1 hover:bg-bg-surface transition-colors cursor-pointer text-text-muted hover:text-text-main">
-              <FileCode size={11} class="text-text-muted" />
-              <span>package.json</span>
+            <div class="p-1.5 bg-bg-surface rounded border border-border-subtle">
+              <div class="text-brand-secondary font-bold">$ claw g component Card</div>
+              <div class="text-[9px] text-text-muted mt-0.5">✔ Created src/components/Card.tsx</div>
             </div>
           </div>
         </div>
@@ -276,10 +225,10 @@ import {
           <div class="p-1.5 rounded-lg bg-brand-primary/10 text-brand-primary">
             <FolderTree size={18} />
           </div>
-          <h3 class="text-lg font-bold text-text-main">Standardized Layouts</h3>
+          <h3 class="text-lg font-bold text-text-main">Day 2 Code Generation</h3>
         </div>
         <p class="text-xs text-text-muted leading-relaxed">
-          Generates strict directory structures with unified naming conventions. Prevents developers from writing custom project frameworks.
+          The CLI is active throughout your project's lifecycle. Evolve your stack and inject database instances, auth schemes, and components modularly.
         </p>
       </div>
     </div>
@@ -294,66 +243,46 @@ import {
           <div class="flex items-center justify-between border-b border-border-subtle pb-3 select-none">
             <div class="flex items-center gap-2">
               <div class="w-2.5 h-2.5 rounded-full bg-brand-secondary animate-ping"></div>
-              <span class="text-xs font-bold text-text-main">Blueprint Compliance Monitor</span>
+              <span class="text-xs font-bold text-text-main">Hybrid Scaffolding Engine</span>
             </div>
             
-            <!-- Interactive Sync Trigger Button -->
             <button id="sync-trigger" class="flex items-center gap-1.5 text-[10px] text-brand-secondary bg-brand-secondary/10 hover:bg-brand-secondary/20 transition-colors px-2.5 py-1 rounded font-bold cursor-pointer select-none">
               <RotateCw size={10} id="sync-icon" />
-              <span>Sync Rules</span>
+              <span>Simulate Recipes</span>
             </button>
           </div>
 
-          <!-- Remote Sync visualization -->
+          <!-- Recipe List visualizer -->
           <div class="space-y-3 select-none">
-            <!-- Repo 1 -->
             <div class="repo-row flex items-center justify-between p-2 rounded-xl bg-bg-surface border border-border-subtle cursor-pointer hover:border-brand-secondary/40 transition-colors">
               <div class="flex items-center gap-2">
                 <div class="w-7 h-7 rounded-lg bg-brand-secondary/15 text-brand-secondary flex items-center justify-center text-[10px] font-bold font-mono">
-                  AS
+                  FS
                 </div>
                 <div>
-                  <div class="text-[11px] font-bold text-text-main">auth-service</div>
-                  <div class="text-[9px] text-text-muted">Go microservice</div>
+                  <div class="text-[11px] font-bold text-text-main">Fullstack SaaS Starter Recipe</div>
+                  <div class="text-[9px] text-text-muted">Next.js + Go Fiber + PostgreSQL + Docker</div>
                 </div>
               </div>
               <div class="sync-status flex items-center gap-1 text-[10px] font-medium text-emerald-500 transition-all duration-300">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span>Synced</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Ready</span>
               </div>
             </div>
 
-            <!-- Repo 2 -->
             <div class="repo-row flex items-center justify-between p-2 rounded-xl bg-bg-surface border border-border-subtle cursor-pointer hover:border-brand-primary/40 transition-colors">
               <div class="flex items-center gap-2">
                 <div class="w-7 h-7 rounded-lg bg-brand-primary/15 text-brand-primary flex items-center justify-center text-[10px] font-bold font-mono">
-                  WD
+                  AM
                 </div>
                 <div>
-                  <div class="text-[11px] font-bold text-text-main">web-dashboard</div>
-                  <div class="text-[9px] text-text-muted">React + Tailwind SPA</div>
+                  <div class="text-[11px] font-bold text-text-main">Clean API Recipe</div>
+                  <div class="text-[9px] text-text-muted">Fastify + Prisma + PostgreSQL</div>
                 </div>
               </div>
               <div class="sync-status flex items-center gap-1 text-[10px] font-medium text-emerald-500 transition-all duration-300">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span>Synced</span>
-              </div>
-            </div>
-
-            <!-- Repo 3 -->
-            <div class="repo-row flex items-center justify-between p-2 rounded-xl bg-bg-surface border border-border-subtle cursor-pointer hover:border-indigo-400/40 transition-colors">
-              <div class="flex items-center gap-2">
-                <div class="w-7 h-7 rounded-lg bg-indigo-500/15 text-indigo-400 flex items-center justify-center text-[10px] font-bold font-mono">
-                  PG
-                </div>
-                <div>
-                  <div class="text-[11px] font-bold text-text-main">payment-gateway</div>
-                  <div class="text-[9px] text-text-muted">Node.js API</div>
-                </div>
-              </div>
-              <div class="sync-status flex items-center gap-1 text-[10px] font-medium text-emerald-500 transition-all duration-300">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span>Synced</span>
+                <span>Ready</span>
               </div>
             </div>
           </div>
@@ -366,10 +295,10 @@ import {
           <div class="p-1.5 rounded-lg bg-brand-secondary/10 text-brand-secondary">
             <Share2 size={18} />
           </div>
-          <h3 class="text-lg font-bold text-text-main">Centralized Blueprint Sharing</h3>
+          <h3 class="text-lg font-bold text-text-main">Hybrid Scaffolding: Recipes & Steps</h3>
         </div>
         <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
-          Distribute rules, file templates, and configs from centralized locations. Tap "Sync Rules" to simulate a real-time policy update check on your projects.
+          Boot instantly using ready-to-go, production-tested Recipes, or compile custom boilerplates step-by-step through manual configuration parameters.
         </p>
       </div>
     </div>
@@ -454,62 +383,40 @@ import {
       });
     });
 
-    // 4. File system expand/collapse
-    const folders = document.querySelectorAll('.folder-row');
-    folders.forEach(folder => {
-      folder.addEventListener('click', () => {
-        const targetClass = folder.getAttribute('data-target');
-        const targetEl = document.querySelector(`.${targetClass}`);
-        const indicator = folder.querySelector('.folder-indicator');
-        
-        if (targetEl) {
-          targetEl.classList.toggle('hidden');
-          if (indicator) {
-            indicator.textContent = targetEl.classList.contains('hidden') ? '📁' : '📂';
-          }
-        }
-      });
-    });
-
-    // 5. Rule Sync simulator
+    // 4. Recipe scan simulator
     const syncButton = document.getElementById('sync-trigger');
     const syncIcon = document.getElementById('sync-icon');
     const syncStatuses = document.querySelectorAll('.sync-status');
 
     if (syncButton) {
       syncButton.addEventListener('click', () => {
-        // Spin icon
         if (syncIcon) {
           syncIcon.classList.add('animate-spin');
         }
         syncButton.classList.add('opacity-70');
         
-        // Show scanning state in statuses
         syncStatuses.forEach(status => {
           const textSpan = status.querySelector('span');
-          if (textSpan) textSpan.textContent = 'Checking...';
+          if (textSpan) textSpan.textContent = 'Scanning...';
           status.classList.remove('text-emerald-500');
           status.classList.add('text-brand-secondary');
         });
 
         setTimeout(() => {
-          // Reset button and icon
           if (syncIcon) {
             syncIcon.classList.remove('animate-spin');
           }
           syncButton.classList.remove('opacity-70');
 
-          // Return to Synced state
           syncStatuses.forEach(status => {
             const textSpan = status.querySelector('span');
-            if (textSpan) textSpan.textContent = 'Synced';
+            if (textSpan) textSpan.textContent = 'Ready';
             status.classList.remove('text-brand-secondary');
             status.classList.add('text-emerald-500');
-            // Little bounce pulse
-            status.classList.add('scale-110');
-            setTimeout(() => status.classList.remove('scale-110'), 250);
+            status.classList.add('scale-105');
+            setTimeout(() => status.classList.remove('scale-105'), 200);
           });
-        }, 1200);
+        }, 1000);
       });
     }
   }

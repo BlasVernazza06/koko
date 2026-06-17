@@ -3,7 +3,7 @@
     let isCopied = $state(false);
 
     function copyInstallCommand() {
-    navigator.clipboard.writeText('npm install -g claw-cli');
+    navigator.clipboard.writeText('go install github.com/BlasVernazza06/claw@latest');
     isCopied = true;
     setTimeout(() => {
       isCopied = false;
@@ -15,7 +15,7 @@
     <div class="flex items-center justify-between p-4 mb-6 bg-bg-surface/70 backdrop-blur-md border border-border-subtle rounded-xl shadow-sm">
         <div class="flex items-center gap-2.5">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-sm shadow-emerald-500/30"></span>
-          <code class="text-sm font-mono text-text-main font-medium">npm install -g claw-cli</code>
+          <code class="text-xs sm:text-sm font-mono text-text-main font-medium font-semibold">go install github.com/BlasVernazza06/claw@latest</code>
         </div>
         <button 
           onclick={copyInstallCommand}

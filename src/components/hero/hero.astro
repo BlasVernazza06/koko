@@ -9,22 +9,23 @@ import CtaSec from "@/components/landing/ctaSec.astro";
 <main class="max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col items-center justify-center relative z-10">
       
     <!-- Top announcement badge -->
-    <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-bg-surface border border-border-subtle text-xs text-text-muted select-none">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-bg-surface border border-border-subtle text-xs text-text-muted select-none opacity-0 animate-fade-in-up">
       <span class="flex h-2 w-2 rounded-full bg-brand-primary animate-pulse"></span>
       <span>Claw CLI v0.1.0 is now live</span>
     </div>
 
     <!-- Heading -->
-    <div class="text-center max-w-3xl mx-auto mb-16">
+    <div class="text-center max-w-4xl mx-auto mb-16 opacity-0 animate-fade-in-up animation-delay-100">
       <h1 class="text-4xl sm:text-5xl md:text-[64px] font-extrabold tracking-tight leading-[1.1] mb-6 font-sans">
-        Scaffold your projects <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">with speed.</span>
+        Go from zero to production <br class="hidden md:inline" />
+        <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">in less than 5 seconds.</span>
       </h1>
       <p class="text-base sm:text-lg text-text-muted leading-relaxed max-w-2xl mx-auto">
-        Claw is an ultra-fast CLI scaffolding tool built to automate repository setups. Maintain clean, standardized structures across all your engineering teams.
+        Claw-CLI is a modern, Go-powered developer ergonomics tool designed to eliminate setup friction (Day 1) and seamlessly evolve your stack (Day 2) with active subcommands.
       </p>
     </div>
 
-    <div class="max-w-sm mx-auto my-8 font-sans gap-3 flex flex-col items-center justify-center w-full">
+    <div class="max-w-sm mx-auto my-8 font-sans gap-3 flex flex-col items-center justify-center w-full opacity-0 animate-fade-in-up animation-delay-200">
       <a href="#terminal" class="flex items-center justify-center bg-brand-primary hover:bg-brand-primary/95 transition-colors w-full py-4 rounded-xl shadow-lg shadow-brand-primary/10 cursor-pointer">
         <span class="text-white font-semibold">Get Started</span>
       </a>
@@ -34,7 +35,7 @@ import CtaSec from "@/components/landing/ctaSec.astro";
     </div>
 
     <!-- Svelte Interactive Terminal Simulator -->
-    <section id="terminal" class="w-full max-w-5xl">
+    <section id="terminal" class="w-full max-w-5xl opacity-0 animate-fade-in-up animation-delay-300">
       <TerminalSimulator client:load />
     </section>
 
