@@ -1,13 +1,12 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import Hero from '@/components/hero/hero.astro';
+import InteractiveBuilder from '@/components/builder/InteractiveBuilder.svelte';
 import Footer from '@/components/footer/footer.astro';
 ---
 
-<Layout>
-  <div class="min-h-screen bg-bg-base text-text-main selection:bg-brand-primary/20 transition-colors duration-300 relative overflow-hidden">
-    
-    <!-- Ambient brand background glows (Full Page Aura) -->
+<Layout lang="en">
+  <div class="min-h-screen bg-bg-base text-text-main relative overflow-hidden pt-10">
+    <!-- Ambient brand background glows -->
     <div class="hero-bg-glow">
       <div class="glow-primary"></div>
       <div class="glow-secondary-left"></div>
@@ -15,12 +14,11 @@ import Footer from '@/components/footer/footer.astro';
       <div class="glow-wash"></div>
     </div>
 
-    <!-- Hero Section -->
-    <Hero>
+    <!-- Main Builder Component -->
+    <InteractiveBuilder lang="en" client:load />
 
     <!-- Footer -->
-    <Footer/>
-
+    <Footer />
   </div>
 </Layout>
 

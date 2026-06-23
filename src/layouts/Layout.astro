@@ -1,9 +1,20 @@
 ---
 import Header from '@/components/header/header.astro';
 import '../styles/global.css';
+
+const { lang = 'es', title, description } = Astro.props;
+
+const defaultTitle = lang === 'es' ? 'Claw — CLI de inicialización de proyectos ultra rápido' : 'Claw — Ultra fast project scaffolding CLI';
+const defaultDesc = lang === 'es' 
+  ? 'Claw es un motor de scaffolding escrito en Go que elimina la fricción de configuración y te ayuda a evolucionar tu arquitectura sin problemas.' 
+  : 'Claw is a Go-powered developer ergonomics CLI designed to eliminate setup friction and seamlessly evolve your stack.';
+
+const metaTitle = title || defaultTitle;
+const metaDesc = description || defaultDesc;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin);
 ---
 <!doctype html>
-<html lang="en">
+<html lang={lang} data-lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -13,7 +24,42 @@ import '../styles/global.css';
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 		<meta name="generator" content={Astro.generator} />
-		<title>Claw — Scaffolding CLI</title>
+		
+		<!-- Primary Meta Tags -->
+		<title>{metaTitle}</title>
+		<meta name="title" content={metaTitle} />
+		<meta name="description" content={metaDesc} />
+		<link rel="canonical" href={canonicalURL} />
+		<meta name="robots" content="index, follow" />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={metaTitle} />
+		<meta property="og:description" content={metaDesc} />
+		<meta property="og:image" content="/og-image.png" />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={canonicalURL} />
+		<meta property="twitter:title" content={metaTitle} />
+		<meta property="twitter:description" content={metaDesc} />
+		<meta property="twitter:image" content="/og-image.png" />
+		<script is:inline>
+			const theme = (() => {
+				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+					return localStorage.getItem('theme');
+				}
+				return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+			})();
+			if (theme === 'light') {
+				document.documentElement.classList.remove('dark');
+				document.documentElement.setAttribute('data-theme', 'light');
+			} else {
+				document.documentElement.classList.add('dark');
+				document.documentElement.setAttribute('data-theme', 'dark');
+			}
+		</script>
 	</head>
 	<body>
 		<Header/>
