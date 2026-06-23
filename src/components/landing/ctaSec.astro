@@ -17,18 +17,20 @@ import { Copy, Check, ArrowUpRight, Terminal, FileText } from "@lucide/svelte";
       
       <!-- Tiny Badge -->
       <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-xs font-semibold text-brand-primary tracking-wide uppercase select-none">
-        <span>Start Building</span>
+        <span class="lang-es">Comenzar a Crear</span>
+        <span class="lang-en">Start Building</span>
       </div>
 
       <!-- Heading -->
       <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-text-main font-sans leading-tight">
-        Ready to unify your <br class="hidden sm:inline" />
-        <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">development workflow?</span>
+        <span class="lang-es">¿Listo para unificar tu <br class="hidden sm:inline" /> <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">flujo de desarrollo?</span></span>
+        <span class="lang-en">Ready to unify your <br class="hidden sm:inline" /> <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">development workflow?</span></span>
       </h2>
 
       <!-- Subtitle -->
       <p class="text-xs sm:text-sm md:text-base text-text-muted leading-relaxed max-w-lg mx-auto">
-        Join hundreds of engineers who scaffold clean, standardized, production-ready repositories in seconds. Zero configuration drift, maximum speed.
+        <span class="lang-es">Únete a los ingenieros que inicializan repositorios limpios y listos para producción en segundos. Sin desvíos de configuración, máxima velocidad.</span>
+        <span class="lang-en">Join hundreds of engineers who scaffold clean, standardized, production-ready repositories in seconds. Zero configuration drift, maximum speed.</span>
       </p>
 
       <!-- Copy Command Widget inside CTA -->
@@ -53,7 +55,8 @@ import { Copy, Check, ArrowUpRight, Terminal, FileText } from "@lucide/svelte";
           class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-brand-primary hover:bg-brand-primary/95 tracking-wide border border-border-subtle text-text-main font-bold text-sm text-center transition-all cursor-pointer flex items-center justify-center gap-1.5 hover:translate-y-[-2px] active:translate-y-[0]"
         >
           <FileText size={14}/>
-          <span>Docs</span>
+          <span class="lang-es">Docs</span>
+          <span class="lang-en">Docs</span>
           <ArrowUpRight size={14} class="text-text-main" />
         </a>
       </div>
@@ -93,4 +96,5 @@ import { Copy, Check, ArrowUpRight, Terminal, FileText } from "@lucide/svelte";
 
   document.addEventListener('DOMContentLoaded', initCtaCopy);
   initCtaCopy();
+  document.addEventListener('astro:after-swap', initCtaCopy);
 </script>

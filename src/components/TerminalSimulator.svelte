@@ -2,11 +2,84 @@
   import { Terminal as TerminalIcon, Folder, FileCode, ChevronRight } from '@lucide/svelte';
 
   let command = $state('');
-  let output = $state([
-    'Welcome to Claw CLI v0.1.0',
-    'Type "claw init" to bootstrap a new workspace.',
-    ''
-  ]);
+  let currentLang = $state('es');
+
+  // Listen to lang changes
+  $effect(() => {
+    currentLang = document.documentElement.getAttribute('data-lang') || 'es';
+    
+    const handleLangChange = (e) => {
+      currentLang = e.detail;
+    };
+    window.addEventListener('lang-change', handleLangChange);
+    return () => {
+      window.removeEventListener('lang-change', handleLangChange);
+    };
+  });
+
+  // Translation dictionary
+  const t = $derived({
+    es: {
+      welcome: 'Bienvenido a Claw CLI v0.1.0',
+      typeInit: 'Escribe "claw init" para iniciar un nuevo espacio de trabajo.',
+      flowChoice: '¿Cómo deseas inicializar tu proyecto?',
+      recipeChoice: 'Selecciona una receta de producción:',
+      frontChoice: 'Selecciona tu framework de Frontend:',
+      backChoice: 'Selecciona tu framework de Backend:',
+      dbChoice: 'Selecciona tu ORM y Base de Datos:',
+      dockerChoice: '¿Configurar entorno de desarrollo local con Docker Compose? (Y/n)',
+      githubChoice: '¿Configurar Github Actions para CI/CD? (Y/n)',
+      helpText: 'Comandos disponibles:',
+      generatingLogs: [
+        '🔧 Analizando dependencias...',
+        '📦 Descargando recetas embebidas de Go...',
+        '🚀 Inyectando plantillas y construyendo estructura...'
+      ],
+      doneLogs: '✨ ¡Listo! Proyecto inicializado con éxito en 0.8s.',
+      placeholder: 'Prueba "claw init"...',
+      structureTitle: 'Estructura generada:',
+      yes: 'Sí',
+      no: 'No',
+      flowRapido: '🚀 Setup Rápido (Recetas de producción listas para usar)',
+      flowManual: '⚙️ Configuración Manual (Elegir stack paso a paso)'
+    },
+    en: {
+      welcome: 'Welcome to Claw CLI v0.1.0',
+      typeInit: 'Type "claw init" to bootstrap a new workspace.',
+      flowChoice: 'How do you want to initialize your project?',
+      recipeChoice: 'Select a production recipe:',
+      frontChoice: 'Select your Frontend framework:',
+      backChoice: 'Select your Backend framework:',
+      dbChoice: 'Select your ORM and Database:',
+      dockerChoice: 'Configure local development environment with Docker Compose? (Y/n)',
+      githubChoice: 'Configure Github Actions for CI/CD? (Y/n)',
+      helpText: 'Available commands:',
+      generatingLogs: [
+        '🔧 Analyzing dependencies...',
+        '📦 Downloading Go-embedded recipes...',
+        '🚀 Injecting templates and building workspace structure...'
+      ],
+      doneLogs: '✨ Done! Project bootstrapped successfully in 0.8s.',
+      placeholder: 'Try "claw init"...',
+      structureTitle: 'Structure generated:',
+      yes: 'Yes',
+      no: 'No',
+      flowRapido: '🚀 Rapid Setup (Ready-to-use production recipes)',
+      flowManual: '⚙️ Manual Configuration (Choose stack step-by-step)'
+    }
+  }[currentLang] || t.es);
+
+  // Initialize output based on language
+  let output = $state([]);
+  $effect(() => {
+    if (output.length === 0 || (output.length === 3 && (output[0].includes('Welcome') || output[0].includes('Bienvenido')))) {
+      output = [
+        t.welcome,
+        t.typeInit,
+        ''
+      ];
+    }
+  });
  
   // Wizard states: 'idle' | 'flow-choice' | 'recipe-choice' | 'manual-front' | 'manual-back' | 'manual-db' | 'manual-docker' | 'manual-github' | 'generating'
   let wizardState = $state('idle');
@@ -23,21 +96,21 @@
   // Selection active indices for keyboard navigation
   let activeIndex = $state(0);
 
-  const flowOptions = [
-    { label: '🚀 Setup Rápido (Recetas de producción listas para usar)', value: 'rapido' },
-    { label: '⚙️ Configuración Manual (Elegir stack paso a paso)', value: 'manual' }
-  ];
+  const flowOptions = $derived([
+    { label: t.flowRapido, value: 'rapido' },
+    { label: t.flowManual, value: 'manual' }
+  ]);
 
-  const recipeOptions = [
+  const recipeOptions = $derived([
     { label: '💻 Fullstack SaaS Starter (Next.js + Go Fiber + PostgreSQL + Docker Compose)', value: 'saas' },
     { label: '⚡ API Moderna limpia (Fastify + Prisma + PostgreSQL)', value: 'api' },
     { label: '🎨 Single Page App (React SPA + Vite + Tailwind CSS)', value: 'spa' }
-  ];
+  ]);
 
-  const frontOptions = ['Next.js (App Router, TS)', 'React SPA (Vite, TS)', 'Ninguno'];
-  const backOptions = ['Go Fiber (REST API)', 'Node.js Express (TS)', 'Ninguno'];
-  const dbOptions = ['PostgreSQL + Prisma', 'PostgreSQL + SQLx (Go)', 'Ninguno'];
-  const yesNoOptions = ['Yes', 'No'];
+  const frontOptions = $derived(['Next.js (App Router, TS)', 'React SPA (Vite, TS)', currentLang === 'es' ? 'Ninguno' : 'None']);
+  const backOptions = $derived(['Go Fiber (REST API)', 'Node.js Express (TS)', currentLang === 'es' ? 'Ninguno' : 'None']);
+  const dbOptions = $derived(['PostgreSQL + Prisma', 'PostgreSQL + SQLx (Go)', currentLang === 'es' ? 'Ninguno' : 'None']);
+  const yesNoOptions = $derived([t.yes, t.no]);
 
   let showStructure = $state(false);
   let generatedTree = $state([]);
@@ -69,7 +142,7 @@
           output = [
             ...output,
             `$ ${trimmed}`,
-            'Available commands:',
+            t.helpText,
             '  claw init   - Initialize a new project structure (interactive wizard)',
             '  clear       - Clear the terminal screen',
             '  help        - Show this help menu'
@@ -78,7 +151,9 @@
           output = [
             ...output,
             `$ ${trimmed}`,
-            `Command "${trimmed}" not recognized. Try "claw init" or "help".`
+            currentLang === 'es' 
+              ? `Comando "${trimmed}" no reconocido. Prueba "claw init" o "help".`
+              : `Command "${trimmed}" not recognized. Try "claw init" or "help".`
           ];
         }
         command = '';
@@ -114,7 +189,7 @@
     if (wizardState === 'flow-choice') {
       const opt = flowOptions[idx];
       selectedFlow = opt.value;
-      output = [...output, `? ¿Cómo deseas inicializar tu proyecto? ${opt.label}`];
+      output = [...output, `? ${t.flowChoice} ${opt.label}`];
       if (opt.value === 'rapido') {
         wizardState = 'recipe-choice';
       } else {
@@ -124,31 +199,31 @@
     } else if (wizardState === 'recipe-choice') {
       const opt = recipeOptions[idx];
       selectedRecipe = opt.value;
-      output = [...output, `? Selecciona una receta de producción: ${opt.label}`];
+      output = [...output, `? ${t.recipeChoice} ${opt.label}`];
       runGeneration();
     } else if (wizardState === 'manual-front') {
       selectedFront = frontOptions[idx];
-      output = [...output, `? Selecciona tu framework de Frontend: ${selectedFront}`];
+      output = [...output, `? ${t.frontChoice} ${selectedFront}`];
       wizardState = 'manual-back';
       activeIndex = 0;
     } else if (wizardState === 'manual-back') {
       selectedBack = backOptions[idx];
-      output = [...output, `? Selecciona tu framework de Backend: ${selectedBack}`];
+      output = [...output, `? ${t.backChoice} ${selectedBack}`];
       wizardState = 'manual-db';
       activeIndex = 0;
     } else if (wizardState === 'manual-db') {
       selectedDb = dbOptions[idx];
-      output = [...output, `? Selecciona tu ORM y Base de Datos: ${selectedDb}`];
+      output = [...output, `? ${t.dbChoice} ${selectedDb}`];
       wizardState = 'manual-docker';
       activeIndex = 0;
     } else if (wizardState === 'manual-docker') {
       selectedDocker = yesNoOptions[idx];
-      output = [...output, `? ¿Configurar entorno de desarrollo local con Docker Compose? ${selectedDocker}`];
+      output = [...output, `? ${t.dockerChoice} ${selectedDocker}`];
       wizardState = 'manual-github';
       activeIndex = 0;
     } else if (wizardState === 'manual-github') {
       selectedGithub = yesNoOptions[idx];
-      output = [...output, `? ¿Configurar Github Actions para CI/CD? ${selectedGithub}`];
+      output = [...output, `? ${t.githubChoice} ${selectedGithub}`];
       runGeneration();
     }
   }
@@ -157,9 +232,7 @@
     wizardState = 'generating';
     output = [
       ...output,
-      '🔧 Analyzing dependencies...',
-      '📦 Downloading Go-embedded recipes...',
-      '🚀 Injecting templates and building workspace structure...'
+      ...t.generatingLogs
     ];
 
     // Build the folder structure preview dynamically
@@ -193,25 +266,26 @@
     } else {
       generatedTree = [{ type: 'dir', name: 'my-claw-project/' }];
       
-      if (selectedFront !== 'Ninguno') {
+      const noneWord = currentLang === 'es' ? 'Ninguno' : 'None';
+      if (selectedFront !== noneWord) {
         const folder = selectedFront.includes('Next.js') ? 'frontend-nextjs/' : 'frontend-react/';
         generatedTree.push({ type: 'dir', indent: true, name: folder });
       }
-      if (selectedBack !== 'Ninguno') {
+      if (selectedBack !== noneWord) {
         const folder = selectedBack.includes('Go Fiber') ? 'backend-go-fiber/' : 'backend-express/';
         generatedTree.push({ type: 'dir', indent: true, name: folder });
       }
-      if (selectedDb !== 'Ninguno') {
+      if (selectedDb !== noneWord) {
         if (selectedDb.includes('Prisma')) {
           generatedTree.push({ type: 'file', indent: true, name: 'prisma/schema.prisma', highlight: 'text-amber-500' });
         } else {
           generatedTree.push({ type: 'file', indent: true, name: 'db/schema.sql', highlight: 'text-indigo-400' });
         }
       }
-      if (selectedDocker === 'Yes') {
+      if (selectedDocker === t.yes) {
         generatedTree.push({ type: 'file', indent: true, name: 'docker-compose.yml', highlight: 'text-indigo-400' });
       }
-      if (selectedGithub === 'Yes') {
+      if (selectedGithub === t.yes) {
         generatedTree.push({ type: 'file', indent: true, name: '.github/workflows/ci.yml' });
       }
       generatedTree.push({ type: 'file', indent: true, name: 'claw.config.json', highlight: 'text-emerald-500' });
@@ -220,10 +294,10 @@
     setTimeout(() => {
       output = [
         ...output,
-        '✨ Done! Project bootstrapped successfully in 0.8s.',
-        '👉 Next steps:',
+        t.doneLogs,
+        currentLang === 'es' ? '👉 Siguientes pasos:' : '👉 Next steps:',
         '   cd my-claw-project',
-        '   docker compose up -d (if docker setup)',
+        currentLang === 'es' ? '   docker compose up -d (si configuraste docker)' : '   docker compose up -d (if docker setup)',
         ''
       ];
       wizardState = 'idle';
@@ -245,7 +319,7 @@
   <div class="relative w-full rounded-3xl overflow-hidden border border-border-subtle/50 bg-gradient-to-tr from-brand-secondary/15 via-bg-surface/70 to-brand-primary/15 p-6 sm:p-12 md:py-16 shadow-2xl shadow-slate-900/5 dark:shadow-black/40">
     
     <!-- macOS Top Menu Bar simulation -->
-    <div class="absolute top-0 left-0 right-0 h-9 px-6 flex items-center justify-between text-[11px] font-sans font-medium text-slate-700/90 dark:text-slate-200/90 backdrop-blur-md bg-white/30 dark:bg-black/40 border-b border-slate-200/10 dark:border-white/5">
+    <div class="absolute top-0 left-0 right-0 h-9 px-6 flex items-center justify-between text-[11px] font-sans font-medium text-text-main/80 backdrop-blur-md bg-bg-surface/70 border-b border-border-subtle">
       <div class="flex items-center gap-4">
         <span class="text-sm font-bold opacity-90"></span>
         <span class="font-semibold tracking-wide">ClawOS</span>
@@ -269,19 +343,19 @@
           <div class="w-3 h-3 rounded-full bg-[#27c93f] opacity-90"></div>
         </div>
         <span class="text-[11px] font-mono text-slate-400/90 flex items-center gap-1.5 select-none">
-          <TerminalIcon size={12} /> bash — claw-cli
+          <TerminalIcon size={12} aria-hidden="true" /> bash — claw-cli
         </span>
         <div class="w-12"></div>
       </div>
 
       <!-- Terminal Body -->
-      <div class="p-5 font-mono text-xs text-slate-300 h-80 overflow-y-auto flex flex-col gap-2 scrollbar-none select-text">
+      <div class="p-5 font-mono text-xs text-slate-300 h-80 overflow-y-auto flex flex-col gap-2 scrollbar-none select-text" aria-live="polite">
         {#each output as line}
           <div class="whitespace-pre-wrap leading-relaxed min-h-[1.1rem] 
             {line.startsWith('$') ? 'text-indigo-400 font-semibold' : ''} 
             {line.includes('✨') ? 'text-emerald-400 font-bold' : ''} 
             {line.includes('✔') || line.startsWith('? ') ? 'text-emerald-500/95 font-medium' : ''}
-            {line.includes('Command') ? 'text-rose-400' : ''}">
+            {line.includes('Command') || line.includes('no reconocido') ? 'text-rose-400' : ''}">
             {line}
           </div>
         {/each}
@@ -289,7 +363,7 @@
         <!-- Interactive Wizard Options -->
         {#if wizardState === 'flow-choice'}
           <div class="flex flex-col gap-1 text-slate-300 font-mono select-none">
-            <span class="text-cyan-400 font-bold">? ¿Cómo deseas inicializar tu proyecto?</span>
+            <span class="text-cyan-400 font-bold">? {t.flowChoice}</span>
             <div class="pl-3 flex flex-col gap-1">
               {#each flowOptions as opt, idx}
                 <button 
@@ -308,7 +382,7 @@
 
         {#if wizardState === 'recipe-choice'}
           <div class="flex flex-col gap-1 text-slate-300 font-mono select-none">
-            <span class="text-cyan-400 font-bold">? Selecciona una receta de producción:</span>
+            <span class="text-cyan-400 font-bold">? {t.recipeChoice}</span>
             <div class="pl-3 flex flex-col gap-1">
               {#each recipeOptions as opt, idx}
                 <button 
@@ -327,7 +401,7 @@
 
         {#if wizardState === 'manual-front'}
           <div class="flex flex-col gap-1 text-slate-300 font-mono select-none">
-            <span class="text-cyan-400 font-bold">? Selecciona tu framework de Frontend:</span>
+            <span class="text-cyan-400 font-bold">? {t.frontChoice}</span>
             <div class="pl-3 flex flex-col gap-1">
               {#each frontOptions as opt, idx}
                 <button 
@@ -345,7 +419,7 @@
 
         {#if wizardState === 'manual-back'}
           <div class="flex flex-col gap-1 text-slate-300 font-mono select-none">
-            <span class="text-cyan-400 font-bold">? Selecciona tu framework de Backend:</span>
+            <span class="text-cyan-400 font-bold">? {t.backChoice}</span>
             <div class="pl-3 flex flex-col gap-1">
               {#each backOptions as opt, idx}
                 <button 
@@ -363,7 +437,7 @@
 
         {#if wizardState === 'manual-db'}
           <div class="flex flex-col gap-1 text-slate-300 font-mono select-none">
-            <span class="text-cyan-400 font-bold">? Selecciona tu ORM y Base de Datos:</span>
+            <span class="text-cyan-400 font-bold">? {t.dbChoice}</span>
             <div class="pl-3 flex flex-col gap-1">
               {#each dbOptions as opt, idx}
                 <button 
@@ -381,7 +455,7 @@
 
         {#if wizardState === 'manual-docker'}
           <div class="flex flex-col gap-1 text-slate-300 font-mono select-none">
-            <span class="text-cyan-400 font-bold">? ¿Configurar entorno de desarrollo local con Docker Compose? (Y/n)</span>
+            <span class="text-cyan-400 font-bold">? {t.dockerChoice}</span>
             <div class="pl-3 flex flex-col gap-1">
               {#each yesNoOptions as opt, idx}
                 <button 
@@ -399,7 +473,7 @@
 
         {#if wizardState === 'manual-github'}
           <div class="flex flex-col gap-1 text-slate-300 font-mono select-none">
-            <span class="text-cyan-400 font-bold">? ¿Configurar Github Actions para CI/CD? (Y/n)</span>
+            <span class="text-cyan-400 font-bold">? {t.githubChoice}</span>
             <div class="pl-3 flex flex-col gap-1">
               {#each yesNoOptions as opt, idx}
                 <button 
@@ -430,7 +504,7 @@
               type="text" 
               bind:value={command}
               onkeydown={handleKeyDown}
-              placeholder='Try "claw init"...'
+              placeholder={t.placeholder}
               class="flex-1 bg-transparent border-none outline-none text-slate-100 placeholder-slate-600 focus:ring-0 p-0 text-xs font-mono"
             />
           </div>
@@ -440,16 +514,16 @@
         {#if showStructure}
           <div class="mt-4 pt-3 border-t border-white/[0.06] text-slate-400 select-none">
             <div class="text-[10px] font-semibold uppercase tracking-wider mb-2 flex items-center gap-1.5 text-indigo-400/80">
-              <Folder size={12} /> Structure generated:
+              <Folder size={12} aria-hidden="true" /> {t.structureTitle}
             </div>
             <div class="space-y-1 text-slate-300">
               {#each generatedTree as item}
                 <div class="{item.indent ? 'pl-4' : ''} flex items-center gap-2">
                   {#if item.type === 'dir'}
-                    <Folder size={14} class="text-indigo-400/80" />
+                    <Folder size={14} class="text-indigo-400/80" aria-hidden="true" />
                     <span class="text-slate-300">{item.name}</span>
                   {:else}
-                    <FileCode size={14} class={item.highlight || 'text-slate-400'} />
+                    <FileCode size={14} class={item.highlight || 'text-slate-400'} aria-hidden="true" />
                     <span class="text-slate-300">{item.name}</span>
                   {/if}
                 </div>

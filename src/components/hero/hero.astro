@@ -1,4 +1,5 @@
 ---
+const { lang = 'es' } = Astro.props;
 import CopyCommand from "@/components/landing/copyCommand.svelte";
 import FeaturesSec from "@/components/landing/featuresSec.astro";
 import TerminalSimulator from "@/components/TerminalSimulator.svelte";
@@ -9,25 +10,28 @@ import CtaSec from "@/components/landing/ctaSec.astro";
 <main class="max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col items-center justify-center relative z-10">
       
     <!-- Top announcement badge -->
-    <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-bg-surface border border-border-subtle text-xs text-text-muted select-none opacity-0 animate-fade-in-up">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-bg-surface border border-border-subtle text-xs text-text-muted select-none animate-fade-in-up">
       <span class="flex h-2 w-2 rounded-full bg-brand-primary animate-pulse"></span>
-      <span>Claw CLI v0.1.0 is now live</span>
+      <span class="lang-es">Claw CLI v0.1.0 ya está disponible</span>
+      <span class="lang-en">Claw CLI v0.1.0 is now live</span>
     </div>
 
     <!-- Heading -->
-    <div class="text-center max-w-4xl mx-auto mb-16 opacity-0 animate-fade-in-up animation-delay-100">
+    <div class="text-center max-w-4xl mx-auto mb-16 animate-fade-in-up animation-delay-100">
       <h1 class="text-4xl sm:text-5xl md:text-[64px] font-extrabold tracking-tight leading-[1.1] mb-6 font-sans">
-        Go from zero to production <br class="hidden md:inline" />
-        <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">in less than 5 seconds.</span>
+        <span class="lang-es">Pasa de cero a producción <br class="hidden md:inline" /> en menos de 5 segundos.</span>
+        <span class="lang-en">Go from zero to production <br class="hidden md:inline" /> in less than 5 seconds.</span>
       </h1>
       <p class="text-base sm:text-lg text-text-muted leading-relaxed max-w-2xl mx-auto">
-        Claw-CLI is a modern, Go-powered developer ergonomics tool designed to eliminate setup friction (Day 1) and seamlessly evolve your stack (Day 2) with active subcommands.
+        <span class="lang-es">Claw-CLI es una herramienta moderna en Go diseñada para eliminar la fricción de configuración (Día 1) y evolucionar tu stack sin problemas (Día 2) con subcomandos activos.</span>
+        <span class="lang-en">Claw-CLI is a modern, Go-powered developer ergonomics tool designed to eliminate setup friction (Day 1) and seamlessly evolve your stack (Day 2) with active subcommands.</span>
       </p>
     </div>
 
-    <div class="max-w-sm mx-auto my-8 font-sans gap-3 flex flex-col items-center justify-center w-full opacity-0 animate-fade-in-up animation-delay-200">
+    <div class="max-w-sm mx-auto my-8 font-sans gap-3 flex flex-col items-center justify-center w-full animate-fade-in-up animation-delay-200">
       <a href="#terminal" class="flex items-center justify-center bg-brand-primary hover:bg-brand-primary/95 transition-colors w-full py-4 rounded-xl shadow-lg shadow-brand-primary/10 cursor-pointer">
-        <span class="text-white font-semibold">Get Started</span>
+        <span class="text-white font-semibold lang-es">Comenzar</span>
+        <span class="text-white font-semibold lang-en">Get Started</span>
       </a>
       <section class="w-full max-w-3xl">
         <CopyCommand client:load />
@@ -35,18 +39,18 @@ import CtaSec from "@/components/landing/ctaSec.astro";
     </div>
 
     <!-- Svelte Interactive Terminal Simulator -->
-    <section id="terminal" class="w-full max-w-5xl opacity-0 animate-fade-in-up animation-delay-300">
-      <TerminalSimulator client:load />
+    <section id="terminal" class="w-full max-w-5xl animate-fade-in-up animation-delay-300">
+      <TerminalSimulator client:load lang={lang} />
     </section>
 
     <!-- Divider line -->
     <div class="w-full max-w-5xl h-px bg-border-subtle my-20"></div>
 
     <!-- Features Section -->
-    <FeaturesSec />
+    <FeaturesSec lang={lang} />
 
     <!-- FAQ Section -->
-    <FaqSec />
+    <FaqSec lang={lang} />
 
     <!-- CTA Section -->
     <CtaSec />

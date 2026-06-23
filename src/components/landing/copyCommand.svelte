@@ -1,6 +1,19 @@
 <script>
     import { Check, Copy } from '@lucide/svelte';
     let isCopied = $state(false);
+    let currentLang = $state('es');
+
+    $effect(() => {
+      currentLang = document.documentElement.getAttribute('data-lang') || 'es';
+      
+      const handleLangChange = (e) => {
+        currentLang = e.detail;
+      };
+      window.addEventListener('lang-change', handleLangChange);
+      return () => {
+        window.removeEventListener('lang-change', handleLangChange);
+      };
+    });
 
     function copyInstallCommand() {
     navigator.clipboard.writeText('go install github.com/BlasVernazza06/claw@latest');
@@ -15,7 +28,7 @@
     <div class="flex items-center justify-between p-4 mb-6 bg-bg-surface/70 backdrop-blur-md border border-border-subtle rounded-xl shadow-sm">
         <div class="flex items-center gap-2.5">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-sm shadow-emerald-500/30"></span>
-          <code class="text-xs sm:text-sm font-mono text-text-main font-medium font-semibold">go install github.com/BlasVernazza06/claw@latest</code>
+          <code class="text-xs sm:text-sm font-mono text-text-main font-semibold">go install github.com/BlasVernazza06/claw@latest</code>
         </div>
         <button 
           onclick={copyInstallCommand}
@@ -23,7 +36,9 @@
         >
           {#if isCopied}
             <Check size={14} class="text-emerald-500" />
-            <span class="text-emerald-500 font-medium">Copied!</span>
+            <span class="text-emerald-500 font-medium">
+              {currentLang === 'es' ? '¡Copiado!' : 'Copied!'}
+            </span>
           {:else}
             <Copy size={14} class="text-text-muted" />
           {/if}
