@@ -1,0 +1,82 @@
+<button
+  id="theme-toggle"
+  class="relative flex items-center justify-between w-16 h-9 p-1 rounded-full bg-bg-surface border border-border-subtle cursor-pointer hover:border-text-muted/30 transition-colors duration-200 select-none"
+  aria-label="Toggle dark mode"
+>
+  <!-- Sliding indicator bubble (Initially lacks transition to prevent slide-on-load flash) -->
+  <div 
+    id="theme-toggle-indicator"
+    class="absolute w-7 h-7 rounded-full bg-brand-primary shadow-md transition-none"
+  ></div>
+
+  <!-- Sun Icon -->
+  <span class="sun-icon-wrapper z-10 pl-1.5 flex items-center justify-center text-text-muted transition-colors duration-150">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+  </span>
+
+  <!-- Moon Icon -->
+  <span class="moon-icon-wrapper z-10 pr-1.5 flex items-center justify-center text-text-muted transition-colors duration-150">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+  </span>
+</button>
+
+<style>
+  :global(.dark) #theme-toggle-indicator {
+    transform: translateX(1.75rem);
+  }
+  :global(html:not(.dark)) #theme-toggle-indicator {
+    transform: translateX(0);
+  }
+
+  :global(.dark) .moon-icon-wrapper {
+    color: #ffffff;
+  }
+  :global(html:not(.dark)) .sun-icon-wrapper {
+    color: #ffffff;
+  }
+</style>
+
+<script>
+  function initTheme() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const indicator = document.getElementById('theme-toggle-indicator');
+    if (!themeToggle || !indicator) return;
+
+    const getTheme = () => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    };
+
+    const setTheme = (theme) => {
+      if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+      localStorage.setItem('theme', theme);
+    };
+
+    // Initialize state alignment
+    const initialTheme = getTheme();
+    setTheme(initialTheme);
+
+    // Apply animation transition after initial paint to prevent sliding on load
+    setTimeout(() => {
+      indicator.classList.remove('transition-none');
+      indicator.classList.add('transition-transform', 'duration-200', 'ease-out');
+    }, 50);
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      setTheme(isDark ? 'light' : 'dark');
+    });
+  }
+
+  // Support initial render and view transition page swap events
+  initTheme();
+  document.addEventListener('astro:after-swap', initTheme);
+</script>

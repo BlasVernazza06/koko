@@ -1,13 +1,32 @@
 ---
+const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
+
 const NavItems = [
-  { label: 'Docs', href: '#docs' },
-  { label: 'Builder', href: '#builder' },
-  { label: 'Showcase', href: '#showcase', isHighlighted: true },
-  { label: 'Demo', href: '#terminal' }
+  { 
+    labelEs: 'Docs', 
+    labelEn: 'Docs', 
+    href: currentLang === 'es' ? '/#docs' : '/en/#docs' 
+  },
+  { 
+    labelEs: 'Builder', 
+    labelEn: 'Builder', 
+    href: currentLang === 'es' ? '/builder' : '/en/builder' 
+  },
+  { 
+    labelEs: 'Recetas', 
+    labelEn: 'Showcase', 
+    href: currentLang === 'es' ? '/#showcase' : '/en/#showcase',
+    isHighlighted: true 
+  },
+  { 
+    labelEs: 'Demo', 
+    labelEn: 'Demo', 
+    href: currentLang === 'es' ? '/#terminal' : '/en/#terminal' 
+  }
 ];
 ---
 
-<nav class="flex items-center gap-6 select-none">
+<nav class="flex items-center gap-6 select-none font-sans">
   {NavItems.map((item) => (
     <a 
       href={item.href}
@@ -17,7 +36,8 @@ const NavItems = [
           : 'text-text-muted'
         }`}
     >
-      {item.label}
+      <span class="lang-es">{item.labelEs}</span>
+      <span class="lang-en">{item.labelEn}</span>
     </a>
   ))}
 </nav>

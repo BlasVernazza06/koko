@@ -1,15 +1,19 @@
 ---
-import { Terminal } from "@lucide/svelte";
+// Logo component using Koko the Koala icon
 ---
 
 <a href="/" class="flex items-center gap-2.5 group select-none">
   <!-- Rounded container for the icon -->
-  <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-bg-surface border border-border-subtle shadow-sm group-hover:border-brand-primary/40 group-hover:bg-brand-primary/5 transition-all duration-300">
-    <Terminal size={15} class="text-brand-primary group-hover:scale-110 transition-transform duration-300" strokeWidth={2.5} />
+  <div class="flex items-center justify-center w-15 h-15 rounded-lg  transition-all duration-300 overflow-hidden">
+    <img 
+      src="/icons-koala.webp" 
+      alt="Koko Koala Logo" 
+      class="w-10 h-10 object-contain transition-transform duration-300 group-hover:scale-110" 
+    />
   </div>
   
   <!-- Brand text -->
   <span class="text-[15px] font-bold tracking-tight text-text-main transition-colors duration-300">
-    Claw
+    Koko
   </span>
 </a>
