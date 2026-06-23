@@ -16,56 +16,56 @@
 
 /* -------------------------------------------------------------
    COLOR SYSTEM
-   Theme: "Oxide Steel" (Rust Orange & Deep Iris)
-   Provides industrial grit, readability and premium tech aesthetic.
+   Theme: "Monochromatic Lavender & Periwinkle"
+   Cohesive, soft-contrast tech palette matching Koko the Koala.
    ------------------------------------------------------------- */
 
 :root {
-  /* LIGHT MODE (Warm Editorial / Industrial Studio) */
-  --brand-primary: #c23d1a;      /* Terracota oxidada / Rust Orange */
-  --brand-secondary: #4338ca;    /* Deep Iris Indigo */
-  --bg-base: #fcfbf9;            /* Papel cálido / Off-white bone */
-  --bg-surface: #f4f2ee;         /* Piedra suave / Soft stone grey */
-  --text-main: #141412;          /* Carbón / Deep ink black */
-  --text-muted: #5c5c56;         /* Asfalto medio */
-  --border-subtle: #e5e2da;      /* Borde de costura sutil */
+  /* LIGHT MODE (Ice Lavender / Soft Studio) */
+  --brand-primary: #5a4fc4;      /* Deep Amethyst Purple (From Koala outlines, highly readable) */
+  --brand-secondary: #8095f8;    /* Luminous Periwinkle Blue (From Koala body, soft accent) */
+  --bg-base: #f6f7fc;            /* Ice lavender/cool white background */
+  --bg-surface: #ebedf7;         /* Very soft lavender-slate gray */
+  --text-main: #19162c;          /* Deep midnight purple-black */
+  --text-muted: #605c75;         /* Muted slate-purple gray */
+  --border-subtle: #dadde9;      /* Cool light lavender-gray border */
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* DARK MODE (Oxidized Obsidian / Iron & Rust) */
-    --brand-primary: #e05a36;    /* Cobre encendido / Oxide Orange */
-    --brand-secondary: #818cf8;  /* Iris metálico / Soft Lavender */
-    --bg-base: #0b0c0e;          /* Acero oxidado profundo / Obsidian slate */
-    --bg-surface: #121418;       /* Carbón mineral */
-    --text-main: #f3f4f6;        /* Platino brillante */
-    --text-muted: #8e95a2;       /* Gris ceniza */
-    --border-subtle: #1f232b;    /* Borde de unión metálica */
+    /* DARK MODE (Lavender Obsidian / Blackberry Slate) */
+    --brand-primary: #9b8df7;    /* Luminous Warm Wisteria */
+    --brand-secondary: #8095f8;  /* Luminous Periwinkle Blue */
+    --bg-base: #0a0911;          /* Deep Obsidian Purple-Black */
+    --bg-surface: #14131e;       /* Blackberry Charcoal Slate */
+    --text-main: #f1edf8;        /* Soft ash wisteria-white */
+    --text-muted: #88839d;       /* Muted slate-purple gray */
+    --border-subtle: #222031;    /* Deep wisteria-slate border */
     color-scheme: dark;
   }
 }
 
 /* Support for explicit user overrides using data-theme attribute */
 [data-theme="light"] {
-  --brand-primary: #c23d1a;
-  --brand-secondary: #4338ca;
-  --bg-base: #fcfbf9;
-  --bg-surface: #f4f2ee;
-  --text-main: #141412;
-  --text-muted: #5c5c56;
-  --border-subtle: #e5e2da;
+  --brand-primary: #5a4fc4;
+  --brand-secondary: #8095f8;
+  --bg-base: #f6f7fc;
+  --bg-surface: #ebedf7;
+  --text-main: #19162c;
+  --text-muted: #605c75;
+  --border-subtle: #dadde9;
   color-scheme: light;
 }
 
 [data-theme="dark"] {
-  --brand-primary: #e05a36;
-  --brand-secondary: #818cf8;
-  --bg-base: #0b0c0e;
-  --bg-surface: #121418;
-  --text-main: #f3f4f6;
-  --text-muted: #8e95a2;
-  --border-subtle: #1f232b;
+  --brand-primary: #9b8df7;
+  --brand-secondary: #8095f8;
+  --bg-base: #0a0911;
+  --bg-surface: #14131e;
+  --text-main: #f1edf8;
+  --text-muted: #88839d;
+  --border-subtle: #222031;
   color-scheme: dark;
 }
 
@@ -74,42 +74,12 @@ body {
   background-color: var(--bg-base);
   color: var(--text-main);
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-  background-image: 
-    linear-gradient(to right, rgba(130, 130, 130, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(130, 130, 130, 0.03) 1px, transparent 1px);
-  background-size: 24px 24px;
 }
 
-:global([data-theme="dark"]) body {
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+/* Translation visibility helper */
+html[data-lang="es"] .lang-en {
+  display: none !important;
 }
-
-/* Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animation-delay-100 {
-  animation-delay: 100ms;
-}
-
-.animation-delay-200 {
-  animation-delay: 200ms;
-}
-
-.animation-delay-300 {
-  animation-delay: 300ms;
+html[data-lang="en"] .lang-es {
+  display: none !important;
 }
