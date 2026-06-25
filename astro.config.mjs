@@ -10,6 +10,9 @@ export default defineConfig({
   integrations: [svelte()],
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    ssr: {
+      noExternal: ['@lucide/svelte', '@selemondev/svgl-svelte']
+    }
   }
 });
