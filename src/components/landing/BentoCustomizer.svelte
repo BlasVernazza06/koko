@@ -28,32 +28,55 @@
   const layers: Layer[] = [
     {
       key: 'frontend',
-      titleEs: '01 / CAPA DE FRONTEND',
-      titleEn: '01 / CLIENT-SIDE FRAMEWORK',
+      titleEs: '01 / FRAMEWORKS FRONT',
+      titleEn: '01 / FRONTEND FRAMEWORKS',
       step: 'Step 1',
       colorClass: 'border-brand-secondary',
-      type: 'single',
-      options: [
-        {
-          id: 'React',
-          name: 'React',
-          desc: 'SPA Client',
-          color: '#61dafb',
-          hoverColorClass: 'group-hover/btn:text-[#61dafb]',
-          svg: `<circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" class="opacity-10"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(90 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(150 12 12)"/>`
-        },
+          options: [
         {
           id: 'Next.js',
           name: 'Next.js',
-          desc: 'SSR Engine',
+          desc: 'React SSR',
           color: 'var(--brand-secondary)',
           hoverColorClass: 'group-hover/btn:text-[#8095f8]',
           svg: `<circle cx="12" cy="12" r="10"/><path d="M16 16L12 8L8 16" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 12H16" stroke-linecap="round"/>`
         },
         {
-          id: 'Svelte',
-          name: 'Svelte 5',
-          desc: 'Ultra-Lean',
+          id: 'React SPA',
+          name: 'React SPA',
+          desc: 'React Client',
+          color: '#61dafb',
+          hoverColorClass: 'group-hover/btn:text-[#61dafb]',
+          svg: `<circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" class="opacity-10"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(90 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(150 12 12)"/>`
+        },
+        {
+          id: 'Nuxt',
+          name: 'Nuxt',
+          desc: 'Vue SSR',
+          color: '#00dc82',
+          hoverColorClass: 'group-hover/btn:text-[#00dc82]',
+          svg: `<path d="M12 4l-9 15.5h18L12 4z" stroke-linejoin="round"/><path d="M12 10.5l-5 8.5h10l-5-8.5z" class="opacity-40" stroke-linejoin="round"/>`
+        },
+        {
+          id: 'Vue SPA',
+          name: 'Vue SPA',
+          desc: 'Vue Client',
+          color: '#42b883',
+          hoverColorClass: 'group-hover/btn:text-[#42b883]',
+          svg: `<path d="M12 22L3 4h4.5l4.5 9 4.5-9H21L12 22z" stroke-linejoin="round"/><path d="M12 17L7.5 8h9L12 17z" class="opacity-30"/>`
+        },
+        {
+          id: 'SvelteKit',
+          name: 'SvelteKit',
+          desc: 'Svelte SSR',
+          color: '#ff3e00',
+          hoverColorClass: 'group-hover/btn:text-[#ff3e00]',
+          svg: `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z" class="opacity-10"/><path d="M8 8.5C8 6.57 9.57 5 11.5 5S15 6.57 15 8.5C15 10 14 11 12.5 12S10 13.5 10 15h4" stroke-linecap="round" stroke-linejoin="round"/>`
+        },
+        {
+          id: 'Svelte SPA',
+          name: 'Svelte SPA',
+          desc: 'Svelte Client',
           color: '#ff3e00',
           hoverColorClass: 'group-hover/btn:text-[#ff3e00]',
           svg: `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z" class="opacity-10"/><path d="M8 8.5C8 6.57 9.57 5 11.5 5S15 6.57 15 8.5C15 10 14 11 12.5 12S10 13.5 10 15h4" stroke-linecap="round" stroke-linejoin="round"/>`
@@ -67,19 +90,19 @@
           svg: `<path d="M12 2L2 22h20L12 2z" stroke-linejoin="round"/><path d="M12 6l-6 12h12l-6-12z" class="opacity-30"/>`
         },
         {
-          id: 'Vue',
-          name: 'Vue 3',
-          desc: 'Composition',
-          color: '#42b883',
-          hoverColorClass: 'group-hover/btn:text-[#42b883]',
-          svg: `<path d="M12 22L3 4h4.5l4.5 9 4.5-9H21L12 22z" stroke-linejoin="round"/><path d="M12 17L7.5 8h9L12 17z" class="opacity-30"/>`
+          id: 'Angular',
+          name: 'Angular',
+          desc: 'Enterprise Layer',
+          color: '#dd0031',
+          hoverColorClass: 'group-hover/btn:text-[#dd0031]',
+          svg: `<path d="M12 2L2 6l2 12 8 4 8-4 2-12L12 2zm0 3.3l5.5 11h-2.2l-1.1-2.4H9.8l-1.1 2.4H6.5L12 5.3zm-1 6.8h2l-1-2.2-1 2.2z" fill="currentColor"/>`
         }
       ]
     },
     {
       key: 'backend',
-      titleEs: '02 / MOTOR DE SERVIDOR',
-      titleEn: '02 / SERVER-SIDE CORE',
+      titleEs: '02 / FRAMEWORKS BACK',
+      titleEn: '02 / BACKEND FRAMEWORKS',
       step: 'Step 2',
       colorClass: 'border-brand-primary',
       type: 'single',
@@ -98,7 +121,15 @@
           desc: 'Express API',
           color: '#68a063',
           hoverColorClass: 'group-hover/btn:text-[#68a063]',
-          svg: `<path d="M12 2L3 7v10l9 5 9-5V7L12 2z" stroke-linejoin="round"/><path d="M12 2v20M3 7h18" class="opacity-30"/>`
+          svg: `<path d="M12 2L2 7.8v8.4L12 22l10-5.8V7.8L12 2zm8.5 13.3L12 20.2l-8.5-4.9V8.7L12 3.8l8.5 4.9v6.6z" />`
+        },
+        {
+          id: 'NestJS',
+          name: 'NestJS',
+          desc: 'Modular Architecture',
+          color: '#e0234e',
+          hoverColorClass: 'group-hover/btn:text-[#e0234e]',
+          svg: `<path d="M12 2L2.5 7.5v9L12 22l9.5-5.5v-9L12 2zm7 13.5l-7 4-7-4v-7l7-4 7 4v7z" stroke-linejoin="round"/>`
         },
         {
           id: 'Rust',
