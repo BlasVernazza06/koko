@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Terminal, Folder, FileCode, Check, Copy, ChevronDown, ChevronRight } from '@lucide/svelte';
+  import { Terminal, Folder, FileCode, Check, Copy, ChevronDown, ChevronRight, FolderOpen } from '@lucide/svelte';
 
   let {
     generatedCommand = '',
@@ -116,10 +116,12 @@
           >
             {#if collapsedIndices[idx]}
               <ChevronRight size={12} class="text-text-muted shrink-0" />
+              <Folder size={14} class="text-brand-secondary/80 shrink-0" aria-hidden="true" />
             {:else}
               <ChevronDown size={12} class="text-text-muted shrink-0" />
+              <FolderOpen size={14} class="text-brand-secondary/80 shrink-0" aria-hidden="true" />
             {/if}
-            <Folder size={14} class="text-brand-secondary/80 shrink-0" aria-hidden="true" />
+            
             <span class="text-text-main font-semibold">{item.name}</span>
           </button>
         {:else}

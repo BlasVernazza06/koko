@@ -51,13 +51,23 @@
 
   // Constraints helper
   function isOptionDisabled(layerKey: string, optionId: string) {
-    // Disable fullstack backends if their frontend isn't selected
+    // Disable other frontends if a Fullstack backend is selected
+    if (layerKey === 'frontend') {
+      if (selectedBack === 'fullstack-next' && optionId !== 'nextjs') return true;
+      if (selectedBack === 'fullstack-tanstack' && optionId !== 'react') return true;
+      if (selectedBack === 'fullstack-nuxt' && optionId !== 'nuxt') return true;
+      if (selectedBack === 'fullstack-sveltekit' && optionId !== 'sveltekit') return true;
+      if (selectedBack === 'fullstack-astro' && optionId !== 'astro') return true;
+    }
+    // Disable fullstack backends if their frontend isn't selected, but NOT if 'none' is selected in frontend
     if (layerKey === 'backend') {
-      if (optionId === 'fullstack-next' && selectedFront !== 'nextjs') return true;
-      if (optionId === 'fullstack-tanstack' && selectedFront !== 'react') return true;
-      if (optionId === 'fullstack-nuxt' && selectedFront !== 'nuxt') return true;
-      if (optionId === 'fullstack-sveltekit' && selectedFront !== 'sveltekit') return true;
-      if (optionId === 'fullstack-astro' && selectedFront !== 'astro') return true;
+      if (selectedFront !== 'none') {
+        if (optionId === 'fullstack-next' && selectedFront !== 'nextjs') return true;
+        if (optionId === 'fullstack-tanstack' && selectedFront !== 'react') return true;
+        if (optionId === 'fullstack-nuxt' && selectedFront !== 'nuxt') return true;
+        if (optionId === 'fullstack-sveltekit' && selectedFront !== 'sveltekit') return true;
+        if (optionId === 'fullstack-astro' && selectedFront !== 'astro') return true;
+      }
     }
     // Mongoose only works with MongoDB database choice
     if (layerKey === 'orm') {
@@ -67,12 +77,21 @@
   }
 
   function getDisabledReason(layerKey: string, optionId: string) {
+    if (layerKey === 'frontend') {
+      if (selectedBack === 'fullstack-next' && optionId !== 'nextjs') return lang === 'es' ? 'Requiere Next.js para Fullstack' : 'Requires Next.js for Fullstack';
+      if (selectedBack === 'fullstack-tanstack' && optionId !== 'react') return lang === 'es' ? 'Requiere React para Fullstack' : 'Requires React for Fullstack';
+      if (selectedBack === 'fullstack-nuxt' && optionId !== 'nuxt') return lang === 'es' ? 'Requiere Nuxt para Fullstack' : 'Requires Nuxt for Fullstack';
+      if (selectedBack === 'fullstack-sveltekit' && optionId !== 'sveltekit') return lang === 'es' ? 'Requiere SvelteKit para Fullstack' : 'Requires SvelteKit for Fullstack';
+      if (selectedBack === 'fullstack-astro' && optionId !== 'astro') return lang === 'es' ? 'Requiere Astro para Fullstack' : 'Requires Astro for Fullstack';
+    }
     if (layerKey === 'backend') {
-      if (optionId === 'fullstack-next' && selectedFront !== 'nextjs') return lang === 'es' ? 'Requiere frontend Next.js' : 'Requires Next.js frontend';
-      if (optionId === 'fullstack-tanstack' && selectedFront !== 'react') return lang === 'es' ? 'Requiere frontend React SPA/Start' : 'Requires React SPA/Start frontend';
-      if (optionId === 'fullstack-nuxt' && selectedFront !== 'nuxt') return lang === 'es' ? 'Requiere frontend Nuxt' : 'Requires Nuxt frontend';
-      if (optionId === 'fullstack-sveltekit' && selectedFront !== 'sveltekit') return lang === 'es' ? 'Requiere frontend SvelteKit' : 'Requires SvelteKit frontend';
-      if (optionId === 'fullstack-astro' && selectedFront !== 'astro') return lang === 'es' ? 'Requiere frontend Astro' : 'Requires Astro frontend';
+      if (selectedFront !== 'none') {
+        if (optionId === 'fullstack-next' && selectedFront !== 'nextjs') return lang === 'es' ? 'Requiere frontend Next.js' : 'Requires Next.js frontend';
+        if (optionId === 'fullstack-tanstack' && selectedFront !== 'react') return lang === 'es' ? 'Requiere frontend React SPA/Start' : 'Requires React SPA/Start frontend';
+        if (optionId === 'fullstack-nuxt' && selectedFront !== 'nuxt') return lang === 'es' ? 'Requiere frontend Nuxt' : 'Requires Nuxt frontend';
+        if (optionId === 'fullstack-sveltekit' && selectedFront !== 'sveltekit') return lang === 'es' ? 'Requiere frontend SvelteKit' : 'Requires SvelteKit frontend';
+        if (optionId === 'fullstack-astro' && selectedFront !== 'astro') return lang === 'es' ? 'Requiere frontend Astro' : 'Requires Astro frontend';
+      }
     }
     if (layerKey === 'orm') {
       if (optionId === 'mongoose' && selectedDb !== 'mongodb') return lang === 'es' ? 'Mongoose requiere base de datos MongoDB' : 'Mongoose requires MongoDB database';
@@ -103,6 +122,18 @@
       selectedNativeFront = selectedNativeFront === optionId ? 'none' : optionId;
     } else if (layerKey === 'backend') {
       selectedBack = selectedBack === optionId ? 'none' : optionId;
+      // Auto-select correct frontend if we select a fullstack backend and frontend is 'none'
+      if (selectedBack === 'fullstack-next' && selectedFront === 'none') {
+        selectedFront = 'nextjs';
+      } else if (selectedBack === 'fullstack-tanstack' && selectedFront === 'none') {
+        selectedFront = 'react';
+      } else if (selectedBack === 'fullstack-nuxt' && selectedFront === 'none') {
+        selectedFront = 'nuxt';
+      } else if (selectedBack === 'fullstack-sveltekit' && selectedFront === 'none') {
+        selectedFront = 'sveltekit';
+      } else if (selectedBack === 'fullstack-astro' && selectedFront === 'none') {
+        selectedFront = 'astro';
+      }
     } else if (layerKey === 'runtime') {
       selectedRuntime = selectedRuntime === optionId ? 'none' : optionId;
     } else if (layerKey === 'orm') {
@@ -460,7 +491,7 @@
         </div>
 
         <!-- Technology Layers mapped dynamically -->
-        {#each getLayers(t) as layer}
+        {#each getLayers(lang) as layer}
           {@const LayerIcon = layer.icon}
           <div class="rounded-2xl border border-border-subtle bg-bg-surface/30 p-8 backdrop-blur-xs shadow-sm space-y-6">
             <div class="flex items-center justify-between pb-3 border-b border-border-subtle/50 select-none">
@@ -503,7 +534,7 @@
           </div>
           
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {#each getInfrastructureOptions(t) as option}
+            {#each getInfrastructureOptions(lang) as option}
               <ExtraCard
                 title={option.title}
                 description={option.description}
