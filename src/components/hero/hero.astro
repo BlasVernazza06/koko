@@ -1,4 +1,5 @@
 ---
+import { Terminal } from '@lucide/astro'
 const { lang = 'es' } = Astro.props;
 import CopyCommand from "@/components/landing/copyCommand.svelte";
 import FeaturesSec from "@/components/landing/featuresSec.astro";
@@ -28,14 +29,22 @@ import CtaSec from "@/components/landing/ctaSec.astro";
       </p>
     </div>
 
-    <div class="max-w-sm mx-auto my-8 font-sans gap-3 flex flex-col items-center justify-center w-full animate-fade-in-up animation-delay-200">
-      <a href="#terminal" class="flex items-center justify-center bg-brand-primary hover:bg-brand-primary/95 transition-colors w-full py-4 rounded-xl shadow-lg shadow-brand-primary/10 cursor-pointer">
-        <span class="text-white font-semibold lang-es">Comenzar</span>
-        <span class="text-white font-semibold lang-en">Get Started</span>
-      </a>
-      <section class="w-full max-w-3xl">
-        <CopyCommand client:load />
-      </section>
+    <!-- Interactive installation & Wizard Builder launcher -->
+    <div class="max-w-4xl mx-auto my-8 w-full font-sans grid grid-cols-1 md:grid-cols-12 gap-8 items-center justify-between animate-fade-in-up animation-delay-200">
+      <div class="md:col-span-7 w-full">
+        <CopyCommand client:load lang={lang} />
+      </div>
+      <div class="md:col-span-5 w-full flex flex-col items-center justify-center pl-0 md:pl-4">
+        <a 
+          href={lang === 'es' ? '/builder' : '/en/builder'} 
+          class="flex items-center justify-center gap-2.5 bg-brand-primary hover:bg-brand-primary/95 active:scale-[0.98] transition-all w-full py-4 px-6 rounded-2xl shadow-xl shadow-brand-primary/15 hover:shadow-brand-primary/25 cursor-pointer font-bold text-white text-base text-center group border border-brand-primary/20"
+        >
+          <span>✨</span>
+          <span class="lang-es">Construir Stack Visualmente</span>
+          <span class="lang-en">Build Stack Visually</span>
+          <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+        </a>
+      </div>
     </div>
 
     <!-- Svelte Interactive Terminal Simulator -->
