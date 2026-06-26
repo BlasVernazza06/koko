@@ -4,6 +4,9 @@ import NavList from './navList.astro';
 import SocialNav from './socialNav.astro';
 import ThemeToggle from './themeToggle.astro';
 import LanguageToggle from './languageToggle.astro';
+import SearchModal from './SearchModal.svelte';
+
+const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
 ---
 
 <header class="w-full sticky top-0 z-50 border-b border-border-subtle bg-bg-base/80 backdrop-blur-md transition-colors duration-300">
@@ -20,6 +23,11 @@ import LanguageToggle from './languageToggle.astro';
     <!-- Right Section: Search, Theme Toggle, Socials -->
     <div class="flex items-center gap-4">
       
+      <!-- Searchbar Modal -->
+      <SearchModal lang={currentLang} client:load />
+
+      <div class="h-4 w-px bg-border-subtle"></div>
+
       <!-- Language Switcher -->
       <LanguageToggle />
 
