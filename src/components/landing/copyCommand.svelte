@@ -38,9 +38,9 @@
   }
 </script>
 
-<div class="w-full font-sans select-none">
+<div class="w-full h-full font-sans select-none flex flex-col">
   <!-- Container with glow effect and dark premium background -->
-  <div class="relative group/box rounded-2xl border border-border-subtle/50 bg-bg-surface/50 backdrop-blur-md p-5 shadow-lg overflow-visible">
+  <div class="group/box rounded-2xl border border-border-subtle/50 bg-bg-surface/50 backdrop-blur-md p-5 shadow-lg overflow-visible h-max flex flex-col">
     <!-- Top Row: Title and Dropdown -->
     <div class="flex items-center justify-between pb-3.5 border-b border-border-subtle/40 mb-4">
       <div class="flex items-center gap-2 text-text-main font-bold text-sm tracking-wider">

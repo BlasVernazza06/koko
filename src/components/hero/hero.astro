@@ -30,20 +30,37 @@ import CtaSec from "@/components/landing/ctaSec.astro";
     </div>
 
     <!-- Interactive installation & Wizard Builder launcher -->
-    <div class="max-w-4xl mx-auto my-8 w-full font-sans grid grid-cols-1 md:grid-cols-12 gap-8 items-center justify-between animate-fade-in-up animation-delay-200">
-      <div class="md:col-span-7 w-full">
+    <div class="max-w-4xl mx-auto my-12 w-full font-sans grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch animate-fade-in-up animation-delay-200">
+      <!-- Left Card: CLI Command -->
+      <div class="w-full flex flex-col">
         <CopyCommand client:load lang={lang} />
       </div>
-      <div class="md:col-span-5 w-full flex flex-col items-center justify-center pl-0 md:pl-4">
-        <a 
-          href={lang === 'es' ? '/builder' : '/en/builder'} 
-          class="flex items-center justify-center gap-2.5 bg-brand-primary hover:bg-brand-primary/95 active:scale-[0.98] transition-all w-full py-4 px-6 rounded-2xl shadow-xl shadow-brand-primary/15 hover:shadow-brand-primary/25 cursor-pointer font-bold text-white text-base text-center group border border-brand-primary/20"
-        >
-          <span>✨</span>
-          <span class="lang-es">Construir Stack Visualmente</span>
-          <span class="lang-en">Build Stack Visually</span>
-          <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
-        </a>
+      
+      <!-- Right Card: Wizard Builder launcher -->
+      <div class="w-full flex">
+        <div class="relative w-full group/wizard rounded-2xl border border-border-subtle/50 bg-bg-surface/50 backdrop-blur-md p-5 shadow-lg hover:border-brand-primary/45 transition-all duration-300 flex flex-col justify-between h-full">
+          <!-- Top Row: Badge/Header -->
+          <div class="flex items-center justify-between pb-3.5 border-b border-border-subtle/40 mb-4 select-none">
+            <div class="flex items-center gap-2 text-text-main font-bold text-sm tracking-wider">
+              <span class="text-brand-secondary">✨</span>
+              <span>WIZARD_BUILDER</span>
+            </div>
+            <span class="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
+              <span class="lang-es">Interactivo</span>
+              <span class="lang-en">Interactive</span>
+            </span>
+          </div>
+
+          <!-- Bottom Row: Button matching the height and styling layout of the CopyCommand box -->
+          <a 
+            href={lang === 'es' ? '/builder' : '/en/builder'} 
+            class="flex items-center justify-center gap-2 w-full p-4 rounded-xl font-bold bg-brand-primary hover:bg-brand-primary/95 text-white border border-brand-primary/20 transition-all duration-200 cursor-pointer shadow-md shadow-brand-primary/10 hover:shadow-brand-primary/20 active:scale-95 text-sm sm:text-base group font-mono tracking-wider"
+          >
+            <span class="lang-es">CONSTRUIR STACK</span>
+            <span class="lang-en">BUILD STACK</span>
+            <span class="group-hover:translate-x-0.5 transition-transform duration-200">&rarr;</span>
+          </a>
+        </div>
       </div>
     </div>
 
