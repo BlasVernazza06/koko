@@ -3,39 +3,39 @@ import { ChevronDown, HelpCircle } from "@lucide/svelte";
 
 const faqsEn = [
   {
-    question: "Does Claw support private Git repositories for blueprints?",
-    answer: "Yes, absolutely. Claw integrates with your local Git credentials. It supports SSH keys, HTTPS tokens, and works seamlessly with private GitHub, GitLab, Bitbucket, or self-hosted Git repositories."
+    question: "What is Koko and how does it speed up development?",
+    answer: "Koko is an interactive Visual Stack Builder and CLI designed to customize, scaffold, and bootstrap project repositories. It eliminates Day 1 configuration friction and helps you scale your app structure with ease."
   },
   {
-    question: "How does Claw prevent configuration drift in existing projects?",
-    answer: "By comparing your current directory layout, dependency versions, and config files against the remote blueprint. It highlights any deviations (drift) so you can fix them before committing."
+    question: "How does the visual recipe generator work?",
+    answer: "It lets you choose frontend, backend, ORM, database, payments, and quality tools dynamically. Koko computes dependencies reactively, renders the folder structure, and compiles a single init command."
   },
   {
-    question: "Can I use Claw inside a monorepo setup?",
-    answer: "Yes, Claw is monorepo-native. You can execute commands within nested packages (e.g., `/apps` or `/packages`) to scaffold microservices or standalone components, all while inheriting global linting, formatting, and TypeScript parameters from the workspace root."
+    question: "Does Koko support monorepos using Turborepo?",
+    answer: "Yes, Koko is monorepo-ready. You can scaffold multi-package structures with nested workspaces, global linters, and configurations, all pre-configured under a Turborepo environment in seconds."
   },
   {
-    question: "Is there any lock-in with Claw CLI?",
-    answer: "None at all. Claw is a developer ergonomics tool. Once it scaffolds your files and configurations, they are standard project directories. You don't need Claw to build, run, or deploy your code."
+    question: "Can I add tools like Docker, Vitest, or Biome to the recipe?",
+    answer: "Absolutely. You can toggle local Docker Compose setups, Vitest configurations, and standard Biome linter parameters. They compile natively into the configuration files generated for your project."
   }
 ];
 
 const faqsEs = [
   {
-    question: "¿Soporta Claw repositorios privados de Git para las recetas?",
-    answer: "Sí, absolutamente. Claw se integra con tus credenciales locales de Git. Soporta claves SSH, tokens HTTPS y funciona sin problemas con repositorios privados en GitHub, GitLab, Bitbucket o servidores Git autohospedados."
+    question: "¿Qué es Koko y cómo acelera el desarrollo?",
+    answer: "Koko es un generador visual de stacks y CLI diseñado para personalizar e inicializar repositorios de proyectos. Elimina la fricción de configuración del Día 1 y te ayuda a escalar la estructura fácilmente."
   },
   {
-    question: "¿Cómo previene Claw la desviación de configuración en proyectos existentes?",
-    answer: "El CLI compara tu estructura actual, versiones de dependencias y configuraciones contra la receta remota base, resaltando cualquier desviación para que puedas corregirla antes de subir el código."
+    question: "¿Cómo funciona el generador visual de recetas?",
+    answer: "Te permite elegir dinámicamente tu frontend, backend, ORM, base de datos, pasarelas de pago y herramientas. Koko calcula las dependencias, renderiza la estructura de carpetas y compila un comando único."
   },
   {
-    question: "¿Puedo usar Claw dentro de un monorepo?",
-    answer: "Sí, Claw es nativo para monorepos. Puedes ejecutar comandos en subcarpetas (como `/apps` o `/packages`) para inicializar microservicios o componentes independientes, heredando las configuraciones y linters del monorepo raíz."
+    question: "¿Soporta Koko la creación de monorepos con Turborepo?",
+    answer: "Sí, Koko viene listo para monorepos. Puedes estructurar esquemas multi-paquete con espacios de trabajo anidados, linters globales y configuraciones listas para escalar bajo un entorno de Turborepo."
   },
   {
-    question: "¿Existe algún tipo de permanencia (lock-in) con Claw CLI?",
-    answer: "Ninguno. Claw es una herramienta de ergonomía para el desarrollador. Una vez inicializa tus carpetas y configuraciones, estas son directorios estándar. No necesitas Claw para construir, ejecutar o desplegar tu código."
+    question: "¿Puedo añadir Docker, Vitest o Biome directamente en la receta?",
+    answer: "Por supuesto. Puedes activar contenedores locales de Docker Compose, configuraciones de pruebas en Vitest y parámetros de Biome. Se compilan nativamente dentro de los archivos de configuración del proyecto."
   }
 ];
 
@@ -77,7 +77,7 @@ const faqs = lang === 'es' ? faqsEs : faqsEn;
         </button>
         
         <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-          <div class="p-5 pt-0 text-xs sm:text-sm text-text-muted leading-relaxed border-t border-border-subtle/40 bg-bg-base/30">
+          <div class="p-5 pt-1 text-xs sm:text-sm text-text-muted leading-relaxed border-t border-border-subtle/40 bg-bg-base/30">
             {faq.answer}
           </div>
         </div>
@@ -88,41 +88,43 @@ const faqs = lang === 'es' ? faqsEs : faqsEn;
 
 <script>
   function initFaqAccordions() {
-    const triggers = document.querySelectorAll('.faq-trigger');
-    
-    triggers.forEach(trigger => {
-      trigger.addEventListener('click', () => {
-        const item = trigger.closest('.faq-item');
-        const content = item?.querySelector('.faq-content') as HTMLElement;
-        const icon = item?.querySelector('.faq-icon');
-        
-        if (!content || !item) return;
+    const wrapper = document.querySelector('#faq .space-y-4');
+    if (!wrapper || wrapper.getAttribute('data-faq-initialized') === 'true') return;
+    wrapper.setAttribute('data-faq-initialized', 'true');
 
-        // Toggle state
-        const isOpen = item.classList.contains('faq-open');
-        
-        // Close all other FAQs for clean single-accordion behavior
-        const wrapper = item.closest('.space-y-4');
-        wrapper?.querySelectorAll('.faq-item').forEach(otherItem => {
-          if (otherItem !== item && otherItem.classList.contains('faq-open')) {
-            otherItem.classList.remove('faq-open');
-            const otherContent = otherItem.querySelector('.faq-content') as HTMLElement;
-            const otherIcon = otherItem.querySelector('.faq-icon');
-            if (otherContent) otherContent.style.maxHeight = '0px';
-            if (otherIcon) otherIcon.classList.remove('rotate-180');
-          }
-        });
+    wrapper.addEventListener('click', (e) => {
+      const trigger = (e.target as HTMLElement).closest('.faq-trigger');
+      if (!trigger) return;
 
-        if (isOpen) {
-          item.classList.remove('faq-open');
-          content.style.maxHeight = '0px';
-          if (icon) icon.classList.remove('rotate-180');
-        } else {
-          item.classList.add('faq-open');
-          content.style.maxHeight = content.scrollHeight + 'px';
-          if (icon) icon.classList.add('rotate-180');
+      const item = trigger.closest('.faq-item');
+      const content = item?.querySelector('.faq-content') as HTMLElement;
+      const icon = item?.querySelector('.faq-icon');
+      
+      if (!content || !item) return;
+
+      // Toggle state
+      const isOpen = item.classList.contains('faq-open');
+      
+      // Close all other FAQs for clean single-accordion behavior
+      wrapper.querySelectorAll('.faq-item').forEach(otherItem => {
+        if (otherItem !== item && otherItem.classList.contains('faq-open')) {
+          otherItem.classList.remove('faq-open');
+          const otherContent = otherItem.querySelector('.faq-content') as HTMLElement;
+          const otherIcon = otherItem.querySelector('.faq-icon');
+          if (otherContent) otherContent.style.maxHeight = '0px';
+          if (otherIcon) otherIcon.classList.remove('rotate-180');
         }
       });
+
+      if (isOpen) {
+        item.classList.remove('faq-open');
+        content.style.maxHeight = '0px';
+        if (icon) icon.classList.remove('rotate-180');
+      } else {
+        item.classList.add('faq-open');
+        content.style.maxHeight = content.scrollHeight + 'px';
+        if (icon) icon.classList.add('rotate-180');
+      }
     });
   }
 
