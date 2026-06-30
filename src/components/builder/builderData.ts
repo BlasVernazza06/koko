@@ -1,39 +1,37 @@
 import { Blocks, Cpu, Database, Settings } from '@lucide/svelte';
-import {
-  SvglNextjsLogo,
-  SvglReactLogo,
-  SvglSvelteLogo,
-  SvglAstroLogo,
-  SvglVueLogo,
-  SvglAngularLogo,
-  SvglNuxtLogo,
-  SvglGoLogo,
-  SvglNodejsLogo,
-  SvglRustLogo,
-  SvglBunLogo,
-  SvglPythonLogo,
-  SvglPostgreSQLLogo,
-  SvglPrismaLogo,
-  SvglMongoDBLogo,
-  SvglDrizzleORMLogo,
-  SvglBetterAuthLogo,
-  SvglAuthjsLogo,
-  SvglSupabaseLogo,
-  SvglZodLogo,
-  SvglDockerLogo,
-  SvglTurborepoLogo,
-  SvglNestJSLogo,
-  SvglValibotLogo,
-  SvglStripeLogo,
-  SvglLemonSqueezyLogo,
-  SvglMercadoPagoLogo,
-  SvglResendLogo,
-  SvglNPMLogo,
-  SvglPnpmLogo,
-  SvglExpressjsLogo,
-  SvglFastifyLogo,
-  SvglPolarLogo
-} from '@selemondev/svgl-svelte';
+const SvglNextjsLogo = '/logos/nextjs.svg';
+const SvglReactLogo = '/logos/react.svg';
+const SvglSvelteLogo = '/logos/svelte.svg';
+const SvglAstroLogo = '/logos/astro.svg';
+const SvglVueLogo = '/logos/vue.svg';
+const SvglAngularLogo = '/logos/angular.svg';
+const SvglNuxtLogo = '/logos/nuxt.svg';
+const SvglGoLogo = '/logos/go.svg';
+const SvglNodejsLogo = '/logos/nodejs.svg';
+const SvglRustLogo = '/logos/rust.svg';
+const SvglBunLogo = '/logos/bun.svg';
+const SvglPythonLogo = '/logos/python.svg';
+const SvglPostgreSQLLogo = '/logos/postgresql.svg';
+const SvglPrismaLogo = '/logos/prisma.svg';
+const SvglMongoDBLogo = '/logos/mongodb.svg';
+const SvglDrizzleORMLogo = '/logos/drizzle.svg';
+const SvglBetterAuthLogo = '/logos/better-auth_light.svg';
+const SvglAuthjsLogo = '/logos/authjs.svg';
+const SvglSupabaseLogo = '/logos/supabase.svg';
+const SvglZodLogo = '/logos/zod.svg';
+const SvglDockerLogo = '/logos/docker.svg';
+const SvglTurborepoLogo = '/logos/turborepo.svg';
+const SvglNestJSLogo = '/logos/nestjs.svg';
+const SvglValibotLogo = '/logos/valibot.svg';
+const SvglStripeLogo = '/logos/stripe.svg';
+const SvglLemonSqueezyLogo = '/logos/lemonsqueezy.svg';
+const SvglMercadoPagoLogo = '/logos/mercado-pago.svg';
+const SvglResendLogo = '/logos/resend.svg';
+const SvglNPMLogo = '/logos/npm.svg';
+const SvglPnpmLogo = '/logos/pnpm.svg';
+const SvglExpressjsLogo = '/logos/express.svg';
+const SvglFastifyLogo = '/logos/fastify.svg';
+const SvglPolarLogo = '/logos/polar-sh_light.svg';
 
 // Custom icons
 import AstroIcon from '../icons/AstroIcon.svelte';
