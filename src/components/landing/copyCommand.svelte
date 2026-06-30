@@ -1,11 +1,9 @@
 <script lang="ts">
   import { Check, Copy, ChevronDown, Terminal } from '@lucide/svelte';
-  import {
-    SvglNPMLogo,
-    SvglPnpmLogo,
-    SvglBunLogo,
-    SvglGoLogo
-  } from '@selemondev/svgl-svelte';
+  const SvglBunLogo = '/logos/bun.svg';
+  const SvglPnpmLogo = '/logos/pnpm.svg';
+  const SvglNPMLogo = '/logos/npm.svg';
+  const SvglGoLogo = '/logos/go.svg';
 
   // Define Props
   let { lang = 'es' } = $props<{ lang?: string }>();
@@ -56,7 +54,12 @@
           class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-bg-base/80 border border-border-subtle/60 text-xs font-bold text-text-main hover:border-brand-primary/40 hover:bg-bg-base transition-all duration-200 cursor-pointer active:scale-95"
         >
           <span class="w-3.5 h-3.5 flex items-center justify-center shrink-0">
-            <svelte:component this={currentManager.icon} width="14" height="14" />
+            {#if typeof currentManager.icon === 'string'}
+              <img src={currentManager.icon} class="w-3.5 h-3.5 object-contain" alt="" />
+            {:else}
+              {@const Icon = currentManager.icon}
+              <Icon width="14" height="14" />
+            {/if}
           </span>
           <span>{currentManager.name}</span>
           <ChevronDown size={12} class="text-text-muted transition-transform duration-200 {isDropdownOpen ? 'rotate-180' : ''}" />
@@ -72,7 +75,12 @@
                 class="flex items-center gap-2.5 w-full px-3 py-2 text-left text-xs font-semibold hover:bg-brand-primary/10 text-text-main hover:text-brand-primary transition-colors cursor-pointer {selectedManager === mgr.id ? 'bg-brand-primary/5 text-brand-primary font-bold' : ''}"
               >
                 <span class="w-3.5 h-3.5 flex items-center justify-center shrink-0">
-                  <svelte:component this={mgr.icon} width="14" height="14" />
+                  {#if typeof mgr.icon === 'string'}
+                    <img src={mgr.icon} class="w-3.5 h-3.5 object-contain" alt="" />
+                  {:else}
+                    {@const Icon = mgr.icon}
+                    <Icon width="14" height="14" />
+                  {/if}
                 </span>
                 <span>{mgr.name}</span>
               </button>

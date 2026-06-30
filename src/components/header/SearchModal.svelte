@@ -16,42 +16,42 @@
         title: 'Estructuración Interactiva',
         section: 'Características',
         desc: 'Crea repositorios limpios y estandarizados dinámicamente con nuestro asistente interactivo CLI.',
-        url: '/docs#scaffolding',
+        url: '/docs/cli-commands#commands',
         keywords: ['scaffold', 'cli', 'crear', 'repositorio', 'asistente', 'inicializar', 'estructura']
       },
       {
         title: 'Recetas y Presets Activos',
         section: 'Características',
         desc: 'Despliega arquitecturas probadas en producción usando plantillas personalizadas para SaaS y frameworks.',
-        url: '/docs#presets',
+        url: '/docs/quick-start#overview',
         keywords: ['preset', 'blueprint', 'receta', 'plantilla', 'arquitectura', 'saas', 'fullstack']
       },
       {
         title: 'Control de Desviación (Drift)',
         section: 'Características',
         desc: 'Mantén sincronizados los parámetros, linter y dependencias detectando desvíos desde el inicio.',
-        url: '/docs#drift',
+        url: '/docs/contributing#commit-conventions',
         keywords: ['drift', 'linter', 'dependencias', 'desvio', 'sincronizacion', 'control']
       },
       {
         title: 'Motor sin Dependencias',
         section: 'Características',
         desc: 'Un binario rápido compilado en Go que se ejecuta completamente offline sin sobrecarga de npm.',
-        url: '/docs#offline',
+        url: '/docs/quick-start#prerequisites',
         keywords: ['go', 'binario', 'offline', 'npm', 'rapido', 'motor', 'dependencias']
       },
       {
         title: 'Guía de Inicio Rápido',
         section: 'Primeros Pasos',
         desc: 'Aprende a instalar y ejecutar Koko en tu máquina en menos de 5 segundos.',
-        url: '/docs#getting-started',
+        url: '/docs/quick-start',
         keywords: ['inicio', 'instalar', 'rapido', 'ejecutar', 'guia', 'npm', 'curl']
       },
       {
         title: 'Configuración Avanzada',
         section: 'Guías',
         desc: 'Modifica reglas personalizadas de linters y arquitecturas usando koko.json.',
-        url: '/docs#configuration',
+        url: '/docs/bts-jsonc',
         keywords: ['configuracion', 'avanzada', 'json', 'koko.json', 'reglas', 'linters']
       }
     ],
@@ -60,42 +60,42 @@
         title: 'Interactive Scaffolding',
         section: 'Features',
         desc: 'Scaffold clean, standardized repositories dynamically with our single-command interactive CLI helper.',
-        url: '/en/docs#scaffolding',
+        url: '/en/docs/cli-commands#commands',
         keywords: ['scaffold', 'cli', 'create', 'repository', 'helper', 'initialize', 'scaffolding']
       },
       {
         title: 'Active Presets & Blueprints',
         section: 'Features',
         desc: 'Deploy production-proven architectures instantly using blueprints customized for SaaS and fullstack.',
-        url: '/en/docs#presets',
+        url: '/en/docs/quick-start#overview',
         keywords: ['preset', 'blueprint', 'recipe', 'template', 'architecture', 'saas', 'fullstack']
       },
       {
         title: 'Drift Prevention',
         section: 'Features',
         desc: 'Keep your workspace parameters, linter configs, and dependencies synchronized and detect deviations.',
-        url: '/en/docs#drift',
+        url: '/en/docs/contributing#commit-conventions',
         keywords: ['drift', 'linter', 'dependencies', 'deviation', 'sync', 'prevention']
       },
       {
         title: 'Zero-dependency Engine',
         section: 'Features',
         desc: 'A fast, compiled Go binary that runs completely offline with zero configuration lock-in.',
-        url: '/en/docs#offline',
+        url: '/en/docs/quick-start#prerequisites',
         keywords: ['go', 'binary', 'offline', 'npm', 'fast', 'engine', 'dependency']
       },
       {
         title: 'Getting Started Guide',
         section: 'First Steps',
         desc: 'Learn how to install and run Koko on your local machine in under 5 seconds.',
-        url: '/en/docs#getting-started',
+        url: '/en/docs/quick-start',
         keywords: ['start', 'install', 'fast', 'run', 'guide', 'npm', 'curl']
       },
       {
         title: 'Advanced Configuration',
         section: 'Guides',
         desc: 'Customize project blueprints and linting rules using koko.json.',
-        url: '/en/docs#configuration',
+        url: '/en/docs/bts-jsonc',
         keywords: ['configuration', 'advanced', 'json', 'koko.json', 'rules', 'linters']
       }
     ]
