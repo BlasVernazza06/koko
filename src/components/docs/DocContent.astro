@@ -1,0 +1,178 @@
+---
+import type { DocSection } from '@/lib/docsData';
+import { docsData } from '@/lib/docsData';
+import { Terminal } from 'lucide-svelte';
+
+interface Props {
+  activeSection: DocSection;
+  lang: 'es' | 'en';
+}
+
+const { activeSection, lang } = Astro.props;
+
+const sections = docsData[lang];
+const currentIndex = sections.findIndex(s => s.id === activeSection.id);
+const prevSection = currentIndex > 0 ? sections[currentIndex - 1] : null;
+const nextSection = currentIndex < sections.length - 1 ? sections[currentIndex + 1] : null;
+const basePath = lang === 'es' ? '/docs' : '/en/docs';
+---
+
+<main class="flex-1 min-w-0 max-w-3xl pb-20">
+  
+  <!-- Breadcrumbs -->
+  <nav class="flex items-center gap-2 text-xs text-text-muted mb-4 font-mono select-none">
+    <span>Docs</span>
+    <span>/</span>
+    <span>{activeSection.category}</span>
+    <span>/</span>
+    <span class="text-brand-primary">{activeSection.title}</span>
+  </nav>
+
+  <!-- Title block -->
+  <div class="space-y-4 mb-10">
+    <span class="text-xs font-bold uppercase tracking-widest text-brand-primary">{activeSection.category}</span>
+    <h1 class="text-4xl font-extrabold tracking-tight text-text-main font-sans">{activeSection.title}</h1>
+  </div>
+
+  <!-- Dynamic Content Block Parser -->
+  <div class="space-y-16">
+    {activeSection.content.map((block) => (
+      <section id={block.anchorId} class="scroll-mt-28 space-y-4">
+        <h2 class="text-2xl font-bold tracking-tight text-text-main border-b border-border-subtle/60 pb-2">
+          {block.title}
+        </h2>
+        
+        {block.body.map((p) => (
+          <p class="text-sm text-text-muted leading-relaxed">{p}</p>
+        ))}
+
+        {block.bullets && (
+          <ul class="list-disc pl-5 text-sm text-text-muted space-y-2 leading-relaxed">
+            {block.bullets.map((bullet) => {
+              const parts = bullet.split(' - ');
+              if (parts.length > 1) {
+                return (
+                  <li>
+                    <strong>{parts[0]}</strong> - {parts.slice(1).join(' - ')}
+                  </li>
+                );
+              }
+              return <li>{bullet}</li>;
+            })}
+          </ul>
+        )}
+
+        {block.pre && (
+          <div class="rounded-xl border border-border-subtle bg-bg-surface overflow-hidden shadow-xs">
+            <div class="flex items-center justify-between px-4 py-2 bg-bg-base/60 border-b border-border-subtle text-xs text-text-muted">
+              <span>Terminal</span>
+            </div>
+            <div class="p-4 font-mono text-xs flex justify-between items-center text-brand-primary whitespace-pre overflow-x-auto">
+              <span>{block.pre}</span>
+              <button 
+                data-copy-text={block.pre}
+                class="copy-btn px-2.5 py-1 bg-bg-base border border-border-subtle rounded-md hover:border-brand-primary/40 text-[10px] text-text-muted hover:text-text-main font-bold select-none cursor-pointer"
+              >
+                {lang === 'es' ? 'Copiar' : 'Copy'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {block.nestedBlocks && (
+          <div class="space-y-8 pl-4 border-l border-border-subtle/60 ml-2 mt-4">
+            {block.nestedBlocks.map((nested) => (
+              <div id={nested.anchorId} class="scroll-mt-28 space-y-3">
+                <h3 class="text-lg font-bold text-text-main">{nested.title}</h3>
+                {nested.body.map((np) => (
+                  <p class="text-xs sm:text-sm text-text-muted leading-relaxed">{np}</p>
+                ))}
+                {nested.pre && (
+                  <pre class="bg-bg-surface border border-border-subtle p-3 rounded-lg text-xs font-mono text-brand-primary overflow-x-auto">{nested.pre}</pre>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {block.tree && (
+          <div class="rounded-2xl border border-border-subtle bg-bg-surface/40 p-5 shadow-xs font-mono text-xs sm:text-sm space-y-2 select-none overflow-x-auto">
+            {block.tree.map((item) => (
+              <div class="flex items-center gap-2" style={`padding-left: ${item.depth * 1.5}rem`}>
+                {item.type === 'folder' ? (
+                  <svg class="w-4.5 h-4.5 text-brand-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                  </svg>
+                ) : (
+                  <svg class="w-4.5 h-4.5 text-text-muted shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                )}
+                <span class={item.type === 'folder' ? 'text-text-main font-bold' : 'text-text-muted font-medium'}>
+                  {item.name}
+                </span>
+                {item.description && (
+                  <span class="text-xs text-text-muted/65 pl-2 font-sans font-medium">— {item.description}</span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+    ))}
+  </div>
+
+  <!-- Pagination -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-16 pt-8 border-t border-border-subtle/60">
+    {prevSection ? (
+      <a href={`${basePath}/${prevSection.id}`} class="group flex flex-col items-start gap-1 p-5 rounded-2xl border border-border-subtle bg-bg-surface/30 hover:border-brand-primary/45 hover:bg-brand-primary/5 transition-all duration-200 text-left">
+        <span class="text-xs font-bold text-text-muted flex items-center gap-1 group-hover:text-brand-primary transition-colors">
+          &larr; {lang === 'es' ? 'Anterior' : 'Previous'}
+        </span>
+        <span class="text-base font-bold text-text-main group-hover:text-brand-primary transition-colors">
+          {prevSection.title}
+        </span>
+        <span class="text-xs text-text-muted/70 group-hover:text-brand-primary/80 transition-colors">
+          {prevSection.category}
+        </span>
+      </a>
+    ) : (
+      <div />
+    )}
+    
+    {nextSection ? (
+      <a href={`${basePath}/${nextSection.id}`} class="group flex flex-col items-end gap-1 p-5 rounded-2xl border border-border-subtle bg-bg-surface/30 hover:border-brand-primary/45 hover:bg-brand-primary/5 transition-all duration-200 text-right">
+        <span class="text-xs font-bold text-text-muted flex items-center gap-1 group-hover:text-brand-primary transition-colors">
+          {lang === 'es' ? 'Siguiente' : 'Next'} &rarr;
+        </span>
+        <span class="text-base font-bold text-text-main group-hover:text-brand-primary transition-colors">
+          {nextSection.title}
+        </span>
+        <span class="text-xs text-text-muted/70 group-hover:text-brand-primary/80 transition-colors">
+          {nextSection.category}
+        </span>
+      </a>
+    ) : (
+      <div />
+    )}
+  </div>
+</main>
+
+<script>
+  // Setup copy helpers
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.copy-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const text = btn.getAttribute('data-copy-text');
+        if (text) {
+          navigator.clipboard.writeText(text);
+          const originalText = btn.textContent;
+          btn.textContent = btn.getAttribute('data-copied') || (btn.textContent === 'Copiar' ? 'Copiado!' : 'Copied!');
+          setTimeout(() => {
+            btn.textContent = originalText;
+          }, 1500);
+        }
+      });
+    });
+  });
+</script>

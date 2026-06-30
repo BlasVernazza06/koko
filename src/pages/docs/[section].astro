@@ -1,0 +1,46 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Footer from '@/components/footer/footer.astro';
+import LeftSidebar from '@/components/docs/LeftSidebar.astro';
+import DocContent from '@/components/docs/DocContent.astro';
+import RightSidebar from '@/components/docs/RightSidebar.astro';
+import { docsData } from '@/lib/docsData';
+
+export function getStaticPaths() {
+  return docsData.es.map((section) => ({
+    params: { section: section.id }
+  }));
+}
+
+const { section } = Astro.params;
+const activeSectionId = section || 'quick-start';
+const activeSection = docsData.es.find(s => s.id === activeSectionId) || docsData.es[0];
+---
+
+<Layout lang="es" title={`Koko Docs — ${activeSection.title}`} description={`Aprende cómo estructurar, configurar y optimizar tus proyectos usando Koko. Sección: ${activeSection.title}.`}>
+  <div class="min-h-screen bg-bg-base text-text-main flex flex-col relative font-sans">
+    
+    <!-- Ambient brand background glow -->
+    <div class="hero-bg-glow absolute top-0 left-0 right-0 h-[600px] pointer-events-none overflow-hidden z-1 select-none">
+      <div class="glow-primary absolute inset-0 bg-radial-[circle_at_50%_0%] from-brand-primary/15 to-transparent opacity-40"></div>
+    </div>
+
+    <!-- Docs Layout Container -->
+    <div class="max-w-7xl mx-auto w-full px-6 py-8 flex-1 flex gap-10 relative z-10">
+      
+      <!-- Left Column Sidebar Component -->
+      <LeftSidebar sections={docsData.es} activeSectionId={activeSectionId} lang="es" />
+
+      <!-- Center Column Content Component -->
+      <DocContent activeSection={activeSection} lang="es" />
+
+      <!-- Right Column Table of Contents Outline Component -->
+      <RightSidebar activeSection={activeSection} lang="es" />
+
+    </div>
+
+    <!-- Footer -->
+    <Footer />
+
+  </div>
+</Layout>

@@ -1,0 +1,107 @@
+---
+import type { DocSection } from '@/lib/docsData';
+import { HelpCircle } from '@lucide/svelte';
+
+interface Props {
+  activeSection: DocSection;
+  lang: 'es' | 'en';
+}
+
+const { activeSection, lang } = Astro.props;
+
+// Flatten anchors and headings to render timeline outlines
+const outlines = activeSection.content.flatMap((block) => {
+  const list = [{ anchorId: block.anchorId, title: block.title, isNested: false }];
+  if (block.nestedBlocks) {
+    block.nestedBlocks.forEach((nested) => {
+      list.push({ anchorId: nested.anchorId, title: nested.title, isNested: true });
+    });
+  }
+  return list;
+});
+---
+
+<aside class="w-56 shrink-0 hidden xl:block sticky top-24 self-start max-h-[calc(100vh-8rem)] overflow-y-auto select-none pl-5 border-l border-border-subtle/50 text-xs">
+  <h5 class="text-xs font-bold uppercase tracking-wider text-text-main mb-4 flex items-center gap-1.5">
+    <HelpCircle size={12} />
+    {lang === 'es' ? 'En esta página' : 'On this page'}
+  </h5>
+  
+  <ul class="relative border-l-2 border-border-subtle/60 space-y-4 pl-4 text-xs text-text-muted" id="toc-list">
+    {outlines.map((item, idx) => (
+      <li class={`relative ${item.isNested ? 'pl-3' : ''}`}>
+        <!-- Bubble bullet timeline nodes -->
+        <div class={`absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full border bg-bg-base transition-all duration-200
+          ${idx === 0 
+            ? 'border-brand-primary' 
+            : 'border-transparent bg-border-subtle/60'}`}>
+        </div>
+        <a 
+          href={`#${item.anchorId}`} 
+          class={`hover:text-brand-primary block transition-colors duration-150
+            ${idx === 0 
+              ? 'text-brand-primary font-bold' 
+              : 'text-text-muted font-medium'}`}
+        >
+          {item.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+</aside>
+
+<script>
+  // Simple intersection highlighting tracking script
+  document.addEventListener('DOMContentLoaded', () => {
+    const asideLinks = document.querySelectorAll('aside a');
+    const sections = Array.from(asideLinks)
+      .map(link => {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          return document.querySelector(href);
+        }
+        return null;
+      })
+      .filter(el => el !== null) as Element[];
+
+    // Scroll tracking helper using intersection observer
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+
+          asideLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            const containerLi = link.closest('li');
+            const bullet = containerLi?.querySelector('.absolute');
+            
+            if (href === `#${id}`) {
+              link.classList.add('text-brand-primary', 'font-bold');
+              link.classList.remove('text-text-muted');
+              if (bullet) {
+                bullet.classList.add('border-brand-primary');
+                bullet.classList.remove('border-transparent', 'bg-border-subtle/60');
+              }
+            } else {
+              link.classList.remove('text-brand-primary', 'font-bold');
+              link.classList.add('text-text-muted');
+              if (bullet) {
+                bullet.classList.remove('border-brand-primary');
+                bullet.classList.add('border-transparent', 'bg-border-subtle/60');
+              }
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(s => observer.observe(s));
+  });
+</script>

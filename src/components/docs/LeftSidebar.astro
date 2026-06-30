@@ -1,0 +1,113 @@
+---
+import type { DocSection } from '@/lib/docsData';
+import { ChevronDown } from '@lucide/svelte';
+
+interface Props {
+  sections: DocSection[];
+  activeSectionId: string;
+  lang: 'es' | 'en';
+}
+
+const { sections, activeSectionId, lang } = Astro.props;
+
+// Group sections by category
+const categories = Array.from(new Set(sections.map(s => s.category)));
+const basePath = lang === 'es' ? '/docs' : '/en/docs';
+
+// Find the category of the active section to keep it expanded by default
+const activeSection = sections.find(s => s.id === activeSectionId);
+const activeCategory = activeSection ? activeSection.category : categories[0];
+---
+
+<aside class="w-60 shrink-0 hidden lg:block sticky top-24 self-start max-h-[calc(100vh-8rem)] overflow-y-auto select-none pr-4 scrollbar-thin text-sm">
+  <div>
+    {categories.map((category) => {
+      const categorySections = sections.filter(s => s.category === category);
+      const isExpanded = category === activeCategory;
+      const categorySlug = category.toLowerCase().replace(/[^a-z0-9]/g, '-');
+      
+      return (
+        <div class="space-y-1 category-group" data-category={categorySlug}>
+          <!-- Accordion Header -->
+          <button 
+            type="button"
+            class="w-full flex items-center justify-between text-xs font-bold text-text-muted hover:bg-gray-300/40 hover:text-text-main rounded-xl px-2 py-1.5 select-none text-left cursor-pointer transition-colors duration-150 category-toggle"
+            aria-expanded={isExpanded ? "true" : "false"}
+          >
+            <span class="text-sm">{category}</span>
+            <ChevronDown 
+              size={12} 
+              class={`transform transition-transform duration-200 opacity-70 chevron-icon ${isExpanded ? 'rotate-180' : ''}`} 
+            />
+          </button>
+
+          <!-- Accordion List Body -->
+          <ul 
+            class={`space-y-1 pl-3 border-l border-border-subtle/60 ml-2 transition-all duration-200 overflow-hidden category-list ${isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}
+          >
+            {categorySections.map((item) => {
+              const isActive = item.id === activeSectionId;
+              return (
+                <li>
+                  <a 
+                    href={`${basePath}/${item.id}`}
+                    class={`block text-sm py-1.5 px-3 rounded-lg transition-all duration-200 hover:bg-border-subtle/50 hover:text-text-main group/nav-link
+                      ${isActive 
+                        ? 'bg-brand-primary/10 !text-brand-primary !font-bold border border-brand-primary/20 shadow-xs border-l-2 border-l-brand-primary' 
+                        : 'text-text-muted'}`}
+                  >
+                    {item.title}
+                  </a>
+                  {isActive && item.subItems && (
+                    <ul class="mt-1 pl-3 space-y-1 border-l border-border-subtle/40 text-sm text-text-muted">
+                      {item.subItems.map((sub) => (
+                        <li>
+                          <a href={`${basePath}/${item.id}#${sub.id}`} class="hover:text-brand-primary block py-1 transition-colors hover:pl-1 transition-all duration-150">
+                            {sub.title}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      );
+    })}
+  </div>
+</aside>
+
+<script>
+  // Setup accordion toggle interaction
+  document.addEventListener('DOMContentLoaded', () => {
+    const groups = document.querySelectorAll('.category-group');
+
+    groups.forEach((group) => {
+      const toggle = group.querySelector('.category-toggle');
+      const list = group.querySelector('.category-list') as HTMLElement;
+      const chevron = group.querySelector('.chevron-icon');
+
+      if (toggle && list) {
+        toggle.addEventListener('click', () => {
+          const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+          
+          if (isExpanded) {
+            toggle.setAttribute('aria-expanded', 'false');
+            list.style.maxHeight = '0px';
+            list.style.opacity = '0';
+            list.style.pointerEvents = 'none';
+            chevron?.classList.remove('rotate-180');
+          } else {
+            toggle.setAttribute('aria-expanded', 'true');
+            list.style.maxHeight = '500px';
+            list.style.opacity = '1';
+            list.style.pointerEvents = 'auto';
+            chevron?.classList.add('rotate-180');
+          }
+        });
+      }
+    });
+  });
+</script>
