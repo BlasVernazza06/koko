@@ -5,27 +5,32 @@
     iconComponent = null,
     lucideIcon = '',
     isActive = false,
-    onClick = () => {}
+    onclick = () => {}
   } = $props<{
     title: string;
     description: string;
     iconComponent?: any;
     lucideIcon?: string;
     isActive?: boolean;
-    onClick: () => void;
+    onclick: () => void;
   }>();
 </script>
 
 <button
   type="button"
-  onclick={onClick}
+  onclick={onclick}
   aria-pressed={isActive}
   class="group/btn flex items-center justify-between p-5 bg-bg-base border border-border-subtle rounded-2xl cursor-pointer text-left hover:border-brand-primary/20 transition-all duration-200 w-full"
 >
   <div class="flex items-center gap-3.5">
     <div class="w-7 h-7 flex items-center justify-center shrink-0">
       {#if iconComponent}
-        <svelte:component this={iconComponent} width="28" height="28" />
+        {#if typeof iconComponent === 'string'}
+          <img src={iconComponent} class="w-7 h-7 object-contain {isActive ? '' : 'opacity-80'}" alt="" />
+        {:else}
+          {@const Icon = iconComponent}
+          <Icon width="28" height="28" />
+        {/if}
       {:else if lucideIcon === 'ci'}
         <svg viewBox="0 0 24 24" class="w-7 h-7 {isActive ? 'text-brand-primary' : 'text-text-muted group-hover/btn:text-brand-primary'} fill-none stroke-current stroke-[1.8]" aria-hidden="true">
           <circle cx="12" cy="12" r="10"/>

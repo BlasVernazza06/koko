@@ -173,16 +173,14 @@
     else if (bindingKey === 'withTurborepo') withTurborepo = !withTurborepo;
   }
 
-  import {
-    SvglNextjsLogo,
-    SvglReactLogo,
-    SvglSvelteLogo,
-    SvglNodejsLogo,
-    SvglPostgreSQLLogo,
-    SvglMongoDBLogo,
-    SvglNestJSLogo,
-    SvglPythonLogo
-  } from '@selemondev/svgl-svelte';
+  const SvglNextjsLogo = '/logos/nextjs.svg';
+  const SvglReactLogo = '/logos/react.svg';
+  const SvglSvelteLogo = '/logos/svelte.svg';
+  const SvglNodejsLogo = '/logos/nodejs.svg';
+  const SvglPostgreSQLLogo = '/logos/postgresql.svg';
+  const SvglMongoDBLogo = '/logos/mongodb.svg';
+  const SvglNestJSLogo = '/logos/nestjs.svg';
+  const SvglPythonLogo = '/logos/python.svg';
 
   const templates = [
     {
@@ -451,7 +449,12 @@
               <div class="flex items-start gap-4 max-w-2xl">
                 {#if template.icon}
                   <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-bg-base border border-border-subtle/50 shrink-0 mt-1">
-                    <svelte:component this={template.icon} width="24" height="24" />
+                    {#if typeof template.icon === 'string'}
+                      <img src={template.icon} class="w-6 h-6 object-contain" alt="" />
+                    {:else}
+                      {@const Icon = template.icon}
+                      <Icon width="24" height="24" />
+                    {/if}
                   </div>
                 {/if}
                 <div class="space-y-1.5">
@@ -516,7 +519,7 @@
                   hoverColor={opt.hoverColor}
                   activeColor={opt.activeColor}
                   layerKey={layer.key}
-                  onClick={() => !isDisabled && setSelectedId(layer.key, opt.id)}
+                  onclick={() => !isDisabled && setSelectedId(layer.key, opt.id)}
                 />
               {/each}
             </div>
@@ -541,7 +544,7 @@
                 iconComponent={option.iconComponent}
                 lucideIcon={option.lucideIcon}
                 isActive={isInfraActive(option.bindingKey)}
-                onClick={() => toggleInfra(option.bindingKey)}
+                onclick={() => toggleInfra(option.bindingKey)}
               />
             {/each}
           </div>

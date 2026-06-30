@@ -11,7 +11,7 @@
     hoverColor = 'group-hover/btn:text-brand-secondary',
     activeColor = 'text-brand-secondary',
     layerKey = '',
-    onClick = () => {}
+    onclick = () => {}
   } = $props<{
     name: string;
     desc: string;
@@ -22,13 +22,13 @@
     hoverColor?: string;
     activeColor?: string;
     layerKey: string;
-    onClick: () => void;
+    onclick: () => void;
   }>();
 </script>
 
 <button
   type="button"
-  onclick={onClick}
+  onclick={onclick}
   disabled={isDisabled && !isActive}
   aria-pressed={isActive}
   class="relative group/btn flex flex-col items-start gap-2.5 p-5 rounded-2xl border transition-all text-left cursor-pointer active:scale-[0.98] w-full
@@ -52,8 +52,12 @@
   <div class="flex items-center gap-2.5">
     {#if iconComponent}
       <div class="w-6 h-6 flex items-center justify-center {isDisabled ? 'text-rose-400/60' : ''}">
-        <!-- Render custom or svgl component passing isActive state -->
-        <svelte:component this={iconComponent} {isActive} width="24" height="24" />
+        {#if typeof iconComponent === 'string'}
+          <img src={iconComponent} class="w-6 h-6 object-contain {isActive ? '' : 'opacity-80'}" alt="" />
+        {:else}
+          {@const Icon = iconComponent}
+          <Icon {isActive} width="24" height="24" />
+        {/if}
       </div>
     {/if}
     <span class="text-sm font-bold {isDisabled ? 'text-text-muted' : ''}">{name}</span>
