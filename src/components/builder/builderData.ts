@@ -32,6 +32,7 @@ const SvglPnpmLogo = '/logos/pnpm.svg';
 const SvglExpressjsLogo = '/logos/express.svg';
 const SvglFastifyLogo = '/logos/fastify.svg';
 const SvglPolarLogo = '/logos/polar-sh_light.svg';
+const SvglHonoLogo = '/logos/hono.svg';
 
 // Custom icons
 import AstroIcon from '../icons/AstroIcon.svelte';
@@ -114,7 +115,7 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Cpu,
       colorClass: 'text-brand-primary',
       options: [
-        { id: 'hono', name: 'Hono', desc: isEs ? 'Framework web ultrarrápido' : 'Ultrafast web framework', hoverColor: 'group-hover/btn:text-[#e36002]', activeColor: 'text-[#e36002]', iconComponent: SvglGoLogo },
+        { id: 'hono', name: 'Hono', desc: isEs ? 'Framework web ultrarrápido' : 'Ultrafast web framework', hoverColor: 'group-hover/btn:text-[#e36002]', activeColor: 'text-[#e36002]', iconComponent: SvglHonoLogo },
         { id: 'elysia', name: 'Elysia', desc: isEs ? 'Framework web para TypeScript' : 'TypeScript web framework', hoverColor: 'group-hover/btn:text-[#42b883]', activeColor: 'text-[#42b883]', iconComponent: SvglBunLogo },
         { id: 'express', name: 'Express', desc: isEs ? 'Framework popular de Node.js' : 'Popular Node.js framework', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: SvglExpressjsLogo },
         { id: 'fastify', name: 'Fastify', desc: isEs ? 'Framework web rápido y de bajo consumo para Node.js' : 'Fast, low-overhead web framework for Node.js', hoverColor: 'group-hover/btn:text-[#ffffff]', activeColor: 'text-[#ffffff]', iconComponent: SvglFastifyLogo },
