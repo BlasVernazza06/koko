@@ -15,7 +15,7 @@
   let selectedApi = $state('trpc');
   let selectedDb = $state('postgres');
   let selectedAuth = $state('better-auth');
-  let selectedValidator = $state('zod');
+  const hasValidator = $derived(selectedTools === 'zod' || selectedTools === 'valibot');
   let selectedPackageManager = $state('pnpm');
   let selectedTools = $state('zod');
   let selectedPayments = $state('stripe');
@@ -152,7 +152,7 @@
         tree.push({ type: 'file', indent: true, tripleIndent: true, name: `index.${selectedAuth === 'supabase' ? 'js' : 'ts'}`, highlight: 'text-emerald-500' });
       }
       
-      if (selectedValidator !== 'none') {
+      if (hasValidator) {
         tree.push({ type: 'dir', indent: true, doubleIndent: true, name: 'validator/' });
         tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'package.json' });
         tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'tsconfig.json' });
@@ -191,7 +191,7 @@
       if (selectedAuth !== 'none') {
         tree.push({ type: 'file', indent: true, name: `lib/auth.${selectedAuth === 'supabase' ? 'js' : 'ts'}`, highlight: 'text-emerald-500' });
       }
-      if (selectedValidator !== 'none') {
+      if (hasValidator) {
         tree.push({ type: 'file', indent: true, name: 'shared/schemas/user.ts', highlight: 'text-brand-secondary' });
       }
       if (withLinter) {

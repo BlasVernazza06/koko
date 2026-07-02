@@ -6,17 +6,17 @@
 
   // Svelte 5 bindable props
   let {
-    projectName = $bindable('my-claw-app'),
+    projectName = $bindable('my-koko-app'),
     selectedFront = $bindable('nextjs'),
     selectedNativeFront = $bindable('none'),
-    selectedBack = $bindable('go'),
+    selectedBack = $bindable('hono'),
     selectedRuntime = $bindable('bun'),
     selectedOrm = $bindable('drizzle'),
     selectedApi = $bindable('trpc'),
     selectedPackageManager = $bindable('pnpm'),
     selectedTools = $bindable('zod'),
     selectedPayments = $bindable('stripe'),
-    selectedDb = $bindable('prisma'),
+    selectedDb = $bindable('postgres'),
     selectedAuth = $bindable('better-auth'),
     selectedEmail = $bindable('resend'),
     withDocker = $bindable(true),
