@@ -54,6 +54,7 @@ export interface TechOption {
   activeColor?: string;
   iconComponent?: any;
   isNone?: boolean;
+  default?: boolean;
 }
 
 export interface Layer {
@@ -72,6 +73,7 @@ export interface InfraOption {
   iconComponent?: any;
   lucideIcon?: any;
   bindingKey: string;
+  default?: boolean;
 }
 
 export const getLayers = (lang: string): Layer[] => {
@@ -84,7 +86,7 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Blocks,
       colorClass: 'text-brand-secondary',
       options: [
-        { id: 'nextjs', name: 'Next.js', desc: isEs ? 'Framework SSR de React, App Router.' : 'React SSR Framework, App Router.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglNextjsLogo },
+        { id: 'nextjs', name: 'Next.js', desc: isEs ? 'Framework SSR de React, App Router.' : 'React SSR Framework, App Router.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglNextjsLogo, default: true },
         { id: 'react', name: 'React SPA', desc: isEs ? 'React SPA del lado del cliente, motor Vite.' : 'React Client-side SPA, Vite engine.', hoverColor: 'group-hover/btn:text-[#61dafb]', activeColor: 'text-[#61dafb]', iconComponent: SvglReactLogo },
         { id: 'nuxt', name: 'Nuxt', desc: isEs ? 'Framework SSR de Vue, enrutamiento basado en archivos.' : 'Vue SSR Framework, file-based routing.', hoverColor: 'group-hover/btn:text-[#00dc82]', activeColor: 'text-[#00dc82]', iconComponent: SvglNuxtLogo },
         { id: 'vue', name: 'Vue SPA', desc: isEs ? 'Vue 3 SPA del lado del cliente, Composition API.' : 'Vue 3 Client-side SPA, Composition API.', hoverColor: 'group-hover/btn:text-[#42b883]', activeColor: 'text-[#42b883]', iconComponent: SvglVueLogo },
@@ -105,7 +107,7 @@ export const getLayers = (lang: string): Layer[] => {
         { id: 'expo-bare', name: 'Expo + Bare', desc: isEs ? 'Expo con StyleSheet (sin librería de estilos)' : 'Expo with StyleSheet (no styling library)', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: ExpoIcon },
         { id: 'expo-uniwind', name: 'Expo + Uniwind', desc: isEs ? 'Bindings rápidos de Tailwind para React Native con HeroUI Native' : 'Fastest Tailwind bindings for React Native with HeroUI Native', hoverColor: 'group-hover/btn:text-[#38bdf8]', activeColor: 'text-[#38bdf8]', iconComponent: ExpoIcon },
         { id: 'expo-unistyles', name: 'Expo + Unistyles', desc: isEs ? 'Expo con Unistyles (estilos con tipado seguro)' : 'Expo with Unistyles (type-safe styling)', hoverColor: 'group-hover/btn:text-[#ff3e00]', activeColor: 'text-[#ff3e00]', iconComponent: ExpoIcon },
-        { id: 'none', name: isEs ? 'Sin Frontend Nativo' : 'No Native Frontend', desc: isEs ? 'Sin frontend nativo para móvil' : 'No native mobile frontend', isNone: true }
+        { id: 'none', name: isEs ? 'Sin Frontend Nativo' : 'No Native Frontend', desc: isEs ? 'Sin frontend nativo para móvil' : 'No native mobile frontend', isNone: true, default: true }
       ]
     },
     {
@@ -115,7 +117,7 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Cpu,
       colorClass: 'text-brand-primary',
       options: [
-        { id: 'hono', name: 'Hono', desc: isEs ? 'Framework web ultrarrápido' : 'Ultrafast web framework', hoverColor: 'group-hover/btn:text-[#e36002]', activeColor: 'text-[#e36002]', iconComponent: SvglHonoLogo },
+        { id: 'hono', name: 'Hono', desc: isEs ? 'Framework web ultrarrápido' : 'Ultrafast web framework', hoverColor: 'group-hover/btn:text-[#e36002]', activeColor: 'text-[#e36002]', iconComponent: SvglHonoLogo, default: true },
         { id: 'elysia', name: 'Elysia', desc: isEs ? 'Framework web para TypeScript' : 'TypeScript web framework', hoverColor: 'group-hover/btn:text-[#42b883]', activeColor: 'text-[#42b883]', iconComponent: SvglBunLogo },
         { id: 'express', name: 'Express', desc: isEs ? 'Framework popular de Node.js' : 'Popular Node.js framework', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: SvglExpressjsLogo },
         { id: 'fastify', name: 'Fastify', desc: isEs ? 'Framework web rápido y de bajo consumo para Node.js' : 'Fast, low-overhead web framework for Node.js', hoverColor: 'group-hover/btn:text-[#ffffff]', activeColor: 'text-[#ffffff]', iconComponent: SvglFastifyLogo },
@@ -135,7 +137,7 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Cpu,
       colorClass: 'text-brand-secondary',
       options: [
-        { id: 'bun', name: 'Bun', desc: isEs ? 'Runtime y conjunto de herramientas rápidas de JS' : 'Fast JavaScript runtime & toolkit', hoverColor: 'group-hover/btn:text-[#fbf0e9]', activeColor: 'text-[#fbf0e9]', iconComponent: SvglBunLogo },
+        { id: 'bun', name: 'Bun', desc: isEs ? 'Runtime y conjunto de herramientas rápidas de JS' : 'Fast JavaScript runtime & toolkit', hoverColor: 'group-hover/btn:text-[#fbf0e9]', activeColor: 'text-[#fbf0e9]', iconComponent: SvglBunLogo, default: true },
         { id: 'node', name: 'Node.js', desc: isEs ? 'Entorno de ejecución clásico de JavaScript' : 'JavaScript runtime environment', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: NodejsIcon },
         { id: 'cloudflare', name: 'Cloudflare Workers', desc: isEs ? 'Entorno serverless para el edge' : 'Serverless runtime for the edge', hoverColor: 'group-hover/btn:text-[#f38020]', activeColor: 'text-[#f38020]', iconComponent: SvglRustLogo },
         { id: 'none', name: isEs ? 'Sin Runtime' : 'No Runtime', desc: isEs ? 'Sin entorno de ejecución específico' : 'No specific runtime', isNone: true }
@@ -148,10 +150,10 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Database,
       colorClass: 'text-brand-primary',
       options: [
-        { id: 'drizzle', name: 'Drizzle', desc: isEs ? 'ORM seguro para tipos en TypeScript' : 'TypeScript ORM', hoverColor: 'group-hover/btn:text-[#c5f74f]', activeColor: 'text-[#c5f74f]', iconComponent: DrizzleIcon },
+        { id: 'drizzle', name: 'Drizzle', desc: isEs ? 'ORM seguro para tipos en TypeScript' : 'TypeScript ORM', hoverColor: 'group-hover/btn:text-[#c5f74f]', activeColor: 'text-[#c5f74f]', iconComponent: DrizzleIcon, default: true },
         { id: 'prisma', name: 'Prisma', desc: isEs ? 'ORM de nueva generación' : 'Next-gen ORM', hoverColor: 'group-hover/btn:text-[#5a4fc4]', activeColor: 'text-[#5a4fc4]', iconComponent: SvglPrismaLogo },
-        { id: 'mongoose', name: 'Mongoose', desc: isEs ? 'Modelado de objetos para MongoDB (Mongoose solo funciona con MongoDB)' : 'Elegant object modeling tool (Mongoose only works with MongoDB)', hoverColor: 'group-hover/btn:text-[#880000]', activeColor: 'text-[#880000]', iconComponent: SvglMongoDBLogo },
-        { id: 'none', name: isEs ? 'Sin ORM' : 'No ORM', desc: isEs ? 'Omitir ORM (La base de datos requerirá un ORM)' : 'Skip ORM integration (Database requires an ORM)', isNone: true }
+        { id: 'mongoose', name: 'Mongoose', desc: isEs ? 'Modelado de objetos para MongoDB' : 'Elegant object modeling tool (Mongoose only works with MongoDB)', hoverColor: 'group-hover/btn:text-[#880000]', activeColor: 'text-[#880000]', iconComponent: SvglMongoDBLogo },
+        { id: 'none', name: isEs ? 'Sin ORM' : 'No ORM', desc: isEs ? 'Omitir ORM (La base de datos requerirá un ORM)' : 'Skip ORM integration (Database requires an ORM)' }
       ]
     },
     {
@@ -161,7 +163,7 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Settings,
       colorClass: 'text-brand-secondary',
       options: [
-        { id: 'trpc', name: 'tRPC', desc: isEs ? 'APIs seguras para tipos de extremo a extremo' : 'End-to-end typesafe APIs', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglBetterAuthLogo },
+        { id: 'trpc', name: 'tRPC', desc: isEs ? 'APIs seguras para tipos de extremo a extremo' : 'End-to-end typesafe APIs', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglBetterAuthLogo, default: true },
         { id: 'orpc', name: 'oRPC', desc: isEs ? 'APIs seguras para tipos de manera simple' : 'Typesafe APIs Made Simple', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglValibotLogo },
         { id: 'none', name: isEs ? 'Sin API' : 'No API', desc: isEs ? 'Sin capa de API (rutas de API deshabilitadas)' : 'No API layer (API routes disabled)', isNone: true }
       ]
@@ -174,7 +176,7 @@ export const getLayers = (lang: string): Layer[] => {
       colorClass: 'text-brand-secondary',
       options: [
         { id: 'npm', name: 'npm', desc: isEs ? 'Gestor de paquetes predeterminado de Node.js.' : 'Default Node.js package manager.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglNPMLogo },
-        { id: 'pnpm', name: 'pnpm', desc: isEs ? 'Gestor rápido y eficiente en espacio de disco.' : 'Fast, disk space efficient package manager.', hoverColor: 'group-hover/btn:text-[#f68712]', activeColor: 'text-[#f68712]', iconComponent: SvglPnpmLogo },
+        { id: 'pnpm', name: 'pnpm', desc: isEs ? 'Gestor rápido y eficiente en espacio de disco.' : 'Fast, disk space efficient package manager.', hoverColor: 'group-hover/btn:text-[#f68712]', activeColor: 'text-[#f68712]', iconComponent: SvglPnpmLogo, default: true },
         { id: 'bun', name: 'Bun', desc: isEs ? 'Gestor de paquetes rápido integrado de Bun.' : 'Bun built-in fast package manager.', hoverColor: 'group-hover/btn:text-[#fbf0e9]', activeColor: 'text-[#fbf0e9]', iconComponent: SvglBunLogo }
       ]
     },
@@ -185,7 +187,7 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Blocks,
       colorClass: 'text-brand-primary',
       options: [
-        { id: 'zod', name: 'Zod', desc: isEs ? 'Validación de esquemas enfocada en TypeScript.' : 'TypeScript-first schema validation library.', hoverColor: 'group-hover/btn:text-[#3e67ad]', activeColor: 'text-[#3e67ad]', iconComponent: ZodIcon },
+        { id: 'zod', name: 'Zod', desc: isEs ? 'Validación de esquemas enfocada en TypeScript.' : 'TypeScript-first schema validation library.', hoverColor: 'group-hover/btn:text-[#3e67ad]', activeColor: 'text-[#3e67ad]', iconComponent: ZodIcon, default: true },
         { id: 'valibot', name: 'Valibot', desc: isEs ? 'Validador de esquemas modular y ultraligero.' : 'Modular, ultra-light schema validator.', hoverColor: 'group-hover/btn:text-[#e0234e]', activeColor: 'text-[#e0234e]', iconComponent: SvglValibotLogo },
         { id: 'motion', name: 'Motion', desc: isEs ? 'Librería de animaciones fluida y declarativa.' : 'Fluid and declarative animation library.', hoverColor: 'group-hover/btn:text-[#ff0055]', activeColor: 'text-[#ff0055]', iconComponent: MotionIcon },
         { id: 'lucide', name: 'Lucide', desc: isEs ? 'Set de iconos vectoriales consistentes y hermosos.' : 'Consistent and beautiful vector icon set.', hoverColor: 'group-hover/btn:text-[#f43f5e]', activeColor: 'text-[#f43f5e]', iconComponent: LucideIcon },
@@ -201,7 +203,7 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Database,
       colorClass: 'text-brand-secondary',
       options: [
-        { id: 'stripe', name: 'Stripe', desc: isEs ? 'Infraestructura global de pagos y SDK.' : 'Global payment infrastructure SDK.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglStripeLogo },
+        { id: 'stripe', name: 'Stripe', desc: isEs ? 'Infraestructura global de pagos y SDK.' : 'Global payment infrastructure SDK.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglStripeLogo, default: true },
         { id: 'polar', name: 'Polar.sh', desc: isEs ? 'Monetización para desarrolladores y pagos SaaS.' : 'Developer monetization & SaaS payments.', hoverColor: 'group-hover/btn:text-[#1d9bf0]', activeColor: 'text-[#1d9bf0]', iconComponent: SvglPolarLogo },
         { id: 'none', name: isEs ? 'Sin Pagos' : 'No Payments', desc: isEs ? 'Sin pasarela de pagos configurada.' : 'No monetization system configured.', isNone: true }
       ]
@@ -214,7 +216,7 @@ export const getLayers = (lang: string): Layer[] => {
       colorClass: 'text-brand-primary',
       options: [
         { id: 'sqlite', name: 'SQLite', desc: isEs ? 'Base de datos SQL basada en archivos' : 'File-based SQL database', hoverColor: 'group-hover/btn:text-brand-primary', activeColor: 'text-brand-primary', iconComponent: DrizzleIcon },
-        { id: 'postgres', name: 'PostgreSQL', desc: isEs ? 'Base de datos SQL robusta y avanzada' : 'Advanced SQL database', hoverColor: 'group-hover/btn:text-brand-primary', activeColor: 'text-brand-primary', iconComponent: SvglPostgreSQLLogo },
+        { id: 'postgres', name: 'PostgreSQL', desc: isEs ? 'Base de datos SQL robusta y avanzada' : 'Advanced SQL database', hoverColor: 'group-hover/btn:text-brand-primary', activeColor: 'text-brand-primary', iconComponent: SvglPostgreSQLLogo, default: true },
         { id: 'mysql', name: 'MySQL', desc: isEs ? 'Base de datos relacional muy popular' : 'Popular relational database', hoverColor: 'group-hover/btn:text-brand-primary', activeColor: 'text-brand-primary', iconComponent: SvglPostgreSQLLogo },
         { id: 'mongodb', name: 'MongoDB', desc: isEs ? 'Base de datos NoSQL orientada a documentos' : 'NoSQL document database', hoverColor: 'group-hover/btn:text-[#47a248]', activeColor: 'text-[#47a248]', iconComponent: SvglMongoDBLogo },
         { id: 'none', name: isEs ? 'Sin Base de Datos' : 'No Database', desc: isEs ? 'Omitir integración de base de datos' : 'Skip database integration', isNone: true }
@@ -231,7 +233,8 @@ export const getInfrastructureOptions = (lang: string): InfraOption[] => {
       title: isEs ? 'Configuración de Docker Compose' : 'Docker Compose Setup',
       description: isEs ? 'Configurar contenedor Docker Compose local para la base de datos' : 'Configure local Docker Compose container for database',
       iconComponent: SvglDockerLogo,
-      bindingKey: 'withDocker'
+      bindingKey: 'withDocker',
+      default: true
     },
     {
       id: 'ci',
@@ -245,7 +248,8 @@ export const getInfrastructureOptions = (lang: string): InfraOption[] => {
       title: isEs ? 'Configuración de Biome / Linter' : 'Biome / Linter Config',
       description: isEs ? 'Añadir reglas estándar de formateo y linter de Biome' : 'Add standard Biome formatting and linting rules',
       lucideIcon: 'linter',
-      bindingKey: 'withLinter'
+      bindingKey: 'withLinter',
+      default: true
     },
     {
       id: 'testing',
@@ -259,7 +263,8 @@ export const getInfrastructureOptions = (lang: string): InfraOption[] => {
       title: isEs ? 'Monorepo con Turborepo' : 'Turborepo Monorepo',
       description: isEs ? 'Configurar Turborepo para escala óptima de múltiples paquetes' : 'Configure Turborepo for scaling multiple packages',
       iconComponent: SvglTurborepoLogo,
-      bindingKey: 'withTurborepo'
+      bindingKey: 'withTurborepo',
+      default: true
     }
   ];
 };
