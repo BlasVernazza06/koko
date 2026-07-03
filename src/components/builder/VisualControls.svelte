@@ -513,6 +513,7 @@
                   name={opt.name}
                   desc={opt.desc}
                   iconComponent={opt.iconComponent}
+                  default={opt.default}
                   {isActive}
                   {isDisabled}
                   disabledReason={getDisabledReason(layer.key, opt.id)}

@@ -5,6 +5,7 @@
     name = '',
     desc = '',
     iconComponent = null,
+    default: isDefault = false,
     isActive = false,
     isDisabled = false,
     disabledReason = '',
@@ -16,6 +17,7 @@
     name: string;
     desc: string;
     iconComponent?: any;
+    default?: boolean;
     isActive?: boolean;
     isDisabled?: boolean;
     disabledReason?: string;
@@ -46,6 +48,12 @@
         {layerKey === 'backend' || layerKey === 'auth' || layerKey === 'payment' ? 'bg-brand-primary' : 'bg-brand-secondary'}"
     >
       <Check size={11} strokeWidth={3.5} />
+    </div>
+    {:else if isDefault}
+    <div 
+      class="absolute top-2.5 right-3 px-1 rounded-md flex items-center justify-center bg-brand-secondary/10 text-brand-secondary text-xs shadow-xs border border-brand-secondary"
+    >
+      <span>Default</span>
     </div>
   {/if}
   

@@ -5,26 +5,42 @@
 
   let { lang = 'es' } = $props<{ lang?: string }>();
 
+  import { getLayers, getInfrastructureOptions } from './builderData';
+
+  const defaultLayers = getLayers('es');
+  function getDefault(key: string, fallback: string): string {
+    const layer = defaultLayers.find(l => l.key === key);
+    if (!layer) return fallback;
+    const defaultOption = layer.options.find(o => o.default);
+    return defaultOption ? defaultOption.id : fallback;
+  }
+
+  const defaultInfra = getInfrastructureOptions('es');
+  function isInfraDefault(id: string, fallback: boolean): boolean {
+    const opt = defaultInfra.find(o => o.id === id);
+    return opt && opt.default !== undefined ? opt.default : fallback;
+  }
+
   // State variables
   let projectName = $state('my-koko-app');
-  let selectedFront = $state('nextjs');
-  let selectedNativeFront = $state('none');
-  let selectedBack = $state('hono');
-  let selectedRuntime = $state('bun');
-  let selectedOrm = $state('drizzle');
-  let selectedApi = $state('trpc');
-  let selectedDb = $state('postgres');
+  let selectedFront = $state(getDefault('frontend', 'nextjs'));
+  let selectedNativeFront = $state(getDefault('native_frontend', 'none'));
+  let selectedBack = $state(getDefault('backend', 'hono'));
+  let selectedRuntime = $state(getDefault('runtime', 'bun'));
+  let selectedOrm = $state(getDefault('orm', 'drizzle'));
+  let selectedApi = $state(getDefault('api', 'trpc'));
+  let selectedDb = $state(getDefault('db', 'postgres'));
   let selectedAuth = $state('better-auth');
   const hasValidator = $derived(selectedTools === 'zod' || selectedTools === 'valibot');
-  let selectedPackageManager = $state('pnpm');
-  let selectedTools = $state('zod');
-  let selectedPayments = $state('stripe');
+  let selectedPackageManager = $state(getDefault('package_manager', 'pnpm'));
+  let selectedTools = $state(getDefault('tools', 'zod'));
+  let selectedPayments = $state(getDefault('payments', 'stripe'));
   let selectedEmail = $state('resend');
-  let withDocker = $state(true);
-  let withCi = $state(false);
-  let withLinter = $state(true);
-  let withTesting = $state(false);
-  let withTurborepo = $state(true);
+  let withDocker = $state(isInfraDefault('docker', true));
+  let withCi = $state(isInfraDefault('ci', false));
+  let withLinter = $state(isInfraDefault('linter', true));
+  let withTesting = $state(isInfraDefault('testing', false));
+  let withTurborepo = $state(isInfraDefault('turborepo', true));
 
   // Reactively auto-resolve selection conflicts when users change backend or frontend
   $effect(() => {
@@ -39,6 +55,46 @@
       }
     }
   });
+
+  const selectedTechOptions = $derived(
+    [
+      { key: 'frontend', id: selectedFront },
+      { key: 'native_frontend', id: selectedNativeFront },
+      { key: 'backend', id: selectedBack },
+      { key: 'runtime', id: selectedRuntime },
+      { key: 'orm', id: selectedOrm },
+      { key: 'api', id: selectedApi },
+      { key: 'db', id: selectedDb },
+      { key: 'package_manager', id: selectedPackageManager },
+      { key: 'tools', id: selectedTools },
+      { key: 'payments', id: selectedPayments }
+    ]
+      .map(item => {
+        const layer = defaultLayers.find(l => l.key === item.key);
+        const option = layer?.options.find(o => o.id === item.id);
+        if (!option || option.isNone) return null;
+        return {
+          layerKey: item.key,
+          id: option.id,
+          name: option.name,
+          iconComponent: option.iconComponent
+        };
+      })
+      .filter(Boolean) as Array<{ layerKey: string; id: string; name: string; iconComponent: any }>
+  );
+
+  function removeTech(layerKey: string) {
+    if (layerKey === 'frontend') selectedFront = 'none';
+    else if (layerKey === 'native_frontend') selectedNativeFront = 'none';
+    else if (layerKey === 'backend') selectedBack = 'none';
+    else if (layerKey === 'runtime') selectedRuntime = 'none';
+    else if (layerKey === 'orm') selectedOrm = 'none';
+    else if (layerKey === 'api') selectedApi = 'none';
+    else if (layerKey === 'db') selectedDb = 'none';
+    else if (layerKey === 'package_manager') selectedPackageManager = 'none';
+    else if (layerKey === 'tools') selectedTools = 'none';
+    else if (layerKey === 'payments') selectedPayments = 'none';
+  }
 
   let isCopied = $state(false);
 
@@ -279,10 +335,12 @@
     </div>
 
     <!-- RIGHT: COMMAND & STRUCTURE DISPLAY (4 cols) -->
-    <div class="lg:col-span-4 space-y-8 lg:sticky lg:top-20">
+    <div class="lg:col-span-4 lg:sticky lg:top-20 max-h-[calc(100vh-7rem)] overflow-y-auto pr-2 custom-scrollbar">
       <VisualPreview
         {generatedCommand}
         {structurePreview}
+        selectedTechs={selectedTechOptions}
+        onremove={removeTech}
         {lang}
       />
     </div>
