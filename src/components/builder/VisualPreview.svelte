@@ -1,156 +1,104 @@
 <script lang="ts">
-  import { Terminal, Folder, FileCode, Check, Copy, ChevronDown, ChevronRight, FolderOpen } from '@lucide/svelte';
+  import { Blocks, Folder } from '@lucide/svelte';
+  import { fade } from 'svelte/transition';
+  import PreviewCommand from './PreviewCommand.svelte';
+  import PreviewStructure from './PreviewStructure.svelte';
+  import SelectedTechBadge from './SelectedTechBadge.svelte';
 
   let {
     generatedCommand = '',
     structurePreview = [],
+    selectedTechs = [],
+    onremove = () => {},
     lang = 'es'
   } = $props<{
     generatedCommand: string;
-    structurePreview: Array<{
-      type: string;
-      name: string;
-      indent?: boolean;
-      doubleIndent?: boolean;
-      tripleIndent?: boolean;
-      highlight?: string;
-    }>;
+    structurePreview: Array<any>;
+    selectedTechs: Array<{ layerKey: string; id: string; name: string; iconComponent: any }>;
+    onremove: (layerKey: string) => void;
     lang: string;
   }>();
 
-  let isCopied = $state(false);
-  let collapsedIndices = $state<Record<number, boolean>>({});
-
-  function toggleCollapse(index: number) {
-    collapsedIndices[index] = !collapsedIndices[index];
-  }
-
-  function isItemVisible(index: number, item: any): boolean {
-    const itemDepth = item.tripleIndent ? 3 : item.doubleIndent ? 2 : item.indent ? 1 : 0;
-    if (itemDepth === 0) return true;
-
-    let currentDepth = itemDepth;
-    for (let i = index - 1; i >= 0; i--) {
-      const prev = structurePreview[i];
-      const prevDepth = prev.tripleIndent ? 3 : prev.doubleIndent ? 2 : prev.indent ? 1 : 0;
-      
-      if (prevDepth < currentDepth) {
-        if (prev.type === 'dir' && collapsedIndices[i]) {
-          return false;
-        }
-        currentDepth = prevDepth;
-        if (currentDepth === 0) break;
-      }
-    }
-    return true;
-  }
+  let activeTab = $state<'stack' | 'structure'>('stack');
 
   const t = $derived({
     es: {
-      commandLabel: 'Ejecuta este comando en tu terminal:',
-      copyBtn: 'Copiar comando',
-      copiedBtn: '¡Copiado!',
-      structureTitle: 'Estructura de Directorios Generada'
+      summaryTitle: 'STACK SELECCIONADO',
+      emptySummary: 'No hay tecnologías seleccionadas.',
+      tabStack: 'Mi Stack',
+      tabStructure: 'Estructura'
     },
     en: {
-      commandLabel: 'Run this command in your terminal:',
-      copyBtn: 'Copy command',
-      copiedBtn: 'Copied!',
-      structureTitle: 'Generated Directory Structure'
+      summaryTitle: 'SELECTED STACK',
+      emptySummary: 'No technologies selected.',
+      tabStack: 'My Stack',
+      tabStructure: 'Structure'
     }
-  }[lang] || t.es);
-
-  function copyCommand() {
-    navigator.clipboard.writeText(generatedCommand);
-    isCopied = true;
-    setTimeout(() => {
-      isCopied = false;
-    }, 2000);
-  }
+  }[lang] || {
+    summaryTitle: 'STACK SELECCIONADO',
+    emptySummary: 'No hay tecnologías seleccionadas.',
+    tabStack: 'Mi Stack',
+    tabStructure: 'Estructura'
+  });
 </script>
 
-<!-- Command Display Box -->
-<div class="rounded-2xl border border-border-subtle bg-[#0c0b11] p-5 shadow-lg relative overflow-hidden">
-  <span class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-400 mb-2.5 font-mono select-none border-b border-white/[0.04] pb-2">
-    {t.commandLabel}
-  </span>
-  
-  <div class="flex items-center gap-2.5 bg-black/40 border border-white/[0.04] p-3.5 rounded-xl text-xs sm:text-sm text-brand-primary font-mono select-all">
-    <Terminal size={14} class="text-brand-primary shrink-0" aria-hidden="true" />
-    <span class="break-all font-semibold leading-relaxed">{generatedCommand}</span>
+<div class="space-y-6">
+  <!-- Command Display Box -->
+  <PreviewCommand {generatedCommand} {lang} />
+
+  <!-- Tab Buttons -->
+  <div class="flex items-center gap-1 p-1 bg-bg-surface border border-border-subtle rounded-xl select-none w-full">
+    <button
+      type="button"
+      onclick={() => activeTab = 'stack'}
+      class="flex-1 flex items-center justify-center gap-2 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border transition-all duration-200 cursor-pointer active:scale-95
+        {activeTab === 'stack'
+          ? 'bg-brand-primary/10 border-brand-primary/20 text-brand-primary shadow-xs'
+          : 'bg-transparent border-transparent text-text-muted hover:text-text-main hover:bg-bg-base'}"
+    >
+      <Blocks size={14} />
+      <span>{t.tabStack}</span>
+    </button>
+    <button
+      type="button"
+      onclick={() => activeTab = 'structure'}
+      class="flex-1 flex items-center justify-center gap-2 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border transition-all duration-200 cursor-pointer active:scale-95
+        {activeTab === 'structure'
+          ? 'bg-brand-secondary/10 border-brand-secondary/20 text-brand-secondary shadow-xs'
+          : 'bg-transparent border-transparent text-text-muted hover:text-text-main hover:bg-bg-base'}"
+    >
+      <Folder size={14} />
+      <span>{t.tabStructure}</span>
+    </button>
   </div>
 
-  <button
-    type="button"
-    onclick={copyCommand}
-    class="mt-3.5 flex items-center justify-center gap-2 w-full py-2.5 bg-brand-primary hover:bg-brand-primary/95 text-white font-bold rounded-xl shadow-md cursor-pointer transition-colors duration-200 hover:scale-[1.01] active:scale-95 text-sm"
-  >
-    {#if isCopied}
-      <Check size={14} aria-hidden="true" />
-      <span>{t.copiedBtn}</span>
-    {:else}
-      <Copy size={14} aria-hidden="true" />
-      <span>{t.copyBtn}</span>
-    {/if}
-  </button>
-</div>
+  <!-- Tab Content -->
+  {#if activeTab === 'stack'}
+    <div transition:fade={{ duration: 155 }} class="rounded-2xl border border-border-subtle bg-bg-surface/30 p-7 backdrop-blur-xs shadow-sm">
+      <div class="flex items-center gap-2.5 mb-4 pb-2 border-b border-border-subtle select-none">
+        <Blocks size={16} class="text-brand-primary" aria-hidden="true" />
+        <span class="text-xs font-bold uppercase tracking-widest text-text-muted">
+          {t.summaryTitle}
+        </span>
+      </div>
 
-<!-- Generated Structure -->
-<div class="rounded-2xl border border-border-subtle bg-bg-surface/30 p-7 backdrop-blur-xs shadow-sm">
-  <div class="flex items-center gap-2.5 mb-4 pb-2 border-b border-border-subtle select-none">
-    <Folder size={16} class="text-brand-secondary" aria-hidden="true" />
-    <span class="text-xs font-bold uppercase tracking-widest text-text-muted">
-      {t.structureTitle}
-    </span>
-  </div>
-
-  <div class="space-y-2 font-mono text-xs sm:text-sm text-text-muted max-h-[360px] overflow-y-auto pr-2 custom-scrollbar">
-    {#each structurePreview as item, idx}
-      {#if isItemVisible(idx, item)}
-        {#if item.type === 'dir'}
-          <button 
-            type="button"
-            onclick={() => toggleCollapse(idx)}
-            class="flex items-center gap-1.5 select-none cursor-pointer hover:text-text-main text-left w-full focus:outline-none py-0.5" 
-            style="padding-left: {item.tripleIndent ? '3rem' : item.doubleIndent ? '2rem' : item.indent ? '1rem' : '0'}"
-          >
-            {#if collapsedIndices[idx]}
-              <ChevronRight size={12} class="text-text-muted shrink-0" />
-              <Folder size={14} class="text-brand-secondary/80 shrink-0" aria-hidden="true" />
-            {:else}
-              <ChevronDown size={12} class="text-text-muted shrink-0" />
-              <FolderOpen size={14} class="text-brand-secondary/80 shrink-0" aria-hidden="true" />
-            {/if}
-            
-            <span class="text-text-main font-semibold">{item.name}</span>
-          </button>
-        {:else}
-          <div 
-            class="flex items-center gap-1.5 select-none py-0.5" 
-            style="padding-left: {item.tripleIndent ? '3.75rem' : item.doubleIndent ? '2.75rem' : item.indent ? '1.75rem' : '0.75rem'}"
-          >
-            <FileCode size={14} class="{item.highlight || 'text-text-muted'} shrink-0" aria-hidden="true" />
-            <span>{item.name}</span>
-          </div>
-        {/if}
+      {#if selectedTechs.length > 0}
+        <div class="flex flex-wrap gap-2.5">
+          {#each selectedTechs as tech}
+            <SelectedTechBadge
+              name={tech.name}
+              iconComponent={tech.iconComponent}
+              onremove={() => onremove(tech.layerKey)}
+            />
+          {/each}
+        </div>
+      {:else}
+        <span class="text-xs text-text-muted leading-relaxed font-medium">{t.emptySummary}</span>
       {/if}
-    {/each}
-  </div>
+    </div>
+  {:else}
+    <div transition:fade={{ duration: 155 }}>
+      <PreviewStructure {structurePreview} {lang} />
+    </div>
+  {/if}
 </div>
-
-<style>
-  /* Custom scrollbar rules matching app styles */
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--border-subtle);
-    border-radius: 9999px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: var(--brand-secondary);
-  }
-</style>
