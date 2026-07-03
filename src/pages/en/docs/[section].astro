@@ -18,10 +18,10 @@ const activeSection = docsData.en.find(s => s.id === activeSectionId) || docsDat
 ---
 
 <Layout lang="en" title={`Koko Docs — ${activeSection.title}`} description={`Learn how to scaffold, customize, and optimize your workspaces using Koko. Section: ${activeSection.title}.`}>
-  <div class="min-h-screen bg-bg-base text-text-main flex flex-col relative font-sans">
+  <div class="min-h-[calc(100vh-3.5rem)] bg-bg-base text-text-main flex flex-col relative font-sans">
     
     <!-- Ambient brand background glow -->
-    <div class="hero-bg-glow absolute top-0 left-0 right-0 h-[600px] pointer-events-none overflow-hidden z-1 select-none">
+    <div class="hero-bg-glow absolute top-0 left-0 right-0 h-full pointer-events-none overflow-hidden z-1 select-none">
       <div class="glow-primary absolute inset-0 bg-radial-[circle_at_50%_0%] from-brand-primary/15 to-transparent opacity-40"></div>
     </div>
 
