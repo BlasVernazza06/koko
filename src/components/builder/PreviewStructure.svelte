@@ -16,10 +16,12 @@
     lang: string;
   }>();
 
-  let collapsedIndices = $state<Record<number, boolean>>({});
+  // Inverted logic: we track expanded folders now.
+  // By default, since the map is empty, all folders are collapsed!
+  let expandedIndices = $state<Record<number, boolean>>({});
 
   function toggleCollapse(index: number) {
-    collapsedIndices[index] = !collapsedIndices[index];
+    expandedIndices[index] = !expandedIndices[index];
   }
 
   function isItemVisible(index: number, item: any): boolean {
@@ -32,7 +34,8 @@
       const prevDepth = prev.tripleIndent ? 3 : prev.doubleIndent ? 2 : prev.indent ? 1 : 0;
       
       if (prevDepth < currentDepth) {
-        if (prev.type === 'dir' && collapsedIndices[i]) {
+        // If the parent directory is NOT expanded, hide the child item
+        if (prev.type === 'dir' && !expandedIndices[i]) {
           return false;
         }
         currentDepth = prevDepth;
@@ -63,7 +66,7 @@
     </span>
   </div>
 
-  <div class="space-y-2 font-mono text-xs sm:text-sm text-text-muted max-h-[360px] overflow-y-auto pr-2 custom-scrollbar">
+  <div class="space-y-2 font-mono text-xs sm:text-sm text-text-muted max-h-[290px] overflow-y-auto no-scrollbar fade-bottom-mask">
     {#each structurePreview as item, idx}
       {#if isItemVisible(idx, item)}
         {#if item.type === 'dir'}
@@ -73,12 +76,12 @@
             class="flex items-center gap-1.5 select-none cursor-pointer hover:text-text-main text-left w-full focus:outline-none py-0.5" 
             style="padding-left: {item.tripleIndent ? '3rem' : item.doubleIndent ? '2rem' : item.indent ? '1rem' : '0'}"
           >
-            {#if collapsedIndices[idx]}
-              <ChevronRight size={12} class="text-text-muted shrink-0" />
-              <Folder size={14} class="text-brand-secondary/80 shrink-0" aria-hidden="true" />
-            {:else}
+            {#if expandedIndices[idx]}
               <ChevronDown size={12} class="text-text-muted shrink-0" />
               <FolderOpen size={14} class="text-brand-secondary/80 shrink-0" aria-hidden="true" />
+            {:else}
+              <ChevronRight size={12} class="text-text-muted shrink-0" />
+              <Folder size={14} class="text-brand-secondary/80 shrink-0" aria-hidden="true" />
             {/if}
             
             <span class="text-text-main font-semibold">{item.name}</span>
@@ -96,3 +99,20 @@
     {/each}
   </div>
 </div>
+
+<style>
+  /* Hide standard scrollbars */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Fade out bottom items to indicate scrollability */
+  .fade-bottom-mask {
+    mask-image: linear-gradient(to bottom, black calc(100% - 35px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 35px), transparent 100%);
+  }
+</style>
