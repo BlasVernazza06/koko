@@ -185,6 +185,17 @@
     const regex = new RegExp(`(${search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
     return text.replace(regex, '<mark class="bg-brand-primary/30 text-text-main rounded-sm px-0.5">$1</mark>');
   }
+  // Portal action to render modal outside sticky header context
+  function portal(node) {
+    document.body.appendChild(node);
+    return {
+      destroy() {
+        if (node.parentNode) {
+          node.parentNode.removeChild(node);
+        }
+      }
+    };
+  }
 </script>
 
 <!-- Searchbar Trigger Button -->
@@ -206,7 +217,8 @@
 {#if isOpen}
   <!-- Modal Overlay Backdrop -->
   <div 
-    class="fixed inset-0 z-[100] bg-black/60 backdrop-blur-xs flex items-start justify-center pt-[10vh] px-4 animate-fade-in"
+    use:portal
+    class="fixed inset-0 z-[999] bg-[#0a0911]/65 backdrop-blur-md flex items-start justify-center pt-[10vh] px-4 animate-fade-in"
     on:click|self={toggleModal}
     on:keydown={handleKeydown}
   >
