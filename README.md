@@ -73,3 +73,7 @@ El CLI ofrece una interfaz limpia para interactuar con tus proyectos:
 ## 📄 Licencia
 
 Este proyecto está bajo el control del autor. Consulta más detalles en los repositorios oficiales de [Claw CLI](https://github.com/BlasVernazza06/claw-cli).
+
+---
+
+*Última actualización de documentación: Julio 2026.*
