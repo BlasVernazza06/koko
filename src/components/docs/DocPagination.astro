@@ -1,0 +1,50 @@
+---
+interface SectionRef {
+  id: string;
+  title: string;
+  category: string;
+}
+
+interface Props {
+  prevSection: SectionRef | null;
+  nextSection: SectionRef | null;
+  lang: 'es' | 'en';
+  basePath: string;
+}
+
+const { prevSection, nextSection, lang, basePath } = Astro.props;
+---
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-16 pt-8 border-t border-border-subtle/60">
+  {prevSection ? (
+    <a href={`${basePath}/${prevSection.id}`} class="group flex flex-col items-start gap-1 p-5 rounded-2xl border border-border-subtle bg-bg-surface/30 hover:border-brand-primary/45 hover:bg-brand-primary/5 transition-all duration-200 text-left">
+      <span class="text-xs font-bold text-text-muted flex items-center gap-1 group-hover:text-brand-primary transition-colors">
+        &larr; {lang === 'es' ? 'Anterior' : 'Previous'}
+      </span>
+      <span class="text-base font-bold text-text-main group-hover:text-brand-primary transition-colors">
+        {prevSection.title}
+      </span>
+      <span class="text-xs text-text-muted/70 group-hover:text-brand-primary/80 transition-colors">
+        {prevSection.category}
+      </span>
+    </a>
+  ) : (
+    <div />
+  )}
+  
+  {nextSection ? (
+    <a href={`${basePath}/${nextSection.id}`} class="group flex flex-col items-end gap-1 p-5 rounded-2xl border border-border-subtle bg-bg-surface/30 hover:border-brand-primary/45 hover:bg-brand-primary/5 transition-all duration-200 text-right">
+      <span class="text-xs font-bold text-text-muted flex items-center gap-1 group-hover:text-brand-primary transition-colors">
+        {lang === 'es' ? 'Siguiente' : 'Next'} &rarr;
+      </span>
+      <span class="text-base font-bold text-text-main group-hover:text-brand-primary transition-colors">
+        {nextSection.title}
+      </span>
+      <span class="text-xs text-text-muted/70 group-hover:text-brand-primary/80 transition-colors">
+        {nextSection.category}
+      </span>
+    </a>
+  ) : (
+    <div />
+  )}
+</div>

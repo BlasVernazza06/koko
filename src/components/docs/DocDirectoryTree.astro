@@ -1,0 +1,36 @@
+---
+interface TreeItem {
+  type: string;
+  name: string;
+  depth: number;
+  description?: string;
+}
+
+interface Props {
+  tree: TreeItem[];
+}
+
+const { tree } = Astro.props;
+---
+
+<div class="rounded-2xl border border-border-subtle bg-bg-surface/40 p-5 shadow-xs font-mono text-xs sm:text-sm space-y-2 select-none overflow-x-auto">
+  {tree.map((item) => (
+    <div class="flex items-center gap-2" style={`padding-left: ${item.depth * 1.5}rem`}>
+      {item.type === 'folder' ? (
+        <svg class="w-4.5 h-4.5 text-brand-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+        </svg>
+      ) : (
+        <svg class="w-4.5 h-4.5 text-text-muted shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+      )}
+      <span class={item.type === 'folder' ? 'text-text-main font-bold' : 'text-text-muted font-medium'}>
+        {item.name}
+      </span>
+      {item.description && (
+        <span class="text-xs text-text-muted/65 pl-2 font-sans font-medium">— {item.description}</span>
+      )}
+    </div>
+  ))}
+</div>

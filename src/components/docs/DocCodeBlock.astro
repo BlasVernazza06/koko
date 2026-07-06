@@ -1,0 +1,23 @@
+---
+interface Props {
+  code: string;
+  lang: 'es' | 'en';
+}
+
+const { code, lang } = Astro.props;
+---
+
+<div class="rounded-xl border border-border-subtle bg-bg-surface overflow-hidden shadow-xs">
+  <div class="flex items-center justify-between px-4 py-2 bg-bg-base/60 border-b border-border-subtle text-xs text-text-muted">
+    <span>Terminal</span>
+  </div>
+  <div class="p-4 font-mono text-xs flex justify-between items-center text-brand-primary whitespace-pre overflow-x-auto">
+    <span>{code}</span>
+    <button 
+      data-copy-text={code}
+      class="copy-btn px-2.5 py-1 bg-bg-base border border-border-subtle rounded-md hover:border-brand-primary/40 text-[10px] text-text-muted hover:text-text-main font-bold select-none cursor-pointer"
+    >
+      {lang === 'es' ? 'Copiar' : 'Copy'}
+    </button>
+  </div>
+</div>
