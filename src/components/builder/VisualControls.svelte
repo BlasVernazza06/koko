@@ -323,6 +323,10 @@
     selectedEmail = config.selectedEmail;
     withDocker = config.withDocker;
     withTurborepo = config.withTurborepo;
+    selectedRuntime = config.selectedRuntime || (config.selectedBack === 'go' || config.selectedBack === 'python' ? 'none' : 'node');
+    withCi = config.withCi || false;
+    withLinter = config.withLinter || false;
+    withTesting = config.withTesting || false;
   }
 
   // Translations

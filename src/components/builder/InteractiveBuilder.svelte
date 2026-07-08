@@ -30,15 +30,15 @@
   let selectedOrm = $state(getDefault('orm', 'drizzle'));
   let selectedApi = $state(getDefault('api', 'trpc'));
   let selectedDb = $state(getDefault('db', 'postgres'));
-  let selectedAuth = $state('better-auth');
+  let selectedAuth = $state(getDefault('auth', 'none'));
   const hasValidator = $derived(selectedTools === 'zod' || selectedTools === 'valibot');
   let selectedPackageManager = $state(getDefault('package_manager', 'pnpm'));
   let selectedTools = $state(getDefault('tools', 'zod'));
-  let selectedPayments = $state(getDefault('payments', 'stripe'));
+  let selectedPayments = $state(getDefault('payments', 'none'));
   let selectedEmail = $state('resend');
   let withDocker = $state(isInfraDefault('docker', true));
   let withCi = $state(isInfraDefault('ci', false));
-  let withLinter = $state(isInfraDefault('linter', true));
+  let withLinter = $state(isInfraDefault('linter', false));
   let withTesting = $state(isInfraDefault('testing', false));
   let withTurborepo = $state(isInfraDefault('turborepo', true));
 
@@ -56,32 +56,55 @@
     }
   });
 
-  const selectedTechOptions = $derived(
-    [
-      { key: 'frontend', id: selectedFront },
-      { key: 'native_frontend', id: selectedNativeFront },
-      { key: 'backend', id: selectedBack },
-      { key: 'runtime', id: selectedRuntime },
-      { key: 'orm', id: selectedOrm },
-      { key: 'api', id: selectedApi },
-      { key: 'db', id: selectedDb },
-      { key: 'package_manager', id: selectedPackageManager },
-      { key: 'tools', id: selectedTools },
-      { key: 'payments', id: selectedPayments }
-    ]
+  const selectedTechOptions = $derived.by(() => {
+    const list = [
+      { key: 'frontend', id: selectedFront, isInfra: false },
+      { key: 'native_frontend', id: selectedNativeFront, isInfra: false },
+      { key: 'backend', id: selectedBack, isInfra: false },
+      { key: 'runtime', id: selectedRuntime, isInfra: false },
+      { key: 'orm', id: selectedOrm, isInfra: false },
+      { key: 'api', id: selectedApi, isInfra: false },
+      { key: 'auth', id: selectedAuth, isInfra: false },
+      { key: 'db', id: selectedDb, isInfra: false },
+      { key: 'package_manager', id: selectedPackageManager, isInfra: false },
+      { key: 'tools', id: selectedTools, isInfra: false },
+      { key: 'payments', id: selectedPayments, isInfra: false },
+      // Infrastructure options mapped to their boolean state
+      { key: 'docker', id: 'docker', active: withDocker, isInfra: true },
+      { key: 'ci', id: 'ci', active: withCi, isInfra: true },
+      { key: 'linter', id: 'linter', active: withLinter, isInfra: true },
+      { key: 'testing', id: 'testing', active: withTesting, isInfra: true },
+      { key: 'turborepo', id: 'turborepo', active: withTurborepo, isInfra: true }
+    ];
+
+    const infraOptions = getInfrastructureOptions('es');
+
+    return list
       .map(item => {
-        const layer = defaultLayers.find(l => l.key === item.key);
-        const option = layer?.options.find(o => o.id === item.id);
-        if (!option || option.isNone) return null;
-        return {
-          layerKey: item.key,
-          id: option.id,
-          name: option.name,
-          iconComponent: option.iconComponent
-        };
+        if (item.isInfra) {
+          if (!item.active) return null;
+          const opt = infraOptions.find(o => o.id === item.id);
+          if (!opt) return null;
+          return {
+            layerKey: item.key,
+            id: opt.id,
+            name: opt.title,
+            iconComponent: opt.iconComponent
+          };
+        } else {
+          const layer = defaultLayers.find(l => l.key === item.key);
+          const option = layer?.options.find(o => o.id === item.id);
+          if (!option || option.isNone) return null;
+          return {
+            layerKey: item.key,
+            id: option.id,
+            name: option.name,
+            iconComponent: option.iconComponent
+          };
+        }
       })
-      .filter(Boolean) as Array<{ layerKey: string; id: string; name: string; iconComponent: any }>
-  );
+      .filter(Boolean) as Array<{ layerKey: string; id: string; name: string; iconComponent: any }>;
+  });
 
   function removeTech(layerKey: string) {
     if (layerKey === 'frontend') selectedFront = 'none';
@@ -90,10 +113,17 @@
     else if (layerKey === 'runtime') selectedRuntime = 'none';
     else if (layerKey === 'orm') selectedOrm = 'none';
     else if (layerKey === 'api') selectedApi = 'none';
+    else if (layerKey === 'auth') selectedAuth = 'none';
     else if (layerKey === 'db') selectedDb = 'none';
     else if (layerKey === 'package_manager') selectedPackageManager = 'none';
     else if (layerKey === 'tools') selectedTools = 'none';
     else if (layerKey === 'payments') selectedPayments = 'none';
+    // Infrastructure options
+    else if (layerKey === 'docker') withDocker = false;
+    else if (layerKey === 'ci') withCi = false;
+    else if (layerKey === 'linter') withLinter = false;
+    else if (layerKey === 'testing') withTesting = false;
+    else if (layerKey === 'turborepo') withTurborepo = false;
   }
 
   let isCopied = $state(false);
