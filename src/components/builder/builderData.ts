@@ -1,4 +1,4 @@
-import { Blocks, Cpu, Database, Settings } from '@lucide/svelte';
+import { Blocks, Cpu, Database, Settings, Shield, GitBranch, Sparkles, TestTube } from '@lucide/svelte';
 const SvglNextjsLogo = '/logos/nextjs.svg';
 const SvglReactLogo = '/logos/react.svg';
 const SvglSvelteLogo = '/logos/svelte.svg';
@@ -17,6 +17,7 @@ const SvglMongoDBLogo = '/logos/mongodb.svg';
 const SvglDrizzleORMLogo = '/logos/drizzle.svg';
 const SvglBetterAuthLogo = '/logos/better-auth_light.svg';
 const SvglAuthjsLogo = '/logos/authjs.svg';
+const SvglClerkLogo = '/logos/clerk.svg';
 const SvglSupabaseLogo = '/logos/supabase.svg';
 const SvglZodLogo = '/logos/zod.svg';
 const SvglDockerLogo = '/logos/docker.svg';
@@ -117,9 +118,9 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Cpu,
       colorClass: 'text-brand-primary',
       options: [
-        { id: 'hono', name: 'Hono', desc: isEs ? 'Framework web ultrarrápido' : 'Ultrafast web framework', hoverColor: 'group-hover/btn:text-[#e36002]', activeColor: 'text-[#e36002]', iconComponent: SvglHonoLogo, default: true },
+        { id: 'hono', name: 'Hono', desc: isEs ? 'Framework web ultrarrápido' : 'Ultrafast web framework', hoverColor: 'group-hover/btn:text-[#e36002]', activeColor: 'text-[#e36002]', iconComponent: SvglHonoLogo },
         { id: 'elysia', name: 'Elysia', desc: isEs ? 'Framework web para TypeScript' : 'TypeScript web framework', hoverColor: 'group-hover/btn:text-[#42b883]', activeColor: 'text-[#42b883]', iconComponent: SvglBunLogo },
-        { id: 'express', name: 'Express', desc: isEs ? 'Framework popular de Node.js' : 'Popular Node.js framework', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: SvglExpressjsLogo },
+        { id: 'express', name: 'Express', desc: isEs ? 'Framework popular de Node.js' : 'Popular Node.js framework', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: SvglExpressjsLogo, default: true },
         { id: 'fastify', name: 'Fastify', desc: isEs ? 'Framework web rápido y de bajo consumo para Node.js' : 'Fast, low-overhead web framework for Node.js', hoverColor: 'group-hover/btn:text-[#ffffff]', activeColor: 'text-[#ffffff]', iconComponent: SvglFastifyLogo },
         { id: 'convex', name: 'Convex', desc: isEs ? 'Backend reactivo como servicio' : 'Reactive backend-as-a-service', hoverColor: 'group-hover/btn:text-[#f43f5e]', activeColor: 'text-[#f43f5e]', iconComponent: SvglMongoDBLogo },
         { id: 'fullstack-next', name: 'Fullstack Next.js', desc: isEs ? 'Usa las rutas de API integradas de Next.js' : 'Use Next.js built-in API routes', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglNextjsLogo },
@@ -137,8 +138,8 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Cpu,
       colorClass: 'text-brand-secondary',
       options: [
-        { id: 'bun', name: 'Bun', desc: isEs ? 'Runtime y conjunto de herramientas rápidas de JS' : 'Fast JavaScript runtime & toolkit', hoverColor: 'group-hover/btn:text-[#fbf0e9]', activeColor: 'text-[#fbf0e9]', iconComponent: SvglBunLogo, default: true },
-        { id: 'node', name: 'Node.js', desc: isEs ? 'Entorno de ejecución clásico de JavaScript' : 'JavaScript runtime environment', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: NodejsIcon },
+        { id: 'bun', name: 'Bun', desc: isEs ? 'Runtime y conjunto de herramientas rápidas de JS' : 'Fast JavaScript runtime & toolkit', hoverColor: 'group-hover/btn:text-[#fbf0e9]', activeColor: 'text-[#fbf0e9]', iconComponent: SvglBunLogo },
+        { id: 'node', name: 'Node.js', desc: isEs ? 'Entorno de ejecución clásico de JavaScript' : 'JavaScript runtime environment', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: NodejsIcon, default: true },
         { id: 'cloudflare', name: 'Cloudflare Workers', desc: isEs ? 'Entorno serverless para el edge' : 'Serverless runtime for the edge', hoverColor: 'group-hover/btn:text-[#f38020]', activeColor: 'text-[#f38020]', iconComponent: SvglRustLogo },
         { id: 'none', name: isEs ? 'Sin Runtime' : 'No Runtime', desc: isEs ? 'Sin entorno de ejecución específico' : 'No specific runtime', isNone: true }
       ]
@@ -163,9 +164,9 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Settings,
       colorClass: 'text-brand-secondary',
       options: [
-        { id: 'trpc', name: 'tRPC', desc: isEs ? 'APIs seguras para tipos de extremo a extremo' : 'End-to-end typesafe APIs', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglBetterAuthLogo, default: true },
+        { id: 'trpc', name: 'tRPC', desc: isEs ? 'APIs seguras para tipos de extremo a extremo' : 'End-to-end typesafe APIs', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglBetterAuthLogo },
         { id: 'orpc', name: 'oRPC', desc: isEs ? 'APIs seguras para tipos de manera simple' : 'Typesafe APIs Made Simple', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglValibotLogo },
-        { id: 'none', name: isEs ? 'Sin API' : 'No API', desc: isEs ? 'Sin capa de API (rutas de API deshabilitadas)' : 'No API layer (API routes disabled)', isNone: true }
+        { id: 'none', name: isEs ? 'Sin API' : 'No API', desc: isEs ? 'Sin capa de API (rutas de API deshabilitadas)' : 'No API layer (API routes disabled)', isNone: true, default: true }
       ]
     },
     {
@@ -181,9 +182,22 @@ export const getLayers = (lang: string): Layer[] => {
       ]
     },
     {
+      key: 'auth',
+      label: isEs ? 'Autenticación' : 'Authentication',
+      step: isEs ? '07 / CONTROL DE ACCESO' : '07 / ACCESS CONTROL',
+      icon: Shield,
+      colorClass: 'text-brand-primary',
+      options: [
+        { id: 'better-auth', name: 'Better Auth', desc: isEs ? 'Framework de autenticación moderno y flexible' : 'Modern and flexible authentication framework', hoverColor: 'group-hover/btn:text-brand-primary', activeColor: 'text-brand-primary', iconComponent: SvglBetterAuthLogo },
+        { id: 'clerk', name: 'Clerk', desc: isEs ? 'Autenticación completa como servicio y componentes UI' : 'Complete authentication-as-a-service with UI components', hoverColor: 'group-hover/btn:text-[#6C47FF]', activeColor: 'text-[#6C47FF]', iconComponent: SvglClerkLogo },
+        { id: 'authjs', name: 'Auth.js', desc: isEs ? 'Autenticación robusta y de código abierto para Next.js/SvelteKit' : 'Robust open-source authentication for Next.js/SvelteKit', hoverColor: 'group-hover/btn:text-[#a11ec6]', activeColor: 'text-[#a11ec6]', iconComponent: SvglAuthjsLogo },
+        { id: 'none', name: isEs ? 'Sin Autenticación' : 'No Authentication', desc: isEs ? 'Sin sistema de autenticación configurado' : 'No authentication system configured', isNone: true, default: true }
+      ]
+    },
+    {
       key: 'tools',
       label: isEs ? 'Herramientas' : 'Tools',
-      step: isEs ? '07 / HERRAMIENTAS DE UTILIDAD' : '07 / UTILITY TOOLS',
+      step: isEs ? '08 / HERRAMIENTAS DE UTILIDAD' : '08 / UTILITY TOOLS',
       icon: Blocks,
       colorClass: 'text-brand-primary',
       options: [
@@ -199,19 +213,19 @@ export const getLayers = (lang: string): Layer[] => {
     {
       key: 'payments',
       label: isEs ? 'Pagos' : 'Payments',
-      step: isEs ? '08 / MONETIZACIÓN' : '08 / MONETIZATION',
+      step: isEs ? '09 / MONETIZACIÓN' : '09 / MONETIZATION',
       icon: Database,
       colorClass: 'text-brand-secondary',
       options: [
-        { id: 'stripe', name: 'Stripe', desc: isEs ? 'Infraestructura global de pagos y SDK.' : 'Global payment infrastructure SDK.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglStripeLogo, default: true },
+        { id: 'stripe', name: 'Stripe', desc: isEs ? 'Infraestructura global de pagos y SDK.' : 'Global payment infrastructure SDK.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglStripeLogo },
         { id: 'polar', name: 'Polar.sh', desc: isEs ? 'Monetización para desarrolladores y pagos SaaS.' : 'Developer monetization & SaaS payments.', hoverColor: 'group-hover/btn:text-[#1d9bf0]', activeColor: 'text-[#1d9bf0]', iconComponent: SvglPolarLogo },
-        { id: 'none', name: isEs ? 'Sin Pagos' : 'No Payments', desc: isEs ? 'Sin pasarela de pagos configurada.' : 'No monetization system configured.', isNone: true }
+        { id: 'none', name: isEs ? 'Sin Pagos' : 'No Payments', desc: isEs ? 'Sin pasarela de pagos configurada.' : 'No monetization system configured.', isNone: true, default: true }
       ]
     },
     {
       key: 'db',
       label: isEs ? 'Base de Datos' : 'Database',
-      step: isEs ? '09 / ALMACENAMIENTO DE DATOS' : '09 / DATA STORAGE',
+      step: isEs ? '10 / ALMACENAMIENTO DE DATOS' : '10 / DATA STORAGE',
       icon: Database,
       colorClass: 'text-brand-primary',
       options: [
@@ -240,22 +254,21 @@ export const getInfrastructureOptions = (lang: string): InfraOption[] => {
       id: 'ci',
       title: isEs ? 'Flujo de GitHub Actions' : 'GitHub Actions',
       description: isEs ? 'Configurar workflows de GitHub Actions para CI/CD continuo' : 'Configure GitHub Actions workflows for continuous CI/CD',
-      lucideIcon: 'ci',
+      iconComponent: GitBranch,
       bindingKey: 'withCi'
     },
     {
       id: 'linter',
       title: isEs ? 'Configuración de Biome / Linter' : 'Biome / Linter Config',
       description: isEs ? 'Añadir reglas estándar de formateo y linter de Biome' : 'Add standard Biome formatting and linting rules',
-      lucideIcon: 'linter',
-      bindingKey: 'withLinter',
-      default: true
+      iconComponent: Sparkles,
+      bindingKey: 'withLinter'
     },
     {
       id: 'testing',
       title: isEs ? 'Entorno de Pruebas Unitarias' : 'Unit Testing Environment',
       description: isEs ? 'Configurar Vitest y suite de pruebas unitarias' : 'Set up Vitest and unit testing environment suite',
-      lucideIcon: 'testing',
+      iconComponent: TestTube,
       bindingKey: 'withTesting'
     },
     {
