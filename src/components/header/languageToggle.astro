@@ -1,5 +1,14 @@
 ---
-const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
+const pathname = Astro.url.pathname;
+const currentLang = pathname.startsWith('/en') ? 'en' : 'es';
+
+const esUrl = pathname.startsWith('/en') 
+  ? pathname.replace(/^\/en/, '') || '/' 
+  : pathname;
+
+const enUrl = pathname.startsWith('/en') 
+  ? pathname 
+  : (pathname === '/' ? '/en' : `/en${pathname}`);
 ---
 
 <div class="relative inline-block text-left lang-toggle-container font-sans">
@@ -24,7 +33,7 @@ const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
   >
     <!-- Español Option -->
     <a
-      href="/"
+      href={esUrl}
       class={`w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-left transition-colors cursor-pointer ${currentLang === 'es' ? 'bg-brand-primary/10 text-brand-primary font-bold' : 'text-text-muted hover:bg-bg-base/60 hover:text-text-main'}`}
       role="menuitem"
     >
@@ -37,7 +46,7 @@ const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
 
     <!-- English Option -->
     <a
-      href="/en"
+      href={enUrl}
       class={`w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-left transition-colors cursor-pointer ${currentLang === 'en' ? 'bg-brand-primary/10 text-brand-primary font-bold' : 'text-text-muted hover:bg-bg-base/60 hover:text-text-main'}`}
       role="menuitem"
     >
@@ -118,7 +127,6 @@ const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
 
     document.addEventListener('click', (e) => {
       if (isOpen && !container?.contains(e.target as Node)) {
-        isOpen = true;
         toggleDropdown();
       }
     });
