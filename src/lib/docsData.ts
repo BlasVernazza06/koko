@@ -73,7 +73,7 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           anchorId: 'builder',
           title: 'Stack Builder (Constructor Web)',
           body: [
-            '• Visita la sección /new en nuestro sitio web para arrastrar y configurar tu stack preferido de manera visual.',
+            '• Visita la sección /builder en nuestro sitio web para arrastrar y configurar tu stack preferido de manera visual.',
             '• Una vez seleccionado el stack, el constructor te entregará el comando exacto con los flags correspondientes para que lo pegues y ejecutes en tu consola local.'
           ]
         },
@@ -350,7 +350,7 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           anchorId: 'builder',
           title: 'Stack Builder (Web UI)',
           body: [
-            '• Head over to the /new section on our website to visually configure and mix your preferred stack options.',
+            '• Head over to the /en/builder section on our website to visually configure and mix your preferred stack options.',
             '• Once selected, the builder will output the exact command with the corresponding flags to copy and run in your terminal.'
           ]
         },
