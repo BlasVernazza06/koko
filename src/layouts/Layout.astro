@@ -12,6 +12,12 @@ const defaultDesc = lang === 'es'
 const metaTitle = title || defaultTitle;
 const metaDesc = description || defaultDesc;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin);
+
+const pathname = Astro.url.pathname;
+const siteOrigin = Astro.site || Astro.url.origin;
+const cleanPath = pathname.replace(/^\/en/, '').replace(/\/$/, '') || '/';
+const esAlternateURL = new URL(cleanPath, siteOrigin);
+const enAlternateURL = new URL(cleanPath === '/' ? '/en' : `/en${cleanPath}`, siteOrigin);
 ---
 <!doctype html>
 <html lang={lang} data-lang={lang}>
@@ -30,6 +36,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin)
 		<meta name="title" content={metaTitle} />
 		<meta name="description" content={metaDesc} />
 		<link rel="canonical" href={canonicalURL} />
+		<link rel="alternate" hreflang="es" href={esAlternateURL.href} />
+		<link rel="alternate" hreflang="en" href={enAlternateURL.href} />
+		<link rel="alternate" hreflang="x-default" href={esAlternateURL.href} />
 		<meta name="robots" content="index, follow" />
 
 		<!-- Open Graph / Facebook -->
