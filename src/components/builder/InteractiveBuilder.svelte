@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { templates } from './templates';
   import VisualControls from './VisualControls.svelte';
   import VisualPreview from './VisualPreview.svelte';
   import { Terminal, Folder, FileCode, Check, Copy, Settings, Cpu, Database, Blocks } from '@lucide/svelte';
@@ -41,6 +43,32 @@
   let withLinter = $state(isInfraDefault('linter', false));
   let withTesting = $state(isInfraDefault('testing', false));
   let withTurborepo = $state(isInfraDefault('turborepo', true));
+
+  onMount(() => {
+    const params = new URLSearchParams(window.location.search);
+    const presetId = params.get('preset');
+    if (presetId) {
+      const template = templates.find(t => t.id === presetId);
+      if (template) {
+        projectName = 'my-koko-app';
+        selectedFront = template.config.selectedFront;
+        selectedNativeFront = template.config.selectedNativeFront;
+        selectedBack = template.config.selectedBack;
+        selectedDb = template.config.selectedDb;
+        selectedAuth = template.config.selectedAuth;
+        selectedPackageManager = template.config.selectedPackageManager;
+        selectedTools = template.config.selectedTools;
+        selectedPayments = template.config.selectedPayments;
+        selectedEmail = template.config.selectedEmail;
+        withDocker = template.config.withDocker;
+        withTurborepo = template.config.withTurborepo;
+        selectedRuntime = template.config.selectedRuntime || (template.config.selectedBack === 'go' || template.config.selectedBack === 'python' ? 'none' : 'node');
+        withCi = template.config.withCi || false;
+        withLinter = template.config.withLinter || false;
+        withTesting = template.config.withTesting || false;
+      }
+    }
+  });
 
   // Reactively auto-resolve selection conflicts when users change backend or frontend
   $effect(() => {

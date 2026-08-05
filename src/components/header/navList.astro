@@ -1,43 +1,250 @@
 ---
 const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
 
-const NavItems = [
-  { 
-    labelEs: 'Docs', 
-    labelEn: 'Docs', 
-    href: currentLang === 'es' ? '/docs' : '/en/docs' 
+const docsDropdownItems = [
+  {
+    titleEs: 'Inicio Rápido',
+    titleEn: 'Quick Start',
+    descEs: 'Empieza en minutos con Claw',
+    descEn: 'Get started in minutes with Claw',
+    href: '/docs/quick-start',
+    hrefEn: '/en/docs/quick-start'
   },
-  { 
-    labelEs: 'Builder', 
-    labelEn: 'Builder', 
-    href: currentLang === 'es' ? '/builder' : '/en/builder' 
+  {
+    titleEs: 'Comandos CLI',
+    titleEn: 'CLI Commands',
+    descEs: 'Referencia completa del CLI',
+    descEn: 'Complete CLI reference guide',
+    href: '/docs/cli-commands',
+    hrefEn: '/en/docs/cli-commands'
   },
-  { 
-    labelEs: 'Recetas', 
-    labelEn: 'Showcase', 
-    href: currentLang === 'es' ? '/#showcase' : '/en/#showcase',
-    isHighlighted: true 
+  {
+    titleEs: 'Limitaciones',
+    titleEn: 'Limitations',
+    descEs: 'Restricciones y límites conocidos',
+    descEn: 'Known limitations & boundaries',
+    href: '/docs/cli-limitations',
+    hrefEn: '/en/docs/cli-limitations'
   },
-  { 
-    labelEs: 'Demo', 
-    labelEn: 'Demo', 
-    href: currentLang === 'es' ? '/#terminal' : '/en/#terminal' 
+  {
+    titleEs: 'Roadmap',
+    titleEn: 'Roadmap',
+    descEs: 'Planificación y desarrollo futuro',
+    descEn: 'Future development & plans',
+    href: '/docs/cli-roadmap',
+    hrefEn: '/en/docs/cli-roadmap'
+  },
+  {
+    titleEs: 'Estructura',
+    titleEn: 'Structure',
+    descEs: 'Organización de archivos generada',
+    descEn: 'Generated file structure layout',
+    href: '/docs/project-structure',
+    hrefEn: '/en/docs/project-structure'
+  },
+  {
+    titleEs: 'Claw Config',
+    titleEn: 'Claw Config',
+    descEs: 'Manifiesto y claw.config.json',
+    descEn: 'Manifest & claw.config.json',
+    href: '/docs/claw-config',
+    hrefEn: '/en/docs/claw-config'
+  },
+  {
+    titleEs: 'Contribución',
+    titleEn: 'Contributing',
+    descEs: 'Cómo colaborar en Claw',
+    descEn: 'How to collaborate on Claw',
+    href: '/docs/contributing',
+    hrefEn: '/en/docs/contributing'
+  },
+  {
+    titleEs: 'FAQ',
+    titleEn: 'FAQ',
+    descEs: 'Preguntas y respuestas comunes',
+    descEn: 'Frequently asked questions',
+    href: '/docs/faq',
+    hrefEn: '/en/docs/faq'
+  },
+  {
+    titleEs: 'Ver Todo',
+    titleEn: 'View All',
+    descEs: 'Explora toda la documentación',
+    descEn: 'Explore all documentation',
+    href: '/docs',
+    hrefEn: '/en/docs'
+  }
+];
+
+const recipesDropdownItems = [
+  {
+    id: 'saas-next',
+    nameEs: 'SaaS Next.js',
+    nameEn: 'SaaS Next.js',
+    descEs: 'Next.js + Go + Prisma',
+    descEn: 'Next.js + Go + Prisma',
+    icon: '/logos/nextjs.svg'
+  },
+  {
+    id: 'fullstack-svelte',
+    nameEs: 'Svelte 5 + NestJS',
+    nameEn: 'Svelte 5 + NestJS',
+    descEs: 'SvelteKit + NestJS + Drizzle',
+    descEn: 'SvelteKit + NestJS + Drizzle',
+    icon: '/logos/svelte.svg'
+  },
+  {
+    id: 'mern',
+    nameEs: 'Classic MERN',
+    nameEn: 'Classic MERN',
+    descEs: 'React + Express + MongoDB',
+    descEn: 'React + Express + MongoDB',
+    icon: '/logos/mongodb.svg'
+  },
+  {
+    id: 'pern',
+    nameEs: 'Modern PERN',
+    nameEn: 'Modern PERN',
+    descEs: 'React + Express + Postgres',
+    descEn: 'React + Express + Postgres',
+    icon: '/logos/postgresql.svg'
+  },
+  {
+    id: 'python-fastapi',
+    nameEs: 'FastAPI + React',
+    nameEn: 'FastAPI + React',
+    descEs: 'React + FastAPI + Supabase',
+    descEn: 'React + FastAPI + Supabase',
+    icon: '/logos/python.svg'
+  },
+  {
+    id: 'mobile-go',
+    nameEs: 'Native + Go',
+    nameEn: 'Native + Go',
+    descEs: 'Expo + Go Fiber + Supabase',
+    descEn: 'Expo + Go Fiber + Supabase',
+    icon: '/logos/react.svg'
   }
 ];
 ---
 
-<nav class="flex items-center gap-6 select-none font-sans">
-  {NavItems.map((item) => (
+<nav class="flex items-center gap-6 select-none font-sans relative">
+  <!-- Docs with Dropdown -->
+  <div class="relative group py-2">
     <a 
-      href={item.href}
-      class={`text-[13px] font-medium transition-colors duration-200 hover:text-text-main
-        ${item.isHighlighted 
-          ? 'text-brand-secondary hover:text-brand-secondary/80' 
-          : 'text-text-muted'
-        }`}
+      href={currentLang === 'es' ? '/docs' : '/en/docs'}
+      class="text-[13px] font-medium text-text-muted hover:text-text-main transition-colors duration-200 flex items-center gap-1 cursor-pointer"
     >
-      <span class="lang-es">{item.labelEs}</span>
-      <span class="lang-en">{item.labelEn}</span>
+      <span class="lang-es">Docs</span>
+      <span class="lang-en">Docs</span>
+      <svg class="w-3 h-3 opacity-60 group-hover:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
     </a>
-  ))}
+    
+    <!-- Dropdown absolute element -->
+    <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-250 transform scale-95 group-hover:scale-100 origin-top-left z-50">
+      <div class="bg-bg-surface border border-border-subtle rounded-2xl p-6 shadow-xl backdrop-blur-md w-[600px]">
+        <div class="border-l-2 border-brand-secondary pl-2.5">
+          <span class="block text-xs font-bold uppercase tracking-widest text-text-main">
+            <span class="lang-es">Documentación de Claw</span>
+            <span class="lang-en">Claw Documentation</span>
+          </span>
+          <span class="block text-[11px] text-text-muted mt-0.5 leading-normal">
+            <span class="lang-es">Aprende a dominar Claw, configurar la estructura y resolver dudas</span>
+            <span class="lang-en">Learn how to master Claw, configure structure and resolve questions</span>
+          </span>
+        </div>
+        
+        <div class="grid grid-cols-3 gap-3 mt-4">
+          {docsDropdownItems.map((doc) => (
+            <a 
+              href={currentLang === 'en' ? doc.hrefEn : doc.href} 
+              class="group/doc flex flex-col gap-1.5 p-3 rounded-xl border border-border-subtle bg-bg-base/40 hover:border-brand-secondary/50 hover:bg-bg-surface transition-all duration-150 text-left"
+            >
+              <span class="text-xs font-bold text-text-main group-hover/doc:text-brand-secondary transition-colors">
+                <span class="lang-es">{doc.titleEs}</span>
+                <span class="lang-en">{doc.titleEn}</span>
+              </span>
+              <span class="text-[10px] text-text-muted leading-tight">
+                <span class="lang-es">{doc.descEs}</span>
+                <span class="lang-en">{doc.descEn}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Builder (Simple link) -->
+  <a 
+    href={currentLang === 'es' ? '/builder' : '/en/builder'}
+    class="text-[13px] font-medium text-text-muted hover:text-text-main transition-colors duration-200 py-2"
+  >
+    <span class="lang-es">Builder</span>
+    <span class="lang-en">Builder</span>
+  </a>
+
+  <!-- Recetas with Dropdown -->
+  <div class="relative group py-2">
+    <a 
+      href={currentLang === 'es' ? '/#showcase' : '/en/#showcase'}
+      class="text-[13px] font-medium text-brand-secondary hover:text-brand-secondary/80 transition-colors duration-200 flex items-center gap-1 cursor-pointer"
+    >
+      <span class="lang-es">Recetas</span>
+      <span class="lang-en">Showcase</span>
+      <svg class="w-3 h-3 opacity-60 group-hover:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
+    </a>
+    
+    <!-- Dropdown absolute element -->
+    <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-250 transform scale-95 group-hover:scale-100 origin-top-left z-50">
+      <div class="bg-bg-surface border border-border-subtle rounded-2xl p-6 shadow-xl backdrop-blur-md w-[480px]">
+        <div class="border-l-2 border-brand-primary pl-2.5">
+          <span class="block text-xs font-bold uppercase tracking-widest text-text-main">
+            <span class="lang-es">Recetas Preconfiguradas</span>
+            <span class="lang-en">Preconfigured Recipes</span>
+          </span>
+          <span class="block text-[11px] text-text-muted mt-0.5 leading-normal">
+            <span class="lang-es">Elige una receta base para iniciar tu proyecto en segundos</span>
+            <span class="lang-en">Select a base template to bootstrap your project in seconds</span>
+          </span>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3 mt-4">
+          {recipesDropdownItems.map((recipe) => (
+            <a 
+              href={currentLang === 'en' ? `/en/builder?preset=${recipe.id}` : `/builder?preset=${recipe.id}`} 
+              class="group/card flex items-center gap-3 p-3 rounded-xl border border-border-subtle bg-bg-base/40 hover:border-brand-primary/50 hover:bg-bg-surface transition-all duration-150 text-left"
+            >
+              <div class="w-8 h-8 rounded-lg bg-bg-base border border-border-subtle flex items-center justify-center shrink-0">
+                <img src={recipe.icon} class="w-5 h-5 object-contain" alt="" />
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-bold text-text-main group-hover/card:text-brand-primary transition-colors">
+                  <span class="lang-es">{recipe.nameEs}</span>
+                  <span class="lang-en">{recipe.nameEn}</span>
+                </span>
+                <span class="text-[10px] text-text-muted leading-tight line-clamp-1">
+                  <span class="lang-es">{recipe.descEs}</span>
+                  <span class="lang-en">{recipe.descEn}</span>
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Demo (Simple link) -->
+  <a 
+    href={currentLang === 'es' ? '/#terminal' : '/en/#terminal'}
+    class="text-[13px] font-medium text-text-muted hover:text-text-main transition-colors duration-200 py-2"
+  >
+    <span class="lang-es">Demo</span>
+    <span class="lang-en">Demo</span>
+  </a>
 </nav>
