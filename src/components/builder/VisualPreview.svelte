@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Blocks, Folder } from '@lucide/svelte';
-  import { fade } from 'svelte/transition';
+  import { fade, scale } from 'svelte/transition';
+  import { flip } from 'svelte/animate';
   import PreviewCommand from './PreviewCommand.svelte';
   import PreviewStructure from './PreviewStructure.svelte';
   import SelectedTechBadge from './SelectedTechBadge.svelte';
@@ -84,12 +85,19 @@
 
       {#if selectedTechs.length > 0}
         <div class="flex flex-wrap gap-2.5">
-          {#each selectedTechs as tech}
-            <SelectedTechBadge
-              name={tech.name}
-              iconComponent={tech.iconComponent}
-              onremove={() => onremove(tech.layerKey)}
-            />
+          {#each selectedTechs as tech (tech.layerKey)}
+            <div
+              in:scale={{ duration: 250, start: 0.8 }}
+              out:scale={{ duration: 150, start: 0.8 }}
+              animate:flip={{ duration: 200 }}
+              class="inline-block"
+            >
+              <SelectedTechBadge
+                name={tech.name}
+                iconComponent={tech.iconComponent}
+                onremove={() => onremove(tech.layerKey)}
+              />
+            </div>
           {/each}
         </div>
       {:else}
@@ -102,3 +110,4 @@
     </div>
   {/if}
 </div>
+

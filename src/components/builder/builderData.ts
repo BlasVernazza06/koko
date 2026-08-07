@@ -1,4 +1,4 @@
-import { Blocks, Cpu, Database, Settings, Shield, GitBranch, Sparkles, TestTube } from '@lucide/svelte';
+import { Monitor, Smartphone, Server, Cpu, Database, Network, Package, KeyRound, Wrench, CreditCard, GitBranch, Sparkles, TestTube } from '@lucide/svelte';
 const SvglNextjsLogo = '/logos/nextjs.svg';
 const SvglReactLogo = '/logos/react.svg';
 const SvglSvelteLogo = '/logos/svelte.svg';
@@ -84,7 +84,7 @@ export const getLayers = (lang: string): Layer[] => {
       key: 'frontend',
       label: isEs ? 'Web Frontend' : 'Web Frontend',
       step: isEs ? '01 / CLIENTE WEB' : '01 / WEB CLIENT',
-      icon: Blocks,
+      icon: Monitor,
       colorClass: 'text-brand-secondary',
       options: [
         { id: 'nextjs', name: 'Next.js', desc: isEs ? 'Framework SSR de React, App Router.' : 'React SSR Framework, App Router.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglNextjsLogo, default: true },
@@ -102,7 +102,7 @@ export const getLayers = (lang: string): Layer[] => {
       key: 'native_frontend',
       label: isEs ? 'Frontend Nativo' : 'Native Frontend',
       step: isEs ? '02 / CLIENTE MÓVIL' : '02 / MOBILE CLIENT',
-      icon: Blocks,
+      icon: Smartphone,
       colorClass: 'text-brand-secondary',
       options: [
         { id: 'expo-bare', name: 'Expo + Bare', desc: isEs ? 'Expo con StyleSheet (sin librería de estilos)' : 'Expo with StyleSheet (no styling library)', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: ExpoIcon },
@@ -115,7 +115,7 @@ export const getLayers = (lang: string): Layer[] => {
       key: 'backend',
       label: 'Backend',
       step: isEs ? '02 / ARQUITECTURA DE SERVICIO' : '02 / SERVICE ARCHITECTURE',
-      icon: Cpu,
+      icon: Server,
       colorClass: 'text-brand-primary',
       options: [
         { id: 'hono', name: 'Hono', desc: isEs ? 'Framework web ultrarrápido' : 'Ultrafast web framework', hoverColor: 'group-hover/btn:text-[#e36002]', activeColor: 'text-[#e36002]', iconComponent: SvglHonoLogo },
@@ -161,7 +161,7 @@ export const getLayers = (lang: string): Layer[] => {
       key: 'api',
       label: 'API',
       step: isEs ? '05 / PROTOCOLO API' : '05 / API PROTOCOL',
-      icon: Settings,
+      icon: Network,
       colorClass: 'text-brand-secondary',
       options: [
         { id: 'trpc', name: 'tRPC', desc: isEs ? 'APIs seguras para tipos de extremo a extremo' : 'End-to-end typesafe APIs', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglBetterAuthLogo },
@@ -173,7 +173,7 @@ export const getLayers = (lang: string): Layer[] => {
       key: 'package_manager',
       label: isEs ? 'Gestor de Paquetes' : 'Package Manager',
       step: isEs ? '06 / GESTOR DE PAQUETES' : '06 / PACKAGE MANAGER',
-      icon: Settings,
+      icon: Package,
       colorClass: 'text-brand-secondary',
       options: [
         { id: 'npm', name: 'npm', desc: isEs ? 'Gestor de paquetes predeterminado de Node.js.' : 'Default Node.js package manager.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglNPMLogo },
@@ -185,7 +185,7 @@ export const getLayers = (lang: string): Layer[] => {
       key: 'auth',
       label: isEs ? 'Autenticación' : 'Authentication',
       step: isEs ? '07 / CONTROL DE ACCESO' : '07 / ACCESS CONTROL',
-      icon: Shield,
+      icon: KeyRound,
       colorClass: 'text-brand-primary',
       options: [
         { id: 'better-auth', name: 'Better Auth', desc: isEs ? 'Framework de autenticación moderno y flexible' : 'Modern and flexible authentication framework', hoverColor: 'group-hover/btn:text-brand-primary', activeColor: 'text-brand-primary', iconComponent: SvglBetterAuthLogo },
@@ -198,7 +198,7 @@ export const getLayers = (lang: string): Layer[] => {
       key: 'tools',
       label: isEs ? 'Herramientas' : 'Tools',
       step: isEs ? '08 / HERRAMIENTAS DE UTILIDAD' : '08 / UTILITY TOOLS',
-      icon: Blocks,
+      icon: Wrench,
       colorClass: 'text-brand-primary',
       options: [
         { id: 'zod', name: 'Zod', desc: isEs ? 'Validación de esquemas enfocada en TypeScript.' : 'TypeScript-first schema validation library.', hoverColor: 'group-hover/btn:text-[#3e67ad]', activeColor: 'text-[#3e67ad]', iconComponent: ZodIcon, default: true },
@@ -214,7 +214,7 @@ export const getLayers = (lang: string): Layer[] => {
       key: 'payments',
       label: isEs ? 'Pagos' : 'Payments',
       step: isEs ? '09 / MONETIZACIÓN' : '09 / MONETIZATION',
-      icon: Database,
+      icon: CreditCard,
       colorClass: 'text-brand-secondary',
       options: [
         { id: 'stripe', name: 'Stripe', desc: isEs ? 'Infraestructura global de pagos y SDK.' : 'Global payment infrastructure SDK.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglStripeLogo },

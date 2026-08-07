@@ -67,6 +67,24 @@
         withLinter = template.config.withLinter || false;
         withTesting = template.config.withTesting || false;
       }
+    } else {
+      if (params.has('front')) selectedFront = params.get('front')!;
+      if (params.has('mobile')) selectedNativeFront = params.get('mobile')!;
+      if (params.has('back')) selectedBack = params.get('back')!;
+      if (params.has('runtime')) selectedRuntime = params.get('runtime')!;
+      if (params.has('orm')) selectedOrm = params.get('orm')!;
+      if (params.has('api')) selectedApi = params.get('api')!;
+      if (params.has('db')) selectedDb = params.get('db')!;
+      if (params.has('auth')) selectedAuth = params.get('auth')!;
+      if (params.has('pm')) selectedPackageManager = params.get('pm')!;
+      if (params.has('tools')) selectedTools = params.get('tools')!;
+      if (params.has('payments')) selectedPayments = params.get('payments')!;
+      if (params.has('email')) selectedEmail = params.get('email')!;
+      if (params.has('docker')) withDocker = params.get('docker') === 'true';
+      if (params.has('ci')) withCi = params.get('ci') === 'true';
+      if (params.has('linter')) withLinter = params.get('linter') === 'true';
+      if (params.has('test')) withTesting = params.get('test') === 'true';
+      if (params.has('turbo')) withTurborepo = params.get('turbo') === 'true';
     }
   });
 

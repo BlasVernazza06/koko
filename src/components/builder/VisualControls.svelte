@@ -3,6 +3,7 @@
   import ManualConfigView from './ManualConfigView.svelte';
   import { templates } from './templates';
   import type { KokoTemplateConfig } from './templates';
+  import { SlidersHorizontal, Layers } from '@lucide/svelte';
 
   // Svelte 5 bindable props
   let {
@@ -71,24 +72,26 @@
 
 <div class="relative z-10 font-sans">
   <!-- Tabs connecting to the background container below -->
-  <div class="flex gap-1 -mb-[1px] relative z-20 select-none">
+  <div class="flex gap-2 -mb-[1.5px] relative z-20 select-none">
     <button
       type="button"
-      class="border border-border-subtle border-b-border-subtle text-[11px] font-bold uppercase tracking-wider px-7 py-3 rounded-t-xl cursor-pointer transition-all duration-200 {activeTab === 'manual' ? 'bg-bg-base text-brand-primary border-b-bg-base font-extrabold shadow-[0_-2px_10px_rgba(90,79,196,0.05)]' : 'bg-bg-surface text-text-muted hover:text-text-main hover:bg-bg-base'}"
+      class="flex items-center gap-2 border border-border-subtle border-b-border-subtle text-[11px] font-bold uppercase tracking-wider px-6 py-3.5 rounded-t-2xl cursor-pointer transition-all duration-300 active:scale-[0.98] {activeTab === 'manual' ? 'bg-bg-base text-brand-primary border-b-bg-base font-extrabold shadow-[0_-2px_12px_rgba(90,79,196,0.06)]' : 'bg-bg-surface text-text-muted hover:text-text-main hover:bg-bg-base'}"
       onclick={() => activeTab = 'manual'}
     >
-      ⚙️ {lang === 'es' ? 'Manual' : 'Manual'}
+      <SlidersHorizontal size={13} />
+      <span>{lang === 'es' ? 'Configuración Manual' : 'Manual Config'}</span>
     </button>
     <button
       type="button"
-      class="border border-border-subtle border-b-border-subtle text-[11px] font-bold uppercase tracking-wider px-7 py-3 rounded-t-xl cursor-pointer transition-all duration-200 {activeTab === 'presets' ? 'bg-bg-base text-brand-primary border-b-bg-base font-extrabold shadow-[0_-2px_10px_rgba(90,79,196,0.05)]' : 'bg-bg-surface text-text-muted hover:text-text-main hover:bg-bg-base'}"
+      class="flex items-center gap-2 border border-border-subtle border-b-border-subtle text-[11px] font-bold uppercase tracking-wider px-6 py-3.5 rounded-t-2xl cursor-pointer transition-all duration-300 active:scale-[0.98] {activeTab === 'presets' ? 'bg-bg-base text-brand-primary border-b-bg-base font-extrabold shadow-[0_-2px_12px_rgba(90,79,196,0.06)]' : 'bg-bg-surface text-text-muted hover:text-text-main hover:bg-bg-base'}"
       onclick={() => activeTab = 'presets'}
     >
-      📁 {lang === 'es' ? 'Recetas (Presets)' : 'Presets (Recipes)'}
+      <Layers size={13} />
+      <span>{lang === 'es' ? 'Recetas (Presets)' : 'Presets (Recipes)'}</span>
     </button>
   </div>
 
-  <div class="relative w-full bg-bg-base border border-border-subtle rounded-br-2xl rounded-bl-2xl rounded-tr-2xl p-8 shadow-[0_10px_30px_-10px_rgba(90,79,196,0.08)] max-sm:rounded-2xl max-sm:p-5">
+  <div class="relative w-full bg-bg-base border border-border-subtle rounded-br-2xl rounded-bl-2xl rounded-tr-2xl p-8 shadow-[0_12px_35px_-12px_rgba(90,79,196,0.1)] max-sm:rounded-2xl max-sm:p-5">
     {#if activeTab === 'presets'}
       <PresetsView {templates} {lang} onapply={applyTemplate} />
     {:else}

@@ -20,10 +20,13 @@
   type="button"
   onclick={onclick}
   aria-pressed={isActive}
-  class="group/btn flex items-center justify-between p-5 bg-bg-base border border-border-subtle rounded-2xl cursor-pointer text-left hover:border-brand-primary/20 transition-all duration-200 w-full"
+  class="group/btn flex items-center justify-between p-5 rounded-2xl border transition-all duration-300 text-left cursor-pointer active:scale-[0.99] w-full
+    {isActive 
+      ? 'bg-brand-primary/8 border-brand-primary shadow-[0_0_20px_-3px_rgba(90,79,196,0.12)] dark:shadow-[0_0_20px_-3px_rgba(155,141,247,0.22)] font-bold' 
+      : 'bg-bg-base border-border-subtle hover:border-brand-primary/40 hover:shadow-[0_8px_25px_rgba(90,79,196,0.04)] text-text-main'}"
 >
   <div class="flex items-center gap-3.5">
-    <div class="w-7 h-7 flex items-center justify-center shrink-0">
+    <div class="w-7 h-7 flex items-center justify-center shrink-0 transition-transform duration-350 group-hover/btn:scale-110">
       {#if iconComponent}
         {#if typeof iconComponent === 'string'}
           <img src={iconComponent} class="w-7 h-7 object-contain {isActive ? '' : 'opacity-80'}" alt="" />
@@ -51,7 +54,7 @@
     
     <div class="flex flex-col gap-1">
       <span class="text-sm font-bold text-text-main">{title}</span>
-      <span class="text-[10px] sm:text-xs text-text-muted leading-relaxed">{description}</span>
+      <span class="text-[10px] sm:text-xs text-text-muted leading-relaxed font-medium">{description}</span>
     </div>
   </div>
   
