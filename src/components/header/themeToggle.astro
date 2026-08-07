@@ -1,38 +1,54 @@
 <button
   id="theme-toggle"
-  class="relative flex items-center justify-between w-16 h-9 p-1 rounded-full bg-bg-surface border border-border-subtle cursor-pointer hover:border-text-muted/30 transition-colors duration-200 select-none"
+  class="relative flex items-center justify-between w-[68px] h-9 p-1 rounded-full bg-bg-surface border border-border-subtle cursor-pointer hover:border-text-muted/40 transition-colors duration-300 select-none overflow-hidden group shadow-inner"
   aria-label="Toggle dark mode"
 >
-  <!-- Sliding indicator bubble (Initially lacks transition to prevent slide-on-load flash) -->
+  <!-- Sliding indicator bubble with custom gradient glows -->
   <div 
     id="theme-toggle-indicator"
-    class="absolute w-7 h-7 rounded-full bg-brand-primary shadow-md transition-none"
+    class="absolute w-7 h-7 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-none"
   ></div>
 
-  <!-- Sun Icon -->
-  <span class="sun-icon-wrapper z-10 pl-1.5 flex items-center justify-center text-text-muted transition-colors duration-150">
+  <!-- Sun Icon (Light Mode Indicator) -->
+  <span class="sun-icon-wrapper z-10 pl-1.5 flex items-center justify-center text-text-muted transition-all duration-300 group-hover:rotate-45">
     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
   </span>
 
-  <!-- Moon Icon -->
-  <span class="moon-icon-wrapper z-10 pr-1.5 flex items-center justify-center text-text-muted transition-colors duration-150">
+  <!-- Moon Icon (Dark Mode Indicator) -->
+  <span class="moon-icon-wrapper z-10 pr-1.5 flex items-center justify-center text-text-muted transition-all duration-300 group-hover:-rotate-12 group-hover:scale-110">
     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
   </span>
 </button>
 
 <style>
-  :global(.dark) #theme-toggle-indicator {
-    transform: translateX(1.75rem);
-  }
+  /* Indicator transformations and gradients */
   :global(html:not(.dark)) #theme-toggle-indicator {
     transform: translateX(0);
+    background: linear-gradient(135deg, #f59e0b, #ea580c);
+    box-shadow: 0 0 12px rgba(234, 88, 12, 0.45);
+  }
+  
+  :global(.dark) #theme-toggle-indicator {
+    transform: translateX(1.95rem);
+    background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+    box-shadow: 0 0 12px rgba(128, 149, 248, 0.5);
   }
 
+  /* Active/Inactive Icon colors */
   :global(.dark) .moon-icon-wrapper {
     color: #ffffff;
   }
+  :global(.dark) .sun-icon-wrapper {
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+  
   :global(html:not(.dark)) .sun-icon-wrapper {
     color: #ffffff;
+  }
+  :global(html:not(.dark)) .moon-icon-wrapper {
+    color: var(--text-muted);
+    opacity: 0.6;
   }
 </style>
 
@@ -49,7 +65,7 @@
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     };
 
-    const setTheme = (theme) => {
+    const setTheme = (theme: string) => {
       if (theme === 'light') {
         document.documentElement.classList.remove('dark');
         document.documentElement.setAttribute('data-theme', 'light');
@@ -60,23 +76,36 @@
       localStorage.setItem('theme', theme);
     };
 
-    // Initialize state alignment
+    // Set initial theme without animation to avoid flash
     const initialTheme = getTheme();
     setTheme(initialTheme);
 
-    // Apply animation transition after initial paint to prevent sliding on load
+    // Apply smooth spring-like animation transition after mount to prevent sliding on load
     setTimeout(() => {
       indicator.classList.remove('transition-none');
-      indicator.classList.add('transition-transform', 'duration-200', 'ease-out');
-    }, 50);
+      indicator.classList.add('transition-all', 'duration-300', 'ease-[cubic-bezier(0.34,1.56,0.64,1)]');
+    }, 60);
 
-    themeToggle.addEventListener('click', () => {
+    // Toggle theme click listener
+    const onToggleClick = () => {
       const isDark = document.documentElement.classList.contains('dark');
       setTheme(isDark ? 'light' : 'dark');
-    });
+    };
+
+    themeToggle.addEventListener('click', onToggleClick);
+    
+    return () => {
+      themeToggle.removeEventListener('click', onToggleClick);
+    };
   }
 
-  // Support initial render and view transition page swap events
-  initTheme();
-  document.addEventListener('astro:after-swap', initTheme);
+  let cleanupTheme: (() => void) | null = null;
+  const setupTheme = () => {
+    if (cleanupTheme) cleanupTheme();
+    cleanupTheme = initTheme();
+  };
+
+  setupTheme();
+  document.addEventListener('astro:after-swap', setupTheme);
 </script>
+

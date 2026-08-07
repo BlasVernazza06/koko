@@ -9,8 +9,8 @@ import SearchModal from './SearchModal.svelte';
 const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
 ---
 
-<header class="w-full sticky top-0 z-50 border-b border-border-subtle bg-bg-base/80 backdrop-blur-md transition-colors duration-300">
-  <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+<header id="main-header" class="w-full sticky top-0 z-50 border-b border-transparent bg-transparent backdrop-blur-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+  <div id="header-inner" class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
     
     <!-- Left Section: Logo & Nav -->
     <div class="flex items-center gap-8">
@@ -26,20 +26,67 @@ const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
       <!-- Searchbar Modal -->
       <SearchModal lang={currentLang} client:load />
 
-      <div class="h-4 w-px bg-border-subtle"></div>
+      <div class="h-4 w-px bg-border-subtle/50 opacity-60"></div>
 
       <!-- Language Switcher -->
       <LanguageToggle />
 
-      <div class="h-4 w-px bg-border-subtle"></div>
+      <div class="h-4 w-px bg-border-subtle/50 opacity-60"></div>
       
       <!-- Theme Switcher -->
       <ThemeToggle />
 
-      <div class="h-4 w-px bg-border-subtle"></div>
+      <div class="h-4 w-px bg-border-subtle/50 opacity-60"></div>
 
       <!-- Social Networks & Tooling -->
       <SocialNav />
     </div>
   </div>
 </header>
+
+<script>
+  function initHeaderScroll() {
+    const header = document.getElementById('main-header');
+    const inner = document.getElementById('header-inner');
+    if (!header || !inner) return;
+
+    const handleScroll = () => {
+      if (window.scrollY > 12) {
+        // Scrolled down state: glassmorphism, shadow, border, compact height
+        header.classList.remove('border-transparent', 'bg-transparent', 'backdrop-blur-none');
+        header.classList.add('border-border-subtle/80', 'bg-bg-base/80', 'backdrop-blur-xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.02)]');
+        
+        inner.classList.remove('h-16');
+        inner.classList.add('h-14');
+      } else {
+        // Scrolled to top state: fully transparent, zero border, taller height
+        header.classList.remove('border-border-subtle/80', 'bg-bg-base/80', 'backdrop-blur-xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.02)]');
+        header.classList.add('border-transparent', 'bg-transparent', 'backdrop-blur-none');
+        
+        inner.classList.remove('h-14');
+        inner.classList.add('h-16');
+      }
+    };
+
+    // Run on init to capture initial scroll position
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Return cleanup function to deregister scroll listeners
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }
+
+  // Manage listeners across View Transition navigation events
+  let cleanupScroll: (() => void) | null = null;
+  
+  const setupScroll = () => {
+    if (cleanupScroll) cleanupScroll();
+    cleanupScroll = initHeaderScroll();
+  };
+
+  setupScroll();
+  document.addEventListener('astro:after-swap', setupScroll);
+</script>

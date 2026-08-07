@@ -1,19 +1,57 @@
 ---
 // Logo component using Koko the Koala icon
+import { Image } from 'astro:assets';
+import logo from '../../assets/logo.webp';
 ---
 
-<a href="/" class="flex items-center group select-none">
+<a href="/" class="flex items-center gap-1 group select-none">
   <!-- Rounded container for the icon -->
-  <div class="flex items-center justify-center w-15 h-15 rounded-lg  transition-all duration-300 overflow-hidden">
-    <img 
-      src="/icons-koala.webp" 
+  <div class="flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-500 overflow-hidden relative">
+    <div class="absolute inset-0 bg-brand-primary/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+    <Image 
+      src={logo} 
       alt="Koko Koala Logo" 
-      class="w-10 h-10 object-contain transition-transform duration-300 group-hover:scale-110" 
+      class="w-9 h-9 object-contain logo-avatar transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-115 group-hover:rotate-6" 
     />
   </div>
   
-  <!-- Brand text -->
-  <span class="text-[15px] font-bold tracking-tight text-text-main transition-colors duration-300">
+  <!-- Brand text with interactive shine effect -->
+  <span class="brand-text text-[16px] font-extrabold tracking-tight text-text-main relative pl-1">
     Koko
   </span>
 </a>
+
+<style>
+  .brand-text {
+    background: linear-gradient(
+      110deg,
+      var(--text-main) 30%,
+      var(--brand-primary) 50%,
+      var(--text-main) 70%
+    );
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: background-position 0s;
+  }
+
+  :global(.group:hover) .brand-text {
+    background-position: -200% 0;
+    transition: background-position 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Gentle breathing microinteraction for the avatar when loaded */
+  @keyframes breathe {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-1.5px); }
+  }
+  
+  .logo-avatar {
+    animation: breathe 3.5s ease-in-out infinite;
+  }
+  
+  :global(.group:hover) .logo-avatar {
+    animation-play-state: paused;
+  }
+</style>

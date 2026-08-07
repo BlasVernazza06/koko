@@ -12,52 +12,69 @@ const enUrl = pathname.startsWith('/en')
 ---
 
 <div class="relative inline-block text-left lang-toggle-container font-sans">
-  <!-- Trigger Button -->
+  <!-- Trigger Button with premium microinteractions -->
   <button
     id="lang-toggle-btn"
-    class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg-surface border border-border-subtle cursor-pointer hover:border-text-muted/30 transition-all duration-200 text-xs font-semibold text-text-main hover:bg-bg-surface/80"
+    class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg-surface border border-border-subtle cursor-pointer hover:border-text-muted/40 transition-all duration-200 text-xs font-bold text-text-main hover:bg-bg-surface/80 group/btn"
     aria-expanded="false"
     aria-haspopup="true"
   >
-    <img id="current-lang-flag" src={currentLang === 'es' ? "/icons-españa.png" : "/icons-ingles.png"} alt="Language" class="w-4.5 h-3.5 object-cover rounded-xs" />
-    <span id="current-lang-text" class="uppercase font-bold tracking-wider">{currentLang}</span>
-    <svg id="lang-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-text-muted transition-transform duration-200"><path d="m6 9 6 6 6-6"/></svg>
+    <img 
+      id="current-lang-flag" 
+      src={currentLang === 'es' ? "/icons-españa.png" : "/icons-ingles.png"} 
+      alt="Language" 
+      class="w-4.5 h-3 object-cover rounded-xs shadow-[0_1px_2px_rgba(0,0,0,0.15)] ring-1 ring-black/5 transition-transform duration-300 group-hover/btn:scale-110" 
+    />
+    <span id="current-lang-text" class="uppercase font-extrabold tracking-wider">{currentLang}</span>
+    <svg id="lang-chevron" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-text-muted transition-transform duration-300 group-hover/btn:translate-y-0.5"><path d="m6 9 6 6 6-6"/></svg>
   </button>
 
   <!-- Dropdown Menu -->
   <div
     id="lang-dropdown"
-    class="hidden absolute -right-7 mt-1 w-36 origin-top-right rounded-xl border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-lg shadow-black/5 ring-1 ring-black/5 focus:outline-none z-50 p-1 flex flex-col gap-0.5"
+    class="hidden absolute -right-7 mt-1.5 w-36 origin-top-right rounded-xl border border-border-subtle bg-bg-surface/95 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.25)] ring-1 ring-black/5 focus:outline-none z-50 p-1 flex flex-col gap-0.5"
     role="menu"
     aria-orientation="vertical"
   >
     <!-- Español Option -->
     <a
       href={esUrl}
-      class={`w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-left transition-colors cursor-pointer ${currentLang === 'es' ? 'bg-brand-primary/10 text-brand-primary font-bold' : 'text-text-muted hover:bg-bg-base/60 hover:text-text-main'}`}
+      class={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-left transition-all duration-200 cursor-pointer group/item ${
+        currentLang === 'es' 
+          ? 'bg-brand-primary/10 text-brand-primary font-extrabold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)]' 
+          : 'text-text-muted hover:bg-bg-base/70 hover:text-text-main hover:translate-x-0.5'
+      }`}
       role="menuitem"
     >
       <div class="flex items-center gap-2">
-        <img src="/icons-españa.png" alt="Español" class="w-4.5 h-3.5 object-cover rounded-xs" />
+        <img src="/icons-españa.png" alt="Español" class="w-4.5 h-3 object-cover rounded-xs shadow-sm ring-1 ring-black/5 group-hover/item:scale-105 transition-transform" />
         <span>Español</span>
       </div>
-      <span class={`active-indicator w-1.5 h-1.5 rounded-full bg-brand-primary ${currentLang === 'es' ? '' : 'hidden'}`}></span>
+      <span class={`active-indicator w-1.5 h-1.5 rounded-full bg-brand-primary shadow-[0_0_8px_var(--brand-primary)] ${currentLang === 'es' ? '' : 'hidden'}`}></span>
     </a>
 
     <!-- English Option -->
     <a
       href={enUrl}
-      class={`w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-left transition-colors cursor-pointer ${currentLang === 'en' ? 'bg-brand-primary/10 text-brand-primary font-bold' : 'text-text-muted hover:bg-bg-base/60 hover:text-text-main'}`}
+      class={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-left transition-all duration-200 cursor-pointer group/item ${
+        currentLang === 'en' 
+          ? 'bg-brand-primary/10 text-brand-primary font-extrabold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)]' 
+          : 'text-text-muted hover:bg-bg-base/70 hover:text-text-main hover:translate-x-0.5'
+      }`}
       role="menuitem"
     >
       <div class="flex items-center gap-2">
-        <img src="/icons-ingles.png" alt="English" class="w-4.5 h-3.5 object-cover rounded-xs" />
+        <img src="/icons-ingles.png" alt="English" class="w-4.5 h-3 object-cover rounded-xs shadow-sm ring-1 ring-black/5 group-hover/item:scale-105 transition-transform" />
         <span>English</span>
       </div>
-      <span class={`active-indicator w-1.5 h-1.5 rounded-full bg-brand-primary ${currentLang === 'en' ? '' : 'hidden'}`}></span>
+      <span class={`active-indicator w-1.5 h-1.5 rounded-full bg-brand-primary shadow-[0_0_8px_var(--brand-primary)] ${currentLang === 'en' ? '' : 'hidden'}`}></span>
     </a>
   </div>
 </div>
+
+<style>
+  /* Extra styling if needed */
+</style>
 
 <script>
   import { animate } from "motion";
@@ -71,7 +88,7 @@ const enUrl = pathname.startsWith('/en')
     if (!btn || !dropdown || !chevron) return;
 
     let isOpen = false;
-    let activeAnimation = null;
+    let activeAnimation: any = null;
 
     function toggleDropdown() {
       isOpen = !isOpen;
@@ -92,7 +109,7 @@ const enUrl = pathname.startsWith('/en')
             transform: ["translateY(-8px) scale(0.95)", "translateY(0) scale(1)"] 
           },
           { 
-            duration: 0.15, 
+            duration: 0.18, 
             easing: [0.16, 1, 0.3, 1] 
           }
         );
@@ -120,18 +137,32 @@ const enUrl = pathname.startsWith('/en')
       }
     }
 
-    btn.addEventListener('click', (e) => {
+    const onBtnClick = (e: Event) => {
       e.stopPropagation();
       toggleDropdown();
-    });
+    };
 
-    document.addEventListener('click', (e) => {
+    const onDocumentClick = (e: Event) => {
       if (isOpen && !container?.contains(e.target as Node)) {
         toggleDropdown();
       }
-    });
+    };
+
+    btn.addEventListener('click', onBtnClick);
+    document.addEventListener('click', onDocumentClick);
+
+    return () => {
+      btn.removeEventListener('click', onBtnClick);
+      document.removeEventListener('click', onDocumentClick);
+    };
   }
 
-  initLangToggle();
-  document.addEventListener('astro:after-swap', initLangToggle);
+  let cleanupLang: (() => void) | null = null;
+  const setupLang = () => {
+    if (cleanupLang) cleanupLang();
+    cleanupLang = initLangToggle();
+  };
+
+  setupLang();
+  document.addEventListener('astro:after-swap', setupLang);
 </script>
