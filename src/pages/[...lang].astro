@@ -2,6 +2,10 @@
 import Layout from '@/layouts/Layout.astro';
 import Hero from '@/components/hero/hero.astro';
 import Footer from '@/components/footer/footer.astro';
+import TerminalSimulator from '@/components/TerminalSimulator.svelte';
+import FeaturesSec from '@/components/landing/feature/featuresSec.astro';
+import FaqSec from '@/components/landing/faqSec.astro';
+import DocsSec from '@/components/landing/docsSec.astro';
 
 export function getStaticPaths() {
   return [
@@ -35,6 +39,23 @@ const description = currentLang === 'es'
 
     <!-- Hero Section -->
     <Hero lang={currentLang} />
+
+    <!-- Terminal Simulator Section -->
+    <div class="max-w-7xl mx-auto px-6 flex flex-col items-center justify-center relative z-10">
+      <section id="terminal" class="w-full max-w-[1300px]">
+        <TerminalSimulator client:load lang={currentLang} />
+      </section>
+      <div class="w-full max-w-5xl h-px bg-border-subtle my-20"></div>
+    </div>
+
+    <!-- Features Section -->
+    <FeaturesSec lang={currentLang} />
+
+    <!-- FAQ Section -->
+    <FaqSec lang={currentLang} />
+
+    <!-- Docs Section -->
+    <DocsSec lang={currentLang} />
 
     <!-- Footer -->
     <Footer />
@@ -92,3 +113,130 @@ const description = currentLang === 'es'
   :global([data-theme="dark"]) .glow-secondary-right { opacity: 0.08; }
   :global([data-theme="dark"]) .glow-wash { opacity: 0.02; }
 </style>
+
+<script>
+  import { animate } from "motion";
+
+  let scrollListenerCleanup: (() => void) | null = null;
+
+  function setupScrollReveals() {
+    try {
+      // Clean up previous listeners if any
+      if (scrollListenerCleanup) {
+        scrollListenerCleanup();
+      }
+
+      const mainSections = document.querySelectorAll('.scroll-reveal');
+      const gridItems = document.querySelectorAll('.scroll-reveal-children > *, .faq-item');
+      
+      const allElements: Array<{
+        el: HTMLElement;
+        isMain: boolean;
+        delay: number;
+        animated: boolean;
+      }> = [];
+      
+      // Initialize main sections
+      mainSections.forEach(el => {
+        const htmlEl = el as HTMLElement;
+        htmlEl.setAttribute('style', 'opacity: 0; transform: translateY(35px) scale(0.98); filter: blur(5px);');
+        allElements.push({
+          el: htmlEl,
+          isMain: true,
+          delay: 0,
+          animated: false
+        });
+      });
+      
+      // Initialize staggered grid/list items
+      gridItems.forEach(el => {
+        if (el.closest('#hero') || el.closest('header') || el.closest('footer')) return;
+        
+        const htmlEl = el as HTMLElement;
+        const siblings = Array.from(htmlEl.parentNode?.children || []);
+        const idx = siblings.indexOf(htmlEl);
+        const delay = Math.min((idx >= 0 ? idx : 0) * 0.05, 0.25);
+        
+        htmlEl.setAttribute('style', 'opacity: 0; transform: translateY(20px) scale(0.99); filter: blur(4px);');
+        allElements.push({
+          el: htmlEl,
+          isMain: false,
+          delay,
+          animated: false
+        });
+      });
+      
+      function handleScroll() {
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
+        const vh = window.innerHeight;
+        
+        allElements.forEach(item => {
+          const el = item.el;
+          const rect = el.getBoundingClientRect();
+          // Absolute top coordinate of the element relative to the document
+          const elementTop = rect.top + scrollY;
+          
+          // Trigger animation when the element's top is 90% down the viewport (10% has entered)
+          const triggerPoint = elementTop - vh * 0.9;
+          
+          if (scrollY > triggerPoint) {
+            if (!item.animated) {
+              item.animated = true;
+              animate(
+                el,
+                { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
+                { 
+                  duration: item.isMain ? 0.75 : 0.6, 
+                  delay: item.delay, 
+                  easing: [0.16, 1, 0.3, 1] 
+                }
+              );
+            }
+          } else {
+            // Reset to initial state when scrolled back up
+            if (item.animated) {
+              item.animated = false;
+              animate(
+                el,
+                { 
+                  opacity: 0, 
+                  y: item.isMain ? 35 : 20, 
+                  scale: item.isMain ? 0.98 : 0.99, 
+                  filter: item.isMain ? "blur(5px)" : "blur(4px)" 
+                },
+                { duration: 0.25 }
+              );
+            }
+          }
+        });
+      }
+      
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', handleScroll);
+      
+      // Initial check
+      handleScroll();
+      
+      // Cleanup handler
+      scrollListenerCleanup = () => {
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleScroll);
+      };
+    } catch (e) {
+      console.error("Scroll reveal error:", e);
+      // Fallback
+      document.querySelectorAll('.scroll-reveal, .scroll-reveal-children > *, .faq-item').forEach(el => {
+        el.removeAttribute('style');
+      });
+    }
+  }
+
+  // Ensure DOM is fully loaded and styles parsed before running Motion
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupScrollReveals);
+  } else {
+    setupScrollReveals();
+  }
+
+  document.addEventListener('astro:after-swap', setupScrollReveals);
+</script>

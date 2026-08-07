@@ -372,13 +372,13 @@
   <div class="absolute bottom-12 left-0 right-0 h-px bg-slate-300/40 dark:bg-white/[0.08] pointer-events-none hidden md:block"></div>
 
   <!-- Liquid Glass Outer Panel -->
-  <div class="relative w-full rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-2xl p-3 md:p-5 overflow-hidden">
+  <div class="relative w-full rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-2xl shadow-[0_0_60px_5px_rgba(0,0,0,0.4)] p-3 md:p-5 overflow-hidden">
     
     <!-- Smooth Zoomable Wrapper -->
     <div class="transition-all duration-[900ms] ease-in-out origin-center transform {zoomClass}">
       
       <!-- VS Code IDE Window Mockup (Hyper Realistic) -->
-      <div class="w-full max-w-full rounded-xl border border-white/[0.08] bg-[#1e1e1e] shadow-2xl overflow-hidden flex flex-col h-[620px] pointer-events-none select-none">
+      <div class="w-full max-w-full rounded-xl border border-white/[0.08] bg-[#1e1e1e] shadow-[0_0_40px_0px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col h-[620px] pointer-events-none select-none">
         
         <!-- VS Code Window Header / Titlebar -->
         <div class="h-9 bg-[#1c1c1c] border-b border-white/[0.04] flex items-center justify-between px-3 text-xs text-[#a0a0a0] select-none">

@@ -1,11 +1,7 @@
 ---
 const { lang = 'es' } = Astro.props;
 import CopyCommand from "@/components/landing/copyCommand.svelte";
-import MiniBuilder from "@/components/landing/MiniBuilder.svelte";
-import FeaturesSec from "@/components/landing/featuresSec.astro";
-import TerminalSimulator from "@/components/TerminalSimulator.svelte";
-import FaqSec from "@/components/landing/faqSec.astro";
-import DocsSec from "@/components/landing/docsSec.astro";
+import BuilderCardLink from "@/components/landing/BuilderCardLink.svelte";
 import { SvglGoLogo } from '@selemondev/svgl-svelte';
 ---
 
@@ -17,7 +13,7 @@ import { SvglGoLogo } from '@selemondev/svgl-svelte';
   }
 </style>
 
-<main class="max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col items-center justify-center relative z-10">
+<div class="max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col items-center justify-center relative z-10">
       
     <!-- Unified Top Pill Announcement Badge -->
     <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-bg-surface/50 border border-border-subtle hover:border-brand-primary/40 backdrop-blur-md shadow-xs transition-all duration-300 mb-10 select-none animate-fade-in-up">
@@ -65,25 +61,7 @@ import { SvglGoLogo } from '@selemondev/svgl-svelte';
       
       <!-- Right Card: Wizard Builder launcher -->
       <div class="w-full flex">
-        <MiniBuilder client:load lang={lang} />
+        <BuilderCardLink client:load lang={lang} />
       </div>
     </div>
-
-    <!-- Svelte Interactive Terminal Simulator -->
-    <section id="terminal" class="w-full max-w-[1300px] animate-fade-in-up animation-delay-300">
-      <TerminalSimulator client:load lang={lang} />
-    </section>
-
-    <!-- Divider line -->
-    <div class="w-full max-w-5xl h-px bg-border-subtle my-20"></div>
-
-    <!-- Features Section -->
-    <FeaturesSec lang={lang} />
-
-    <!-- FAQ Section -->
-    <FaqSec lang={lang} />
-
-    <!-- Docs Section -->
-    <DocsSec lang={lang} />
-
-</main>
+</div>

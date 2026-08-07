@@ -1,39 +1,92 @@
 ---
-import { ChevronDown, HelpCircle } from "@lucide/svelte";
+import { ChevronDown, HelpCircle, Search, Sparkles, Terminal, Blocks, Cpu, MessageSquare, ArrowUpRight } from "@lucide/svelte";
+import { SvglGitHubLogo } from '@selemondev/svgl-svelte';
 
 const faqsEn = [
   {
-    question: "What is Koko and how does it speed up development?",
-    answer: "Koko is an interactive Visual Stack Builder and CLI designed to customize, scaffold, and bootstrap project repositories. It eliminates Day 1 configuration friction and helps you scale your app structure with ease."
+    id: "what-is-claw",
+    category: "general",
+    iconName: "HelpCircle",
+    question: "What is Claw / Koko and how does it speed up development?",
+    answer: "Koko is an interactive visual stack builder that pairs with Claw, a native Go scaffolding CLI. Together, they allow you to customize, scaffold, and bootstrap production-ready repositories in seconds, eliminating Day 1 configuration friction."
   },
   {
+    id: "is-claw-free",
+    category: "general",
+    iconName: "HelpCircle",
+    question: "Is Claw free and open source?",
+    answer: "Yes, the Claw CLI and the Koko visual builder are entirely free and open-source tools. You can view the code, contribute, or open issues directly on our GitHub repository."
+  },
+  {
+    id: "how-recipe-generator-works",
+    category: "builder",
+    iconName: "Blocks",
     question: "How does the visual recipe generator work?",
-    answer: "It lets you choose frontend, backend, ORM, database, payments, and quality tools dynamically. Koko computes dependencies reactively, renders the folder structure, and compiles a single init command."
+    answer: "It lets you choose your frontend, backend, ORM, database, payments, and quality tools dynamically. Koko computes dependencies reactively, renders the folder structure preview, and compiles a single initialization command."
   },
   {
-    question: "Does Koko support monorepos using Turborepo?",
-    answer: "Yes, Koko is monorepo-ready. You can scaffold multi-package structures with nested workspaces, global linters, and configurations, all pre-configured under a Turborepo environment in seconds."
+    id: "share-recipes",
+    category: "builder",
+    iconName: "Sparkles",
+    question: "Can I save and share my custom recipes?",
+    answer: "Coming soon! We are working on a cloud accounts feature that will let you save your favorite stack recipes, share them with your team via short links, or use them as base templates for your organization."
   },
   {
+    id: "turborepo-monorepo",
+    category: "advanced",
+    iconName: "Cpu",
+    question: "Does Claw support monorepos using Turborepo?",
+    answer: "Yes, Claw is completely monorepo-ready. You can scaffold multi-package structures with nested workspaces (npm/pnpm/yarn), global linters, and pre-configured Turborepo pipeline tasks out of the box."
+  },
+  {
+    id: "docker-vitest-biome",
+    category: "advanced",
+    iconName: "Terminal",
     question: "Can I add tools like Docker, Vitest, or Biome to the recipe?",
-    answer: "Absolutely. You can toggle local Docker Compose setups, Vitest configurations, and standard Biome linter parameters. They compile natively into the configuration files generated for your project."
+    answer: "Absolutely. You can toggle local Docker Compose environments, Vitest testing frameworks, and standard Biome linter/formatter configurations. They compile natively into the configuration files of your project."
   }
 ];
 
 const faqsEs = [
   {
-    question: "¿Qué es Koko y cómo acelera el desarrollo?",
-    answer: "Koko es un generador visual de stacks y CLI diseñado para personalizar e inicializar repositorios de proyectos. Elimina la fricción de configuración del Día 1 y te ayuda a escalar la estructura fácilmente."
+    id: "what-is-claw",
+    category: "general",
+    iconName: "HelpCircle",
+    question: "¿Qué es Claw / Koko y cómo acelera el desarrollo?",
+    answer: "Koko es una plataforma visual e interactiva que funciona junto con Claw, un motor de inicialización (CLI) en Go nativo. Juntos te permiten configurar, estructurar e inicializar repositorios listos para producción en segundos, eliminando la fricción de la configuración inicial."
   },
   {
+    id: "is-claw-free",
+    category: "general",
+    iconName: "HelpCircle",
+    question: "¿Es Claw gratuito y de código abierto?",
+    answer: "Sí, el CLI de Claw y el generador visual de Koko son herramientas completamente gratuitas y de código abierto. Puedes ver el código, contribuir o reportar problemas directamente en nuestro repositorio de GitHub."
+  },
+  {
+    id: "how-recipe-generator-works",
+    category: "builder",
+    iconName: "Blocks",
     question: "¿Cómo funciona el generador visual de recetas?",
-    answer: "Te permite elegir dinámicamente tu frontend, backend, ORM, base de datos, pasarelas de pago y herramientas. Koko calcula las dependencias, renderiza la estructura de carpetas y compila un comando único."
+    answer: "Te permite seleccionar tu frontend, backend, ORM, base de datos, herramientas de calidad y Docker de manera interactiva. Koko calcula las dependencias reactivamente, genera una vista previa de la estructura del proyecto y compila un comando de inicialización único."
   },
   {
-    question: "¿Soporta Koko la creación de monorepos con Turborepo?",
-    answer: "Sí, Koko viene listo para monorepos. Puedes estructurar esquemas multi-paquete con espacios de trabajo anidados, linters globales y configuraciones listas para escalar bajo un entorno de Turborepo."
+    id: "share-recipes",
+    category: "builder",
+    iconName: "Sparkles",
+    question: "¿Puedo guardar y compartir mis recetas personalizadas?",
+    answer: "¡Próximamente! Estamos trabajando en una funcionalidad de cuentas y almacenamiento en la nube que te permitirá guardar tus combinaciones de stack favoritas, compartirlas con tu equipo mediante un enlace corto, o usarlas como plantilla base para tus proyectos."
   },
   {
+    id: "turborepo-monorepo",
+    category: "advanced",
+    iconName: "Cpu",
+    question: "¿Soporta Claw la creación de monorepos con Turborepo?",
+    answer: "Sí, Claw viene listo para monorepos. Puedes estructurar esquemas multi-paquete con espacios de trabajo (workspaces) de npm/pnpm/yarn, configuraciones de linters globales, y pipelines de Turborepo pre-configurados."
+  },
+  {
+    id: "docker-vitest-biome",
+    category: "advanced",
+    iconName: "Terminal",
     question: "¿Puedo añadir Docker, Vitest o Biome directamente en la receta?",
     answer: "Por supuesto. Puedes activar contenedores locales de Docker Compose, configuraciones de pruebas en Vitest y parámetros de Biome. Se compilan nativamente dentro de los archivos de configuración del proyecto."
   }
@@ -41,95 +94,378 @@ const faqsEs = [
 
 const { lang = 'es' } = Astro.props;
 const faqs = lang === 'es' ? faqsEs : faqsEn;
+
+const labels = lang === 'es' ? {
+  badge: "Dudas Frecuentes",
+  title: "Preguntas Frecuentes",
+  subtitle: "Todo lo que necesitas saber sobre cómo configurar e inicializar tu código con Claw y Koko.",
+  searchPlaceholder: "Buscar preguntas...",
+  all: "Todos",
+  general: "General",
+  builder: "Recetas",
+  advanced: "Avanzado",
+  stillHaveQuestions: "¿Aún tienes dudas?",
+  stillHaveQuestionsSub: "Si no encuentras la respuesta, nuestro equipo y la comunidad están para ayudarte.",
+  askGithub: "Preguntar en GitHub",
+  joinDiscord: "Discord",
+  noResults: "No se encontraron preguntas",
+  noResultsSub: "Prueba buscando otros términos o explora las categorías."
+} : {
+  badge: "Common Doubts",
+  title: "Frequently Asked Questions",
+  subtitle: "Everything you need to know about setting up and bootstrapping your codebase with Claw and Koko.",
+  searchPlaceholder: "Search questions...",
+  all: "All",
+  general: "General",
+  builder: "Recipe Builder",
+  advanced: "Advanced",
+  stillHaveQuestions: "Still have questions?",
+  stillHaveQuestionsSub: "If you can't find your answer, our team and community members are here to help.",
+  askGithub: "Ask on GitHub",
+  joinDiscord: "Discord",
+  noResults: "No questions found",
+  noResultsSub: "Try searching for other terms or explore the categories."
+};
+
+const iconMap = {
+  HelpCircle,
+  Blocks,
+  Cpu,
+  Terminal,
+  Sparkles
+};
 ---
 
-<section id="faq" class="w-full max-w-4xl px-4 py-16 mx-auto border-t border-border-subtle/60">
-  <!-- Section Header -->
-  <div class="text-center mb-12 flex flex-col items-center">
-    <div class="inline-flex items-center gap-1.5 px-3 py-1 mb-3 rounded-full bg-brand-secondary/10 border border-brand-secondary/20 text-xs font-semibold text-brand-secondary tracking-wide uppercase select-none">
-      <HelpCircle size={12} aria-hidden="true" />
-      <span class="lang-es">Dudas Frecuentes</span>
-      <span class="lang-en">Common Doubts</span>
+<section id="faq" class="w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-20 mx-auto border-t border-border-subtle/50 relative">
+  <!-- Glowing ambient light -->
+  <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+  <!-- Header -->
+  <div class="text-center mb-16 flex flex-col items-center scroll-reveal">
+    <div class="inline-flex items-center gap-1.5 px-3 py-1 mb-4 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-xs font-semibold text-brand-primary tracking-wide uppercase select-none">
+      <HelpCircle size={12} class="animate-pulse" />
+      <span>{labels.badge}</span>
     </div>
-    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-text-main font-sans">
-      <span class="lang-es">Preguntas Frecuentes</span>
-      <span class="lang-en">Frequently Asked Questions</span>
+    
+    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-text-main max-w-3xl font-sans leading-tight">
+      {labels.title}
     </h2>
-    <p class="text-xs sm:text-sm text-text-muted mt-2">
-      <span class="lang-es">Todo lo que necesitas saber sobre cómo configurar y sincronizar las reglas de tu código.</span>
-      <span class="lang-en">Everything you need to know about setting up and syncing your team's code rules.</span>
+    
+    <p class="text-xs sm:text-sm text-text-muted max-w-2xl">
+      {labels.subtitle}
     </p>
   </div>
 
-  <!-- Accordion List -->
-  <div class="space-y-4">
-    {faqs.map((faq, index) => (
-      <div class="faq-item border border-border-subtle bg-bg-surface/30 backdrop-blur-sm rounded-2xl overflow-hidden transition-all duration-300 hover:border-brand-primary/20">
-        <button 
-          class="faq-trigger flex items-center justify-between w-full p-5 text-left font-sans text-sm sm:text-base font-bold text-text-main hover:text-brand-primary transition-colors cursor-pointer select-none"
-          data-index={index}
-          aria-expanded="false"
-        >
-          <span>{faq.question}</span>
-          <span class="faq-icon text-text-muted transition-transform duration-300">
-            <ChevronDown size={18} aria-hidden="true" />
-          </span>
-        </button>
-        
-        <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-          <div class="p-5 pt-1 text-xs sm:text-sm text-text-muted leading-relaxed border-t border-border-subtle/40 bg-bg-base/30">
-            {faq.answer}
+  <!-- Interactive Grid Layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    
+    <!-- Left Column: Search & Categories (Sticky) -->
+    <div class="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
+      <!-- Search Panel -->
+      <div class="bg-bg-surface/30 border border-border-subtle backdrop-blur-md rounded-2xl p-5 shadow-sm">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-muted">
+            <Search size={18} />
+          </div>
+          <input 
+            type="text" 
+            id="faq-search" 
+            placeholder={labels.searchPlaceholder}
+            class="w-full pl-10 pr-12 py-3 bg-bg-base/50 border border-border-subtle rounded-xl text-sm text-text-main placeholder-text-muted focus:outline-none focus:border-brand-primary/50 focus:ring-1 focus:ring-brand-primary/50 transition-all font-sans"
+            autocomplete="off"
+          />
+          <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+            <kbd class="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded border border-border-subtle bg-bg-surface/80 text-[10px] font-mono text-text-muted shadow-sm select-none">
+              /
+            </kbd>
           </div>
         </div>
       </div>
-    ))}
+
+      <!-- Categories Selector -->
+      <div class="bg-bg-surface/30 border border-border-subtle backdrop-blur-md rounded-2xl p-5 shadow-sm">
+        <nav class="flex flex-col gap-1.5" id="faq-categories">
+          <!-- All Tab -->
+          <button 
+            data-category="all"
+            class="faq-cat-btn flex items-center justify-between w-full px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-200 cursor-pointer select-none bg-brand-primary/10 border-l-4 border-l-brand-primary border-y border-r border-brand-primary/20 text-brand-primary shadow-sm shadow-brand-primary/5 translate-x-1"
+          >
+            <span>{labels.all}</span>
+            <span class="faq-count-badge px-2 py-0.5 text-xs rounded-full bg-border-subtle/50 text-text-muted font-medium">0</span>
+          </button>
+          
+          <!-- General Tab -->
+          <button 
+            data-category="general"
+            class="faq-cat-btn flex items-center justify-between w-full px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-200 cursor-pointer select-none border border-transparent text-text-muted hover:text-text-main hover:bg-bg-surface/60 hover:translate-x-1"
+          >
+            <span>{labels.general}</span>
+            <span class="faq-count-badge px-2 py-0.5 text-xs rounded-full bg-border-subtle/50 text-text-muted font-medium">0</span>
+          </button>
+
+          <!-- Builder Tab -->
+          <button 
+            data-category="builder"
+            class="faq-cat-btn flex items-center justify-between w-full px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-200 cursor-pointer select-none border border-transparent text-text-muted hover:text-text-main hover:bg-bg-surface/60 hover:translate-x-1"
+          >
+            <span>{labels.builder}</span>
+            <span class="faq-count-badge px-2 py-0.5 text-xs rounded-full bg-border-subtle/50 text-text-muted font-medium">0</span>
+          </button>
+
+          <!-- Advanced Tab -->
+          <button 
+            data-category="advanced"
+            class="faq-cat-btn flex items-center justify-between w-full px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-200 cursor-pointer select-none border border-transparent text-text-muted hover:text-text-main hover:bg-bg-surface/60 hover:translate-x-1"
+          >
+            <span>{labels.advanced}</span>
+            <span class="faq-count-badge px-2 py-0.5 text-xs rounded-full bg-border-subtle/50 text-text-muted font-medium">0</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Support Card -->
+      <div class="bg-gradient-to-br from-brand-primary/10 to-brand-secondary/5 border border-brand-primary/20 backdrop-blur-md rounded-2xl p-6 relative overflow-hidden group shadow-sm">
+        <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-brand-primary/10 rounded-full blur-2xl group-hover:scale-125 transition-transform duration-500"></div>
+        <h4 class="text-sm font-bold text-text-main flex items-center gap-2">
+          <MessageSquare size={16} class="text-brand-primary" />
+          {labels.stillHaveQuestions}
+        </h4>
+        <p class="text-xs text-text-muted mt-2 leading-relaxed">
+          {labels.stillHaveQuestionsSub}
+        </p>
+        <div class="grid grid-cols-2 gap-3 mt-5 relative z-10">
+          <a 
+            href="https://github.com/BlasVernazza06/claw/issues" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/80 hover:text-brand-primary text-xs font-bold transition-all text-text-main shadow-sm"
+          >
+            <SvglGitHubLogo class="w-3.5 h-3.5 shrink-0" />
+            <span>GitHub</span>
+            <ArrowUpRight size={12} class="opacity-60" />
+          </a>
+          <a 
+            href="https://discord.gg/your-invite" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-bold transition-all shadow-md shadow-brand-primary/20"
+          >
+            <span>{labels.joinDiscord}</span>
+            <ArrowUpRight size={12} />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Accordion list -->
+    <div class="lg:col-span-8 space-y-4" id="faq-list">
+      {faqs.map((faq) => {
+        const IconComponent = iconMap[faq.iconName] || HelpCircle;
+        return (
+          <div 
+            class="faq-item group border border-border-subtle bg-bg-surface/20 hover:bg-bg-surface/30 backdrop-blur-sm rounded-2xl overflow-hidden transition-all duration-300 hover:border-brand-primary/30 hover:shadow-lg hover:shadow-brand-primary/2"
+            data-category={faq.category}
+            data-question={faq.question.toLowerCase()}
+            data-answer={faq.answer.toLowerCase()}
+          >
+            <button 
+              class="faq-trigger flex items-start gap-4 w-full p-5 text-left font-sans text-sm sm:text-base font-bold text-text-main hover:text-brand-primary transition-all cursor-pointer select-none"
+              aria-expanded="false"
+            >
+              <div class="flex-shrink-0 p-2 rounded-lg bg-bg-surface/80 border border-border-subtle/50 text-text-muted group-hover:text-brand-primary group-hover:bg-brand-primary/10 group-hover:border-brand-primary/20 transition-all">
+                <IconComponent size={18} />
+              </div>
+              <div class="flex-grow pt-1 pr-4">
+                <span>{faq.question}</span>
+              </div>
+              <div class="flex-shrink-0 pt-1">
+                <span class="faq-icon-wrapper flex items-center justify-center w-6 h-6 rounded-full bg-bg-surface/50 border border-border-subtle text-text-muted transition-all duration-300">
+                  <ChevronDown size={14} />
+                </span>
+              </div>
+            </button>
+            
+            <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+              <div class="pl-16 pr-6 pb-6 pt-1 text-xs sm:text-sm text-text-muted leading-relaxed">
+                {faq.answer}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+
+      <!-- Empty State -->
+      <div 
+        id="faq-empty-state" 
+        class="hidden flex flex-col items-center justify-center text-center p-12 border border-dashed border-border-subtle rounded-2xl bg-bg-surface/10"
+      >
+        <div class="p-4 rounded-full bg-brand-primary/10 text-brand-primary mb-4">
+          <HelpCircle size={32} class="animate-bounce" />
+        </div>
+        <h4 class="text-base font-bold text-text-main">{labels.noResults}</h4>
+        <p class="text-xs text-text-muted mt-2 max-w-sm">{labels.noResultsSub}</p>
+      </div>
+    </div>
   </div>
 </section>
 
 <script>
-  function initFaqAccordions() {
-    const wrapper = document.querySelector('#faq .space-y-4');
-    if (!wrapper || wrapper.getAttribute('data-faq-initialized') === 'true') return;
-    wrapper.setAttribute('data-faq-initialized', 'true');
+  function initFaqHub() {
+    const faqSection = document.getElementById('faq');
+    if (!faqSection || faqSection.getAttribute('data-faq-initialized') === 'true') return;
+    faqSection.setAttribute('data-faq-initialized', 'true');
 
-    wrapper.addEventListener('click', (e) => {
+    const searchInput = document.getElementById('faq-search') as HTMLInputElement | null;
+    const catButtons = document.querySelectorAll('.faq-cat-btn');
+    const faqItems = document.querySelectorAll('.faq-item');
+    const emptyState = document.getElementById('faq-empty-state');
+
+    let activeCategory = 'all';
+    let searchQuery = '';
+
+    // Calculate initial category counts
+    updateCategoryCounts();
+
+    // Setup Category click handlers
+    catButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.getAttribute('data-category') || 'all';
+        activeCategory = cat;
+        updateTabStyling(btn as HTMLElement);
+        updateFaqFilters();
+      });
+    });
+
+    // Setup Search input handler
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const target = e.target as HTMLInputElement;
+        searchQuery = target.value.trim().toLowerCase();
+        updateFaqFilters();
+      });
+    }
+
+    // Keyboard shortcut / to focus search
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== searchInput && 
+          document.activeElement?.tagName !== 'INPUT' && 
+          document.activeElement?.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        searchInput?.focus();
+      }
+    });
+
+    // Accordion setup inside the list
+    faqSection.addEventListener('click', (e) => {
       const trigger = (e.target as HTMLElement).closest('.faq-trigger');
       if (!trigger) return;
 
       const item = trigger.closest('.faq-item');
-      const content = item?.querySelector('.faq-content') as HTMLElement;
-      const icon = item?.querySelector('.faq-icon');
+      if (!item) return;
+      const content = item.querySelector('.faq-content') as HTMLElement | null;
+      const iconWrapper = item.querySelector('.faq-icon-wrapper') as HTMLElement | null;
       
-      if (!content || !item) return;
+      if (!content) return;
 
-      // Toggle state
       const isOpen = item.classList.contains('faq-open');
       
-      // Close all other FAQs for clean single-accordion behavior
-      wrapper.querySelectorAll('.faq-item').forEach(otherItem => {
+      // Close other visible items in current category for accordion effect
+      faqItems.forEach(otherItem => {
         if (otherItem !== item && otherItem.classList.contains('faq-open')) {
           otherItem.classList.remove('faq-open');
-          const otherContent = otherItem.querySelector('.faq-content') as HTMLElement;
-          const otherIcon = otherItem.querySelector('.faq-icon');
+          const otherContent = otherItem.querySelector('.faq-content') as HTMLElement | null;
+          const otherIconWrapper = otherItem.querySelector('.faq-icon-wrapper') as HTMLElement | null;
           if (otherContent) otherContent.style.maxHeight = '0px';
-          if (otherIcon) otherIcon.classList.remove('rotate-180');
+          if (otherIconWrapper) otherIconWrapper.style.transform = 'rotate(0deg)';
         }
       });
 
       if (isOpen) {
         item.classList.remove('faq-open');
         content.style.maxHeight = '0px';
-        if (icon) icon.classList.remove('rotate-180');
+        if (iconWrapper) iconWrapper.style.transform = 'rotate(0deg)';
       } else {
         item.classList.add('faq-open');
         content.style.maxHeight = content.scrollHeight + 'px';
-        if (icon) icon.classList.add('rotate-180');
+        if (iconWrapper) iconWrapper.style.transform = 'rotate(180deg)';
       }
     });
+
+    function updateCategoryCounts() {
+      const countAll = faqItems.length;
+      let countGeneral = 0;
+      let countBuilder = 0;
+      let countAdvanced = 0;
+
+      faqItems.forEach(item => {
+        const cat = item.getAttribute('data-category');
+        if (cat === 'general') countGeneral++;
+        else if (cat === 'builder') countBuilder++;
+        else if (cat === 'advanced') countAdvanced++;
+      });
+
+      const badges = document.querySelectorAll('.faq-count-badge');
+      badges.forEach(badge => {
+        const btn = badge.closest('.faq-cat-btn');
+        if (!btn) return;
+        const cat = btn.getAttribute('data-category');
+        if (cat === 'all') badge.textContent = String(countAll);
+        else if (cat === 'general') badge.textContent = String(countGeneral);
+        else if (cat === 'builder') badge.textContent = String(countBuilder);
+        else if (cat === 'advanced') badge.textContent = String(countAdvanced);
+      });
+    }
+
+    function updateTabStyling(selectedBtn: HTMLElement) {
+      catButtons.forEach(btn => {
+        btn.className = "faq-cat-btn flex items-center justify-between w-full px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-200 cursor-pointer select-none border border-transparent text-text-muted hover:text-text-main hover:bg-bg-surface/60 hover:translate-x-1";
+      });
+      
+      selectedBtn.className = "faq-cat-btn flex items-center justify-between w-full px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-200 cursor-pointer select-none bg-brand-primary/10 border-l-4 border-l-brand-primary border-y border-r border-brand-primary/20 text-brand-primary shadow-sm shadow-brand-primary/5 translate-x-1";
+    }
+
+    function updateFaqFilters() {
+      let visibleCount = 0;
+
+      faqItems.forEach(item => {
+        const category = item.getAttribute('data-category') || '';
+        const questionText = item.getAttribute('data-question') || '';
+        const answerText = item.getAttribute('data-answer') || '';
+
+        const matchesCategory = activeCategory === 'all' || category === activeCategory;
+        const matchesSearch = searchQuery === '' || 
+          questionText.includes(searchQuery) || 
+          answerText.includes(searchQuery);
+
+        if (matchesCategory && matchesSearch) {
+          (item as HTMLElement).style.display = 'block';
+          visibleCount++;
+        } else {
+          (item as HTMLElement).style.display = 'none';
+          // If open, close it
+          if (item.classList.contains('faq-open')) {
+            item.classList.remove('faq-open');
+            const content = item.querySelector('.faq-content') as HTMLElement | null;
+            const iconWrapper = item.querySelector('.faq-icon-wrapper') as HTMLElement | null;
+            if (content) content.style.maxHeight = '0px';
+            if (iconWrapper) iconWrapper.style.transform = 'rotate(0deg)';
+          }
+        }
+      });
+
+      if (emptyState) {
+        if (visibleCount === 0) {
+          emptyState.classList.remove('hidden');
+        } else {
+          emptyState.classList.add('hidden');
+        }
+      }
+    }
   }
 
-  // Trigger setup
-  document.addEventListener('DOMContentLoaded', initFaqAccordions);
-  initFaqAccordions();
-  document.addEventListener('astro:after-swap', initFaqAccordions);
+  // Bind listener to DOM loaded & Astro page swaps
+  document.addEventListener('DOMContentLoaded', initFaqHub);
+  initFaqHub();
+  document.addEventListener('astro:after-swap', initFaqHub);
 </script>
+

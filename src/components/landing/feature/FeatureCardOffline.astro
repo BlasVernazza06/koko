@@ -1,0 +1,177 @@
+---
+const { lang = 'es' } = Astro.props;
+---
+
+<div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-primary/5 hover:border-brand-primary/30">
+  <!-- Subtle interactive backdrop glow -->
+  <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/8 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+  <!-- Ambient background grid pattern (very faint) -->
+  <div class="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none bg-[linear-gradient(to_right,var(--color-border-subtle)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border-subtle)_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+
+  <!-- Card Visual: Deep space, glass globe, and orbiting airplane -->
+  <div class="relative w-full aspect-[320/220] mb-6 flex items-center justify-center select-none overflow-hidden rounded-2xl border border-border-subtle/20 bg-bg-base/20">
+    
+    <!-- Atmospheric pulsing wave rings -->
+    <div class="wave-outer absolute w-[240px] h-[240px] rounded-full border border-brand-primary/10"></div>
+    <div class="wave-inner absolute w-[170px] h-[170px] rounded-full border border-brand-secondary/15"></div>
+
+    <!-- Status Badge (Floating glass pill) -->
+    <div class="absolute top-3 right-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-border-subtle/30 bg-bg-surface/60 backdrop-blur-md shadow-xs select-none">
+      <span class="relative flex h-1.5 w-1.5">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-secondary opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-secondary"></span>
+      </span>
+      <span class="font-mono text-[9px] font-bold text-text-muted tracking-wider uppercase">
+        <span class="lang-es">Modo Avión</span>
+        <span class="lang-en">Offline Engine</span>
+      </span>
+    </div>
+
+    <!-- 3D-ish Base Shadow for the Globe -->
+    <div class="absolute w-[90px] h-[10px] bg-brand-primary/10 dark:bg-black/40 rounded-full filter blur-md transform translate-y-[62px]"></div>
+
+    <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- 3D spherical gradient for the globe -->
+        <radialGradient id="globeBodyGrad" cx="30%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="var(--brand-secondary)" stop-opacity="0.25" />
+          <stop offset="50%" stop-color="var(--brand-primary)" stop-opacity="0.1" />
+          <stop offset="100%" stop-color="var(--bg-base)" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- Dynamic glass sheen overlay -->
+        <linearGradient id="glassSheen" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15" />
+          <stop offset="45%" stop-color="#ffffff" stop-opacity="0.02" />
+          <stop offset="50%" stop-color="#000000" stop-opacity="0.05" />
+          <stop offset="100%" stop-color="#000000" stop-opacity="0.2" />
+        </linearGradient>
+
+        <!-- Drop shadow for the airplane -->
+        <filter id="airplaneShadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="1" dy="3" stdDeviation="2" flood-color="var(--brand-primary)" flood-opacity="0.25" />
+        </filter>
+      </defs>
+
+      <!-- ═══════════ GLOBE (Glassmorphic 3D Spherical representation) ═══════════ -->
+      <!-- Globe Base Color Fill -->
+      <circle cx="160" cy="110" r="56" fill="url(#globeBodyGrad)" />
+      
+      <!-- Grid Meridians (Vertical ellipses) -->
+      <ellipse cx="160" cy="110" rx="18" ry="56" stroke="var(--brand-primary)" stroke-opacity="0.18" stroke-width="0.8" />
+      <ellipse cx="160" cy="110" rx="38" ry="56" stroke="var(--brand-primary)" stroke-opacity="0.12" stroke-width="0.8" />
+
+      <!-- Grid Parallels (Horizontal ellipses) -->
+      <ellipse cx="160" cy="110" rx="56" ry="14" stroke="var(--brand-primary)" stroke-opacity="0.18" stroke-width="0.8" />
+      <ellipse cx="160" cy="90" rx="48" ry="9" stroke="var(--brand-primary)" stroke-opacity="0.12" stroke-width="0.8" />
+      <ellipse cx="160" cy="130" rx="48" ry="9" stroke="var(--brand-primary)" stroke-opacity="0.12" stroke-width="0.8" />
+
+      <!-- Abstract continents (Clean styled wisteria blobs) -->
+      <path d="M 138 88 Q 146 80, 158 84 Q 164 88, 154 96 Q 144 98, 138 88 Z" fill="var(--brand-primary)" fill-opacity="0.15" />
+      <path d="M 172 98 Q 186 92, 196 100 Q 200 110, 188 114 Q 176 114, 172 106 Z" fill="var(--brand-primary)" fill-opacity="0.12" />
+      <path d="M 132 108 Q 142 102, 152 108 Q 156 116, 148 122 Q 138 124, 132 114 Z" fill="var(--brand-primary)" fill-opacity="0.1" />
+      <path d="M 166 126 Q 176 120, 184 128 Q 186 136, 178 140 Q 168 138, 166 132 Z" fill="var(--brand-primary)" fill-opacity="0.12" />
+
+      <!-- Sphere Outer Glass Ring -->
+      <circle cx="160" cy="110" r="56" stroke="var(--brand-primary)" stroke-opacity="0.3" stroke-width="1.6" />
+      <!-- Glass sheen overlay -->
+      <circle cx="160" cy="110" r="56" fill="url(#glassSheen)" />
+
+      <!-- ═══════════ ORBIT PATH ═══════════ -->
+      <!-- Tilted 3D Orbit path (with part behind the globe concept) -->
+      <ellipse cx="160" cy="110" rx="90" ry="70" stroke="var(--brand-secondary)" stroke-opacity="0.18" stroke-width="1.2" stroke-dasharray="6 4" fill="none" class="orbit-path" />
+
+      <!-- ═══════════ ORBITING AIRPLANE ═══════════ -->
+      <!-- Using animateMotion for perfect smooth continuous rotation around the globe -->
+      <g filter="url(#airplaneShadow)">
+        <animateMotion
+          dur="16s"
+          repeatCount="indefinite"
+          rotate="auto"
+          calcMode="paced"
+          path="M 250,110 A 90,70 0 1,0 70,110 A 90,70 0 1,0 250,110"
+        />
+        <!-- rotate(90) aligns the top-down jet to travel forward (+X) -->
+        <g transform="rotate(90) scale(1.4)">
+          <!-- Dual-tone styled plane for realistic lighting & 3D feel -->
+          <!-- Left side (light) -->
+          <path
+            d="M 0,-15 C 0.5,-12 1,-9 1,-4 L 14,2 L 14,3.5 L 1,1 L 1,9 L 5.5,12 L 5.5,13.5 L 0,12 Z"
+            fill="var(--brand-primary)"
+          />
+          <!-- Right side (shaded/darker) -->
+          <path
+            d="M 0,-15 C -0.5,-12 -1,-9 -1,-4 L -14,2 L -14,3.5 L -1,1 L -1,9 L -5.5,12 L -5.5,13.5 L 0,12 Z"
+            fill="var(--brand-primary)"
+            class="opacity-75"
+          />
+          <!-- Cockpit window -->
+          <path d="M 0,-12 C 0.4,-10 0.4,-8 0,-6 C -0.4,-8 -0.4,-10 0,-12 Z" fill="var(--brand-secondary)" />
+          
+          <!-- Jet engine glow / trail dot -->
+          <circle cx="0" cy="14" r="2" fill="var(--brand-secondary)" class="animate-pulse" />
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Card Copy -->
+  <div class="mt-auto relative z-15 select-none">
+    <div class="flex items-center gap-2 mb-2">
+      <!-- Accent decor line -->
+      <div class="w-1 h-4 bg-brand-secondary rounded-full"></div>
+      <h3 class="text-base font-bold text-text-main lang-es">Desconectividad Total</h3>
+      <h3 class="text-base font-bold text-text-main lang-en">100% Offline Scaffolding</h3>
+    </div>
+    <p class="text-xs text-text-muted leading-relaxed lang-es">
+      Crea proyectos completos sin Wi-Fi. Koko compila todas las plantillas directamente en el binario local, eliminando descargas lentas.
+    </p>
+    <p class="text-xs text-text-muted leading-relaxed lang-en">
+      Generate complete projects with zero internet. Koko embeds all templates inside the local binary, avoiding slow registry downloads.
+    </p>
+  </div>
+</div>
+
+<style>
+  /* Wave pulse animation */
+  @keyframes wave-breathe-inner {
+    0%, 100% {
+      transform: scale(0.95);
+      opacity: 0.1;
+    }
+    50% {
+      transform: scale(1.25);
+      opacity: 0.35;
+    }
+  }
+
+  @keyframes wave-breathe-outer {
+    0%, 100% {
+      transform: scale(0.9);
+      opacity: 0.04;
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 0.2;
+    }
+  }
+
+  .wave-inner {
+    animation: wave-breathe-inner 6s ease-in-out infinite;
+  }
+
+  .wave-outer {
+    animation: wave-breathe-outer 6s ease-in-out infinite;
+    animation-delay: 3s;
+  }
+
+  /* Orbit line hover effect */
+  .orbit-path {
+    transition: stroke-opacity 0.3s, stroke 0.3s;
+  }
+  .group:hover .orbit-path {
+    stroke-opacity: 0.35;
+    stroke: var(--brand-primary);
+  }
+</style>

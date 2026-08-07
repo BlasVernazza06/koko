@@ -77,6 +77,10 @@ body {
 }
 
 /* Translation visibility helper */
+html {
+  scroll-behavior: smooth;
+}
+
 html[data-lang="es"] .lang-en {
   display: none !important;
 }

@@ -1,0 +1,49 @@
+---
+import { Sparkles, ArrowRight } from "@lucide/svelte";
+import FeatureCardCLI from "./FeatureCardCLI.astro";
+import FeatureCardAddOns from "./FeatureCardAddOns.astro";
+import FeatureCardOffline from "./FeatureCardOffline.astro";
+import FeatureCardPerformance from "./FeatureCardPerformance.astro";
+import FeatureCardCustomizer from "./FeatureCardCustomizer.astro";
+
+const { lang = 'es' } = Astro.props;
+---
+
+<section id="features" class="w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 mx-auto">
+  <!-- Section Badge & Header -->
+  <div class="text-center mb-16 flex flex-col items-center scroll-reveal">
+    <div class="inline-flex items-center gap-1.5 px-3 py-1 mb-4 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-xs font-semibold text-brand-primary tracking-wide uppercase select-none">
+      <Sparkles size={12} class="animate-pulse" />
+      <span class="lang-es">Características Interactivas</span>
+      <span class="lang-en">Interactive Features</span>
+    </div>
+    
+    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-text-main max-w-3xl font-sans leading-tight">
+      <span class="lang-es">Mantén tu código estructurado <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">del Día 1 al Día 2.</span></span>
+      <span class="lang-en">Keep your codebase structured <span class="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">from Day 1 to Day 2.</span></span>
+    </h2>
+    
+    <p class="text-sm sm:text-base text-text-muted max-w-2xl">
+      <span class="lang-es">Claw reemplaza las plantillas y la configuración manual con un potente motor de desarrollo en Go. ¡Haz clic en las tarjetas para probar el sistema interactivo en vivo!</span>
+      <span class="lang-en">Claw replaces manual configuration and templates with a robust, instant Go-powered developer engine. Click on the cards below to test our configuration system live!</span>
+    </p>
+  </div>
+
+  <!-- Bento Grid Layout (6 Columns) -->
+  <div class="grid grid-cols-1 md:grid-cols-6 gap-6 lg:gap-8 auto-rows-auto scroll-reveal-children">
+    <FeatureCardCLI lang={lang} />
+    <FeatureCardAddOns lang={lang} />
+    <FeatureCardOffline lang={lang} />
+    <FeatureCardPerformance lang={lang} />
+    <FeatureCardCustomizer lang={lang} />
+  </div>
+
+  <!-- Bento footer note -->
+  <div class="text-center mt-12">
+    <p class="text-xs text-text-muted font-medium inline-flex items-center gap-1 cursor-pointer hover:text-brand-primary transition-colors">
+      <span class="lang-es">Y muchas más opciones pensadas para desarrolladores...</span>
+      <span class="lang-en">And much more developer-centric options...</span>
+      <ArrowRight size={12} />
+    </p>
+  </div>
+</section>

@@ -1,0 +1,287 @@
+---
+import ReactAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/React.svelte";
+import SvelteAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/Svelte.svelte";
+import AstroAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/Astro.svelte";
+import NextjsAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/Nextjs.svelte";
+import HonoAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/Hono.svelte";
+import FlutterAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/Flutter.svelte";
+import VueAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/Vue.svelte";
+import NuxtAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/Nuxt.svelte";
+
+const { lang = 'es' } = Astro.props;
+---
+
+<div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-secondary/5 hover:border-brand-secondary/30">
+  <div class="absolute inset-0 bg-gradient-to-tr from-brand-secondary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+  
+  <!-- Card Visual: Genealogy Tree -->
+  <div class="cli-tree relative w-full h-[250px] mb-6 flex items-center justify-center select-none overflow-visible">
+
+    <!-- SVG Branch Lines -->
+    <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="branchGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--brand-secondary)" stop-opacity="0.6" />
+          <stop offset="100%" stop-color="var(--brand-primary)" stop-opacity="0.25" />
+        </linearGradient>
+        <radialGradient id="rootGlow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0%" stop-color="var(--brand-secondary)" stop-opacity="0.15" />
+          <stop offset="100%" stop-color="var(--brand-secondary)" stop-opacity="0" />
+        </radialGradient>
+      </defs>
+
+      <!-- Root glow -->
+      <circle cx="200" cy="26" r="30" fill="url(#rootGlow)" />
+
+      <!-- ── TIER 1: Root → 3 categories ── -->
+      <path d="M 200 40 C 200 70, 60 65, 60 90" class="tree-branch branch-1" stroke="url(#branchGrad)" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M 200 40 L 200 90" class="tree-branch branch-2" stroke="url(#branchGrad)" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M 200 40 C 200 70, 340 65, 340 90" class="tree-branch branch-3" stroke="url(#branchGrad)" stroke-width="1.5" stroke-linecap="round" />
+
+      <!-- ── TIER 2: Categories → Leaves ── -->
+      <!-- Frontend(60) → React(28) / Vue(92) -->
+      <path d="M 60 114 C 60 145, 28 140, 28 170" class="tree-branch branch-4" stroke="url(#branchGrad)" stroke-width="1.2" stroke-linecap="round" />
+      <path d="M 60 114 C 60 145, 92 140, 92 170" class="tree-branch branch-5" stroke="url(#branchGrad)" stroke-width="1.2" stroke-linecap="round" />
+
+      <!-- Fullstack(200) → Next(168) / Nuxt(232) -->
+      <path d="M 200 114 C 200 145, 168 140, 168 170" class="tree-branch branch-6" stroke="url(#branchGrad)" stroke-width="1.2" stroke-linecap="round" />
+      <path d="M 200 114 C 200 145, 232 140, 232 170" class="tree-branch branch-7" stroke="url(#branchGrad)" stroke-width="1.2" stroke-linecap="round" />
+
+      <!-- Backend(340) → Hono(308) / Flutter(372) -->
+      <path d="M 340 114 C 340 145, 308 140, 308 170" class="tree-branch branch-8" stroke="url(#branchGrad)" stroke-width="1.2" stroke-linecap="round" />
+      <path d="M 340 114 C 340 145, 372 140, 372 170" class="tree-branch branch-9" stroke="url(#branchGrad)" stroke-width="1.2" stroke-linecap="round" />
+
+      <!-- Animated pulse dots -->
+      <circle r="2" fill="var(--brand-secondary)" class="opacity-60">
+        <animateMotion dur="3s" repeatCount="indefinite" begin="0s">
+          <mpath href="#motionPath1" />
+        </animateMotion>
+      </circle>
+      <circle r="2" fill="var(--brand-secondary)" class="opacity-60">
+        <animateMotion dur="3s" repeatCount="indefinite" begin="1s">
+          <mpath href="#motionPath2" />
+        </animateMotion>
+      </circle>
+      <circle r="2" fill="var(--brand-secondary)" class="opacity-60">
+        <animateMotion dur="3s" repeatCount="indefinite" begin="2s">
+          <mpath href="#motionPath3" />
+        </animateMotion>
+      </circle>
+
+      <path id="motionPath1" d="M 200 40 C 200 70, 60 65, 60 90" fill="none" />
+      <path id="motionPath2" d="M 200 40 L 200 90" fill="none" />
+      <path id="motionPath3" d="M 200 40 C 200 70, 340 65, 340 90" fill="none" />
+    </svg>
+
+    <!-- ── ROOT NODE: Koko CLI ── -->
+    <div class="absolute top-[12px] left-1/2 -translate-x-1/2 z-20">
+      <div class="tree-node root-node bg-zinc-950 dark:bg-zinc-800 border border-white/15 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-lg shadow-brand-secondary/10 group-hover:scale-105 transition-transform duration-500">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        <span class="text-[11px] font-bold text-white tracking-wide whitespace-nowrap">Koko CLI</span>
+        <span class="root-pulse absolute inset-0 rounded-2xl border border-brand-secondary/40"></span>
+      </div>
+    </div>
+
+    <!-- ── TIER 1 CATEGORY NODES ── -->
+    <!-- Frontend -->
+    <div class="absolute top-[90px] left-[15%] -translate-x-1/2 z-10">
+      <div class="tree-node cat-node cat-1 bg-bg-surface/90 dark:bg-bg-surface/80 border border-brand-secondary/25 px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm backdrop-blur-sm">
+        <SvelteAstroComponent width={14} height={14} />
+        <span class="text-[9px] font-semibold text-text-main whitespace-nowrap">Frontend</span>
+      </div>
+    </div>
+
+    <!-- Fullstack -->
+    <div class="absolute top-[90px] left-1/2 -translate-x-1/2 z-10">
+      <div class="tree-node cat-node cat-2 bg-bg-surface/90 dark:bg-bg-surface/80 border border-brand-secondary/25 px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm backdrop-blur-sm">
+        <AstroAstroComponent width={14} height={14} />
+        <span class="text-[9px] font-semibold text-text-main whitespace-nowrap">Fullstack</span>
+      </div>
+    </div>
+
+    <!-- Backend & Mobile -->
+    <div class="absolute top-[90px] left-[85%] -translate-x-1/2 z-10">
+      <div class="tree-node cat-node cat-3 bg-bg-surface/90 dark:bg-bg-surface/80 border border-brand-secondary/25 px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm backdrop-blur-sm">
+        <HonoAstroComponent width={14} height={14} />
+        <span class="text-[9px] font-semibold text-text-main whitespace-nowrap">API & Mobile</span>
+      </div>
+    </div>
+
+    <!-- ── TIER 2 LEAF NODES ── -->
+    <!-- React — 7% -->
+    <div class="absolute top-[170px] left-[7%] -translate-x-1/2 z-10">
+      <div class="tree-node leaf-node leaf-1 flex flex-col items-center gap-1">
+        <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
+          <ReactAstroComponent width={18} height={18} />
+        </div>
+        <span class="text-[8px] font-medium text-text-muted">React</span>
+      </div>
+    </div>
+
+    <!-- Vue — 23% -->
+    <div class="absolute top-[170px] left-[23%] -translate-x-1/2 z-10">
+      <div class="tree-node leaf-node leaf-2 flex flex-col items-center gap-1">
+        <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
+          <VueAstroComponent width={18} height={18} />
+        </div>
+        <span class="text-[8px] font-medium text-text-muted">Vue</span>
+      </div>
+    </div>
+
+    <!-- Nextjs — 42% -->
+    <div class="absolute top-[170px] left-[42%] -translate-x-1/2 z-10">
+      <div class="tree-node leaf-node leaf-3 flex flex-col items-center gap-1">
+        <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
+          <NextjsAstroComponent width={18} height={18} />
+        </div>
+        <span class="text-[8px] font-medium text-text-muted">Next.js</span>
+      </div>
+    </div>
+
+    <!-- Nuxt — 58% -->
+    <div class="absolute top-[170px] left-[58%] -translate-x-1/2 z-10">
+      <div class="tree-node leaf-node leaf-4 flex flex-col items-center gap-1">
+        <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
+          <NuxtAstroComponent width={18} height={18} />
+        </div>
+        <span class="text-[8px] font-medium text-text-muted">Nuxt</span>
+      </div>
+    </div>
+
+    <!-- Hono API — 77% -->
+    <div class="absolute top-[170px] left-[77%] -translate-x-1/2 z-10">
+      <div class="tree-node leaf-node leaf-5 flex flex-col items-center gap-1">
+        <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
+          <HonoAstroComponent width={18} height={18} />
+        </div>
+        <span class="text-[8px] font-medium text-text-muted">API</span>
+      </div>
+    </div>
+
+    <!-- Flutter — 93% -->
+    <div class="absolute top-[170px] left-[93%] -translate-x-1/2 z-10">
+      <div class="tree-node leaf-node leaf-6 flex flex-col items-center gap-1">
+        <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
+          <FlutterAstroComponent width={18} height={18} />
+        </div>
+        <span class="text-[8px] font-medium text-text-muted">Mobile</span>
+      </div>
+    </div>
+
+    <div class="absolute bottom-[4px] left-1/2 -translate-x-1/2 z-10">
+      <span class="text-[9px] text-text-muted/50 font-medium tracking-widest">· · ·</span>
+    </div>
+
+  </div>
+  
+  <!-- Card Copy -->
+  <div class="mt-auto relative z-15 select-none">
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-1 h-4 bg-brand-secondary rounded-full"></div>
+      <h3 class="text-base font-bold text-text-main lang-es">Un comando, muchos proyectos</h3>
+      <h3 class="text-base font-bold text-text-main lang-en">One command, many projects</h3>
+    </div>
+    <p class="text-xs text-text-muted leading-relaxed lang-es">
+      Desde una SPA en React hasta una API en Hono o una app mobile. Un solo CLI genera el árbol completo de cualquier arquitectura.
+    </p>
+    <p class="text-xs text-text-muted leading-relaxed lang-en">
+      From a React SPA to a Hono API or a mobile app. One CLI generates the full tree for any architecture.
+    </p>
+  </div>
+</div>
+
+<style>
+  /* ── Branch draw-in animation ── */
+  .tree-branch {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: draw-branch 1.2s ease-out forwards;
+  }
+
+  .branch-1 { animation-delay: 0.1s; }
+  .branch-2 { animation-delay: 0.2s; }
+  .branch-3 { animation-delay: 0.3s; }
+  .branch-4 { animation-delay: 0.6s; }
+  .branch-5 { animation-delay: 0.7s; }
+  .branch-6 { animation-delay: 0.8s; }
+  .branch-7 { animation-delay: 0.9s; }
+  .branch-8 { animation-delay: 1.0s; }
+  .branch-9 { animation-delay: 1.1s; }
+
+  @keyframes draw-branch {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* ── Node fade-in with scale ── */
+  .tree-node {
+    opacity: 0;
+    animation: node-appear 0.5s ease-out forwards;
+  }
+
+  .root-node { animation-delay: 0s; }
+  .cat-1 { animation-delay: 0.35s; }
+  .cat-2 { animation-delay: 0.45s; }
+  .cat-3 { animation-delay: 0.55s; }
+  .leaf-1 { animation-delay: 0.85s; }
+  .leaf-2 { animation-delay: 0.95s; }
+  .leaf-3 { animation-delay: 1.05s; }
+  .leaf-4 { animation-delay: 1.15s; }
+  .leaf-5 { animation-delay: 1.25s; }
+  .leaf-6 { animation-delay: 1.35s; }
+
+  @keyframes node-appear {
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* ── Root pulse ring ── */
+  .root-pulse {
+    animation: pulse-ring 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.12);
+    }
+  }
+
+  /* ── Gentle float for leaf icon boxes on hover ── */
+  .cli-tree:hover .leaf-1 .leaf-icon-box {
+    animation: leaf-float 3s ease-in-out infinite 0s;
+  }
+  .cli-tree:hover .leaf-2 .leaf-icon-box {
+    animation: leaf-float 3s ease-in-out infinite 0.3s;
+  }
+  .cli-tree:hover .leaf-3 .leaf-icon-box {
+    animation: leaf-float 3s ease-in-out infinite 0.6s;
+  }
+  .cli-tree:hover .leaf-4 .leaf-icon-box {
+    animation: leaf-float 3s ease-in-out infinite 0.15s;
+  }
+  .cli-tree:hover .leaf-5 .leaf-icon-box {
+    animation: leaf-float 3s ease-in-out infinite 0.45s;
+  }
+  .cli-tree:hover .leaf-6 .leaf-icon-box {
+    animation: leaf-float 3s ease-in-out infinite 0.75s;
+  }
+
+  @keyframes leaf-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+</style>

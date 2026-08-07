@@ -1,0 +1,106 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../../../assets/logo.webp';
+import BetterAuthAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/BetterAuth.svelte";
+import DockerAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/Docker.svelte";
+import GitHubAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/GitHub.svelte";
+import PlaywrightAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/Playwright.svelte";
+import PostgreSQLAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/PostgreSQL.svelte";
+import PrettierAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/Prettier.svelte";
+
+const { lang = 'es' } = Astro.props;
+---
+
+<div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-primary/5 hover:border-brand-primary/30">
+  <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+  <!-- Card Visual Mockup -->
+  <div class="relative w-full aspect-[320/220] mb-6 flex items-center justify-center select-none overflow-visible">
+    <!-- SVG Connections -->
+    <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Radiating concentric circles -->
+      <circle cx="160" cy="110" r="32" class="stroke-brand-primary/20" stroke-width="1" />
+      <circle cx="160" cy="110" r="48" class="stroke-brand-primary/10" stroke-width="1" stroke-dasharray="3 3" />
+      <circle cx="160" cy="110" r="64" class="stroke-brand-primary/5" stroke-width="1" />
+
+      <!-- Left side paths -->
+      <!-- Top-Left (Docker) to Center -->
+      <path d="M 80 45 C 120 45, 115 110, 140 110" class="stroke-brand-primary/25 group-hover:stroke-brand-primary/50 transition-colors duration-300" stroke-width="1.5" />
+      <!-- Mid-Left (Testing) to Center -->
+      <path d="M 70 110 L 140 110" class="stroke-brand-primary/25 group-hover:stroke-brand-primary/50 transition-colors duration-300" stroke-width="1.5" />
+      <!-- Bot-Left (CI/CD) to Center -->
+      <path d="M 80 175 C 120 175, 115 110, 140 110" class="stroke-brand-primary/25 group-hover:stroke-brand-primary/50 transition-colors duration-300" stroke-width="1.5" />
+
+      <!-- Right side paths -->
+      <!-- Top-Right (Auth) to Center -->
+      <path d="M 240 45 C 200 45, 205 110, 180 110" class="stroke-brand-primary/25 group-hover:stroke-brand-primary/50 transition-colors duration-300" stroke-width="1.5" />
+      <!-- Mid-Right (Database) to Center -->
+      <path d="M 250 110 L 180 110" class="stroke-brand-primary/25 group-hover:stroke-brand-primary/50 transition-colors duration-300" stroke-width="1.5" />
+      <!-- Bot-Right (Linting) to Center -->
+      <path d="M 240 175 C 200 175, 205 110, 180 110" class="stroke-brand-primary/25 group-hover:stroke-brand-primary/50 transition-colors duration-300" stroke-width="1.5" />
+    </svg>
+
+    <!-- Center Koko Logo -->
+    <div class="absolute z-10 w-12 h-12 rounded-full bg-brand-primary/10 border border-brand-primary/30 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+      <div class="w-10 h-10 rounded-full bg-bg-surface flex items-center justify-center overflow-hidden border border-border-subtle shadow-inner">
+        <Image 
+          src={logo} 
+          alt="Koko Logo" 
+          class="w-7 h-7 object-contain" 
+        />
+      </div>
+    </div>
+
+    <!-- Outer Nodes (Cards with much border-radius) -->
+    <!-- Top-Left: Docker -->
+    <div class="absolute left-[18%] top-[20%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/80 backdrop-blur-sm shadow-sm hover:border-brand-primary/45 transition-colors duration-300">
+      <DockerAstroComponent width={20} height={20}/>
+      <span class="text-[10px] font-semibold text-text-main">Docker</span>
+    </div>
+
+    <!-- Mid-Left: Testing -->
+    <div class="absolute left-[13%] top-[50%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/80 backdrop-blur-sm shadow-sm hover:border-brand-primary/45 transition-colors duration-300">
+      <PlaywrightAstroComponent width={20} height={20}/>
+      <span class="text-[10px] font-semibold text-text-main">Testing</span>
+    </div>
+
+    <!-- Bottom-Left: CI/CD -->
+    <div class="absolute left-[18%] top-[80%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/80 backdrop-blur-sm shadow-sm hover:border-brand-primary/45 transition-colors duration-300">
+      <GitHubAstroComponent width={20} height={20}/>
+      <span class="text-[10px] font-semibold text-text-main">CI/CD</span>
+    </div>
+
+    <!-- Top-Right: Auth -->
+    <div class="absolute right-[18%] top-[20%] translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/80 backdrop-blur-sm shadow-sm hover:border-brand-primary/45 transition-colors duration-300">
+      <BetterAuthAstroComponent width={20} height={20}/>
+      <span class="text-[10px] font-semibold text-text-main">Auth</span>
+    </div>
+
+    <!-- Mid-Right: Database (DB) -->
+    <div class="absolute right-[13%] top-[50%] translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/80 backdrop-blur-sm shadow-sm hover:border-brand-primary/45 transition-colors duration-300">
+      <PostgreSQLAstroComponent width={20} height={20}/>
+      <span class="text-[10px] font-semibold text-text-main">DB</span>
+    </div>
+
+    <!-- Bottom-Right: Linting -->
+    <div class="absolute right-[18%] top-[80%] translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/80 backdrop-blur-sm shadow-sm hover:border-brand-primary/45 transition-colors duration-300">
+      <PrettierAstroComponent width={20} height={20}/>
+      <span class="text-[10px] font-semibold text-text-main">Linting</span>
+    </div>
+  </div>
+
+  <!-- Card Copy -->
+  <div class="mt-auto relative z-15 select-none">
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-1 h-4 bg-brand-secondary rounded-full"></div>
+      <h3 class="text-base font-bold text-text-main lang-es">Add-Ons</h3>
+      <h3 class="text-base font-bold text-text-main lang-en">Add-Ons</h3>
+    </div>
+    <p class="text-xs text-text-muted leading-relaxed lang-es">
+      El CLI permanece activo todo el ciclo de vida. Evoluciona la arquitectura e inyecta auth, bases de datos o componentes modularmente.
+    </p>
+    <p class="text-xs text-text-muted leading-relaxed lang-en">
+      The CLI is active throughout your project's lifecycle. Evolve your stack and inject database instances or components modularly.
+    </p>
+  </div>
+</div>
