@@ -13,6 +13,7 @@ export interface Block {
   pre?: string;
   bullets?: string[];
   tree?: TreeItem[];
+  tags?: string[];
   nestedBlocks?: {
     anchorId: string;
     title: string;
@@ -289,21 +290,40 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           title: '¿Por qué el CLI de Claw está escrito en Go?',
           body: [
             'Go nos permite compilar un único archivo binario sin dependencias locales para el usuario final. Esto asegura un inicio instantáneo (cold start de milisegundos) y que no requieras configurar Node.js globalmente o lidiar con versiones conflictivas de npm solo para crear tu scaffolding.'
-          ]
+          ],
+          tags: ['go', 'cli']
         },
         {
           anchorId: 'customize-templates',
           title: '¿Puedo personalizar las plantillas por defecto?',
           body: [
             'En el MVP (v0.1.0) las recetas están predefinidas con las mejores prácticas de la industria. Sin embargo, en el roadmap de la v0.2.0 incluiremos soporte para que cargues tus propias plantillas personalizadas desde repositorios Git remotos o rutas locales.'
-          ]
+          ],
+          tags: ['plantillas', 'personalización']
         },
         {
           anchorId: 'modify-later',
           title: '¿Cómo añado módulos (como Auth o Base de Datos) después de la inicialización?',
           body: [
             'Para proyectos creados con el MVP, la adición posterior debe hacerse de forma manual. Estamos trabajando arduamente en el subcomando `claw add` para que detecte automáticamente tu archivo `claw.config.json` e inyecte estos servicios sin romper tu código existente en la v0.2.0.'
-          ]
+          ],
+          tags: ['arquitectura', 'módulos']
+        },
+        {
+          anchorId: 'is-free',
+          title: '¿Es Koko de código abierto y gratuito?',
+          body: [
+            'Sí, Koko es un proyecto 100% de código abierto bajo la licencia MIT. Puedes usarlo de forma gratuita para proyectos personales o comerciales, y eres más que bienvenido a contribuir con mejoras en nuestro repositorio de GitHub.'
+          ],
+          tags: ['general', 'licencia']
+        },
+        {
+          anchorId: 'offline-mode',
+          title: '¿Puedo utilizar Koko sin conexión a Internet?',
+          body: [
+            '¡Totalmente! El CLI de Koko funciona de manera local en tu máquina. Solo requerirás conexión a internet la primera vez para descargar el CLI (si usas npx) y al ejecutar la instalación de las dependencias de NPM (como `npm install`) o descargar las imágenes de Docker.'
+          ],
+          tags: ['general', 'infraestructura']
         }
       ]
     }
@@ -566,21 +586,40 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           title: 'Why is the Claw CLI written in Go?',
           body: [
             'Go enables us to compile a single, dependency-free binary for the end-user. This guarantees instant execution (sub-millisecond cold start) and removes the need to configure global Node.js setups or manage npm version conflicts just to scaffold a project.'
-          ]
+          ],
+          tags: ['go', 'cli']
         },
         {
           anchorId: 'customize-templates',
           title: 'Can I customize the default templates?',
           body: [
             'In the MVP release (v0.1.0), recipes are preconfigured based on industry best practices. However, the v0.2.0 roadmap includes functionality to let you load custom templates directly from remote Git repositories or local folders.'
-          ]
+          ],
+          tags: ['templates', 'customization']
         },
         {
           anchorId: 'modify-later',
           title: 'How do I add modules (like Auth or DB) after initialization?',
           body: [
             'For projects generated using the MVP, post-setup features must be configured manually. We are actively developing the `claw add` sub-command to automatically read your `claw.config.json` manifest and securely inject these modules in v0.2.0.'
-          ]
+          ],
+          tags: ['architecture', 'modules']
+        },
+        {
+          anchorId: 'is-free',
+          title: 'Is Koko open source and free to use?',
+          body: [
+            'Yes, Koko is 100% open source under the MIT license. You can use it completely free of charge for both personal and commercial projects, and contributions are highly welcome on our GitHub repository.'
+          ],
+          tags: ['general', 'license']
+        },
+        {
+          anchorId: 'offline-mode',
+          title: 'Can I run Koko offline without an internet connection?',
+          body: [
+            'Absolutely! The Koko CLI runs completely locally on your computer. You will only need an internet connection the first time you execute the CLI (if run via npx) and when installing NPM dependencies (e.g. `npm install`) or pulling Docker images.'
+          ],
+          tags: ['general', 'infrastructure']
         }
       ]
     }

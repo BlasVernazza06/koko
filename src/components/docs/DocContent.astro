@@ -4,6 +4,8 @@ import { docsData } from '@/lib/docsData';
 import DocCodeBlock from './DocCodeBlock.astro';
 import DocDirectoryTree from './DocDirectoryTree.astro';
 import DocPagination from './DocPagination.astro';
+import DocFaq from './DocFaq.svelte';
+import { Link } from '@lucide/svelte';
 
 interface Props {
   activeSection: DocSection;
@@ -36,60 +38,96 @@ const basePath = lang === 'es' ? '/docs' : '/en/docs';
     <h1 class="text-4xl font-extrabold tracking-tight text-text-main font-sans">{activeSection.title}</h1>
   </div>
 
-  <!-- Dynamic Content Block Parser -->
-  <div class="space-y-16">
-    {activeSection.content.map((block) => (
-      <section id={block.anchorId} class="scroll-mt-28 space-y-4">
-        <h2 class="text-2xl font-bold tracking-tight text-text-main border-b border-border-subtle/60 pb-2">
-          {block.title}
-        </h2>
-        
-        {block.body.map((p) => (
-          <p class="text-sm text-text-muted leading-relaxed">{p}</p>
-        ))}
-
-        {block.bullets && (
-          <ul class="list-disc pl-5 text-sm text-text-muted space-y-2 leading-relaxed">
-            {block.bullets.map((bullet) => {
-              const parts = bullet.split(' - ');
-              if (parts.length > 1) {
+  <!-- Content Render -->
+  {activeSection.id === 'faq' ? (
+    <DocFaq activeSection={activeSection} lang={lang} client:load />
+  ) : (
+    <div class="space-y-16">
+      {activeSection.content.map((block) => (
+        <section id={block.anchorId} class="scroll-mt-28 space-y-4">
+          <h2 class="group flex items-center gap-2 text-2xl font-bold tracking-tight text-text-main border-b border-border-subtle/60 pb-2">
+            <span>{block.title}</span>
+            <a href={`#${block.anchorId}`} class="opacity-0 group-hover:opacity-100 transition-all duration-200 text-brand-primary/55 hover:text-brand-primary" aria-label="Link to this section">
+              <Link size={16} />
+            </a>
+          </h2>
+          
+          <div class="space-y-3">
+            {block.body.map((p) => {
+              if (p.startsWith('• ')) {
+                const content = p.slice(2);
+                const colonIndex = content.indexOf(':');
+                if (colonIndex !== -1) {
+                  const boldPart = content.slice(0, colonIndex);
+                  const restPart = content.slice(colonIndex + 1);
+                  return (
+                    <div class="flex gap-2.5 text-sm text-text-muted leading-relaxed pl-1 py-0.5">
+                      <span class="text-brand-primary select-none font-bold shrink-0">✓</span>
+                      <span><strong class="text-text-main">{boldPart}</strong>:{restPart}</span>
+                    </div>
+                  );
+                }
                 return (
-                  <li>
-                    <strong>{parts[0]}</strong> - {parts.slice(1).join(' - ')}
-                  </li>
+                  <div class="flex gap-2.5 text-sm text-text-muted leading-relaxed pl-1 py-0.5">
+                    <span class="text-brand-primary select-none font-bold shrink-0">✓</span>
+                    <span>{content}</span>
+                  </div>
                 );
               }
-              return <li>{bullet}</li>;
+              return <p class="text-sm text-text-muted leading-relaxed">{p}</p>;
             })}
-          </ul>
-        )}
-
-        {block.pre && (
-          <DocCodeBlock code={block.pre} lang={lang} />
-        )}
-
-        {block.nestedBlocks && (
-          <div class="space-y-8 pl-4 border-l border-border-subtle/60 ml-2 mt-4">
-            {block.nestedBlocks.map((nested) => (
-              <div id={nested.anchorId} class="scroll-mt-28 space-y-3">
-                <h3 class="text-lg font-bold text-text-main">{nested.title}</h3>
-                {nested.body.map((np) => (
-                  <p class="text-xs sm:text-sm text-text-muted leading-relaxed">{np}</p>
-                ))}
-                {nested.pre && (
-                  <pre class="bg-bg-surface border border-border-subtle p-3 rounded-lg text-xs font-mono text-brand-primary overflow-x-auto">{nested.pre}</pre>
-                )}
-              </div>
-            ))}
           </div>
-        )}
 
-        {block.tree && (
-          <DocDirectoryTree tree={block.tree} />
-        )}
-      </section>
-    ))}
-  </div>
+          {block.bullets && (
+            <ul class="list-disc pl-5 text-sm text-text-muted space-y-2 leading-relaxed">
+              {block.bullets.map((bullet) => {
+                const parts = bullet.split(' - ');
+                if (parts.length > 1) {
+                  return (
+                    <li>
+                      <strong>{parts[0]}</strong> - {parts.slice(1).join(' - ')}
+                    </li>
+                  );
+                }
+                return <li>{bullet}</li>;
+              })}
+            </ul>
+          )}
+
+          {block.pre && (
+            <DocCodeBlock code={block.pre} lang={lang} />
+          )}
+
+          {block.nestedBlocks && (
+            <div class="space-y-8 pl-4 border-l border-border-subtle/60 ml-2 mt-4">
+              {block.nestedBlocks.map((nested) => (
+                <div id={nested.anchorId} class="scroll-mt-28 space-y-3">
+                  <h3 class="group flex items-center gap-2 text-lg font-bold text-text-main">
+                    <span>{nested.title}</span>
+                    <a href={`#${nested.anchorId}`} class="opacity-0 group-hover:opacity-100 transition-all duration-200 text-brand-primary/55 hover:text-brand-primary" aria-label="Link to this subsection">
+                      <Link size={14} />
+                    </a>
+                  </h3>
+                  <div class="space-y-2">
+                    {nested.body.map((np) => (
+                      <p class="text-xs sm:text-sm text-text-muted leading-relaxed">{np}</p>
+                    ))}
+                  </div>
+                  {nested.pre && (
+                    <DocCodeBlock code={nested.pre} lang={lang} />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {block.tree && (
+            <DocDirectoryTree tree={block.tree} />
+          )}
+        </section>
+      ))}
+    </div>
+  )}
 
   <!-- Pagination -->
   <DocPagination 
@@ -101,20 +139,26 @@ const basePath = lang === 'es' ? '/docs' : '/en/docs';
 </main>
 
 <script>
-  // Setup copy helpers
+  // Setup copy helpers for any standard copy button in doc content
   document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.copy-btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const text = btn.getAttribute('data-copy-text');
-        if (text) {
-          navigator.clipboard.writeText(text);
-          const originalText = btn.textContent;
-          btn.textContent = btn.getAttribute('data-copied') || (btn.textContent === 'Copiar' ? 'Copiado!' : 'Copied!');
-          setTimeout(() => {
-            btn.textContent = originalText;
-          }, 1500);
-        }
+    const initCopyButtons = () => {
+      document.querySelectorAll('.copy-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const text = btn.getAttribute('data-copy-text');
+          if (text) {
+            navigator.clipboard.writeText(text);
+            const originalText = btn.textContent;
+            btn.textContent = btn.getAttribute('data-copied') || (btn.textContent === 'Copiar' ? 'Copiado!' : 'Copied!');
+            setTimeout(() => {
+              btn.textContent = originalText;
+            }, 1500);
+          }
+        });
       });
-    });
+    };
+
+    initCopyButtons();
+    document.addEventListener('astro:after-swap', initCopyButtons);
   });
 </script>
+
