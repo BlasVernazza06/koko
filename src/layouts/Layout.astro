@@ -1,5 +1,6 @@
 ---
 import Header from '@/components/header/header.astro';
+import logoImg from '../assets/logo.webp';
 import '../styles/global.css';
 
 const { lang = 'es', title, description } = Astro.props;
@@ -24,8 +25,7 @@ const enAlternateURL = new URL(cleanPath === '/' ? '/en' : `/en${cleanPath}`, si
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/webp" href={logoImg.src} />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">

@@ -18,10 +18,10 @@
       <!-- Title & Header -->
       <div class="flex items-center justify-between pb-3 border-b border-border-subtle/40">
         <div class="flex items-center gap-2">
-          <Settings size={15} class="text-brand-secondary animate-spin-slow" />
+          <Settings size={15} class="text-brand-primary animate-spin-slow" />
           <span class="text-xs font-mono font-bold uppercase tracking-wider text-text-muted/80">{lang === 'es' ? 'Constructor Visual' : 'Visual Builder'}</span>
         </div>
-        <span class="text-[9px] font-mono uppercase bg-brand-secondary/15 text-brand-secondary border border-brand-secondary/20 px-2 py-0.5 rounded font-extrabold tracking-wider">{lang === 'es' ? 'Interactivo' : 'Interactive'}</span>
+        <span class="text-[9px] font-mono uppercase bg-brand-primary/15 text-brand-primary border border-brand-primary/20 px-2 py-0.5 rounded font-extrabold tracking-wider">{lang === 'es' ? 'Interactivo' : 'Interactive'}</span>
       </div>
 
       <!-- Main Pitch Text -->
@@ -58,7 +58,7 @@
       <span class="text-xs font-mono font-bold text-text-muted group-hover/box:text-text-main transition-colors">
         {lang === 'es' ? 'CONSTRUIR STACK' : 'BUILD STACK'}
       </span>
-      <div class="flex items-center justify-center w-8 h-8 rounded-xl bg-bg-surface border border-border-subtle text-text-muted group-hover/box:bg-gradient-to-r group-hover/box:from-brand-primary group-hover/box:to-brand-secondary group-hover/box:border-transparent group-hover/box:text-white transition-all duration-300">
+      <div class="flex items-center justify-center w-8 h-8 rounded-xl bg-bg-surface border border-border-subtle text-text-muted group-hover/box:bg-gradient-to-r group-hover/box:from-brand-primary group-hover/box:to-brand-primary group-hover/box:border-transparent group-hover/box:text-white transition-all duration-300">
         <ArrowRight size={14} class="group-hover/box:translate-x-0.5 transition-transform duration-200" />
       </div>
     </div>

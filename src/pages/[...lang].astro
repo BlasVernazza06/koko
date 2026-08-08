@@ -4,7 +4,7 @@ import Hero from '@/components/hero/hero.astro';
 import Footer from '@/components/footer/footer.astro';
 import TerminalSimulator from '@/components/TerminalSimulator.svelte';
 import FeaturesSec from '@/components/landing/feature/featuresSec.astro';
-import FaqSec from '@/components/landing/faqSec.astro';
+import FaqSec from '@/components/landing/faq/faqSec.astro';
 import DocsSec from '@/components/landing/docsSec.astro';
 
 export function getStaticPaths() {
@@ -18,12 +18,12 @@ const { lang } = Astro.params;
 const currentLang = lang || 'es';
 
 const title = currentLang === 'es' 
-  ? 'Claw — Motor de Inicialización de Proyectos Go-Native' 
-  : 'Claw — Go-Native Project Scaffolding Engine';
+  ? 'Koko — Motor de Inicialización de Proyectos Go-Native' 
+  : 'Koko — Go-Native Project Scaffolding Engine';
 
 const description = currentLang === 'es'
-  ? 'Inicializa proyectos listos para producción en menos de 5 segundos. Claw es un CLI escrito en Go nativo que inyecta dependencias, Docker, y ORM de manera modular.'
-  : 'Bootstrap production-ready environments in under 5 seconds. Claw is a native Go CLI that modularly injects dependencies, Docker, and ORMs.';
+  ? 'Inicializa proyectos listos para producción en menos de 5 segundos. Koko es un CLI escrito en Go nativo que inyecta dependencias, Docker, y ORM de manera modular.'
+  : 'Bootstrap production-ready environments in under 5 seconds. Koko is a native Go CLI that modularly injects dependencies, Docker, and ORMs.';
 ---
 
 <Layout lang={currentLang} title={title} description={description}>
