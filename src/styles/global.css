@@ -87,3 +87,64 @@ html[data-lang="es"] .lang-en {
 html[data-lang="en"] .lang-es {
   display: none !important;
 }
+
+/* Custom Scrollbar Styling */
+@supports (scrollbar-color: auto) {
+  html {
+    scrollbar-color: var(--brand-primary) transparent;
+    scrollbar-width: thin;
+  }
+}
+
+/* Webkit Scrollbar Styling (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+:root[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.01);
+}
+
+/* Elegant floating pill thumb with gradient */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+  border-radius: 9999px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-secondary);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Invert dark technology logos in dark mode to ensure high visibility */
+:root[data-theme="dark"] img[src*="nextjs"],
+:root[data-theme="dark"] img[src*="express"],
+:root[data-theme="dark"] img[src*="fastify"],
+:root[data-theme="dark"] img[src*="better-auth"],
+:root[data-theme="dark"] img[src*="resend"],
+:root[data-theme="dark"] img[src*="clerk"],
+:root[data-theme="dark"] img[src*="prisma"] {
+  filter: invert(1) brightness(1.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) img[src*="nextjs"],
+  :root:not([data-theme="light"]) img[src*="express"],
+  :root:not([data-theme="light"]) img[src*="fastify"],
+  :root:not([data-theme="light"]) img[src*="better-auth"],
+  :root:not([data-theme="light"]) img[src*="resend"],
+  :root:not([data-theme="light"]) img[src*="clerk"],
+  :root:not([data-theme="light"]) img[src*="prisma"] {
+    filter: invert(1) brightness(1.25);
+  }
+}
+
