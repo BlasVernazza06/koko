@@ -76,4 +76,4 @@ Este proyecto está bajo el control del autor. Consulta más detalles en los rep
 
 ---
 
-*Última actualización de documentación: Julio 2026.*
+*Última actualización de documentación: Agosto de 2026.*
