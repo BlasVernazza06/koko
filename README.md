@@ -1,23 +1,23 @@
-# 🚀 Claw / Koko — Go-Native Project Scaffolding Engine & Web Suite
+# 🚀 Koko — Go-Native Project Scaffolding Engine & Web Suite
 
-Este repositorio contiene el código de la plataforma web e interfaz interactiva para **Claw / Koko**, un potente motor de inicialización y control de arquitectura diseñado para desarrolladores exigentes.
+Este repositorio contiene el código de la plataforma web e interfaz interactiva para **Koko**, un potente motor de inicialización y control de arquitectura diseñado para desarrolladores exigentes.
 
-El motor de **Claw / Koko** te permite desplegar entornos listos para producción en segundos, inyectando dependencias (Docker, ORMs, linters) de manera modular y protegiendo el código contra la desviación de estándares (drift prevention).
+El motor de **Koko** te permite desplegar entornos listos para producción en segundos, inyectando dependencias (Docker, ORMs, linters) de manera modular y protegiendo el código contra la desviación de estándares (drift prevention).
 
 ---
 
 ## 🌟 Características Clave
 
-- **Inicialización Interactiva Ultrarrápida:** Levanta proyectos estructurados en menos de 5 segundos con asistentes interactivos (`claw init` / `npm create koko-app`).
+- **Inicialización Interactiva Ultrarrápida:** Levanta proyectos estructurados en menos de 5 segundos con asistentes interactivos (`koko init` / `npm create koko-app`).
 - **Motor sin Dependencias:** Escrito en Go nativo, lo que garantiza velocidad, portabilidad y ejecutable binario único sin configuraciones previas complejas.
-- **Control de Desviación (Drift Prevention):** Garantiza que nadie rompa silenciosamente la arquitectura o configuración de linters y librerías clave acordadas en el manifiesto `koko.json` o `claw.config.json`.
-- **Integraciones Modulares y Blueprints:** Inyecta componentes a demanda como base de datos (`claw add database`), autenticación (`claw add auth`), configuración de contenedores Docker y recetas pre-optimizadas para React, Next.js, FastAPI o monorepos.
+- **Control de Desviación (Drift Prevention):** Garantiza que nadie rompa silenciosamente la arquitectura o configuración de linters y librerías clave acordadas en el manifiesto `koko.config.json`.
+- **Integraciones Modulares y Blueprints:** Inyecta componentes a demanda como base de datos (`koko add database`), autenticación (`koko add auth`), configuración de contenedores Docker y recetas pre-optimizadas para React, Next.js, FastAPI o monorepos.
 
 ---
 
 ## 🖥️ Sobre este Repositorio (Plataforma Web)
 
-Este proyecto es el sitio web oficial y entorno visual interactivo de Claw / Koko. Incluye:
+Este proyecto es el sitio web oficial y entorno visual interactivo de Koko. Incluye:
 1. **Simulador interactivo de terminal:** Para probar la experiencia del CLI desde el navegador.
 2. **Interactive Builder:** Una suite de selección visual para pre-visualizar el árbol de directorios que generará tu stack ideal.
 3. **Documentación interactiva:** Guías detalladas sobre la arquitectura y la especificación del CLI.
@@ -57,22 +57,22 @@ npm run preview
 
 ---
 
-## 🛠️ Comandos del CLI (Claw / Koko)
+## 🛠️ Comandos del CLI (Koko)
 
 El CLI ofrece una interfaz limpia para interactuar con tus proyectos:
 
 | Comando | Acción |
 | :--- | :--- |
-| `claw init` / `npm create koko-app@latest` | Inicia el asistente interactivo para estructurar un nuevo proyecto. |
-| `claw add auth` | Inyecta de forma automática módulos de autenticación listos para usar. |
-| `claw add database` | Configura e inyecta la capa de datos y ORM seleccionados en el workspace. |
-| `claw g component [Name]` | Genera un componente reutilizable siguiendo las guías de estilo del proyecto. |
+| `koko init` / `npm create koko-app@latest` | Inicia el asistente interactivo para estructurar un nuevo proyecto. |
+| `koko add auth` | Inyecta de forma automática módulos de autenticación listos para usar. |
+| `koko add database` | Configura e inyecta la capa de datos y ORM seleccionados en el workspace. |
+| `koko g component [Name]` | Genera un componente reutilizable siguiendo las guías de estilo del proyecto. |
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto está bajo el control del autor. Consulta más detalles en los repositorios oficiales de [Claw CLI](https://github.com/BlasVernazza06/claw-cli).
+Este proyecto está bajo el control del autor. Consulta más detalles en los repositorios oficiales de [Koko CLI](https://github.com/BlasVernazza06/koko-cli).
 
 ---
 
