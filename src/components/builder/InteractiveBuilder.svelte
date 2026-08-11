@@ -25,6 +25,7 @@
 
   // State variables
   let projectName = $state('my-koko-app');
+  let selectedCommandType = $state('wrapper');
   let selectedFront = $state(getDefault('frontend', 'nextjs'));
   let selectedNativeFront = $state(getDefault('native_frontend', 'none'));
   let selectedBack = $state(getDefault('backend', 'hono'));
@@ -220,7 +221,30 @@
 
   // Computes the dynamic command based on state
   const generatedCommand = $derived.by(() => {
-    let cmd = `koko init ${projectName || 'my-koko-app'}`;
+    let cmd = '';
+    const name = projectName || 'my-koko-app';
+    
+    if (selectedCommandType === 'wrapper') {
+      if (selectedPackageManager === 'npm') {
+        cmd = `npm create koko-app@latest ${name}`;
+      } else if (selectedPackageManager === 'pnpm') {
+        cmd = `pnpm create koko-app ${name}`;
+      } else if (selectedPackageManager === 'yarn') {
+        cmd = `yarn create koko-app ${name}`;
+      } else { // bun
+        cmd = `bun create koko-app ${name}`;
+      }
+    } else if (selectedCommandType === 'binary') {
+      cmd = `koko init ${name}`;
+    } else { // 'go'
+      cmd = `go run github.com/BlasVernazza06/koko-cli@latest init ${name}`;
+    }
+
+    // Pass options separator to npm wrapper
+    if (selectedCommandType === 'wrapper' && selectedPackageManager === 'npm' && (selectedFront !== 'none' || selectedNativeFront !== 'none' || selectedBack !== 'none' || selectedDb !== 'none' || selectedAuth !== 'none' || selectedPayments !== 'none' || withDocker || withCi || withLinter || withTesting || withTurborepo)) {
+      cmd += ' --';
+    }
+
     if (selectedFront !== 'none') cmd += ` --frontend ${selectedFront}`;
     if (selectedNativeFront !== 'none') cmd += ` --mobile ${selectedNativeFront}`;
     if (selectedBack !== 'none') cmd += ` --backend ${selectedBack}`;
@@ -411,12 +435,14 @@
     </div>
 
     <!-- RIGHT: COMMAND & STRUCTURE DISPLAY (4 cols) -->
-    <div class="lg:col-span-4 lg:sticky lg:top-20 max-h-[calc(100vh-7rem)] overflow-y-auto pr-2 custom-scrollbar">
+    <div class="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
       <VisualPreview
         {generatedCommand}
         {structurePreview}
         selectedTechs={selectedTechOptions}
         onremove={removeTech}
+        bind:selectedPackageManager={selectedPackageManager}
+        bind:selectedCommandType={selectedCommandType}
         {lang}
       />
     </div>

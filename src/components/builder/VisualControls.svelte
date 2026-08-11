@@ -70,28 +70,58 @@
   let activeTab = $state<'manual' | 'presets'>('manual');
 </script>
 
+<style>
+  .minimal-switcher {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+  }
+  .tab-btn {
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .tab-btn.active {
+    background: var(--brand-primary);
+    color: white;
+    box-shadow: 0 4px 15px -3px rgba(90, 79, 196, 0.25);
+  }
+  .editorial-panel {
+    background: rgba(235, 237, 247, 0.15);
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 20px 40px -15px rgba(90, 79, 196, 0.03);
+  }
+  :root[data-theme="dark"] .editorial-panel {
+    background: rgba(20, 19, 30, 0.25);
+  }
+</style>
+
 <div class="relative z-10 font-sans">
-  <!-- Tabs connecting to the background container below -->
-  <div class="flex gap-2 -mb-[1.5px] relative z-20 select-none">
+  <!-- Modern Pill-Switcher with Editorial Styling -->
+  <div class="minimal-switcher flex items-center gap-2 p-1.5 rounded-2xl w-fit mb-8 select-none backdrop-blur-md shadow-xs">
     <button
       type="button"
-      class="flex items-center gap-2 border border-border-subtle border-b-border-subtle text-[11px] font-bold uppercase tracking-wider px-6 py-3.5 rounded-t-2xl cursor-pointer transition-all duration-300 active:scale-[0.98] {activeTab === 'manual' ? 'bg-bg-base text-brand-primary border-b-bg-base font-extrabold shadow-[0_-2px_12px_rgba(90,79,196,0.06)]' : 'bg-bg-surface text-text-muted hover:text-text-main hover:bg-bg-base'}"
+      class="tab-btn flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider cursor-pointer active:scale-[0.97]
+        {activeTab === 'manual' 
+          ? 'active' 
+          : 'text-text-muted hover:text-text-main hover:bg-bg-surface/50'}"
       onclick={() => activeTab = 'manual'}
     >
-      <SlidersHorizontal size={13} />
+      <img src="/icons-ajustes.svg" alt="config-manual-builder" class="size-4 transition-all duration-300 {activeTab === 'manual' ? 'opacity-100' : 'opacity-70'}">
       <span>{lang === 'es' ? 'Configuración Manual' : 'Manual Config'}</span>
     </button>
     <button
       type="button"
-      class="flex items-center gap-2 border border-border-subtle border-b-border-subtle text-[11px] font-bold uppercase tracking-wider px-6 py-3.5 rounded-t-2xl cursor-pointer transition-all duration-300 active:scale-[0.98] {activeTab === 'presets' ? 'bg-bg-base text-brand-primary border-b-bg-base font-extrabold shadow-[0_-2px_12px_rgba(90,79,196,0.06)]' : 'bg-bg-surface text-text-muted hover:text-text-main hover:bg-bg-base'}"
+      class="tab-btn flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider cursor-pointer active:scale-[0.97]
+        {activeTab === 'presets' 
+          ? 'active' 
+          : 'text-text-muted hover:text-text-main hover:bg-bg-surface/50'}"
       onclick={() => activeTab = 'presets'}
     >
-      <Layers size={13} />
+      <img src="/icons-receta.png" alt="receta-icono" class="size-4 transition-all duration-300 {activeTab === 'presets' ? 'opacity-100' : 'opacity-70'}">
       <span>{lang === 'es' ? 'Recetas (Presets)' : 'Presets (Recipes)'}</span>
     </button>
   </div>
 
-  <div class="relative w-full bg-bg-base border border-border-subtle rounded-br-2xl rounded-bl-2xl rounded-tr-2xl p-8 shadow-[0_12px_35px_-12px_rgba(90,79,196,0.1)] max-sm:rounded-2xl max-sm:p-5">
+  <!-- Main glassmorphic card container -->
+  <div class="editorial-panel relative w-full rounded-3xl p-8 backdrop-blur-xl max-sm:rounded-2xl max-sm:p-5">
     {#if activeTab === 'presets'}
       <PresetsView {templates} {lang} onapply={applyTemplate} />
     {:else}

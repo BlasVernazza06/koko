@@ -261,27 +261,37 @@
     <!-- STEPPER LAYOUT -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
       <!-- Steps Navigation Sidebar -->
-      <div class="md:col-span-4 flex flex-row md:flex-col gap-2.5 overflow-x-auto pb-4 md:pb-0 md:pr-4 md:border-r border-border-subtle/30 select-none custom-scrollbar">
+      <div class="md:col-span-4 flex flex-row md:flex-col gap-3 overflow-x-auto pb-4 md:pb-0 md:pr-4 md:border-r border-border-subtle/30 select-none custom-scrollbar relative">
         {#each steps as step, idx}
           {@const StepIcon = step.icon}
+          {@const isActive = activeStep === idx}
+          {@const isCompleted = idx < activeStep}
           <button
             type="button"
             onclick={() => activeStep = idx}
-            class="flex items-center gap-3 p-3 rounded-2xl text-left transition-all duration-300 cursor-pointer shrink-0 group w-auto md:w-full
-              {activeStep === idx 
-                ? 'bg-brand-primary/10 text-brand-primary font-bold shadow-xs' 
-                : 'text-text-muted hover:text-text-main hover:bg-bg-surface/50'}"
+            class="flex items-center gap-3.5 p-3 rounded-2xl text-left transition-all duration-300 cursor-pointer shrink-0 group w-auto md:w-full relative select-none
+              {isActive 
+                ? 'bg-brand-primary/[0.08] text-brand-primary font-bold shadow-xs' 
+                : isCompleted
+                  ? 'text-brand-primary/80 hover:bg-bg-surface/30'
+                  : 'text-text-muted hover:text-text-main hover:bg-bg-surface/40'}"
           >
-            <div class="w-8 h-8 rounded-xl flex items-center justify-center border font-bold font-mono text-xs transition-all duration-300
-              {activeStep === idx 
-                ? 'bg-brand-primary border-brand-primary text-white shadow-[0_0_12px_rgba(90,79,196,0.25)]' 
-                : 'bg-bg-surface border-border-subtle text-text-muted group-hover:border-brand-primary/30 group-hover:bg-bg-base'}"
+            <div class="w-9 h-9 flex items-center justify-center transition-all duration-350 shrink-0 relative
+              {isActive 
+                ? 'text-brand-primary scale-110 drop-shadow-[0_0_8px_rgba(90,79,196,0.3)]' 
+                : isCompleted
+                  ? 'text-brand-primary/80'
+                  : 'text-text-muted group-hover:text-text-main'}"
             >
-              <StepIcon size={14} />
+              <StepIcon size={18} />
             </div>
+            
             <div class="hidden sm:flex flex-col gap-0.5">
-              <span class="text-[10px] md:text-xs uppercase tracking-widest font-bold leading-none">{step.title}</span>
-              <span class="text-[9px] md:text-[10px] opacity-75 font-medium leading-none mt-1">{step.desc}</span>
+              <span class="text-[10px] md:text-xs uppercase tracking-widest font-extrabold leading-none transition-colors duration-300
+                {isActive ? 'text-brand-primary' : 'text-text-main/80'}">
+                {step.title}
+              </span>
+              <span class="text-[9px] md:text-[10px] opacity-75 font-medium leading-none mt-1.5">{step.desc}</span>
             </div>
           </button>
         {/each}
@@ -293,12 +303,12 @@
           <!-- Step Header -->
           <div class="pb-3 border-b border-border-subtle/40 select-none">
             <h2 class="text-base sm:text-lg font-bold text-text-main flex items-center gap-2">
-              <span class="text-[10px] font-bold font-mono px-2 py-0.5 bg-brand-primary/10 border border-brand-primary/20 text-brand-primary rounded-md">
+              <span class="text-[10px] font-bold font-mono px-2.5 py-0.5 bg-brand-primary/10 border border-brand-primary/20 text-brand-primary rounded-md">
                 {lang === 'es' ? 'PASO' : 'STEP'} {activeStep + 1} / 6
               </span>
               {steps[activeStep].title}
             </h2>
-            <p class="text-xs text-text-muted mt-1 font-medium leading-relaxed">{steps[activeStep].desc}</p>
+            <p class="text-xs text-text-muted mt-1.5 font-medium leading-relaxed">{steps[activeStep].desc}</p>
           </div>
 
           <!-- Step Fields -->
@@ -308,18 +318,18 @@
             <!-- Step 1: Proyecto -->
             <div class="space-y-6" transition:fade={{ duration: 120 }}>
               <!-- Project Name Input -->
-              <div class="space-y-2">
-                <label for="pname" class="block text-xs font-bold uppercase tracking-widest text-text-muted border-l-2 border-brand-primary pl-2.5">
+              <div class="space-y-2.5">
+                <label for="pname" class="block text-xs font-extrabold uppercase tracking-widest text-text-muted border-l-3 border-brand-primary pl-3 select-none">
                   {t.projectNameLabel}
                 </label>
-                <div class="relative flex items-center bg-bg-base border border-border-subtle rounded-xl px-4 py-3 hover:border-brand-primary/45 focus-within:border-brand-primary transition-all duration-200 shadow-2xs">
-                  <Settings size={16} class="text-text-muted mr-3" aria-hidden="true" />
+                <div class="relative flex items-center bg-bg-base border border-border-subtle rounded-xl px-4 py-3 hover:border-brand-primary/40 focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10 transition-all duration-300 shadow-2xs">
+                  <Settings size={16} class="text-brand-primary/70 mr-3 animate-pulse" aria-hidden="true" />
                   <input
                     id="pname"
                     type="text"
                     bind:value={projectName}
                     placeholder="my-koko-app"
-                    class="w-full bg-transparent border-none outline-none text-sm text-text-main placeholder-text-muted/50 p-0 focus:ring-0 font-mono"
+                    class="w-full bg-transparent border-none outline-none text-sm text-text-main placeholder-text-muted/40 p-0 focus:ring-0 font-mono font-bold tracking-wide"
                   />
                 </div>
               </div>
@@ -690,18 +700,18 @@
     <!-- EXPANDED/SCROLL LAYOUT (Original) -->
     <div class="space-y-8" transition:fade={{ duration: 150 }}>
       <!-- Project Name Input -->
-      <div class="rounded-2xl border border-border-subtle bg-bg-surface/30 p-6 backdrop-blur-xs shadow-sm hover:border-brand-primary/20 transition-all duration-300">
-        <label for="pname-exp" class="block text-xs font-bold uppercase tracking-widest text-text-muted mb-3 select-none border-l-2 border-brand-primary pl-2.5">
+      <div class="rounded-3xl border border-border-subtle bg-bg-surface/30 p-6 backdrop-blur-md shadow-xs hover:border-brand-primary/25 transition-all duration-300">
+        <label for="pname-exp" class="block text-xs font-extrabold uppercase tracking-widest text-text-muted mb-3.5 select-none border-l-3 border-brand-primary pl-3">
           {t.projectNameLabel}
         </label>
-        <div class="relative flex items-center bg-bg-base border border-border-subtle rounded-xl px-4 py-3 hover:border-brand-primary/40 focus-within:border-brand-primary transition-colors duration-200">
-          <Settings size={18} class="text-text-muted mr-3" aria-hidden="true" />
+        <div class="relative flex items-center bg-bg-base border border-border-subtle rounded-xl px-4 py-3.5 hover:border-brand-primary/40 focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10 transition-all duration-300">
+          <Settings size={18} class="text-brand-primary/70 mr-3 animate-pulse" aria-hidden="true" />
           <input
             id="pname-exp"
             type="text"
             bind:value={projectName}
             placeholder="my-koko-app"
-            class="w-full bg-transparent border-none outline-none text-base text-text-main placeholder-text-muted/50 p-0 focus:ring-0 font-mono"
+            class="w-full bg-transparent border-none outline-none text-base text-text-main placeholder-text-muted/40 p-0 focus:ring-0 font-mono font-bold tracking-wide"
           />
         </div>
       </div>
