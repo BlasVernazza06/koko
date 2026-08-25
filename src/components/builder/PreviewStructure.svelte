@@ -57,7 +57,7 @@
 </script>
 
 <!-- Generated Structure -->
-<div class="rounded-2xl border border-border-subtle bg-bg-surface/30 p-6 backdrop-blur-xs shadow-sm overflow-hidden">
+<div class="rounded-2xl p-6 overflow-hidden">
   <div class="flex items-center gap-2.5 mb-4 pb-2 border-b border-border-subtle select-none">
     <Folder size={16} class="text-brand-secondary" aria-hidden="true" />
     <span class="text-xs font-bold uppercase tracking-widest text-text-muted">

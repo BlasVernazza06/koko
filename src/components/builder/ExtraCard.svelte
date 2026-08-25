@@ -38,8 +38,8 @@
   aria-pressed={isActive}
   class="editorial-extra group/btn flex items-center justify-between p-5 rounded-xl border border-border-subtle transition-all duration-300 text-left cursor-pointer active:scale-[0.99] w-full select-none
     {isActive 
-      ? 'bg-brand-primary/[0.04] border-brand-primary shadow-xs font-semibold' 
-      : 'bg-bg-surface/30 hover:bg-bg-surface hover:shadow-xs text-text-main'}"
+      ? 'bg-bg-base  border-brand-primary shadow-xs font-semibold' 
+      : 'bg-bg-base hover:border-brand-primary/40 hover:shadow-xs text-text-main'}"
 >
   <div class="flex items-center gap-4">
     <div class="icon-holder w-8 h-8 flex items-center justify-center rounded-lg bg-bg-base border border-border-subtle p-1.5 shrink-0 shadow-2xs">

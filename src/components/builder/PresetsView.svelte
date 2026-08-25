@@ -83,7 +83,7 @@
         onclick={() => {
           onapply(template.config);
         }}
-        class="flex flex-col justify-between items-start gap-5 p-6 rounded-2xl border border-border-subtle bg-bg-surface dark:bg-bg-surface/30 text-left hover:border-brand-primary/45 hover:bg-bg-surface/90 dark:hover:bg-bg-surface/60 hover:shadow-[0_12px_35px_-15px_rgba(90,79,196,0.12)] hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.99] cursor-pointer w-full group"
+        class="flex flex-col justify-between items-start gap-5 p-6 rounded-2xl border border-border-subtle bg-bg-base text-left hover:border-brand-primary/45 hover:shadow-[0_12px_35px_-15px_rgba(90,79,196,0.12)] hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.99] cursor-pointer w-full group"
       >
         <div class="space-y-4 w-full">
           <!-- Recipe Header: Icon + Name -->

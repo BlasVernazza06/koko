@@ -393,7 +393,7 @@
   }
 </style>
 
-<div class="w-full max-w-[92rem] mx-auto px-8 py-12 font-sans space-y-12 builder-container">
+<div class="w-full max-w-[92rem] mx-auto px-8 py-12 font-sans space-y-12 builder-container relative z-10">
   <!-- Header -->
   <div class="text-center mb-16">
     <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-xs sm:text-sm font-bold text-brand-primary tracking-widest uppercase select-none">

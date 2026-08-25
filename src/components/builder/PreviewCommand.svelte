@@ -176,7 +176,7 @@
     </span>
     <div class="flex items-center gap-2">
       <!-- Segmented Buttons for Installer Method Selection -->
-      <div class="flex items-center gap-1 p-0.5 bg-bg-surface/40 border border-border-subtle rounded-xl select-none">
+      <div class="flex items-center gap-1 p-0.5 bg-white border border-border-subtle rounded-xl select-none shadow-2xs">
         <button
           type="button"
           onclick={() => selectedCommandType = 'wrapper'}
@@ -214,7 +214,7 @@
         <button
           type="button"
           onclick={() => isExpanded = !isExpanded}
-          class="flex items-center gap-1.5 px-3 py-1.5 border border-border-subtle bg-bg-surface/20 hover:bg-bg-surface text-text-muted hover:text-text-main rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 shadow-2xs"
+          class="flex items-center gap-1.5 px-3 py-1.5 border border-border-subtle bg-white text-text-muted hover:text-text-main rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 shadow-2xs"
         >
           <ChevronDown size={11} class="transition-transform duration-300 {isExpanded ? 'rotate-180' : ''}" />
           <span>{t.flagsBtn}</span>
@@ -225,7 +225,7 @@
       <button
         type="button"
         onclick={copyCommand}
-        class="flex items-center gap-1.5 px-3 py-1.5 border border-border-subtle bg-bg-surface/20 hover:bg-bg-surface text-text-muted hover:text-text-main rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 shadow-2xs"
+        class="flex items-center gap-1.5 px-3 py-1.5 border border-border-subtle bg-white text-text-muted hover:text-text-main rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 shadow-2xs"
       >
         {#if isCopied}
           <Check size={11} class="text-emerald-500 animate-bounce" />
@@ -265,7 +265,7 @@
       href="https://github.com/BlasVernazza06/koko-cli/releases"
       target="_blank"
       rel="noopener noreferrer"
-      class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-brand-primary/20 bg-brand-primary/[0.04] hover:bg-brand-primary/10 text-brand-primary rounded-xl text-[10px] font-extrabold uppercase tracking-wider transition-all duration-300 shadow-2xs hover:shadow-sm"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-brand-primary/20 bg-white hover:bg-brand-primary/2 text-brand-primary rounded-xl text-[10px] font-extrabold uppercase tracking-wider transition-all duration-300 shadow-2xs hover:shadow-sm"
     >
       <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 fill-none stroke-current stroke-[2]" aria-hidden="true">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />

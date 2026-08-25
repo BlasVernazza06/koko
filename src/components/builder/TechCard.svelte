@@ -47,10 +47,10 @@
   aria-pressed={isActive}
   class="editorial-card relative group/btn flex flex-col items-start gap-3 p-5 rounded-xl border text-left cursor-pointer active:scale-[0.98] w-full select-none
     {isDisabled 
-      ? 'bg-bg-surface/10 border-border-subtle/40 text-text-muted/40 opacity-40 cursor-not-allowed' 
+      ? 'bg-bg-base border-border-subtle/40 text-text-muted/40 opacity-40 cursor-not-allowed' 
       : isActive 
         ? 'bg-brand-primary/[0.04] border-brand-primary text-text-main shadow-xs font-semibold' 
-        : 'bg-bg-surface/40 border-border-subtle hover:bg-bg-surface hover:shadow-xs text-text-main'}
+        : 'bg-bg-base border-border-subtle hover:border-brand-primary/40 hover:shadow-xs text-text-main'}
     disabled"
   class:disabled={isDisabled}
 >

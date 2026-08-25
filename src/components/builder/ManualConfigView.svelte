@@ -233,7 +233,7 @@
     <span class="text-xs font-bold uppercase tracking-widest text-text-muted">
       {lang === 'es' ? 'Modo de Configuración' : 'Configuration Mode'}
     </span>
-    <div class="flex items-center gap-1 bg-bg-surface border border-border-subtle p-1 rounded-xl text-xs">
+    <div class="flex items-center gap-1 bg-bg-base border border-border-subtle p-1 rounded-xl text-xs">
       <button
         type="button"
         onclick={() => viewMode = 'stepper'}
@@ -269,7 +269,7 @@
           <button
             type="button"
             onclick={() => activeStep = idx}
-            class="flex items-center gap-3.5 p-3 rounded-2xl text-left transition-all duration-300 cursor-pointer shrink-0 group w-auto md:w-full relative select-none
+            class="flex items-center gap-3.5 p-3 rounded-2xl text-left hover:bg-gray-200 transition-all duration-300 cursor-pointer shrink-0 group w-auto md:w-full relative select-none
               {isActive 
                 ? 'bg-brand-primary/[0.08] text-brand-primary font-bold shadow-xs' 
                 : isCompleted

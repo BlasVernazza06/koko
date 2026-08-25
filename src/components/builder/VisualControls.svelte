@@ -72,7 +72,7 @@
 
 <style>
   .minimal-switcher {
-    background: var(--bg-surface);
+    background: var(--bg-base);
     border: 1px solid var(--border-subtle);
   }
   .tab-btn {
@@ -82,14 +82,6 @@
     background: var(--brand-primary);
     color: white;
     box-shadow: 0 4px 15px -3px rgba(90, 79, 196, 0.25);
-  }
-  .editorial-panel {
-    background: rgba(235, 237, 247, 0.15);
-    border: 1px solid var(--border-subtle);
-    box-shadow: 0 20px 40px -15px rgba(90, 79, 196, 0.03);
-  }
-  :root[data-theme="dark"] .editorial-panel {
-    background: rgba(20, 19, 30, 0.25);
   }
 </style>
 
@@ -121,7 +113,7 @@
   </div>
 
   <!-- Main glassmorphic card container -->
-  <div class="editorial-panel relative w-full rounded-3xl p-8 backdrop-blur-xl max-sm:rounded-2xl max-sm:p-5">
+  <div class="border border-border-subtle bg-bg-base shadow-xl relative w-full rounded-3xl p-8 max-sm:rounded-2xl max-sm:p-5">
     {#if activeTab === 'presets'}
       <PresetsView {templates} {lang} onapply={applyTemplate} />
     {:else}
