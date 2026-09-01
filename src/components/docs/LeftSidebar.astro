@@ -85,9 +85,12 @@ const activeCategory = activeSection ? activeSection.category : categories[0];
     <div class="p-3.5 rounded-2xl border border-brand-primary/15 bg-gradient-to-br from-brand-primary/5 via-brand-secondary/2 to-bg-surface/50 relative overflow-hidden group">
       <div class="absolute -top-6 -right-6 w-20 h-20 bg-brand-primary/10 rounded-full blur-xl pointer-events-none"></div>
       <div class="relative z-10 space-y-2">
-        <div class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-primary">
-          <span class="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse"></span>
-          {lang === 'es' ? 'Stack Builder' : 'Stack Builder'}
+        <div class="flex items-center justify-between gap-1.5">
+          <div class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-primary">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse"></span>
+            {lang === 'es' ? 'Stack Builder' : 'Stack Builder'}
+          </div>
+          <img src="/koko-saludando.png" alt="Koko" class="w-5 h-5 object-contain shrink-0 transition-transform duration-300 group-hover:scale-115 group-hover:rotate-6" />
         </div>
         <p class="text-[11px] text-text-muted leading-relaxed font-sans font-medium">
           {lang === 'es' 

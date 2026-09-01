@@ -124,8 +124,11 @@
               {/each}
             </div>
           {:else}
-            <div class="py-4 text-center">
-              <span class="text-xs text-text-muted leading-relaxed font-medium">{t.emptySummary}</span>
+            <div class="py-6 text-center flex flex-col items-center justify-center">
+              <div class="w-14 h-14 mb-2 flex items-center justify-center opacity-85 transition-transform duration-300 hover:scale-110">
+                <img src="/koko-pensando.png" alt="Koko Pensando" class="w-full h-full object-contain" />
+              </div>
+              <span class="text-xs text-text-muted leading-relaxed font-medium max-w-xs">{t.emptySummary}</span>
             </div>
           {/if}
         </div>

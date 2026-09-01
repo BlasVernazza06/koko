@@ -33,9 +33,24 @@ const basePath = lang === 'es' ? '/docs' : '/en/docs';
   </nav>
 
   <!-- Title block -->
-  <div class="space-y-4 mb-10">
-    <span class="text-xs font-bold uppercase tracking-widest text-brand-primary">{activeSection.category}</span>
-    <h1 class="text-4xl font-extrabold tracking-tight text-text-main font-sans">{activeSection.title}</h1>
+  <div class="flex items-start justify-between gap-4 mb-10 pb-6 border-b border-border-subtle/50">
+    <div class="space-y-3">
+      <span class="text-xs font-bold uppercase tracking-widest text-brand-primary">{activeSection.category}</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-main font-sans">{activeSection.title}</h1>
+    </div>
+    <div class="w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-2xl bg-bg-surface/50 border border-border-subtle/60 p-1.5 flex items-center justify-center shadow-xs transition-transform duration-300 hover:scale-105 hover:rotate-3 select-none">
+      <img 
+        src={
+          activeSection.id === 'faq' ? '/koko-pregunta.png' :
+          activeSection.id === 'quick-start' ? '/koko-saludando.png' :
+          activeSection.id === 'recipes-deep-dive' ? '/koko-clebrando.png' :
+          activeSection.id === 'troubleshooting' ? '/koko-pensando.png' :
+          '/koko-libro.png'
+        } 
+        alt="Koko mascot" 
+        class="w-full h-full object-contain" 
+      />
+    </div>
   </div>
 
   <!-- Content Render -->

@@ -84,7 +84,7 @@
               : 'bg-bg-surface hover:bg-bg-base border border-border-subtle hover:border-brand-primary/45 text-text-main'}"
         >
           {#if isCopied}
-            <Check size={11} strokeWidth={3} />
+            <img src="/koko-check.png" alt="Check" class="w-3.5 h-3.5 object-contain animate-bounce" />
             <span>{lang === 'es' ? 'COPIADO' : 'COPIED'}</span>
           {:else}
             <Copy size={11} class="text-text-muted" />

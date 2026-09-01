@@ -182,9 +182,12 @@
 <div class="space-y-3 font-sans">
   <!-- Header Layout: Title on Left, Selector & Flags toggle on Right -->
   <div class="flex items-center justify-between pb-3 select-none">
-    <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-text-muted">
-      {t.commandLabel}
-    </span>
+    <div class="flex items-center gap-1.5">
+      <img src="/koko-clebrando.png" alt="Koko" class="w-4.5 h-4.5 object-contain" />
+      <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-text-muted">
+        {t.commandLabel}
+      </span>
+    </div>
     <div class="flex items-center gap-2">
       <!-- Segmented Buttons for Installer Method Selection -->
       <div class="flex items-center gap-1 p-0.5 bg-bg-base border border-border-subtle rounded-xl select-none shadow-2xs">
