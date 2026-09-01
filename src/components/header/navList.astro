@@ -157,7 +157,7 @@ const recipesDropdownItems = [
     </a>
     
     <!-- Mega-dropdown absolute element -->
-    <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 scale-98 group-hover:scale-100 origin-top-left z-50">
+    <div class="nav-dropdown pointer-events-none invisible opacity-0 absolute top-full left-0 pt-2 origin-top-left z-50">
       <div class="bg-bg-surface border border-border-subtle rounded-2xl p-6 shadow-[0_12px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_50px_rgba(0,0,0,0.35)] w-[690px] flex gap-6">
         <!-- Left Column: Links (60%) -->
         <div class="w-[58%] flex flex-col justify-between">
@@ -326,7 +326,7 @@ const recipesDropdownItems = [
     </a>
     
     <!-- Mega-dropdown absolute element -->
-    <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 scale-98 group-hover:scale-100 origin-top-left z-50">
+    <div class="nav-dropdown pointer-events-none invisible opacity-0 absolute top-full left-0 pt-2 origin-top-left z-50">
       <div class="bg-bg-surface/95 border border-border-subtle rounded-2xl p-6 shadow-[0_12px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_50px_rgba(0,0,0,0.35)] backdrop-blur-xl w-[530px]">
         <div class="border-l-2 border-brand-primary pl-3 mb-4">
           <span class="block text-xs font-bold uppercase tracking-wider text-text-main">
@@ -365,6 +365,26 @@ const recipesDropdownItems = [
     </div>
   </div>
 </nav>
+
+<style>
+  .nav-dropdown {
+    pointer-events: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    transform: translateY(6px);
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .group:hover > .nav-dropdown,
+  .group:focus-within > .nav-dropdown {
+    pointer-events: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translateY(0);
+  }
+</style>
 
 <script>
   function initFaqCarousel() {
