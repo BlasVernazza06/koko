@@ -127,7 +127,7 @@ const description = currentLang === 'es'
       }
 
       const mainSections = document.querySelectorAll('.scroll-reveal');
-      const gridItems = document.querySelectorAll('.scroll-reveal-children > *, .faq-item');
+      const gridItems = document.querySelectorAll('.scroll-reveal-children > *');
       
       const allElements: Array<{
         el: HTMLElement;
@@ -225,7 +225,7 @@ const description = currentLang === 'es'
     } catch (e) {
       console.error("Scroll reveal error:", e);
       // Fallback
-      document.querySelectorAll('.scroll-reveal, .scroll-reveal-children > *, .faq-item').forEach(el => {
+      document.querySelectorAll('.scroll-reveal, .scroll-reveal-children > *').forEach(el => {
         el.removeAttribute('style');
       });
     }
