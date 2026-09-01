@@ -1,8 +1,32 @@
 <script lang="ts">
   import { Blocks, Folder } from '@lucide/svelte';
+  import { fade, scale } from 'svelte/transition';
+  import { flip } from 'svelte/animate';
   import PreviewCommand from './PreviewCommand.svelte';
   import PreviewStructure from './PreviewStructure.svelte';
   import SelectedTechBadge from './SelectedTechBadge.svelte';
+
+  type Translation = {
+    summaryTitle: string;
+    emptySummary: string;
+    tabStack: string;
+    tabStructure: string;
+  };
+
+  const translations: Record<'es' | 'en', Translation> = {
+    es: {
+      summaryTitle: 'STACK SELECCIONADO',
+      emptySummary: 'No hay tecnologías seleccionadas.',
+      tabStack: 'Mi Stack',
+      tabStructure: 'Estructura'
+    },
+    en: {
+      summaryTitle: 'SELECTED STACK',
+      emptySummary: 'No technologies selected.',
+      tabStack: 'My Stack',
+      tabStructure: 'Structure'
+    }
+  };
 
   let {
     generatedCommand = '',
@@ -19,37 +43,17 @@
     selectedPackageManager: string;
     selectedCommandType: string;
     onremove: (layerKey: string) => void;
-    lang: string;
+    lang?: 'es' | 'en' | string;
   }>();
 
   let activeTab = $state<'stack' | 'structure'>('stack');
 
-  const t = $derived({
-    es: {
-      summaryTitle: 'STACK SELECCIONADO',
-      emptySummary: 'No hay tecnologías seleccionadas.',
-      tabStack: 'Mi Stack',
-      tabStructure: 'Estructura'
-    },
-    en: {
-      summaryTitle: 'SELECTED STACK',
-      emptySummary: 'No technologies selected.',
-      tabStack: 'My Stack',
-      tabStructure: 'Structure'
-    }
-  }[lang] || {
-    summaryTitle: 'STACK SELECCIONADO',
-    emptySummary: 'No hay tecnologías seleccionadas.',
-    tabStack: 'Mi Stack',
-    tabStructure: 'Estructura'
-  });
-</script>
+  const t = $derived(
+    translations[(lang as 'es' | 'en')] ?? translations.es
+  );
+</script>   
 
 <style>
-  .minimal-switcher {
-    background: var(--bg-base);
-    border: 1px solid var(--border-subtle);
-  }
   .tab-btn {
     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
@@ -60,13 +64,13 @@
   }
 </style>
 
-<div class="relative z-10 w-full rounded-3xl p-6 lg:p-8 space-y-8 font-sans">
+<div class="relative z-10 w-full space-y-6 font-sans">
   <!-- Command Display Box -->
   <PreviewCommand {generatedCommand} bind:selectedPackageManager={selectedPackageManager} bind:selectedCommandType={selectedCommandType} {lang} />
 
-  <div class="space-y-6">
-    <!-- Tab Buttons -->
-    <div class="minimal-switcher flex items-center gap-2 p-1.5 rounded-2xl w-full select-none backdrop-blur-md shadow-xs">
+  <div class="space-y-4">
+    <!-- Tab Buttons Switcher with exact VisualControls bg-bg-base styling -->
+    <div class="minimal-switcher flex items-center gap-1.5 p-1.5 rounded-2xl w-full select-none border border-border-subtle bg-bg-base shadow-md">
       <button
         type="button"
         onclick={() => activeTab = 'stack'}
@@ -94,7 +98,7 @@
     <!-- Tab Content Container -->
     <div class="grid grid-cols-1 grid-rows-1 items-start">
       {#if activeTab === 'stack'}
-        <div transition:fade={{ duration: 150 }} class="col-start-1 row-start-1 rounded-2xl border border-border-subtle/60 bg-bg-base p-6 shadow-sm w-full">
+        <div transition:fade={{ duration: 150 }} class="col-start-1 row-start-1 rounded-2xl border border-border-subtle/60 bg-bg-base p-6 shadow-xl w-full">
           <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-border-subtle/40 select-none">
             <Blocks size={16} class="text-brand-primary" aria-hidden="true" />
             <span class="text-xs font-bold uppercase tracking-widest text-text-muted">
@@ -126,11 +130,10 @@
           {/if}
         </div>
       {:else}
-        <div transition:fade={{ duration: 150 }} class="col-start-1 row-start-1 rounded-2xl border border-border-subtle/60 bg-bg-base p-2 shadow-sm w-full backdrop-blur-sm">
+        <div transition:fade={{ duration: 150 }} class="col-start-1 row-start-1 rounded-2xl border border-border-subtle/60 bg-bg-base p-2 shadow-xl w-full">
           <PreviewStructure {structurePreview} {lang} />
         </div>
       {/if}
     </div>
   </div>
 </div>
-

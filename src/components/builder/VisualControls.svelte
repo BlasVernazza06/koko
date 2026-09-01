@@ -59,22 +59,16 @@
     selectedPayments = config.selectedPayments;
     selectedEmail = config.selectedEmail;
     withDocker = config.withDocker;
+    withCi = config.withCi;
+    withLinter = config.withLinter;
+    withTesting = config.withTesting;
     withTurborepo = config.withTurborepo;
-    selectedRuntime = config.selectedRuntime || (config.selectedBack === 'go' || config.selectedBack === 'python' ? 'none' : 'node');
-    withCi = config.withCi || false;
-    withLinter = config.withLinter || false;
-    withTesting = config.withTesting || false;
-    activeTab = 'manual'; // Auto-switch back to let them customize or see the stack
   }
 
   let activeTab = $state<'manual' | 'presets'>('manual');
 </script>
 
 <style>
-  .minimal-switcher {
-    background: var(--bg-base);
-    border: 1px solid var(--border-subtle);
-  }
   .tab-btn {
     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
@@ -87,7 +81,7 @@
 
 <div class="relative z-10 font-sans">
   <!-- Modern Pill-Switcher with Editorial Styling -->
-  <div class="minimal-switcher flex items-center gap-2 p-1.5 rounded-2xl w-fit mb-8 select-none backdrop-blur-md shadow-xs">
+  <div class="minimal-switcher flex items-center gap-2 p-1.5 rounded-2xl w-fit mb-8 select-none border border-border-subtle bg-bg-base backdrop-blur-md shadow-xs">
     <button
       type="button"
       class="tab-btn flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider cursor-pointer active:scale-[0.97]
@@ -112,7 +106,7 @@
     </button>
   </div>
 
-  <!-- Main glassmorphic card container -->
+  <!-- Main card container -->
   <div class="border border-border-subtle bg-bg-base shadow-xl relative w-full rounded-3xl p-8 max-sm:rounded-2xl max-sm:p-5">
     {#if activeTab === 'presets'}
       <PresetsView {templates} {lang} onapply={applyTemplate} />

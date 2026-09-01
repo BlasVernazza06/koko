@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+
 @theme {
   /* Expose our custom semantic color variables to Tailwind */
   --color-brand-primary: var(--brand-primary);
@@ -21,14 +23,14 @@
    ------------------------------------------------------------- */
 
 :root {
-  /* LIGHT MODE (Ice Lavender / Soft Studio) */
+  /* LIGHT MODE (Clean Crisp Studio / Pure White Theme) */
   --brand-primary: #5a4fc4;      /* Deep Amethyst Purple (From Koala outlines, highly readable) */
   --brand-secondary: #8095f8;    /* Luminous Periwinkle Blue (From Koala body, soft accent) */
-  --bg-base: #f6f7fc;            /* Ice lavender/cool white background */
-  --bg-surface: #ebedf7;         /* Very soft lavender-slate gray */
-  --text-main: #19162c;          /* Deep midnight purple-black */
+  --bg-base: #ffffff;            /* Pure clean white background like the header */
+  --bg-surface: #f9fafb;         /* Very clean soft white surface */
+  --text-main: #110f1d;          /* Deep crisp text */
   --text-muted: #605c75;         /* Muted slate-purple gray */
-  --border-subtle: #dadde9;      /* Cool light lavender-gray border */
+  --border-subtle: #e5e7eb;      /* Clean light border */
   color-scheme: light;
 }
 
@@ -50,11 +52,11 @@
 [data-theme="light"] {
   --brand-primary: #5a4fc4;
   --brand-secondary: #8095f8;
-  --bg-base: #f6f7fc;
-  --bg-surface: #ebedf7;
-  --text-main: #19162c;
+  --bg-base: #ffffff;
+  --bg-surface: #f9fafb;
+  --text-main: #110f1d;
   --text-muted: #605c75;
-  --border-subtle: #dadde9;
+  --border-subtle: #e5e7eb;
   color-scheme: light;
 }
 
@@ -98,8 +100,14 @@ html[data-lang="en"] .lang-es {
 
 /* Webkit Scrollbar Styling (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 ::-webkit-scrollbar-track {

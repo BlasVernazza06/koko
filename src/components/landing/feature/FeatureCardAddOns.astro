@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import logo from '../../../assets/logo.webp';
+import logo from '../../../assets/koko-libro.png';
 import BetterAuthAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/BetterAuth.svelte";
 import DockerAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/Docker.svelte";
 import GitHubAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/components/GitHub.svelte";
@@ -11,81 +11,114 @@ import PrettierAstroComponent from "node_modules/@selemondev/svgl-svelte/dist/co
 const { lang = 'es' } = Astro.props;
 ---
 
-<div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-primary/5 hover:border-brand-primary/30">
-  <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+<div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-primary/10 hover:border-brand-primary/40">
+  <!-- Subtle ambient background glow -->
+  <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/8 via-transparent to-brand-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
   <!-- Card Visual Mockup -->
-  <div class="relative w-full aspect-[320/220] mb-6 flex items-center justify-center select-none overflow-visible">
-    <!-- SVG Connections -->
-    <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Radiating concentric circles -->
-      <circle cx="160" cy="110" r="32" class="stroke-brand-primary/20" stroke-width="1" />
-      <circle cx="160" cy="110" r="48" class="stroke-brand-primary/10" stroke-width="1" stroke-dasharray="3 3" />
-      <circle cx="160" cy="110" r="64" class="stroke-brand-primary/5" stroke-width="1" />
+  <div class="relative w-full aspect-[320/230] mb-6 flex items-center justify-center select-none overflow-visible">
+    
+    <!-- Static Radiant Halos & SVG Circuit Connections -->
+    <svg class="absolute inset-0 w-full h-full pointer-events-none overflow-visible" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Gradients for Halo Rings -->
+        <linearGradient id="haloGrad1" x1="160" y1="70" x2="160" y2="150" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="var(--brand-primary)" stop-opacity="0.45" />
+          <stop offset="100%" stop-color="var(--brand-secondary)" stop-opacity="0.2" />
+        </linearGradient>
+        <linearGradient id="haloGrad2" x1="100" y1="110" x2="220" y2="110" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="var(--brand-primary)" stop-opacity="0.3" />
+          <stop offset="50%" stop-color="var(--brand-secondary)" stop-opacity="0.45" />
+          <stop offset="100%" stop-color="var(--brand-primary)" stop-opacity="0.3" />
+        </linearGradient>
+        <radialGradient id="centerAura" cx="160" cy="110" r="60" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="var(--brand-primary)" stop-opacity="0.25" />
+          <stop offset="60%" stop-color="var(--brand-secondary)" stop-opacity="0.1" />
+          <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+        </radialGradient>
+      </defs>
 
-      <!-- Left side paths -->
-      <!-- Top-Left (Docker) to Center -->
-      <path d="M 80 45 C 120 45, 115 110, 140 110" class="stroke-brand-primary/25 group-hover:stroke-brand-primary/50 transition-colors duration-300" stroke-width="1.5" />
-      <!-- Mid-Left (Testing) to Center -->
-      <path d="M 70 110 L 140 110" class="stroke-brand-primary/25 group-hover:stroke-brand-primary/50 transition-colors duration-300" stroke-width="1.5" />
-      <!-- Bot-Left (CI/CD) to Center -->
-      <path d="M 80 175 C 120 175, 115 110, 140 110" class="stroke-brand-primary/25 group-hover:stroke-brand-primary/50 transition-colors duration-300" stroke-width="1.5" />
+      <!-- Center Aura Field (Static) -->
+      <circle cx="160" cy="110" r="70" fill="url(#centerAura)" />
 
-      <!-- Right side paths -->
-      <!-- Top-Right (Auth) to Center -->
-      <path d="M 240 45 C 200 45, 205 110, 180 110" class="stroke-brand-primary/25 group-hover:stroke-brand-primary/50 transition-colors duration-300" stroke-width="1.5" />
-      <!-- Mid-Right (Database) to Center -->
-      <path d="M 250 110 L 180 110" class="stroke-brand-primary/25 group-hover:stroke-brand-primary/50 transition-colors duration-300" stroke-width="1.5" />
-      <!-- Bot-Right (Linting) to Center -->
-      <path d="M 240 175 C 200 175, 205 110, 180 110" class="stroke-brand-primary/25 group-hover:stroke-brand-primary/50 transition-colors duration-300" stroke-width="1.5" />
+      <!-- Concentric Radiant Halos surrounding Koko (Static, No Movement) -->
+      <!-- Inner halo -->
+      <circle cx="160" cy="110" r="42" stroke="url(#haloGrad1)" stroke-width="1.5" />
+      
+      <!-- Intermediate dashed orbit halo -->
+      <circle cx="160" cy="110" r="58" stroke="url(#haloGrad2)" stroke-width="1.2" stroke-dasharray="4 4" class="opacity-80" />
+      
+      <!-- Outer energy halo -->
+      <circle cx="160" cy="110" r="76" class="stroke-brand-primary/20" stroke-width="1" stroke-dasharray="2 6" />
+      
+      <!-- Wide boundary halo -->
+      <circle cx="160" cy="110" r="95" class="stroke-brand-primary/10" stroke-width="0.8" />
+
+      <!-- Left side connection paths to center -->
+      <!-- Top-Left (Docker) -->
+      <path d="M 85 45 C 120 45, 115 110, 126 110" class="stroke-brand-primary/35 group-hover:stroke-brand-primary/65 transition-colors duration-300" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Mid-Left (Testing) -->
+      <path d="M 75 110 L 126 110" class="stroke-brand-primary/35 group-hover:stroke-brand-primary/65 transition-colors duration-300" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Bot-Left (CI/CD) -->
+      <path d="M 85 175 C 120 175, 115 110, 126 110" class="stroke-brand-primary/35 group-hover:stroke-brand-primary/65 transition-colors duration-300" stroke-width="1.5" stroke-linecap="round" />
+
+      <!-- Right side connection paths to center -->
+      <!-- Top-Right (Auth) -->
+      <path d="M 235 45 C 200 45, 205 110, 194 110" class="stroke-brand-primary/35 group-hover:stroke-brand-primary/65 transition-colors duration-300" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Mid-Right (Database) -->
+      <path d="M 245 110 L 194 110" class="stroke-brand-primary/35 group-hover:stroke-brand-primary/65 transition-colors duration-300" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Bot-Right (Linting) -->
+      <path d="M 235 175 C 200 175, 205 110, 194 110" class="stroke-brand-primary/35 group-hover:stroke-brand-primary/65 transition-colors duration-300" stroke-width="1.5" stroke-linecap="round" />
     </svg>
 
-    <!-- Center Koko Logo -->
-    <div class="absolute z-10 w-12 h-12 rounded-full bg-brand-primary/10 border border-brand-primary/30 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-      <div class="w-10 h-10 rounded-full bg-bg-surface flex items-center justify-center overflow-hidden border border-border-subtle shadow-inner">
-        <Image 
-          src={logo} 
-          alt="Koko Logo" 
-          class="w-7 h-7 object-contain" 
-        />
-      </div>
+    <!-- Center Mascot Hero (Static, Clean, Centered) -->
+    <div class="absolute z-10 flex items-center justify-center pointer-events-none">
+      <!-- Static Ambient Glow Behind Mascot -->
+      <div class="absolute w-28 h-28 rounded-full bg-brand-primary/22 blur-2xl pointer-events-none"></div>
+      
+      <!-- Standalone Koko Mascot Image -->
+      <Image 
+        src={logo} 
+        alt="Koko Logo" 
+        class="w-24 h-24 sm:w-30 sm:h-30 object-contain filter drop-shadow-[0_4px_16px_rgba(90,79,196,0.3)] dark:drop-shadow-[0_4px_20px_rgba(155,141,247,0.35)] select-none" 
+      />
     </div>
 
-    <!-- Outer Nodes (Cards with much border-radius) -->
+    <!-- Surrounding Add-on Nodes -->
     <!-- Top-Left: Docker -->
-    <div class="absolute left-[18%] top-[20%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/80 backdrop-blur-sm shadow-sm hover:border-brand-primary/45 transition-colors duration-300">
-      <DockerAstroComponent width={20} height={20}/>
-      <span class="text-[10px] font-semibold text-text-main">Docker</span>
+    <div class="absolute left-[17%] top-[20%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-xs hover:border-brand-primary/50 hover:scale-105 transition-all duration-300">
+      <DockerAstroComponent width={18} height={18}/>
+      <span class="text-[10px] font-bold text-text-main">Docker</span>
     </div>
 
     <!-- Mid-Left: Testing -->
-    <div class="absolute left-[13%] top-[50%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/80 backdrop-blur-sm shadow-sm hover:border-brand-primary/45 transition-colors duration-300">
-      <PlaywrightAstroComponent width={20} height={20}/>
-      <span class="text-[10px] font-semibold text-text-main">Testing</span>
+    <div class="absolute left-[12%] top-[50%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-xs hover:border-brand-primary/50 hover:scale-105 transition-all duration-300">
+      <PlaywrightAstroComponent width={18} height={18}/>
+      <span class="text-[10px] font-bold text-text-main">Testing</span>
     </div>
 
     <!-- Bottom-Left: CI/CD -->
-    <div class="absolute left-[18%] top-[80%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/80 backdrop-blur-sm shadow-sm hover:border-brand-primary/45 transition-colors duration-300">
-      <GitHubAstroComponent width={20} height={20}/>
-      <span class="text-[10px] font-semibold text-text-main">CI/CD</span>
+    <div class="absolute left-[17%] top-[80%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-xs hover:border-brand-primary/50 hover:scale-105 transition-all duration-300">
+      <GitHubAstroComponent width={18} height={18}/>
+      <span class="text-[10px] font-bold text-text-main">CI/CD</span>
     </div>
 
     <!-- Top-Right: Auth -->
-    <div class="absolute right-[18%] top-[20%] translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/80 backdrop-blur-sm shadow-sm hover:border-brand-primary/45 transition-colors duration-300">
-      <BetterAuthAstroComponent width={20} height={20}/>
-      <span class="text-[10px] font-semibold text-text-main">Auth</span>
+    <div class="absolute right-[17%] top-[20%] translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-xs hover:border-brand-primary/50 hover:scale-105 transition-all duration-300">
+      <BetterAuthAstroComponent width={18} height={18}/>
+      <span class="text-[10px] font-bold text-text-main">Auth</span>
     </div>
 
     <!-- Mid-Right: Database (DB) -->
-    <div class="absolute right-[13%] top-[50%] translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/80 backdrop-blur-sm shadow-sm hover:border-brand-primary/45 transition-colors duration-300">
-      <PostgreSQLAstroComponent width={20} height={20}/>
-      <span class="text-[10px] font-semibold text-text-main">DB</span>
+    <div class="absolute right-[12%] top-[50%] translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-xs hover:border-brand-primary/50 hover:scale-105 transition-all duration-300">
+      <PostgreSQLAstroComponent width={18} height={18}/>
+      <span class="text-[10px] font-bold text-text-main">DB</span>
     </div>
 
     <!-- Bottom-Right: Linting -->
-    <div class="absolute right-[18%] top-[80%] translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/80 backdrop-blur-sm shadow-sm hover:border-brand-primary/45 transition-colors duration-300">
-      <PrettierAstroComponent width={20} height={20}/>
-      <span class="text-[10px] font-semibold text-text-main">Linting</span>
+    <div class="absolute right-[17%] top-[80%] translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-xs hover:border-brand-primary/50 hover:scale-105 transition-all duration-300">
+      <PrettierAstroComponent width={18} height={18}/>
+      <span class="text-[10px] font-bold text-text-main">Linting</span>
     </div>
   </div>
 

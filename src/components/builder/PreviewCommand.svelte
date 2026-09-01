@@ -4,7 +4,7 @@
   let {
     generatedCommand = '',
     selectedPackageManager = $bindable('pnpm'),
-    selectedCommandType = $bindable('npm'),
+    selectedCommandType = $bindable('wrapper'),
     lang = 'es'
   } = $props<{
     generatedCommand: string;
@@ -15,26 +15,12 @@
 
   let isCopied = $state(false);
   let isExpanded = $state(false);
-  let isPmOpen = $state(false);
-
-  const installerOptions = [
-    { id: 'npm', label: 'npm' },
-    { id: 'pnpm', label: 'pnpm' },
-    { id: 'yarn', label: 'yarn' },
-    { id: 'bun', label: 'bun' },
-    { id: 'binary', label: 'koko' },
-    { id: 'go', label: 'go' }
-  ];
-
-  const currentInstallerLabel = $derived(
-    installerOptions.find(opt => opt.id === selectedCommandType)?.label || selectedCommandType
-  );
 
   const t = $derived({
     es: {
       commandLabel: 'CLI COMMAND',
       copiedBtn: 'Copiado',
-      copyBtn: 'Copy',
+      copyBtn: 'Copiar',
       flagsBtn: 'Flags'
     },
     en: {
@@ -46,20 +32,31 @@
   }[lang] || {
     commandLabel: 'CLI COMMAND',
     copiedBtn: 'Copiado',
-    copyBtn: 'Copy',
+    copyBtn: 'Copiar',
     flagsBtn: 'Flags'
   });
 
-  function copyCommand() {
-    const rawLines = getCommandLinesRaw();
-    navigator.clipboard.writeText(rawLines.join('\n'));
-    isCopied = true;
-    setTimeout(() => {
-      isCopied = false;
-    }, 2000);
-  }
+  const hasFlags = $derived(generatedCommand.includes('--'));
 
-  // Get raw formatted lines for clipboard copy
+  // Extract base command without flags
+  const baseCommandText = $derived.by(() => {
+    if (!generatedCommand) return '';
+    const parts = generatedCommand.split(' ');
+    let text = '';
+    let i = 0;
+    while (i < parts.length && !parts[i].startsWith('--') && parts[i] !== '--') {
+      if (parts[i]) {
+        text += (text ? ' ' : '') + parts[i];
+      }
+      i++;
+    }
+    if (i < parts.length && parts[i] === '--') {
+      text += ' --';
+    }
+    return text;
+  });
+
+  // Get raw formatted lines for multi-line clipboard copy
   function getCommandLinesRaw(): string[] {
     if (!generatedCommand) return [];
     const parts = generatedCommand.split(' ');
@@ -100,39 +97,53 @@
     return lines;
   }
 
-  // Syntax highlighting logic for base command (Uniform color)
-  const highlightedBaseCmd = $derived.by(() => {
+  function copyCommand() {
+    const textToCopy = isExpanded && hasFlags
+      ? getCommandLinesRaw().join('\n')
+      : generatedCommand;
+
+    navigator.clipboard.writeText(textToCopy);
+    isCopied = true;
+    setTimeout(() => {
+      isCopied = false;
+    }, 2000);
+  }
+
+  // Syntax highlighting for single-line horizontal view
+  const highlightedSingleLine = $derived.by(() => {
     if (!generatedCommand) return '';
     const parts = generatedCommand.split(' ');
-    let text = '';
-    let i = 0;
+    const formattedParts: string[] = [];
     
-    while (i < parts.length && !parts[i].startsWith('--') && parts[i] !== '--') {
-      if (parts[i]) {
-        text += (text ? ' ' : '') + parts[i];
+    let isBase = true;
+    for (let i = 0; i < parts.length; i++) {
+      const p = parts[i];
+      if (!p) continue;
+      
+      if (p.startsWith('--')) {
+        isBase = false;
+        formattedParts.push(`<span class="text-brand-secondary font-semibold">${p}</span>`);
+      } else if (isBase) {
+        formattedParts.push(`<span class="text-slate-100 font-semibold">${p}</span>`);
+      } else {
+        formattedParts.push(`<span class="text-emerald-400 font-medium">${p}</span>`);
       }
-      i++;
     }
-    
-    if (i < parts.length && parts[i] === '--') {
-      text += ' --';
-      i++;
-    }
-    
-    if (i < parts.length && isExpanded) {
-      text += ' \\';
-    }
-    return `<span class="text-slate-200 font-mono font-medium">${text}</span>`;
+    return formattedParts.join(' ');
   });
 
-  // Syntax highlighting logic for flags (Uniform color)
+  // Base command line for multi-line expanded view
+  const highlightedBaseCmd = $derived.by(() => {
+    if (!baseCommandText) return '';
+    return `<span class="text-slate-100 font-semibold">${baseCommandText}</span> <span class="text-slate-500 font-bold">\\</span>`;
+  });
+
+  // Flags list for multi-line expanded view
   const highlightedFlags = $derived.by(() => {
     if (!generatedCommand) return [];
     const parts = generatedCommand.split(' ');
-    const lines: string[] = [];
     let i = 0;
     
-    // Skip base command
     while (i < parts.length && !parts[i].startsWith('--') && parts[i] !== '--') {
       i++;
     }
@@ -140,28 +151,28 @@
       i++;
     }
     
-    // Parse flags and values
-    const flagsList: string[] = [];
+    const flagsList: { flag: string; value: string }[] = [];
     while (i < parts.length) {
       const part = parts[i];
       if (part.startsWith('--')) {
-        let flagStr = '  ' + part;
+        const flag = part;
+        let value = '';
         if (i + 1 < parts.length && !parts[i + 1].startsWith('--')) {
-          flagStr += ' ' + parts[i + 1];
+          value = parts[i + 1];
           i++;
         }
-        flagsList.push(flagStr);
+        flagsList.push({ flag, value });
       }
       i++;
     }
     
-    // Add backslashes
+    const lines: string[] = [];
     for (let j = 0; j < flagsList.length; j++) {
-      let flagLine = flagsList[j];
-      if (j < flagsList.length - 1) {
-        flagLine += ' \\';
-      }
-      lines.push(`<span class="text-slate-200 font-mono font-medium">${flagLine}</span>`);
+      const item = flagsList[j];
+      const hasNext = j < flagsList.length - 1;
+      const valHtml = item.value ? ` <span class="text-emerald-400 font-medium">${item.value}</span>` : '';
+      const slashHtml = hasNext ? ` <span class="text-slate-500 font-bold">\\</span>` : '';
+      lines.push(`<span class="text-brand-secondary font-semibold">${item.flag}</span>${valHtml}${slashHtml}`);
     }
     
     return lines;
@@ -169,14 +180,14 @@
 </script>
 
 <div class="space-y-3 font-sans">
-  <!-- Reference Header Layout: Title on Left, Action buttons on Right -->
+  <!-- Header Layout: Title on Left, Selector & Flags toggle on Right -->
   <div class="flex items-center justify-between pb-3 select-none">
     <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-text-muted">
       {t.commandLabel}
     </span>
     <div class="flex items-center gap-2">
       <!-- Segmented Buttons for Installer Method Selection -->
-      <div class="flex items-center gap-1 p-0.5 bg-white border border-border-subtle rounded-xl select-none shadow-2xs">
+      <div class="flex items-center gap-1 p-0.5 bg-bg-base border border-border-subtle rounded-xl select-none shadow-2xs">
         <button
           type="button"
           onclick={() => selectedCommandType = 'wrapper'}
@@ -210,53 +221,68 @@
       </div>
 
       <!-- FLAGS DROPDOWN TOGGLE -->
-      {#if highlightedFlags.length > 0}
+      {#if hasFlags}
         <button
           type="button"
           onclick={() => isExpanded = !isExpanded}
-          class="flex items-center gap-1.5 px-3 py-1.5 border border-border-subtle bg-white text-text-muted hover:text-text-main rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 shadow-2xs"
+          class="flex items-center gap-1.5 px-3 py-1.5 border rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 shadow-2xs
+            {isExpanded
+              ? 'bg-brand-primary/10 border-brand-primary/30 text-brand-primary'
+              : 'bg-bg-base border-border-subtle text-text-muted hover:text-text-main'}"
         >
-          <ChevronDown size={11} class="transition-transform duration-300 {isExpanded ? 'rotate-180' : ''}" />
+          <ChevronDown size={11} class="transition-transform duration-300 {isExpanded ? 'rotate-180 text-brand-primary' : ''}" />
           <span>{t.flagsBtn}</span>
         </button>
       {/if}
-
-      <!-- COPY BUTTON -->
-      <button
-        type="button"
-        onclick={copyCommand}
-        class="flex items-center gap-1.5 px-3 py-1.5 border border-border-subtle bg-white text-text-muted hover:text-text-main rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 shadow-2xs"
-      >
-        {#if isCopied}
-          <Check size={11} class="text-emerald-500 animate-bounce" />
-          <span class="text-emerald-500">{t.copiedBtn}</span>
-        {:else}
-          <Copy size={11} />
-          <span>{t.copyBtn}</span>
-        {/if}
-      </button>
     </div>
   </div>
   <div class="h-px bg-border-subtle w-full !mt-0 !mb-3"></div>
 
-  <!-- Command Box (Enforced dark theme background for high contrast in light/dark modes) -->
-  <div class="border border-border-subtle/50 dark:border-border-subtle rounded-xl bg-[#0c0b14] dark:bg-[#07060b] shadow-[0_4px_20px_rgba(0,0,0,0.15)] p-4 font-mono text-xs sm:text-[13px] tracking-wide relative overflow-hidden">
-    <div class="flex items-start gap-2.5">
-      <!-- Elegant dollar prompt indicator -->
-      <span class="text-brand-secondary select-none font-extrabold mt-0.5">$</span>
-      <div class="flex-1 text-slate-300 leading-relaxed overflow-hidden">
-        <div class="whitespace-pre">{@html highlightedBaseCmd}</div>
-        
-        <!-- Dropdown Flags Panel with internal scrolling -->
-        {#if isExpanded && highlightedFlags.length > 0}
-          <div class="space-y-1.5 mt-2 pt-2 border-t border-border-subtle/30 max-h-[135px] overflow-y-auto no-scrollbar">
-            {#each highlightedFlags as line}
-              <div class="whitespace-pre">{@html line}</div>
-            {/each}
-          </div>
-        {/if}
+  <!-- Command Box Container -->
+  <div class="border border-border-subtle/50 dark:border-border-subtle rounded-2xl bg-[#0c0b14] dark:bg-[#07060b] shadow-[0_4px_24px_rgba(0,0,0,0.18)] p-3 sm:p-4 font-mono text-xs sm:text-[13px] tracking-wide">
+    
+    <!-- Main Row: Command Text on Left (min-w-0 flex-1 overflow-x-auto) + Copy Button on Right (shrink-0) -->
+    <div class="flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 min-w-0 flex-1 overflow-x-auto no-scrollbar scroll-smooth py-1">
+        <span class="text-brand-primary select-none font-extrabold text-sm shrink-0">$</span>
+        <div class="whitespace-nowrap font-mono text-xs sm:text-[13px] tracking-wide select-all text-slate-300">
+          {#if isExpanded && hasFlags}
+            {@html highlightedBaseCmd}
+          {:else}
+            {@html highlightedSingleLine}
+          {/if}
+        </div>
       </div>
+
+      <!-- Copy Button inside the box (Always visible, never covers text) -->
+      <button
+        type="button"
+        onclick={copyCommand}
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[10.5px] font-mono font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 shadow-md select-none shrink-0
+          {isCopied
+            ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400 shadow-emerald-500/10'
+            : 'bg-white/10 hover:bg-white/15 border-white/15 text-slate-200 hover:text-white hover:border-white/25'}"
+      >
+        {#if isCopied}
+          <Check size={12} strokeWidth={2.5} class="text-emerald-400 animate-bounce" />
+          <span class="text-emerald-400">{t.copiedBtn}</span>
+        {:else}
+          <Copy size={12} class="opacity-80" />
+          <span>{t.copyBtn}</span>
+        {/if}
+      </button>
     </div>
+
+    <!-- Multi-Line View when Flags are Expanded -->
+    {#if isExpanded && hasFlags}
+      <div class="mt-2.5 pt-2.5 border-t border-white/10 overflow-x-auto max-h-[160px] overflow-y-auto no-scrollbar">
+        <div class="space-y-1.5 font-mono text-xs sm:text-[13px] tracking-wide select-all text-slate-300 pl-5">
+          {#each highlightedFlags as line}
+            <div class="whitespace-pre">{@html line}</div>
+          {/each}
+        </div>
+      </div>
+    {/if}
   </div>
 
   <!-- CTA Button to download native binary from GitHub Releases -->
@@ -265,7 +291,7 @@
       href="https://github.com/BlasVernazza06/koko-cli/releases"
       target="_blank"
       rel="noopener noreferrer"
-      class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-brand-primary/20 bg-white hover:bg-brand-primary/2 text-brand-primary rounded-xl text-[10px] font-extrabold uppercase tracking-wider transition-all duration-300 shadow-2xs hover:shadow-sm"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-brand-primary/20 bg-bg-base hover:bg-brand-primary/5 text-brand-primary rounded-xl text-[10px] font-extrabold uppercase tracking-wider transition-all duration-300 shadow-2xs hover:shadow-sm select-none"
     >
       <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 fill-none stroke-current stroke-[2]" aria-hidden="true">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -286,4 +312,3 @@
     scrollbar-width: none;
   }
 </style>
-
