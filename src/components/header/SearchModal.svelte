@@ -13,90 +13,160 @@
   const content = {
     es: [
       {
-        title: 'Estructuración Interactiva',
-        section: 'Características',
-        desc: 'Crea repositorios limpios y estandarizados dinámicamente con nuestro asistente interactivo CLI.',
-        url: '/docs/cli-commands#commands',
-        keywords: ['scaffold', 'cli', 'crear', 'repositorio', 'asistente', 'inicializar', 'estructura']
-      },
-      {
-        title: 'Recetas y Presets Activos',
-        section: 'Características',
-        desc: 'Despliega arquitecturas probadas en producción usando plantillas personalizadas para SaaS y frameworks.',
-        url: '/docs/quick-start#overview',
-        keywords: ['preset', 'blueprint', 'receta', 'plantilla', 'arquitectura', 'saas', 'fullstack']
-      },
-      {
-        title: 'Control de Desviación (Drift)',
-        section: 'Características',
-        desc: 'Mantén sincronizados los parámetros, linter y dependencias detectando desvíos desde el inicio.',
-        url: '/docs/contributing#commit-conventions',
-        keywords: ['drift', 'linter', 'dependencias', 'desvio', 'sincronizacion', 'control']
-      },
-      {
-        title: 'Motor sin Dependencias',
-        section: 'Características',
-        desc: 'Un binario rápido compilado en Go que se ejecuta completamente offline sin sobrecarga de npm.',
-        url: '/docs/quick-start#prerequisites',
-        keywords: ['go', 'binario', 'offline', 'npm', 'rapido', 'motor', 'dependencias']
-      },
-      {
-        title: 'Guía de Inicio Rápido',
-        section: 'Primeros Pasos',
-        desc: 'Aprende a instalar y ejecutar Koko en tu máquina en menos de 5 segundos.',
+        title: 'Inicio Rápido y Filosofía',
+        section: 'Introducción',
+        desc: 'Aprende a instalar y ejecutar Koko CLI en tu máquina con Node/NPX o binarios en Go.',
         url: '/docs/quick-start',
-        keywords: ['inicio', 'instalar', 'rapido', 'ejecutar', 'guia', 'npm', 'curl']
+        keywords: ['inicio', 'rapido', 'instalacion', 'prerrequisitos', 'binarios', 'npx', 'npm', 'quickstart']
       },
       {
-        title: 'Configuración Avanzada',
-        section: 'Guías',
-        desc: 'Modifica reglas personalizadas de linters y arquitecturas usando koko.json.',
-        url: '/docs/bts-jsonc',
-        keywords: ['configuracion', 'avanzada', 'json', 'koko.json', 'reglas', 'linters']
+        title: 'Stack y Tecnologías Soportadas',
+        section: 'Introducción',
+        desc: 'Frameworks de cliente, servidores backend, motores de bases de datos y ORMs compatibles.',
+        url: '/docs/tech-stack',
+        keywords: ['stack', 'frontend', 'backend', 'nextjs', 'react', 'nuxt', 'svelte', 'express', 'fastapi', 'go', 'postgres', 'drizzle', 'prisma', 'mongodb']
+      },
+      {
+        title: 'Asistente TUI Interactivo',
+        section: 'CLI',
+        desc: 'Interfaz de terminal interactiva construida en Go con Bubble Tea, Lipgloss y animaciones.',
+        url: '/docs/tui-wizard',
+        keywords: ['tui', 'terminal', 'bubble tea', 'lipgloss', 'interactivo', 'wizard', 'asistente', 'spinners']
+      },
+      {
+        title: 'Comandos y Flags del CLI',
+        section: 'CLI',
+        desc: 'Referencia exhaustiva de comandos (koko init, koko version) y flags para automatización y CI/CD.',
+        url: '/docs/cli-commands',
+        keywords: ['comandos', 'flags', 'init', 'version', 'default', 'recipie', 'automatizacion', 'ci/cd']
+      },
+      {
+        title: 'Reglas de Validación y Seguridad',
+        section: 'CLI',
+        desc: 'Motor de validación cruzada en tiempo real para evitar combinaciones técnicas incompatibles.',
+        url: '/docs/validation-rules',
+        keywords: ['validacion', 'compatibilidad', 'seguridad', 'reglas', 'errores', 'incompatible', 'orm']
+      },
+      {
+        title: 'Estructuras Generadas (Monorepo y Standalone)',
+        section: 'Estructura de Proyecto',
+        desc: 'Diseño de carpetas para monorrepos con Turborepo y pnpm workspaces, o layouts standalone.',
+        url: '/docs/project-structure',
+        keywords: ['estructura', 'monorepo', 'turborepo', 'workspaces', 'pnpm', 'apps', 'packages', 'layout']
+      },
+      {
+        title: 'Manifiesto koko.config.json',
+        section: 'Estructura de Proyecto',
+        desc: 'Especificación estándar de JSON Schema para describir el stack y habilitar extensiones futuras.',
+        url: '/docs/koko-config',
+        keywords: ['koko.config.json', 'manifiesto', 'schema', 'configuracion', 'json', 'especificacion']
+      },
+      {
+        title: 'Recetas de Producción (SaaS, PERN, MERN, FastAPI)',
+        section: 'Avanzado',
+        desc: 'Análisis detallado de las 4 recetas oficiales probadas en producción listas para codificar.',
+        url: '/docs/recipes-deep-dive',
+        keywords: ['recetas', 'recipes', 'saas', 'pern', 'mern', 'fastapi', 'starter', 'production']
+      },
+      {
+        title: 'Solución de Problemas (Troubleshooting)',
+        section: 'Avanzado',
+        desc: 'Resolución de conflictos de puertos en Docker, permisos en Unix y resolución de workspaces.',
+        url: '/docs/troubleshooting',
+        keywords: ['troubleshooting', 'errores', 'problemas', 'docker', 'puertos', 'permisos', 'pnpm']
+      },
+      {
+        title: 'Guía de Contribución',
+        section: 'Avanzado',
+        desc: 'Cómo compilar Koko en Go localmente, ejecutar pruebas unitarias y colaborar en código abierto.',
+        url: '/docs/contributing',
+        keywords: ['contribuir', 'open source', 'go', 'testing', 'colaborar', 'pull request', 'github']
+      },
+      {
+        title: 'Preguntas Frecuentes (FAQ)',
+        section: 'Preguntas Frecuentes',
+        desc: 'Respuestas a dudas sobre rendimiento en Go, modo offline, licencia comercial y compatibilidad.',
+        url: '/docs/faq',
+        keywords: ['faq', 'preguntas', 'frecuentes', 'dudas', 'go', 'offline', 'licencia', 'gratis']
       }
     ],
     en: [
       {
-        title: 'Interactive Scaffolding',
-        section: 'Features',
-        desc: 'Scaffold clean, standardized repositories dynamically with our single-command interactive CLI helper.',
-        url: '/en/docs/cli-commands#commands',
-        keywords: ['scaffold', 'cli', 'create', 'repository', 'helper', 'initialize', 'scaffolding']
-      },
-      {
-        title: 'Active Presets & Blueprints',
-        section: 'Features',
-        desc: 'Deploy production-proven architectures instantly using blueprints customized for SaaS and fullstack.',
-        url: '/en/docs/quick-start#overview',
-        keywords: ['preset', 'blueprint', 'recipe', 'template', 'architecture', 'saas', 'fullstack']
-      },
-      {
-        title: 'Drift Prevention',
-        section: 'Features',
-        desc: 'Keep your workspace parameters, linter configs, and dependencies synchronized and detect deviations.',
-        url: '/en/docs/contributing#commit-conventions',
-        keywords: ['drift', 'linter', 'dependencies', 'deviation', 'sync', 'prevention']
-      },
-      {
-        title: 'Zero-dependency Engine',
-        section: 'Features',
-        desc: 'A fast, compiled Go binary that runs completely offline with zero configuration lock-in.',
-        url: '/en/docs/quick-start#prerequisites',
-        keywords: ['go', 'binary', 'offline', 'npm', 'fast', 'engine', 'dependency']
-      },
-      {
-        title: 'Getting Started Guide',
-        section: 'First Steps',
-        desc: 'Learn how to install and run Koko on your local machine in under 5 seconds.',
+        title: 'Quick Start & Philosophy',
+        section: 'Introduction',
+        desc: 'Learn how to install and run Koko CLI on your machine with Node/NPX or Go native binaries.',
         url: '/en/docs/quick-start',
-        keywords: ['start', 'install', 'fast', 'run', 'guide', 'npm', 'curl']
+        keywords: ['quickstart', 'start', 'install', 'prerequisites', 'binaries', 'npx', 'npm', 'philosophy']
       },
       {
-        title: 'Advanced Configuration',
-        section: 'Guides',
-        desc: 'Customize project blueprints and linting rules using koko.json.',
-        url: '/en/docs/bts-jsonc',
-        keywords: ['configuration', 'advanced', 'json', 'koko.json', 'rules', 'linters']
+        title: 'Supported Tech Stack',
+        section: 'Introduction',
+        desc: 'Frontend frameworks, backend runtimes, database engines, and compatible ORMs.',
+        url: '/en/docs/tech-stack',
+        keywords: ['stack', 'frontend', 'backend', 'nextjs', 'react', 'nuxt', 'svelte', 'express', 'fastapi', 'go', 'postgres', 'drizzle', 'prisma', 'mongodb']
+      },
+      {
+        title: 'Interactive TUI Wizard',
+        section: 'CLI',
+        desc: 'Interactive terminal UI built in Go with Bubble Tea, Lipgloss styling, and real-time animations.',
+        url: '/en/docs/tui-wizard',
+        keywords: ['tui', 'terminal', 'bubble tea', 'lipgloss', 'interactive', 'wizard', 'spinners']
+      },
+      {
+        title: 'CLI Commands & Flags Reference',
+        section: 'CLI',
+        desc: 'Comprehensive reference of CLI commands (koko init, koko version) and flags for CI/CD scripting.',
+        url: '/en/docs/cli-commands',
+        keywords: ['commands', 'flags', 'init', 'version', 'default', 'recipie', 'automation', 'scripting']
+      },
+      {
+        title: 'Cross-Validation Safety Rules',
+        section: 'CLI',
+        desc: 'Real-time compatibility engine preventing conflicting stack choices before file creation.',
+        url: '/en/docs/validation-rules',
+        keywords: ['validation', 'compatibility', 'safety', 'rules', 'errors', 'incompatible', 'orm']
+      },
+      {
+        title: 'Generated Project Structure',
+        section: 'Project Structure',
+        desc: 'Folder layout design for Turborepo + pnpm monorepos or standalone application architectures.',
+        url: '/en/docs/project-structure',
+        keywords: ['structure', 'monorepo', 'turborepo', 'workspaces', 'pnpm', 'apps', 'packages', 'layout']
+      },
+      {
+        title: 'The koko.config.json Manifest',
+        section: 'Project Structure',
+        desc: 'Standardized JSON Schema specification for workspace recording and future expansion.',
+        url: '/en/docs/koko-config',
+        keywords: ['koko.config.json', 'manifest', 'schema', 'configuration', 'json', 'spec']
+      },
+      {
+        title: 'Production Recipes Deep-Dive',
+        section: 'Advanced',
+        desc: 'In-depth breakdown of the 4 production recipes: SaaS Starter, PERN, MERN, and FastAPI + React.',
+        url: '/en/docs/recipes-deep-dive',
+        keywords: ['recipes', 'saas', 'pern', 'mern', 'fastapi', 'blueprints', 'starter', 'production']
+      },
+      {
+        title: 'Troubleshooting Guide',
+        section: 'Advanced',
+        desc: 'Fixing Docker port allocation conflicts, Unix binary permissions, and workspace resolution.',
+        url: '/en/docs/troubleshooting',
+        keywords: ['troubleshooting', 'errors', 'issues', 'docker', 'ports', 'permissions', 'pnpm']
+      },
+      {
+        title: 'Contributing Guide',
+        section: 'Advanced',
+        desc: 'How to build Koko in Go locally, execute unit test suites, and contribute to open source.',
+        url: '/en/docs/contributing',
+        keywords: ['contribute', 'open source', 'go', 'testing', 'pull request', 'github', 'development']
+      },
+      {
+        title: 'Frequently Asked Questions (FAQ)',
+        section: 'FAQ',
+        desc: 'Answers about Go engine performance, offline execution, commercial licensing, and OS support.',
+        url: '/en/docs/faq',
+        keywords: ['faq', 'questions', 'frequently', 'answers', 'go', 'offline', 'license', 'free']
       }
     ]
   };

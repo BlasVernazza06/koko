@@ -1,17 +1,17 @@
 ---
 // Logo component using Koko the Koala icon
 import { Image } from 'astro:assets';
-import logo from '../../assets/logo.webp';
+import logo from '../../assets/koko-saludando.png';
 ---
 
 <a href="/" class="flex items-center gap-1 group select-none">
   <!-- Rounded container for the icon -->
   <div class="flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-500 overflow-hidden relative">
-    <div class="absolute inset-0 bg-brand-primary/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+    <div class="absolute inset-0 rounded-xl transition-opacity duration-500"></div>
     <Image 
       src={logo} 
       alt="Koko Koala Logo" 
-      class="w-9 h-9 object-contain logo-avatar transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-115 group-hover:rotate-6" 
+      class="w-14 h-14 object-contain logo-avatar transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]" 
     />
   </div>
   

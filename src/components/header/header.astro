@@ -9,8 +9,8 @@ import SearchModal from './SearchModal.svelte';
 const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
 ---
 
-<header id="main-header" class="w-full sticky top-0 z-50 border-b border-transparent bg-transparent backdrop-blur-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
-  <div id="header-inner" class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+<header id="main-header" class="w-full sticky top-0 z-50 border-b border-transparent bg-transparent backdrop-blur-none transition-[background-color,border-color,backdrop-filter,box-shadow] duration-300 ease-out">
+  <div id="header-inner" class="max-w-7xl mx-auto px-6 h-16 md:h-18 flex items-center justify-between">
     
     <!-- Left Section: Logo & Nav -->
     <div class="flex items-center gap-8">
@@ -47,29 +47,32 @@ const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
 <script>
   function initHeaderScroll() {
     const header = document.getElementById('main-header');
-    const inner = document.getElementById('header-inner');
-    if (!header || !inner) return;
+    if (!header) return;
+
+    let isScrolled = false;
 
     const handleScroll = () => {
-      if (window.scrollY > 12) {
-        // Scrolled down state: glassmorphism, shadow, border, compact height
+      const scrolled = window.scrollY > 12;
+      if (scrolled === isScrolled) return;
+      isScrolled = scrolled;
+
+      if (isScrolled) {
+        // Scrolled down state: glassmorphism, shadow, border
         header.classList.remove('border-transparent', 'bg-transparent', 'backdrop-blur-none');
         header.classList.add('border-border-subtle/80', 'bg-bg-base/80', 'backdrop-blur-xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.02)]');
-        
-        inner.classList.remove('h-16');
-        inner.classList.add('h-14');
       } else {
-        // Scrolled to top state: fully transparent, zero border, taller height
+        // Scrolled to top state: fully transparent, zero border
         header.classList.remove('border-border-subtle/80', 'bg-bg-base/80', 'backdrop-blur-xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.02)]');
         header.classList.add('border-transparent', 'bg-transparent', 'backdrop-blur-none');
-        
-        inner.classList.remove('h-14');
-        inner.classList.add('h-16');
       }
     };
 
     // Run on init to capture initial scroll position
-    handleScroll();
+    isScrolled = window.scrollY > 12;
+    if (isScrolled) {
+      header.classList.remove('border-transparent', 'bg-transparent', 'backdrop-blur-none');
+      header.classList.add('border-border-subtle/80', 'bg-bg-base/80', 'backdrop-blur-xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.02)]');
+    }
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     
