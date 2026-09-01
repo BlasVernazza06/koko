@@ -81,19 +81,15 @@
         {/each}
       </nav>
 
-      <!-- Large Koko Question Mascot Card below categories -->
-      <div class="hidden md:flex flex-col items-center justify-center p-6 rounded-3xl border border-border-subtle/40 bg-bg-surface/20 relative overflow-hidden group">
-        <div class="absolute -bottom-8 -right-8 w-28 h-28 bg-brand-primary/10 rounded-full blur-xl pointer-events-none"></div>
-        <div class="w-36 h-36 relative flex items-center justify-center transition-transform duration-500 group-hover:scale-105 group-hover:rotate-2">
+      <!-- Koko Thinking Mascot below categories (standalone icon) -->
+      <div class="hidden md:flex flex-col items-center justify-center pt-4 select-none">
+        <div class="w-40 h-40 sm:w-44 sm:h-44 relative flex items-center justify-center transition-transform duration-500 hover:scale-105 hover:-rotate-2">
           <img 
-            src="/koko-pregunta.png" 
-            alt="Koko Preguntas Frecuentes" 
-            class="w-full h-full object-contain drop-shadow-md select-none" 
+            src="/koko-pensando.png" 
+            alt="Koko Pensando" 
+            class="w-full h-full object-contain select-none filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.08)] dark:drop-shadow-[0_10px_25px_rgba(0,0,0,0.35)]" 
           />
         </div>
-        <span class="text-[11px] font-bold text-text-muted/80 tracking-wider uppercase mt-2 select-none">
-          {lang === 'es' ? '¿Dudas con Koko?' : 'Questions on Koko?'}
-        </span>
       </div>
     </div>
 
