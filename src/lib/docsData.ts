@@ -25,7 +25,7 @@ export interface Block {
 export interface DocSection {
   id: string;
   title: string;
-  category: 'Introducción' | 'CLI' | 'Características' | 'Avanzado' | 'Estructura de Proyecto' | 'Preguntas Frecuentes' | 'Guides' | 'Introduction' | 'Features' | 'Project Structure' | 'FAQ';
+  category: 'Introducción' | 'CLI' | 'Estructura de Proyecto' | 'Avanzado' | 'Preguntas Frecuentes' | 'Introduction' | 'Project Structure' | 'Advanced' | 'FAQ';
   isHighlighted?: boolean;
   subItems?: { id: string; title: string }[];
   content: Block[];
@@ -33,6 +33,9 @@ export interface DocSection {
 
 export const docsData: Record<'es' | 'en', DocSection[]> = {
   es: [
+    // ==========================================
+    // CATEGORÍA: INTRODUCCIÓN
+    // ==========================================
     {
       id: 'quick-start',
       title: 'Inicio Rápido',
@@ -41,245 +44,544 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
       content: [
         {
           anchorId: 'philosophy',
-          title: 'Filosofía de Claw',
+          title: 'Filosofía de Koko CLI',
           body: [
-            '• Inicialización Rápida y Limpia: Diseña tu stack inicial y genera la estructura básica sin código basura innecesario.',
-            '• Motor CLI en Go: El binario de Claw es ligero, de arranque instantáneo y no requiere que tengas NodeJS configurado globalmente para inicializar tus repositorios.',
-            '• Docker Compose por Defecto: Si configuras una base de datos local, Claw genera el archivo docker-compose listo para levantar el contenedor y su panel administrativo en un clic.',
-            '• Enfoque de Consistencia Técnica: Mantenemos la coherencia de TypeScript o Go compartiendo las mejores configuraciones base de linters y herramientas de tipado.'
+            '• Arranque Instantáneo en Milisegundos: Construido en Go con binario nativo que se ejecuta de inmediato sin sobrecargas de configuración previa.',
+            '• TUI Interactiva Premium: Asistente visual en consola impulsado por Bubble Tea y Lipgloss con animaciones y spinners en tiempo real.',
+            '• Monorepo y Workspaces por Defecto: Configuración automática de Turborepo, pnpm workspaces, TypeScript unificado y ESLint/Prettier.',
+            '• Validación Cruzada Inteligente: Sistema de reglas que previene activamente la combinación de tecnologías incompatibles en tiempo de diseño.',
+            '• Catálogo Maestro de Dependencias: Gestión centralizada de versiones para garantizar instalaciones reproducibles y código libre de drift.'
           ]
         },
         {
-          anchorId: 'getting-started',
+          anchorId: 'prerequisites',
           title: 'Prerrequisitos e Instalación',
           body: [
-            'Para utilizar Claw-CLI en su versión actual (v0.1.0), asegúrate de cumplir con los siguientes prerrequisitos mínimos en tu máquina de desarrollo:'
+            'Puedes ejecutar Koko CLI directamente desde la nube usando Node.js o descargar el binario nativo compilado en Go según tu preferencia:'
           ],
           bullets: [
-            'Node.js LTS instalado (requerido para ejecutar los proyectos JS/TS generados).',
-            'Docker y Docker Compose (opcional, si deseas levantar bases de datos locales levantadas por el CLI).',
-            'Instalación del CLI: npm i -g claw-cli (o ejecutándolo directamente con npx claw-cli init).'
-          ]
-        },
-        {
-          anchorId: 'cli',
-          title: 'Uso del CLI (Terminal)',
-          body: [
-            'Ejecuta el creador interactivo en tu terminal para seleccionar paso a paso la estructura de tu proyecto:',
-            'Si deseas omitir las preguntas interactivas y usar las opciones de plantilla predeterminadas, puedes añadir el flag --yes:'
+            'Node.js (LTS v18 o superior) - Recomendado para ejecutar y compilar los proyectos generados en JavaScript/TypeScript.',
+            'Docker & Docker Compose - Opcional pero recomendado para levantar bases de datos locales (PostgreSQL, MongoDB, MySQL).',
+            'Go 1.21+ / Python 3.11+ - Necesarios únicamente si generas backends nativos en Go Chi o Python FastAPI.'
           ],
-          pre: 'npx claw-cli init mi-proyecto\n\nnpx claw-cli init mi-proyecto --yes'
+          pre: '# Opción 1: Ejecutar directamente con NPX (sin instalación permanente)\nnpx koko-cli init\n\n# Opción 2: Instalación global con npm/pnpm\nnpm install -g koko-cli\nkoko init'
         },
         {
-          anchorId: 'builder',
-          title: 'Stack Builder (Constructor Web)',
+          anchorId: 'native-binaries',
+          title: 'Binarios Nativos (GitHub Releases)',
           body: [
-            '• Visita la sección /builder en nuestro sitio web para arrastrar y configurar tu stack preferido de manera visual.',
-            '• Una vez seleccionado el stack, el constructor te entregará el comando exacto con los flags correspondientes para que lo pegues y ejecutes en tu consola local.'
-          ]
-        },
-        {
-          anchorId: 'setups',
-          title: 'Recetas Disponibles (v0.1.0)',
-          body: [
-            'El MVP de Claw te permite crear proyectos combinando las siguientes recetas estables y listas para codificar:'
+            'Si prefieres no depender de Node.js global, puedes descargar el ejecutable nativo de Koko para tu sistema operativo desde los Releases oficiales de GitHub:'
           ],
           nestedBlocks: [
             {
-              anchorId: 'setup-saas',
-              title: 'Fullstack Next.js + Go Fiber',
-              body: ['Inicializa un frontend en Next.js (App Router, TS), un servidor backend de alta velocidad en Go Fiber y base de datos PostgreSQL local en Docker:'],
-              pre: 'npx claw-cli init my-app --frontend nextjs --backend go --db postgres --orm prisma --docker'
+              anchorId: 'bin-windows',
+              title: 'Windows (PowerShell o CMD)',
+              body: ['Descarga koko-windows-amd64.exe, renómbralo a koko.exe y ejecútalo directamente:'],
+              pre: '.\\koko.exe init'
             },
             {
-              anchorId: 'setup-node',
-              title: 'API REST clásica en Node.js',
-              body: ['Inicializa una API limpia usando Node Express con TypeScript, Drizzle ORM y validación de esquemas vía Zod:'],
-              pre: 'npx claw-cli init my-api --frontend none --backend node --db postgres --orm drizzle --validator zod'
-            },
-            {
-              anchorId: 'setup-spa',
-              title: 'Frontend Single Page Application',
-              body: ['Genera una interfaz limpia con React, Vite y Tailwind CSS, sin infraestructura de servidor ni bases de datos asociadas:'],
-              pre: 'npx claw-cli init my-spa --frontend react --backend none --docker=false'
+              anchorId: 'bin-unix',
+              title: 'macOS y Linux',
+              body: ['Descarga el binario para tu arquitectura, otorga permisos de ejecución y lánzalo:'],
+              pre: 'chmod +x koko\n./koko init'
             }
           ]
         },
         {
-          anchorId: 'flags-cheat',
-          title: 'Resumen de Parámetros (Flags)',
+          anchorId: 'init-modes',
+          title: 'Modos de Inicialización',
           body: [
-            'Configura el inicializador pasando los argumentos directamente en tu terminal:',
-            '• --frontend: nextjs, react, none ( frameworks de cliente soportados en v0.1.0)',
-            '• --backend: go, node, none ( motores de servidor soportados en v0.1.0)',
-            '• --db: postgres, none ( bases de datos integradas )',
-            '• --orm: prisma, sqlx, drizzle, none ( mapeadores relacionales soportados )',
-            '• --validator: zod, valibot, none',
-            '• --auth: better-auth, nextauth, supabase, none',
-            '• --payment: stripe, lemon, mercadopago, none',
-            '• --email: resend, nodemailer, none',
-            '• --docker: genera el docker-compose.yml local de Postgres (true/false)'
+            'Koko CLI ofrece dos modos de uso interactivo diseñados para maximizar tu productividad:',
+            '• Quick Setup (Recetas de Producción): Selecciona un preset completo probado en producción (SaaS Starter, MERN, PERN o FastAPI + React) y comienza a codificar en 2 segundos.',
+            '• Manual Configuration (Configuración Paso a Paso): Diseña tu stack pieza por pieza eligiendo Frontend, Backend, Base de Datos, ORM, Addons y Git con validación en tiempo real.'
+          ]
+        },
+        {
+          anchorId: 'builder-integration',
+          title: 'Integración con Stack Builder Web',
+          body: [
+            '• También puedes usar nuestro constructor visual interactivo en /builder para seleccionar tus tecnologías mediante tarjetas interactivas.',
+            '• El constructor genera el comando CLI exacto con todos los flags correspondientes para que lo copies y ejecutes en tu terminal con un solo clic.'
+          ]
+        },
+        {
+          anchorId: 'quick-commands',
+          title: 'Resumen de Comandos y Flags',
+          body: [
+            'Comandos rápidos para crear proyectos de inmediato omitiendo el asistente interactivo:'
+          ],
+          pre: '# Crear con la receta predeterminada (SaaS Starter con Next.js + Drizzle + Better-Auth)\nkoko init mi-saas -d\n\n# Crear seleccionando una receta específica\nkoko init mi-app -r pern\n\n# Crear con stack manual por flags\nkoko init mi-api -f none -b express --database postgres --orm drizzle -p pnpm --git yes'
+        }
+      ]
+    },
+    {
+      id: 'tech-stack',
+      title: 'Stack Soportado',
+      category: 'Introducción',
+      content: [
+        {
+          anchorId: 'overview',
+          title: 'Ecosistema de Tecnologías (v2.0.0)',
+          body: [
+            'Koko CLI soporta una amplia gama de frameworks modernos, entornos de ejecución y motores de bases de datos organizados modularmente:'
+          ]
+        },
+        {
+          anchorId: 'frontend-layer',
+          title: 'Capas de Frontend',
+          body: [
+            '• Next.js (App Router): Framework React fullstack de alto rendimiento con Server Components, Server Actions y optimización de assets.',
+            '• React + Vite: Single Page Application (SPA) ultrarrápida impulsada por Vite con Hot Module Replacement (HMR) instantáneo.',
+            '• Nuxt (Vue 3): Framework fullstack para Vue con motor Nitro y renderizado híbrido SSR/SSG.',
+            '• Svelte (Svelte 5): Aplicaciones web ultraligeras y reactivas sin virtual DOM.',
+            '• None: Configuración headless para proyectos que únicamente requieren servidor backend o APIs REST.'
+          ]
+        },
+        {
+          anchorId: 'backend-layer',
+          title: 'Capas de Backend y Runtimes',
+          body: [
+            '• Node.js / Express: Arquitectura clásica de API REST con TypeScript estricto, middlewares y routing modular.',
+            '• NestJS: Arquitectura empresarial modular basada en controladores, servicios, inyección de dependencias y decoradores.',
+            '• Hono: Servidor web ultrarrápido y liviano optimizado para TypeScript y arquitecturas edge.',
+            '• Go / Chi Router: Servidor en Go de alto rendimiento con tipado estricto, baja latencia y consumo de memoria mínimo.',
+            '• Python / FastAPI: Framework asíncrono en Python con validación de esquemas vía Pydantic v2 y documentación interactiva OpenAPI/Swagger automática.',
+            '• None: Para proyectos cliente que utilizan Server Actions de Next.js o servicios Backend as a Service (BaaS).'
+          ]
+        },
+        {
+          anchorId: 'database-layer',
+          title: 'Bases de Datos y ORMs',
+          body: [
+            'Koko desacopla los motores de bases de datos y los mapeadores relacionales para máxima flexibilidad:',
+            '• PostgreSQL: Base de datos relacional robusta con soporte para Drizzle ORM y Prisma.',
+            '• MongoDB: Base de datos NoSQL documental con modelado elegante mediante Mongoose o Prisma.',
+            '• MySQL / MariaDB: Motor SQL tradicional con esquemas tipados.',
+            '• SQLite: Base de datos embebida ligera, ideal para prototipos rápidos y testing local sin contenedores.',
+            '• GORM (Go): ORM con todas las funciones para proyectos con backend en Go.',
+            '• SQLAlchemy / SQLModel (Python): ORM estándar de la industria para Python con soporte asíncrono.'
+          ]
+        },
+        {
+          anchorId: 'package-managers',
+          title: 'Gestores de Paquetes y Addons',
+          body: [
+            '• Gestores de Paquetes: pnpm (recomendado para monorrepos y deduplicación de dependencias), npm, bun, go_mod (Go) y pip/uv (Python).',
+            '• Docker Compose: Orquestación de contenedores locales para bases de datos (PostgreSQL, MySQL, MongoDB) con persistencia de volúmenes.',
+            '• GitHub Actions CI: Workflows automatizados de integración continua para linting, type-checking y pruebas.'
+          ]
+        }
+      ]
+    },
+
+    // ==========================================
+    // CATEGORÍA: CLI
+    // ==========================================
+    {
+      id: 'tui-wizard',
+      title: 'Asistente TUI Interactivo',
+      category: 'CLI',
+      content: [
+        {
+          anchorId: 'tui-experience',
+          title: 'Experiencia de Consola con Bubble Tea',
+          body: [
+            'Koko CLI implementa The Elm Architecture (TEA) en la terminal gracias al framework Bubble Tea y estilos tipográficos con Lipgloss.',
+            '• Sin parpadeos ni prompts caóticos: la interfaz dibuja un layout coherente y actualizado en tiempo real.',
+            '• Navegación fluida: utiliza las teclas de flecha [↑/↓] o atajos estilo Vim [k/j] para desplazarte, [Enter] para confirmar y [Esc] para regresar al paso anterior.'
+          ]
+        },
+        {
+          anchorId: 'modes-explained',
+          title: 'Flujo de Selección: Quick vs Manual',
+          body: [
+            'Al iniciar `koko init`, el asistente te presentará la pantalla principal con dos rutas:'
+          ],
+          nestedBlocks: [
+            {
+              anchorId: 'quick-flow',
+              title: 'Ruta 1: Quick Setup',
+              body: [
+                '1. Ingresa el nombre de tu proyecto (ej: `my-saas`).',
+                '2. Selecciona "Quick Setup".',
+                '3. Elige una de las 4 recetas curadas: ⚡ SaaS Starter, 💻 MERN Stack, 🚀 PERN Stack o 🐍 FastAPI + React.',
+                '4. Koko genera automáticamente todos los archivos, inicializa Git y crea el manifiesto en menos de 1 segundo.'
+              ]
+            },
+            {
+              anchorId: 'manual-flow',
+              title: 'Ruta 2: Manual Configuration',
+              body: [
+                '1. Frontend Framework: Elige entre Next.js, React + Vite, Nuxt, Svelte o None.',
+                '2. Backend Runtime: Elige entre Express, FastAPI, Go Chi, NestJS, Hono o None.',
+                '3. Package Manager: Elige pnpm, npm, bun (o go_mod / pip si es backend puro).',
+                '4. Database: Elige PostgreSQL, MongoDB, MySQL, SQLite o None.',
+                '5. ORM / Query Builder: Opciones filtradas dinámicamente según tu base de datos y backend.',
+                '6. Addons & Tooling: Docker Compose, GitHub Actions CI o ambos.',
+                '7. Git: Inicialización de repositorio Git con .gitignore adaptado.'
+              ]
+            }
+          ]
+        },
+        {
+          anchorId: 'live-validation-tui',
+          title: 'Deshabilitación Dinámica con Motivo',
+          body: [
+            'El asistente TUI evalúa cada combinación en tiempo real. Si una opción es incompatible con tus selecciones previas, no solo aparecerá deshabilitada en gris oscuro, sino que mostrará la razón exacta:',
+            '• Ejemplo: Si seleccionas `React + Vite` (SPA) y `None` en Backend, las opciones de Base de Datos se deshabilitarán con el mensaje: "Incompatible: Client-side SPA (react) cannot connect directly to DBs without a backend".'
+          ]
+        },
+        {
+          anchorId: 'runner-animation',
+          title: 'Ejecución con Spinner y Métricas',
+          body: [
+            'Durante la creación física de los archivos, Koko muestra un spinner animado paso a paso indicando la generación en memoria (Virtual File System), escritura segura en disco, inicialización de Git y creación del archivo `koko.config.json` con el tiempo total transcurrido en segundos.'
           ]
         }
       ]
     },
     {
       id: 'cli-commands',
-      title: 'Comandos Soportados',
+      title: 'Comandos y Flags',
       category: 'CLI',
       content: [
         {
-          anchorId: 'commands',
-          title: 'Comandos de la Versión 0.1.0',
+          anchorId: 'command-init',
+          title: 'Comando koko init',
           body: [
-            'Actualmente, el CLI expone los comandos esenciales de inicialización del proyecto:',
-            '• claw init [name]: Ejecuta el asistente interactivo para crear tu estructura en el disco local.',
-            '• claw version: Imprime los detalles de la compilación y la versión actual del ejecutable.'
+            'El comando principal para inicializar un nuevo proyecto en tu disco local:',
+            'Sintaxis: `koko init [nombre-del-proyecto] [flags]`'
           ],
-          pre: 'claw init mi-aplicacion\nclaw version'
+          pre: 'koko init mi-proyecto'
+        },
+        {
+          anchorId: 'flags-reference',
+          title: 'Referencia Completa de Flags',
+          body: [
+            'Todos los flags disponibles para automatizar la creación de proyectos sin interacción humana:'
+          ],
+          bullets: [
+            '-d, --default - Inicializa inmediatamente usando la receta predeterminada (SaaS Starter con Next.js + Drizzle + Better-Auth).',
+            '-r, --recipie <nombre> - Elige una receta de producción: saas, pern, mern, fastapi_react.',
+            '-f, --frontend <framework> - Framework frontend: nextjs, react, nuxt, svelte, none.',
+            '-b, --backend <runtime> - Framework backend: express, fastapi, go_chi, nestjs, hono, none.',
+            '-p, --package-manager <pm> - Gestor de paquetes: pnpm, npm, bun, go_mod, pip, uv.',
+            '--database <motor> - Base de datos: postgres, mongodb, mysql, sqlite, none.',
+            '--orm <mapeador> - ORM o query builder: drizzle, prisma, mongoose, sqlalchemy, gorm, none.',
+            '--auth <proveedor> - Proveedor de autenticación: better-auth, next-auth, none.',
+            '--git <yes|no> - Inicializar repositorio Git local (por defecto: yes).'
+          ]
+        },
+        {
+          anchorId: 'scripting-examples',
+          title: 'Ejemplos para CI/CD y Scripts',
+          body: [
+            'Puedes integrar Koko CLI en scripts bash, Makefiles o flujos de CI/CD para generar estructuras reproducibles:'
+          ],
+          nestedBlocks: [
+            {
+              anchorId: 'ex-mern',
+              title: 'Scaffold MERN Stack Completo',
+              body: ['Genera un monorepo con React SPA, Express TS API, MongoDB y Docker Compose:'],
+              pre: 'koko init app-mern -r mern'
+            },
+            {
+              anchorId: 'ex-fastapi-react',
+              title: 'Scaffold FastAPI + React Vite',
+              body: ['Genera frontend en React y backend en Python FastAPI con soporte asíncrono:'],
+              pre: 'koko init app-python -r fastapi_react'
+            },
+            {
+              anchorId: 'ex-go-api',
+              title: 'Scaffold API REST pura en Go Chi',
+              body: ['Genera un backend modular en Go con PostgreSQL y GORM:'],
+              pre: 'koko init api-go -f none -b go_chi --database postgres --orm gorm -p go_mod'
+            }
+          ]
+        },
+        {
+          anchorId: 'command-version',
+          title: 'Comando koko version',
+          body: [
+            'Imprime en consola los detalles de la versión del CLI, sistema operativo, arquitectura de procesador y versión del compilador de Go con el que fue construido:'
+          ],
+          pre: 'koko version'
         }
       ]
     },
     {
-      id: 'cli-limitations',
-      title: 'Limitaciones del MVP',
+      id: 'validation-rules',
+      title: 'Reglas de Validación y Seguridad',
       category: 'CLI',
       content: [
         {
-          anchorId: 'limitations',
-          title: 'Limitaciones del MVP',
+          anchorId: 'rules-overview',
+          title: 'Motor de Compatibilidad en Tiempo Real',
           body: [
-            'Al ser una versión inicial (v0.1.0), el desarrollo cuenta con las siguientes restricciones técnicas:',
-            '• No inyección de código dinámico: Si decides no añadir base de datos o auth al inicio, tendrás que configurar estas dependencias manualmente más adelante si el proyecto ya fue creado.',
-            '• Ecosistemas acotados: Las combinaciones se limitan a los frameworks principales (Next.js, React, Go Fiber y Node Express). No se soporta Python ni Rust en esta primera instancia.'
+            'A diferencia de otros generadores que crean código roto al combinar opciones incompatibles, Koko cuenta con un motor de validación estricto en `internal/compatibility`. Si pasas flags inválidos por terminal o intentas elegirlos en el TUI, el CLI abortará con un mensaje de error explicativo y sugerencias de corrección.'
           ]
-        }
-      ]
-    },
-    {
-      id: 'cli-roadmap',
-      title: 'Planificación Futura',
-      category: 'CLI',
-      content: [
+        },
         {
-          anchorId: 'roadmap',
-          title: 'Siguientes Pasos (Roadmap)',
+          anchorId: 'the-7-rules',
+          title: 'Las 7 Reglas de Seguridad',
           body: [
-            'Estamos planificando las próximas características para las versiones de Claw:',
-            '• Comando claw add (v0.2.0): Permitirá inyectar dependencias y código de configuración (como auth o pasarelas de pago) sobre repositorios que ya están a mitad de su desarrollo.',
-            '• Comando claw generate (v0.2.0): Generación de componentes de React/Svelte y controladores de servidor desde la consola basándose en tu config.',
-            '• Soporte para Monorrepos: Inicialización de proyectos complejos compartiendo tipos vía Turborepo.'
+            '• Regla 1: Frontend y Backend simultáneos en None: Un proyecto no puede tener ambos extremos vacíos; debe seleccionarse al menos un Frontend o un Backend.',
+            '• Regla 2: SPAs sin backend conectadas a Base de Datos: Una SPA pura de cliente (React + Vite o Svelte) no puede incluir credenciales de base de datos ni ORMs sin un servidor intermedio.',
+            '• Regla 3: Consistencia DB vs ORM: No es posible seleccionar un ORM si la base de datos está marcada como "none".',
+            '• Regla 4: ORMs Relacionales (SQL) vs Documentales (NoSQL): Drizzle, SQLAlchemy y GORM no pueden usarse con MongoDB. Mongoose no puede usarse con PostgreSQL, MySQL o SQLite.',
+            '• Regla 5: Ecosistema de Lenguaje vs ORM: SQLAlchemy solo es compatible con Python. GORM solo es compatible con Go. Drizzle, Prisma y Mongoose solo son compatibles con Node.js / TypeScript.',
+            '• Regla 6: Gestor de Paquetes por Lenguaje: Un backend puro en Go solo admite `go_mod`. Un backend puro en Python solo admite `pip` o `uv`.',
+            '• Regla 7: Proveedores de Autenticación: Better-Auth requiere un entorno TypeScript (Next.js, Express o Hono). NextAuth.js requiere específicamente Next.js como frontend.'
           ]
+        },
+        {
+          anchorId: 'error-example',
+          title: 'Ejemplo de Diagnóstico de Error',
+          body: [
+            'Si intentas ejecutar un comando con tecnologías incompatibles:'
+          ],
+          pre: 'koko init my-app -f react -b none --database postgres --orm drizzle\n\n# Salida del CLI:\n# ✗ Incompatible stack error:\n#   Una aplicación SPA cliente (react) sin backend no puede conectarse directamente a la base de datos \'postgres\'\n#   Sugerencia: Agrega un backend (como Express, Hono, FastAPI o Go Chi) o usa un framework fullstack (como Next.js o Nuxt)'
         }
       ]
     },
+
+    // ==========================================
+    // CATEGORÍA: ESTRUCTURA DE PROYECTO
+    // ==========================================
     {
       id: 'project-structure',
-      title: 'Estructura Generada',
+      title: 'Estructuras Generadas',
       category: 'Estructura de Proyecto',
       content: [
         {
-          anchorId: 'structure-overview',
-          title: 'Diseño de Carpetas General',
+          anchorId: 'monorepo-layout',
+          title: 'Arquitectura Monorepo (Workspaces + Turborepo)',
           body: [
-            'Al inicializar un stack con frontend y backend independientes, Claw crea una arquitectura desacoplada para evitar problemas de dependencias compartidas y facilitar el despliegue individual de servicios:'
+            'Cuando configuras un proyecto con Frontend y Backend desacoplados, Koko genera un monorepo profesional configurado con pnpm workspaces y Turborepo para compilaciones en paralelo ultrarrápidas:'
           ],
           tree: [
-            { name: 'mi-proyecto/', type: 'folder', depth: 0, description: 'Directorio raíz del proyecto scaffolded' },
-            { name: 'frontend-[name]/', type: 'folder', depth: 1, description: 'Aplicación cliente (Next.js o React SPA)' },
-            { name: 'backend-[name]/', type: 'folder', depth: 1, description: 'Servidor API (Go Fiber o Node.js Express)' },
-            { name: 'docker-compose.yml', type: 'file', depth: 1, description: 'Orquestación de servicios locales (Postgres + pgAdmin)' },
-            { name: 'claw.config.json', type: 'file', depth: 1, description: 'Manifiesto descriptivo del stack seleccionado' }
+            { name: 'my-project/', type: 'folder', depth: 0, description: 'Directorio raíz del monorepo' },
+            { name: 'apps/', type: 'folder', depth: 1, description: 'Aplicaciones y servicios ejecutables' },
+            { name: 'web/', type: 'folder', depth: 2, description: 'Aplicación frontend (Next.js, React, etc.)' },
+            { name: 'api/', type: 'folder', depth: 2, description: 'Servidor backend (Express, Go Chi, FastAPI, etc.)' },
+            { name: 'packages/', type: 'folder', depth: 1, description: 'Paquetes y configuraciones compartidas' },
+            { name: 'db/', type: 'folder', depth: 2, description: 'Cliente de base de datos y esquemas de ORM' },
+            { name: 'tsconfig/', type: 'folder', depth: 2, description: 'Configuraciones base de TypeScript compartidas' },
+            { name: 'docker-compose.yml', type: 'file', depth: 1, description: 'Orquestación de base de datos local y servicios' },
+            { name: 'koko.config.json', type: 'file', depth: 1, description: 'Manifiesto descriptivo del stack generado' },
+            { name: 'package.json', type: 'file', depth: 1, description: 'Configuración raíz con definición de workspaces' },
+            { name: 'pnpm-workspace.yaml', type: 'file', depth: 1, description: 'Definición de paquetes pnpm' },
+            { name: 'turbo.json', type: 'file', depth: 1, description: 'Pipeline de compilación y cache de Turborepo' },
+            { name: 'README.md', type: 'file', depth: 1, description: 'Guía de inicio y comandos del proyecto' }
           ]
         },
         {
-          anchorId: 'frontend-react-layout',
-          title: 'Estructura Frontend SPA (React + Vite)',
+          anchorId: 'saas-starter-layout',
+          title: 'Estructura Standalone: SaaS Starter (Next.js)',
           body: [
-            'Si seleccionas una receta de Single Page Application, Claw genera una estructura ligera y moderna optimizada para Vite:'
+            'Para la receta SaaS Starter (Next.js App Router + Drizzle + Better-Auth), Koko organiza un layout limpio y escalable:'
           ],
           tree: [
-            { name: 'frontend-app/', type: 'folder', depth: 0, description: 'Directorio raíz del cliente' },
-            { name: 'public/', type: 'folder', depth: 1, description: 'Recursos estáticos expuestos sin procesar' },
-            { name: 'src/', type: 'folder', depth: 1, description: 'Código de aplicación React' },
-            { name: 'components/', type: 'folder', depth: 2, description: 'Componentes e interfaces reutilizables' },
-            { name: 'App.tsx', type: 'file', depth: 2, description: 'Componente raíz' },
-            { name: 'main.tsx', type: 'file', depth: 2, description: 'Punto de entrada del bundle' },
-            { name: 'index.html', type: 'file', depth: 1, description: 'Plantilla base HTML5' },
-            { name: 'vite.config.ts', type: 'file', depth: 1, description: 'Configuración del compilador Vite' },
-            { name: 'package.json', type: 'file', depth: 1, description: 'Manifesto de dependencias NPM' }
+            { name: 'my-saas/', type: 'folder', depth: 0, description: 'Raíz del proyecto SaaS' },
+            { name: 'src/', type: 'folder', depth: 1, description: 'Código fuente de la aplicación' },
+            { name: 'app/', type: 'folder', depth: 2, description: 'Rutas de Next.js App Router y Server Actions' },
+            { name: 'api/', type: 'folder', depth: 3, description: 'Endpoints de autenticación y webhooks' },
+            { name: 'page.tsx', type: 'file', depth: 3, description: 'Landing page principal' },
+            { name: 'layout.tsx', type: 'file', depth: 3, description: 'Layout raíz con providers' },
+            { name: 'components/', type: 'folder', depth: 2, description: 'Componentes UI reutilizables (shadcn UI / Tailwind)' },
+            { name: 'lib/', type: 'folder', depth: 2, description: 'Utilidades, configuración de auth y base de datos' },
+            { name: 'db/', type: 'folder', depth: 3, description: 'Esquemas de Drizzle y migraciones SQL' },
+            { name: 'docker-compose.yml', type: 'file', depth: 1, description: 'Contenedor local de PostgreSQL' },
+            { name: 'koko.config.json', type: 'file', depth: 1, description: 'Registro de configuración Koko' },
+            { name: 'next.config.mjs', type: 'file', depth: 1, description: 'Configuración del compilador Next.js' }
           ]
         },
         {
-          anchorId: 'backend-go-layout',
-          title: 'Estructura Backend (Go Fiber)',
+          anchorId: 'go-backend-layout',
+          title: 'Estructura Backend: Go Chi Router',
           body: [
-            'Para proyectos con backend en Go, Claw implementa la estructura recomendada por los estándares de la comunidad de Golang, garantizando modularidad y velocidad:'
+            'Para proyectos con backend en Go, Koko implementa la arquitectura recomendada por los estándares oficiales de Golang:'
           ],
           tree: [
-            { name: 'backend-api/', type: 'folder', depth: 0, description: 'Raíz del servidor Go' },
+            { name: 'api-go/', type: 'folder', depth: 0, description: 'Raíz del servidor en Go' },
             { name: 'cmd/', type: 'folder', depth: 1, description: 'Puntos de entrada de compilación' },
             { name: 'api/', type: 'folder', depth: 2 },
-            { name: 'main.go', type: 'file', depth: 3, description: 'Punto de inicio e instanciación de Fiber' },
-            { name: 'pkg/', type: 'folder', depth: 1, description: 'Módulos y lógica compartida' },
-            { name: 'handlers/', type: 'folder', depth: 2, description: 'Controladores de rutas HTTP' },
-            { name: 'db/', type: 'folder', depth: 2, description: 'Conexión y cliente de base de datos' },
-            { name: 'go.mod', type: 'file', depth: 1, description: 'Manifesto de dependencias del módulo Go' }
+            { name: 'main.go', type: 'file', depth: 3, description: 'Punto de inicio e instanciación del router Chi' },
+            { name: 'pkg/', type: 'folder', depth: 1, description: 'Módulos y lógica de negocio' },
+            { name: 'handlers/', type: 'folder', depth: 2, description: 'Controladores HTTP y rutas' },
+            { name: 'db/', type: 'folder', depth: 2, description: 'Conexión a base de datos y modelos GORM' },
+            { name: 'go.mod', type: 'file', depth: 1, description: 'Manifiesto de dependencias del módulo Go' },
+            { name: 'go.sum', type: 'file', depth: 1, description: 'Checksums de seguridad de dependencias' }
           ]
         }
       ]
     },
     {
-      id: 'claw-config',
-      title: 'Manifesto Config',
+      id: 'koko-config',
+      title: 'Manifiesto koko.config.json',
+      category: 'Estructura de Proyecto',
+      content: [
+        {
+          anchorId: 'manifest-purpose',
+          title: 'El Archivo koko.config.json',
+          body: [
+            'Al inicializar un proyecto, Koko crea el archivo `koko.config.json` en la raíz. Este archivo actúa como el registro de verdad inmutable de la arquitectura seleccionada y permite que futuras herramientas reconozcan tu stack automáticamente sin analizar archivos de configuración manualmente.'
+          ]
+        },
+        {
+          anchorId: 'json-schema',
+          title: 'Especificación JSON Schema',
+          body: [
+            'El esquema estándar publicado en `https://koko-cli.dev/schema.json` incluye cuatro bloques principales: `project`, `architecture`, `stack` y `features`:'
+          ],
+          pre: '{\n  "$schema": "https://koko-cli.dev/schema.json",\n  "project": {\n    "name": "my-super-app",\n    "cliVersion": "v2.0.0",\n    "createdAt": "2026-09-01T12:00:00Z"\n  },\n  "architecture": {\n    "layout": "monorepo",\n    "packageManager": "pnpm"\n  },\n  "stack": {\n    "frontend": {\n      "framework": "nextjs",\n      "language": "typescript",\n      "styling": "tailwindcss"\n    },\n    "backend": {\n      "framework": "express",\n      "language": "typescript"\n    },\n    "database": {\n      "provider": "postgres",\n      "orm": "drizzle"\n    }\n  },\n  "features": {\n    "auth": {\n      "provider": "better-auth",\n      "status": "installed"\n    },\n    "infrastructure": {\n      "dockerCompose": true,\n      "ciCd": "github_actions"\n    }\n  }\n}'
+        }
+      ]
+    },
+
+    // ==========================================
+    // CATEGORÍA: AVANZADO
+    // ==========================================
+    {
+      id: 'recipes-deep-dive',
+      title: 'Recetas de Producción',
       category: 'Avanzado',
       content: [
         {
-          anchorId: 'config-spec',
-          title: 'El Archivo claw.config.json',
+          anchorId: 'recipes-overview',
+          title: 'Arquitectura de las Recetas Oficiales',
           body: [
-            'Este archivo es generado en la raíz de tu proyecto para mantener el registro de las tecnologías seleccionadas. Será la pieza clave en el futuro para que los comandos de adición ("add") puedan inyectar dependencias compatibles:'
-          ],
-          pre: '{\n  "name": "mi-proyecto",\n  "frontend": "nextjs",\n  "backend": "go",\n  "database": {\n    "engine": "postgres",\n    "orm": "prisma"\n  }\n}'
+            'Las recetas de Koko CLI son plantillas completas listas para producción, con dependencias fijadas en el Catálogo Maestro y configuraciones de linters, testing y contenedores Docker listos para trabajar.'
+          ]
+        },
+        {
+          anchorId: 'recipe-saas',
+          title: '⚡ SaaS Starter (Fullstack TypeScript)',
+          body: [
+            '• Stack: Next.js (App Router, React 19) + Drizzle ORM + Better-Auth + Stripe + Docker PostgreSQL.',
+            '• Características: Autenticación completa configurada con sesiones seguras, esquema relacional en PostgreSQL con Drizzle Kit para migraciones, componentes accesibles con Tailwind CSS y Lucide Icons.',
+            '• Comando rápido: `koko init my-saas -r saas`'
+          ]
+        },
+        {
+          anchorId: 'recipe-pern',
+          title: '🚀 PERN Stack (PostgreSQL + Express + React + Node)',
+          body: [
+            '• Stack: React (Vite, TS) + Node.js Express (TS) + PostgreSQL + Prisma ORM + Docker.',
+            '• Arquitectura: Monorepo desacoplado con Turborepo, paquete compartido `packages/db` para el cliente de Prisma generado, y scripts unificados de desarrollo.',
+            '• Comando rápido: `koko init my-pern -r pern`'
+          ]
+        },
+        {
+          anchorId: 'recipe-mern',
+          title: '💻 MERN Stack (MongoDB + Express + React + Node)',
+          body: [
+            '• Stack: React (Vite, TS) + Node.js Express (TS) + MongoDB + Mongoose + Docker.',
+            '• Arquitectura: Configuración monorepo con contenedor Docker de MongoDB listo para usar, modelos Mongoose tipados y validación de esquemas.',
+            '• Comando rápido: `koko init my-mern -r mern`'
+          ]
+        },
+        {
+          anchorId: 'recipe-fastapi',
+          title: '🐍 FastAPI + React (Python Async + Vite SPA)',
+          body: [
+            '• Stack: Python FastAPI + React (Vite) SPA + Pydantic v2 + Uvicorn.',
+            '• Características: Backend asíncrono con CORS configurado para el frontend de Vite, documentación Swagger interactiva en `/docs`, y gestión de dependencias vía `requirements.txt`.',
+            '• Comando rápido: `koko init my-python -r fastapi_react`'
+          ]
+        }
+      ]
+    },
+    {
+      id: 'troubleshooting',
+      title: 'Solución de Problemas',
+      category: 'Avanzado',
+      content: [
+        {
+          anchorId: 'docker-ports',
+          title: 'Conflictos de Puertos en Docker',
+          body: [
+            'Si al ejecutar `docker compose up -d` recibes el error `port is already allocated` (puerto 5432 o 27017 en uso):',
+            '• Causa: Tienes otra instancia local de PostgreSQL o MongoDB ejecutándose en tu máquina fuera de Docker.',
+            '• Solución: Detén el servicio local de PostgreSQL o edita el archivo `docker-compose.yml` para mapear el puerto del host a otro número (ej: `"5433:5432"`).'
+          ]
+        },
+        {
+          anchorId: 'unix-permissions',
+          title: 'Permisos de Ejecución en macOS y Linux',
+          body: [
+            'Si descargas el binario directamente desde GitHub Releases y obtienes `permission denied` o advertencias del sistema de seguridad:',
+            '• En Linux/macOS: Otorga permisos de ejecución con `chmod +x koko`.',
+            '• En macOS (Gatekeeper): Si el sistema bloquea el binario por no estar firmado, ejecuta `xattr -d com.apple.quarantine koko` o abre Preferencias del Sistema > Privacidad y Seguridad > Permitir de todos modos.'
+          ]
+        },
+        {
+          anchorId: 'pnpm-workspace-issues',
+          title: 'Resolución de Dependencias en Monorrepos (pnpm)',
+          body: [
+            'Si experimentas problemas al enlazar paquetes locales en `packages/db`:',
+            '• Asegúrate de estar usando `pnpm` (versión 9 o superior).',
+            '• Ejecuta `pnpm install` desde la raíz del proyecto para que los enlaces simbólicos de los workspaces se resuelvan correctamente.'
+          ]
         }
       ]
     },
     {
       id: 'contributing',
-      title: 'Colaborar',
+      title: 'Guía de Contribución',
       category: 'Avanzado',
       content: [
         {
-          anchorId: 'overview',
-          title: 'Código Abierto',
+          anchorId: 'open-source',
+          title: 'Desarrollo Open Source',
           body: [
-            'Claw es un proyecto colaborativo. En esta etapa inicial, valoramos el reporte de errores de inicialización, la optimización de los scripts en Go y la mejora de los estilos de la web UI.'
+            'Koko CLI es un proyecto 100% de código abierto bajo la licencia MIT. Agradecemos contribuciones en forma de nuevas plantillas, mejoras en el motor en Go, corrección de errores o sugerencias en la documentación.'
           ]
         },
         {
-          anchorId: 'setup',
-          title: 'Configuración de Desarrollo Local',
+          anchorId: 'local-setup',
+          title: 'Configuración del Entorno de Desarrollo Local',
           body: [
-            'Sigue estos pasos si deseas levantar la web en tu máquina o contribuir al código base del generador:'
+            'Pasos para clonar, compilar y probar Koko CLI en tu máquina local:'
           ],
           nestedBlocks: [
             {
-              anchorId: 'setup-prerequisites',
-              title: 'Requisitos',
-              body: ['Es necesario contar con Go v1.21+ (para el motor CLI) y Node.js v22+ (para el builder interactivo en Astro y Svelte).']
+              anchorId: 'step-clone',
+              title: '1. Clonar el Repositorio',
+              body: ['Clona el repositorio oficial de GitHub e ingresa al directorio:'],
+              pre: 'git clone https://github.com/BlasVernazza06/koko-cli.git\ncd koko-cli'
             },
             {
-              anchorId: 'setup-install',
-              title: 'Instalación de la Web UI',
-              body: [
-                'Clona el repositorio e inicia el servidor de desarrollo de la landing page:',
-                'git clone https://github.com/clawproject/claw.git\ncd claw\nnpm install\nnpm run dev'
-              ]
+              anchorId: 'step-run-go',
+              title: '2. Ejecutar y Compilar en Go',
+              body: ['Requiere Go 1.21+. Puedes ejecutar el CLI directamente desde el código fuente o compilar el binario:'],
+              pre: '# Ejecutar directamente\ngo run main.go init\n\n# Compilar binario local\ngo build -o koko main.go'
+            },
+            {
+              anchorId: 'step-tests',
+              title: '3. Ejecutar la Suite de Pruebas',
+              body: ['Ejecuta las pruebas unitarias y de compatibilidad para verificar que no haya regresiones:'],
+              pre: 'go test ./... -v'
             }
+          ]
+        },
+        {
+          anchorId: 'project-architecture-code',
+          title: 'Estructura Interna del Código en Go',
+          body: [
+            '• `cmd/`: Comandos de Cobra CLI (`init.go`, `version.go`, `root.go`), máquina de estados TUI (`tui.go`) y vistas de Lipgloss (`cmd/views/`).',
+            '• `internal/compatibility/`: Motor de validación cruzada y evaluación de reglas lógicas.',
+            '• `internal/config/`: Generador y serializador del manifiesto `koko.config.json`.',
+            '• `internal/scaffold/`: Motor de scaffolding, renderizadores de plantillas y generador de Virtual File System (`vfs`).',
+            '• `internal/catalog/`: Catálogo maestro de versiones de dependencias de npm y librerías externas.'
           ]
         }
       ]
     },
+
+    // ==========================================
+    // CATEGORÍA: PREGUNTAS FRECUENTES
+    // ==========================================
     {
       id: 'faq',
       title: 'Preguntas Frecuentes',
@@ -287,48 +589,60 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
       content: [
         {
           anchorId: 'why-go',
-          title: '¿Por qué el CLI de Claw está escrito en Go?',
+          title: '¿Por qué el CLI de Koko está escrito en Go?',
           body: [
-            'Go nos permite compilar un único archivo binario sin dependencias locales para el usuario final. Esto asegura un inicio instantáneo (cold start de milisegundos) y que no requieras configurar Node.js globalmente o lidiar con versiones conflictivas de npm solo para crear tu scaffolding.'
+            'Go nos permite compilar un único archivo binario nativo y autónomo sin dependencias locales para el usuario final. Esto asegura un arranque instantáneo (cold start en milisegundos) y que no requieras configurar Node.js globalmente o lidiar con versiones conflictivas de paquetes solo para crear tu scaffolding.'
           ],
-          tags: ['go', 'cli']
-        },
-        {
-          anchorId: 'customize-templates',
-          title: '¿Puedo personalizar las plantillas por defecto?',
-          body: [
-            'En el MVP (v0.1.0) las recetas están predefinidas con las mejores prácticas de la industria. Sin embargo, en el roadmap de la v0.2.0 incluiremos soporte para que cargues tus propias plantillas personalizadas desde repositorios Git remotos o rutas locales.'
-          ],
-          tags: ['plantillas', 'personalización']
-        },
-        {
-          anchorId: 'modify-later',
-          title: '¿Cómo añado módulos (como Auth o Base de Datos) después de la inicialización?',
-          body: [
-            'Para proyectos creados con el MVP, la adición posterior debe hacerse de forma manual. Estamos trabajando arduamente en el subcomando `claw add` para que detecte automáticamente tu archivo `claw.config.json` e inyecte estos servicios sin romper tu código existente en la v0.2.0.'
-          ],
-          tags: ['arquitectura', 'módulos']
-        },
-        {
-          anchorId: 'is-free',
-          title: '¿Es Koko de código abierto y gratuito?',
-          body: [
-            'Sí, Koko es un proyecto 100% de código abierto bajo la licencia MIT. Puedes usarlo de forma gratuita para proyectos personales o comerciales, y eres más que bienvenido a contribuir con mejoras en nuestro repositorio de GitHub.'
-          ],
-          tags: ['general', 'licencia']
+          tags: ['go', 'cli', 'rendimiento']
         },
         {
           anchorId: 'offline-mode',
           title: '¿Puedo utilizar Koko sin conexión a Internet?',
           body: [
-            '¡Totalmente! El CLI de Koko funciona de manera local en tu máquina. Solo requerirás conexión a internet la primera vez para descargar el CLI (si usas npx) y al ejecutar la instalación de las dependencias de NPM (como `npm install`) o descargar las imágenes de Docker.'
+            '¡Totalmente! Si tienes el binario de Koko descargado o el paquete instalado, el CLI genera todos los archivos, configuraciones, esquemas y scripts de forma 100% local en tu disco sin enviar ni solicitar información a ningún servidor externo.'
           ],
-          tags: ['general', 'infraestructura']
+          tags: ['offline', 'general', 'infraestructura']
+        },
+        {
+          anchorId: 'monorepo-support',
+          title: '¿Cómo gestiona Koko los proyectos Monorepo?',
+          body: [
+            'Cuando eliges un frontend y un backend independientes (o seleccionas recetas como PERN o MERN), Koko configura automáticamente una arquitectura monorepo basada en pnpm workspaces y Turborepo (`turbo.json`). Esto permite compartir esquemas de base de datos (`packages/db`) y configuraciones de TypeScript sin duplicar código.'
+          ],
+          tags: ['monorepo', 'arquitectura', 'turborepo']
+        },
+        {
+          anchorId: 'docker-compose-default',
+          title: '¿Es obligatorio usar Docker con Koko?',
+          body: [
+            'No es obligatorio. Si prefieres utilizar una base de datos alojada en la nube (como Supabase, Neon o MongoDB Atlas), puedes seleccionar la opción de Docker como `false` en los flags o desactivar los addons en la configuración manual.'
+          ],
+          tags: ['docker', 'bases de datos']
+        },
+        {
+          anchorId: 'is-free',
+          title: '¿Es Koko de código abierto y gratuito para uso comercial?',
+          body: [
+            'Sí, Koko es un proyecto 100% de código abierto bajo la licencia MIT. Puedes usarlo de forma totalmente gratuita para proyectos personales, de código abierto o productos comerciales en producción.'
+          ],
+          tags: ['general', 'licencia', 'comercial']
+        },
+        {
+          anchorId: 'supported-os',
+          title: '¿Qué sistemas operativos son compatibles?',
+          body: [
+            'Koko es totalmente multiplataforma y ha sido probado exhaustivamente en Windows (PowerShell, CMD y WSL2), macOS (arquitecturas Apple Silicon M1/M2/M3 y x86_64 Intel) y todas las distribuciones principales de Linux.'
+          ],
+          tags: ['general', 'sistemas operativos', 'compatibilidad']
         }
       ]
     }
   ],
+
   en: [
+    // ==========================================
+    // CATEGORY: INTRODUCTION
+    // ==========================================
     {
       id: 'quick-start',
       title: 'Quick Start',
@@ -337,245 +651,544 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
       content: [
         {
           anchorId: 'philosophy',
-          title: 'Claw Philosophy',
+          title: 'Koko CLI Philosophy',
           body: [
-            '• Clean & Fast Bootstrapping: Design your initial stack and generate the base layout without any unnecessary boilerplate code.',
-            '• Go CLI Engine: The Claw binary is lightweight, fires up instantly, and does not require Node JS configured globally to initialize your repositories.',
-            '• Docker Compose by Default: If a local database is chosen, Claw builds a docker-compose file ready to spin up the container and DB dashboard in a single click.',
-            '• Tech Consistency Focus: We maintain config cohesion for TypeScript or Go by sharing optimal linter rules and typing tools.'
+            '• Millisecond Cold-Start: Built with Go as a standalone native binary that launches instantly with zero runtime configuration overhead.',
+            '• Premium Interactive TUI: Gorgeous terminal interface powered by Bubble Tea and Lipgloss featuring real-time spinner benchmarks and visual step indicators.',
+            '• Monorepo Workspaces Out-of-the-Box: Automatically scaffolds Turborepo pipelines, pnpm workspaces, unified TypeScript configs, and ESLint/Prettier.',
+            '• Smart Cross-Validation Engine: Active compatibility rules prevent creating broken or conflicting tech combinations in real-time.',
+            '• Master Dependency Catalog: Centrally pinned package versions to guarantee reproducible builds and zero configuration drift.'
           ]
         },
         {
-          anchorId: 'getting-started',
+          anchorId: 'prerequisites',
           title: 'Prerequisites & Installation',
           body: [
-            'To run Claw-CLI in its current MVP version (v0.1.0), make sure your machine meets these basic requirements:'
+            'You can run Koko CLI directly via Node.js/NPX or download the native Go binary for your operating system:'
           ],
           bullets: [
-            'Node.js LTS configured (required to run the generated JS/TS codebases).',
-            'Docker & Docker Compose (optional, for local relational databases spun up by the CLI).',
-            'CLI Installation: npm i -g claw-cli (or direct execution via npx claw-cli init).'
-          ]
-        },
-        {
-          anchorId: 'cli',
-          title: 'CLI Usage (Terminal)',
-          body: [
-            'Run the interactive creator inside your terminal to answer stack config questions step-by-step:',
-            'To skip prompts and create the repository using our standard recipe template defaults, append the --yes flag:'
+            'Node.js (LTS v18 or newer) - Recommended to run and build the generated JavaScript/TypeScript codebases.',
+            'Docker & Docker Compose - Optional but recommended for local relational and NoSQL databases (PostgreSQL, MongoDB, MySQL).',
+            'Go 1.21+ / Python 3.11+ - Required only if you scaffold pure Go Chi or Python FastAPI backends.'
           ],
-          pre: 'npx claw-cli init my-project\n\nnpx claw-cli init my-project --yes'
+          pre: '# Option 1: Run directly with NPX (No installation required)\nnpx koko-cli init\n\n# Option 2: Global installation via npm/pnpm\nnpm install -g koko-cli\nkoko init'
         },
         {
-          anchorId: 'builder',
-          title: 'Stack Builder (Web UI)',
+          anchorId: 'native-binaries',
+          title: 'Native Binaries (GitHub Releases)',
           body: [
-            '• Head over to the /en/builder section on our website to visually configure and mix your preferred stack options.',
-            '• Once selected, the builder will output the exact command with the corresponding flags to copy and run in your terminal.'
-          ]
-        },
-        {
-          anchorId: 'setups',
-          title: 'Available Blueprints (v0.1.0)',
-          body: [
-            'Claw MVP allows you to generate projects by combining the following stable blueprints:'
+            'If you prefer not to depend on global Node.js, download the pre-compiled binary matching your platform from our GitHub Releases page:'
           ],
           nestedBlocks: [
             {
-              anchorId: 'setup-saas',
-              title: 'Fullstack Next.js + Go Fiber',
-              body: ['Initialize a Next.js (App Router, TS) client app, a high-performance Go Fiber backend API, and a local PostgreSQL DB in Docker:'],
-              pre: 'npx claw-cli init my-app --frontend nextjs --backend go --db postgres --orm prisma --docker'
+              anchorId: 'bin-windows',
+              title: 'Windows (PowerShell or CMD)',
+              body: ['Download koko-windows-amd64.exe, rename to koko.exe, and run directly:'],
+              pre: '.\\koko.exe init'
             },
             {
-              anchorId: 'setup-node',
-              title: 'Classic Node.js REST API',
-              body: ['Scaffold a clean API using Node Express with TypeScript, Drizzle ORM, and schema validation via Zod:'],
-              pre: 'npx claw-cli init my-api --frontend none --backend node --db postgres --orm drizzle --validator zod'
-            },
-            {
-              anchorId: 'setup-spa',
-              title: 'Frontend Single Page Application',
-              body: ['Generate a clean client template using React, Vite, and Tailwind CSS, without server infrastructure or database configurations:'],
-              pre: 'npx claw-cli init my-spa --frontend react --backend none --docker=false'
+              anchorId: 'bin-unix',
+              title: 'macOS & Linux',
+              body: ['Download the executable for your architecture, grant execution permissions, and run:'],
+              pre: 'chmod +x koko\n./koko init'
             }
           ]
         },
         {
-          anchorId: 'flags-cheat',
-          title: 'Command Parameters (Flags)',
+          anchorId: 'init-modes',
+          title: 'Initialization Modes',
           body: [
-            'Configure your template directly by passing arguments to the command:',
-            '• --frontend: nextjs, react, none ( client frameworks supported in v0.1.0 )',
-            '• --backend: go, node, none ( server engines supported in v0.1.0 )',
-            '• --db: postgres, none ( relational databases supported )',
-            '• --orm: prisma, sqlx, drizzle, none ( relational mapping tools )',
-            '• --validator: zod, valibot, none',
-            '• --auth: better-auth, nextauth, supabase, none',
-            '• --payment: stripe, lemon, mercadopago, none',
-            '• --email: resend, nodemailer, none',
-            '• --docker: builds the local Postgres docker-compose.yml file (true/false)'
+            'Koko CLI features two distinct interactive modes tailored for maximum developer agility:',
+            '• Quick Setup (Production Recipes): Pick a pre-configured production blueprint (SaaS Starter, MERN, PERN, or FastAPI + React) and start building in under 2 seconds.',
+            '• Manual Configuration (Step-by-Step): Customize your architecture layer by layer selecting Frontend, Backend, Database, ORM, Addons, and Git with live validation checks.'
+          ]
+        },
+        {
+          anchorId: 'builder-integration',
+          title: 'Web Stack Builder Integration',
+          body: [
+            '• You can also use our interactive web builder at /en/builder to visually mix and match technologies via interactive cards.',
+            '• The builder compiles your selections into the exact CLI command with all corresponding flags for 1-click terminal execution.'
+          ]
+        },
+        {
+          anchorId: 'quick-commands',
+          title: 'Command Shortcuts & Quick Flags',
+          body: [
+            'Headless one-liners to bootstrap applications immediately skipping interactive terminal questions:'
+          ],
+          pre: '# Bootstrap default production recipe (SaaS Starter with Next.js + Drizzle + Better-Auth)\nkoko init my-saas -d\n\n# Bootstrap specific blueprint recipe\nkoko init my-app -r pern\n\n# Bootstrap custom manual stack with flags\nkoko init my-api -f none -b express --database postgres --orm drizzle -p pnpm --git yes'
+        }
+      ]
+    },
+    {
+      id: 'tech-stack',
+      title: 'Supported Tech Stack',
+      category: 'Introduction',
+      content: [
+        {
+          anchorId: 'overview',
+          title: 'Technology Ecosystem (v2.0.0)',
+          body: [
+            'Koko CLI supports a diverse, modern catalog of client frameworks, backend runtimes, and database engines:'
+          ]
+        },
+        {
+          anchorId: 'frontend-layer',
+          title: 'Frontend Frameworks',
+          body: [
+            '• Next.js (App Router): High-performance full-stack React framework with React Server Components (RSC), Server Actions, and asset optimization.',
+            '• React + Vite: Ultra-fast Single Page Application (SPA) powered by Vite with instant Hot Module Replacement (HMR).',
+            '• Nuxt (Vue 3): Fullstack Vue framework with the Nitro engine and hybrid SSR/SSG rendering.',
+            '• Svelte (Svelte 5): Modern, reactive, compiler-driven web applications with minimal footprint.',
+            '• None: Headless configuration for standalone backend APIs and microservices.'
+          ]
+        },
+        {
+          anchorId: 'backend-layer',
+          title: 'Backend Runtimes & Frameworks',
+          body: [
+            '• Node.js / Express: Classic REST API architecture with strict TypeScript, middleware support, and modular routing.',
+            '• NestJS: Enterprise-grade modular framework featuring controllers, services, dependency injection, and decorators.',
+            '• Hono: Ultrafast, lightweight web framework built for TypeScript and edge runtime execution.',
+            '• Go / Chi Router: High-performance Go web server with strict typing, minimal latency, and zero memory bloat.',
+            '• Python / FastAPI: Async Python API framework with Pydantic v2 data validation and automatic interactive OpenAPI/Swagger docs.',
+            '• None: For client applications utilizing Next.js Server Actions or Backend as a Service (BaaS).'
+          ]
+        },
+        {
+          anchorId: 'database-layer',
+          title: 'Databases & ORMs',
+          body: [
+            'Koko cleanly separates database servers from Object-Relational Mappers for maximum flexibility:',
+            '• PostgreSQL: Battle-tested relational database with first-class Drizzle ORM and Prisma support.',
+            '• MongoDB: Document-based NoSQL database with elegant schema modeling via Mongoose or Prisma.',
+            '• MySQL / MariaDB: Industry-standard SQL database engine.',
+            '• SQLite: Embedded lightweight database, ideal for prototypes and zero-container local development.',
+            '• GORM (Go): Feature-rich ORM for Go backends with automatic migrations and query builders.',
+            '• SQLAlchemy / SQLModel (Python): The standard ORM ecosystem for Python with native async support.'
+          ]
+        },
+        {
+          anchorId: 'package-managers',
+          title: 'Package Managers & Addons',
+          body: [
+            '• Package Managers: pnpm (recommended for monorepos and disk-efficient dependency deduplication), npm, bun, go_mod (Go), and pip/uv (Python).',
+            '• Docker Compose: Local container orchestration for relational and document databases with persistent volumes.',
+            '• GitHub Actions CI: Automated CI workflows for linting, typechecking, and testing.'
+          ]
+        }
+      ]
+    },
+
+    // ==========================================
+    // CATEGORY: CLI
+    // ==========================================
+    {
+      id: 'tui-wizard',
+      title: 'Interactive TUI Wizard',
+      category: 'CLI',
+      content: [
+        {
+          anchorId: 'tui-experience',
+          title: 'Console Experience with Bubble Tea',
+          body: [
+            'Koko CLI leverages The Elm Architecture (TEA) in the terminal using Bubble Tea and Lipgloss styling.',
+            '• Clean terminal rendering: no flickering or scattered stdout messages; the interface renders a solid, stateful dashboard.',
+            '• Intuitive navigation: use arrow keys [↑/↓] or Vim bindings [k/j] to move the cursor, [Enter] to confirm, and [Esc] to navigate back.'
+          ]
+        },
+        {
+          anchorId: 'modes-explained',
+          title: 'Selection Modes: Quick Setup vs Manual',
+          body: [
+            'Upon running `koko init`, the wizard prompts you with two distinct paths:'
+          ],
+          nestedBlocks: [
+            {
+              anchorId: 'quick-flow',
+              title: 'Path 1: Quick Setup',
+              body: [
+                '1. Enter your project name (e.g. `my-saas`).',
+                '2. Select "Quick Setup".',
+                '3. Pick one of the 4 production recipes: ⚡ SaaS Starter, 💻 MERN Stack, 🚀 PERN Stack, or 🐍 FastAPI + React.',
+                '4. Koko scaffolds files, initializes Git, and generates the manifest in less than a second.'
+              ]
+            },
+            {
+              anchorId: 'manual-flow',
+              title: 'Path 2: Manual Configuration',
+              body: [
+                '1. Frontend Framework: Choose between Next.js, React + Vite, Nuxt, Svelte, or None.',
+                '2. Backend Runtime: Choose between Express, FastAPI, Go Chi, NestJS, Hono, or None.',
+                '3. Package Manager: Choose pnpm, npm, bun (or go_mod / pip for pure backends).',
+                '4. Database: Choose PostgreSQL, MongoDB, MySQL, SQLite, or None.',
+                '5. ORM / Query Builder: Options dynamically filtered according to DB and backend choices.',
+                '6. Addons & Tooling: Docker Compose, GitHub Actions CI, or both.',
+                '7. Git: Automatic Git repository initialization with tailored .gitignore.'
+              ]
+            }
+          ]
+        },
+        {
+          anchorId: 'live-validation-tui',
+          title: 'Dynamic Disabling with Descriptive Reasons',
+          body: [
+            'The TUI evaluates cross-compatibility on every keystroke. If an option conflicts with previous choices, it is rendered in muted gray with an explicit explanation:',
+            '• Example: Selecting `React + Vite` (SPA) and `None` for Backend automatically disables all Database options with: "Incompatible: Client-side SPA (react) cannot connect directly to DBs without a backend".'
+          ]
+        },
+        {
+          anchorId: 'runner-animation',
+          title: 'Animated Runner Benchmarks',
+          body: [
+            'During physical file generation, Koko displays an animated progress spinner reporting Virtual File System (VFS) creation, disk writes, Git setup, and `koko.config.json` generation with precise timing benchmarks in seconds.'
           ]
         }
       ]
     },
     {
       id: 'cli-commands',
-      title: 'Supported Commands',
+      title: 'Commands & Flags',
       category: 'CLI',
       content: [
         {
-          anchorId: 'commands',
-          title: 'Commands Supported in v0.1.0',
+          anchorId: 'command-init',
+          title: 'The koko init Command',
           body: [
-            'Currently, the CLI exposes the baseline commands required to spin up templates:',
-            '• claw init [name]: Runs the interactive terminal wizard to build your project structure.',
-            '• claw version: Prints build details and the executable semantic version.'
+            'The primary command to scaffold a new workspace on your local machine:',
+            'Syntax: `koko init [project-name] [flags]`'
           ],
-          pre: 'claw init my-app\nclaw version'
+          pre: 'koko init my-project'
+        },
+        {
+          anchorId: 'flags-reference',
+          title: 'Complete Flags Reference',
+          body: [
+            'All supported flags for automating project generation without interactive prompts:'
+          ],
+          bullets: [
+            '-d, --default - Instantly bootstraps using the default recipe (SaaS Starter with Next.js + Drizzle + Better-Auth).',
+            '-r, --recipie <name> - Chooses a production blueprint recipe: saas, pern, mern, fastapi_react.',
+            '-f, --frontend <framework> - Frontend framework: nextjs, react, nuxt, svelte, none.',
+            '-b, --backend <runtime> - Backend runtime: express, fastapi, go_chi, nestjs, hono, none.',
+            '-p, --package-manager <pm> - Package manager: pnpm, npm, bun, go_mod, pip, uv.',
+            '--database <engine> - Database server: postgres, mongodb, mysql, sqlite, none.',
+            '--orm <tool> - ORM or query tool: drizzle, prisma, mongoose, sqlalchemy, gorm, none.',
+            '--auth <provider> - Authentication provider: better-auth, next-auth, none.',
+            '--git <yes|no> - Initialize local Git repository (default: yes).'
+          ]
+        },
+        {
+          anchorId: 'scripting-examples',
+          title: 'CI/CD & Scripting Examples',
+          body: [
+            'Integrate Koko CLI into bash scripts, Makefiles, or CI/CD pipelines for automated scaffolding:'
+          ],
+          nestedBlocks: [
+            {
+              anchorId: 'ex-mern',
+              title: 'Scaffold Complete MERN Stack',
+              body: ['Scaffold a monorepo with React SPA, Express TS API, MongoDB, and Docker Compose:'],
+              pre: 'koko init app-mern -r mern'
+            },
+            {
+              anchorId: 'ex-fastapi-react',
+              title: 'Scaffold FastAPI + React Vite',
+              body: ['Scaffold React client and Python FastAPI backend with async support:'],
+              pre: 'koko init app-python -r fastapi_react'
+            },
+            {
+              anchorId: 'ex-go-api',
+              title: 'Scaffold Pure Go Chi REST API',
+              body: ['Scaffold a modular Go backend with PostgreSQL and GORM:'],
+              pre: 'koko init api-go -f none -b go_chi --database postgres --orm gorm -p go_mod'
+            }
+          ]
+        },
+        {
+          anchorId: 'command-version',
+          title: 'The koko version Command',
+          body: [
+            'Prints detailed build information, semantic version, operating system, architecture, and Go runtime version:'
+          ],
+          pre: 'koko version'
         }
       ]
     },
     {
-      id: 'cli-limitations',
-      title: 'MVP Limitations',
+      id: 'validation-rules',
+      title: 'Cross-Validation Safety Rules',
       category: 'CLI',
       content: [
         {
-          anchorId: 'limitations',
-          title: 'MVP Limitations',
+          anchorId: 'rules-overview',
+          title: 'Real-Time Compatibility Engine',
           body: [
-            'Being in its initial MVP phase (v0.1.0), the application has the following boundaries:',
-            '• No post-creation code injection: If you skip selecting databases or auth at launch, you will have to manually configure those dependencies in the code later.',
-            '• Restricted ecosystems: Tech stacks are limited to core platforms (Next.js, React, Go Fiber, Node Express). Python and Rust are not yet supported.'
+            'Unlike traditional scaffolding generators that generate broken templates when conflicting options are selected, Koko enforces strict validation rules via `internal/compatibility`. If invalid flags are passed via terminal or selected in the TUI, the CLI exits immediately with clear error diagnostics and recommended solutions.'
           ]
-        }
-      ]
-    },
-    {
-      id: 'cli-roadmap',
-      title: 'Future Roadmap',
-      category: 'CLI',
-      content: [
+        },
         {
-          anchorId: 'roadmap',
-          title: 'Upcoming Features (Roadmap)',
+          anchorId: 'the-7-rules',
+          title: 'The 7 Safety Rules',
           body: [
-            'We are planning the following milestones for future releases of Claw:',
-            '• claw add command (v0.2.0): Will let you inject configuration code and files (like auth or payment clients) into active projects mid-development.',
-            '• claw generate command (v0.2.0): CLI generation of React/Svelte components and backend endpoints based on active configurations.',
-            '• Monorepos support: Scaffolding complex monorepos using Turborepo workspaces.'
+            '• Rule 1: Both Frontend and Backend set to None: A project cannot have both sides empty; at least one Frontend or Backend must be selected.',
+            '• Rule 2: Client SPAs connecting to DBs without a Backend: Pure client-side SPAs (React + Vite or Svelte) cannot embed direct database drivers or ORMs without a server API.',
+            '• Rule 3: Database vs ORM consistency: You cannot select an ORM if the database is set to "none".',
+            '• Rule 4: Relational SQL vs NoSQL Document ORMs: Drizzle, SQLAlchemy, and GORM cannot be used with MongoDB. Mongoose cannot be used with SQL databases (PostgreSQL, MySQL, SQLite).',
+            '• Rule 5: Language Runtime vs ORM Matrix: SQLAlchemy is exclusive to Python. GORM is exclusive to Go. Drizzle, Prisma, and Mongoose are exclusive to Node.js / TypeScript.',
+            '• Rule 6: Package Manager Compatibility: Standalone Go backends require `go_mod`. Standalone Python backends require `pip` or `uv`.',
+            '• Rule 7: Auth Provider Compatibility: Better-Auth requires a Node.js/TypeScript runtime. NextAuth.js requires Next.js as the frontend.'
           ]
+        },
+        {
+          anchorId: 'error-example',
+          title: 'Example Error Output',
+          body: [
+            'Running a conflicting command triggers informative diagnostic feedback:'
+          ],
+          pre: 'koko init my-app -f react -b none --database postgres --orm drizzle\n\n# CLI Output:\n# ✗ Incompatible stack error:\n#   Una aplicación SPA cliente (react) sin backend no puede conectarse directamente a la base de datos \'postgres\'\n#   Suggestion: Agrega un backend (como Express, Hono, FastAPI o Go Chi) o usa un framework fullstack (como Next.js o Nuxt)'
         }
       ]
     },
+
+    // ==========================================
+    // CATEGORY: PROJECT STRUCTURE
+    // ==========================================
     {
       id: 'project-structure',
       title: 'Project Structure',
       category: 'Project Structure',
       content: [
         {
-          anchorId: 'structure-overview',
-          title: 'General Folder Layout',
+          anchorId: 'monorepo-layout',
+          title: 'Monorepo Architecture (Workspaces + Turborepo)',
           body: [
-            'When initializing a stack with decoupled frontend and backend services, Claw establishes a clear boundary to avoid shared dependency hell and enable independent deployments:'
+            'When configuring decoupled frontend and backend services, Koko structures a clean monorepo powered by pnpm workspaces and Turborepo for high-speed parallel builds:'
           ],
           tree: [
-            { name: 'my-project/', type: 'folder', depth: 0, description: 'Root directory of the scaffolded repository' },
-            { name: 'frontend-[name]/', type: 'folder', depth: 1, description: 'Client application (Next.js or React SPA)' },
-            { name: 'backend-[name]/', type: 'folder', depth: 1, description: 'Backend API server (Go Fiber or Node.js Express)' },
-            { name: 'docker-compose.yml', type: 'file', depth: 1, description: 'Orchestrates local services (Postgres + pgAdmin)' },
-            { name: 'claw.config.json', type: 'file', depth: 1, description: 'Manifest outlining your active tech stack configurations' }
+            { name: 'my-project/', type: 'folder', depth: 0, description: 'Root monorepo workspace directory' },
+            { name: 'apps/', type: 'folder', depth: 1, description: 'Executable applications and services' },
+            { name: 'web/', type: 'folder', depth: 2, description: 'Frontend application (Next.js, React, etc.)' },
+            { name: 'api/', type: 'folder', depth: 2, description: 'Backend API server (Express, Go Chi, FastAPI, etc.)' },
+            { name: 'packages/', type: 'folder', depth: 1, description: 'Shared packages and configurations' },
+            { name: 'db/', type: 'folder', depth: 2, description: 'Shared database client and ORM schemas' },
+            { name: 'tsconfig/', type: 'folder', depth: 2, description: 'Shared base TypeScript configurations' },
+            { name: 'docker-compose.yml', type: 'file', depth: 1, description: 'Local database and container services setup' },
+            { name: 'koko.config.json', type: 'file', depth: 1, description: 'Koko workspace configuration manifest' },
+            { name: 'package.json', type: 'file', depth: 1, description: 'Root configuration defining workspace packages' },
+            { name: 'pnpm-workspace.yaml', type: 'file', depth: 1, description: 'pnpm package definitions' },
+            { name: 'turbo.json', type: 'file', depth: 1, description: 'Turborepo build pipeline and cache rules' },
+            { name: 'README.md', type: 'file', depth: 1, description: 'Project documentation and quickstart commands' }
           ]
         },
         {
-          anchorId: 'frontend-react-layout',
-          title: 'Frontend SPA Structure (React + Vite)',
+          anchorId: 'saas-starter-layout',
+          title: 'Standalone Layout: SaaS Starter (Next.js)',
           body: [
-            'If you select a Single Page Application configuration, Claw spins up a lightweight, high-performance workspace optimized for Vite:'
+            'For the SaaS Starter recipe (Next.js App Router + Drizzle + Better-Auth), Koko structures a scalable fullstack architecture:'
           ],
           tree: [
-            { name: 'frontend-app/', type: 'folder', depth: 0, description: 'Client-side root folder' },
-            { name: 'public/', type: 'folder', depth: 1, description: 'Static raw assets served as-is' },
-            { name: 'src/', type: 'folder', depth: 1, description: 'React application source code' },
-            { name: 'components/', type: 'folder', depth: 2, description: 'Reusable UI components' },
-            { name: 'App.tsx', type: 'file', depth: 2, description: 'Root application component' },
-            { name: 'main.tsx', type: 'file', depth: 2, description: 'Bundle compiler entry point' },
-            { name: 'index.html', type: 'file', depth: 1, description: 'HTML5 base template' },
-            { name: 'vite.config.ts', type: 'file', depth: 1, description: 'Vite build configurations' },
-            { name: 'package.json', type: 'file', depth: 1, description: 'NPM package manifest' }
+            { name: 'my-saas/', type: 'folder', depth: 0, description: 'SaaS project root directory' },
+            { name: 'src/', type: 'folder', depth: 1, description: 'Application source code' },
+            { name: 'app/', type: 'folder', depth: 2, description: 'Next.js App Router pages and Server Actions' },
+            { name: 'api/', type: 'folder', depth: 3, description: 'Auth endpoints and payment webhooks' },
+            { name: 'page.tsx', type: 'file', depth: 3, description: 'Main landing page' },
+            { name: 'layout.tsx', type: 'file', depth: 3, description: 'Root layout with theme and auth providers' },
+            { name: 'components/', type: 'folder', depth: 2, description: 'UI component library (shadcn UI / Tailwind)' },
+            { name: 'lib/', type: 'folder', depth: 2, description: 'Utilities, auth client, and database connection' },
+            { name: 'db/', type: 'folder', depth: 3, description: 'Drizzle schema definitions and SQL migrations' },
+            { name: 'docker-compose.yml', type: 'file', depth: 1, description: 'Local PostgreSQL container' },
+            { name: 'koko.config.json', type: 'file', depth: 1, description: 'Koko configuration manifest' },
+            { name: 'next.config.mjs', type: 'file', depth: 1, description: 'Next.js compiler configuration' }
           ]
         },
         {
-          anchorId: 'backend-go-layout',
-          title: 'Backend Structure (Go Fiber)',
+          anchorId: 'go-backend-layout',
+          title: 'Backend Layout: Go Chi Router',
           body: [
-            'For Go-powered backends, Claw enforces the standard directory hierarchy recommended by the Go community, ensuring clean modular boundaries:'
+            'For Go-powered backends, Koko enforces standard Golang project layout conventions:'
           ],
           tree: [
-            { name: 'backend-api/', type: 'folder', depth: 0, description: 'Go server root folder' },
-            { name: 'cmd/', type: 'folder', depth: 1, description: 'Executable entry directories' },
+            { name: 'api-go/', type: 'folder', depth: 0, description: 'Go server root folder' },
+            { name: 'cmd/', type: 'folder', depth: 1, description: 'Executable build entrypoints' },
             { name: 'api/', type: 'folder', depth: 2 },
-            { name: 'main.go', type: 'file', depth: 3, description: 'Initializes and boots the Fiber routing engine' },
-            { name: 'pkg/', type: 'folder', depth: 1, description: 'Internal modules and shared library logic' },
+            { name: 'main.go', type: 'file', depth: 3, description: 'Chi router bootstrap and server startup' },
+            { name: 'pkg/', type: 'folder', depth: 1, description: 'Application modules and business logic' },
             { name: 'handlers/', type: 'folder', depth: 2, description: 'HTTP route handlers' },
-            { name: 'db/', type: 'folder', depth: 2, description: 'Database connection and query definitions' },
-            { name: 'go.mod', type: 'file', depth: 1, description: 'Go module dependencies manifest' }
+            { name: 'db/', type: 'folder', depth: 2, description: 'Database client connection and GORM models' },
+            { name: 'go.mod', type: 'file', depth: 1, description: 'Go module dependencies manifest' },
+            { name: 'go.sum', type: 'file', depth: 1, description: 'Go module checksums file' }
           ]
         }
       ]
     },
     {
-      id: 'claw-config',
-      title: 'Manifesto Config',
+      id: 'koko-config',
+      title: 'The koko.config.json Manifest',
+      category: 'Project Structure',
+      content: [
+        {
+          anchorId: 'manifest-purpose',
+          title: 'The koko.config.json Manifest',
+          body: [
+            'On project initialization, Koko creates a `koko.config.json` manifest at the root. This file acts as the immutable single source of truth for your architecture, allowing developer tools and future commands to inspect your tech stack without parsing config files manually.'
+          ]
+        },
+        {
+          anchorId: 'json-schema',
+          title: 'JSON Schema Specification',
+          body: [
+            'The standardized schema published at `https://koko-cli.dev/schema.json` contains four main sections: `project`, `architecture`, `stack`, and `features`:'
+          ],
+          pre: '{\n  "$schema": "https://koko-cli.dev/schema.json",\n  "project": {\n    "name": "my-super-app",\n    "cliVersion": "v2.0.0",\n    "createdAt": "2026-09-01T12:00:00Z"\n  },\n  "architecture": {\n    "layout": "monorepo",\n    "packageManager": "pnpm"\n  },\n  "stack": {\n    "frontend": {\n      "framework": "nextjs",\n      "language": "typescript",\n      "styling": "tailwindcss"\n    },\n    "backend": {\n      "framework": "express",\n      "language": "typescript"\n    },\n    "database": {\n      "provider": "postgres",\n      "orm": "drizzle"\n    }\n  },\n  "features": {\n    "auth": {\n      "provider": "better-auth",\n      "status": "installed"\n    },\n    "infrastructure": {\n      "dockerCompose": true,\n      "ciCd": "github_actions"\n    }\n  }\n}'
+        }
+      ]
+    },
+
+    // ==========================================
+    // CATEGORY: ADVANCED
+    // ==========================================
+    {
+      id: 'recipes-deep-dive',
+      title: 'Production Recipes',
       category: 'Advanced',
       content: [
         {
-          anchorId: 'config-spec',
-          title: 'The claw.config.json Manifest',
+          anchorId: 'recipes-overview',
+          title: 'Official Blueprint Architecture',
           body: [
-            'This manifest file is generated at the root of your project to keep a record of the choices made. It will be the core registry checked by future "add" commands to safely append modules:'
-          ],
-          pre: '{\n  "name": "my-project",\n  "frontend": "nextjs",\n  "backend": "go",\n  "database": {\n    "engine": "postgres",\n    "orm": "prisma"\n  }\n}'
+            'Koko CLI recipes are production-ready templates with pinned dependencies from the Master Catalog, preconfigured linters, unit tests, and Docker container support.'
+          ]
+        },
+        {
+          anchorId: 'recipe-saas',
+          title: '⚡ SaaS Starter (Fullstack TypeScript)',
+          body: [
+            '• Stack: Next.js (App Router, React 19) + Drizzle ORM + Better-Auth + Stripe + Docker PostgreSQL.',
+            '• Features: Complete authentication flow with secure sessions, PostgreSQL relational schema with Drizzle Kit migrations, accessible UI components with Tailwind CSS and Lucide Icons.',
+            '• Quick command: `koko init my-saas -r saas`'
+          ]
+        },
+        {
+          anchorId: 'recipe-pern',
+          title: '🚀 PERN Stack (PostgreSQL + Express + React + Node)',
+          body: [
+            '• Stack: React (Vite, TS) + Node.js Express (TS) + PostgreSQL + Prisma ORM + Docker.',
+            '• Architecture: Decoupled Turborepo monorepo, shared `packages/db` package for the generated Prisma client, and unified development scripts.',
+            '• Quick command: `koko init my-pern -r pern`'
+          ]
+        },
+        {
+          anchorId: 'recipe-mern',
+          title: '💻 MERN Stack (MongoDB + Express + React + Node)',
+          body: [
+            '• Stack: React (Vite, TS) + Node.js Express (TS) + MongoDB + Mongoose + Docker.',
+            '• Architecture: Monorepo workspace with ready-to-run MongoDB Docker container, typed Mongoose models, and schema validation.',
+            '• Quick command: `koko init my-mern -r mern`'
+          ]
+        },
+        {
+          anchorId: 'recipe-fastapi',
+          title: '🐍 FastAPI + React (Python Async + Vite SPA)',
+          body: [
+            '• Stack: Python FastAPI + React (Vite) SPA + Pydantic v2 + Uvicorn.',
+            '• Features: Asynchronous Python backend with preconfigured CORS for Vite client, interactive Swagger API docs at `/docs`, and dependency management via `requirements.txt`.',
+            '• Quick command: `koko init my-python -r fastapi_react`'
+          ]
+        }
+      ]
+    },
+    {
+      id: 'troubleshooting',
+      title: 'Troubleshooting',
+      category: 'Advanced',
+      content: [
+        {
+          anchorId: 'docker-ports',
+          title: 'Docker Port Allocation Conflicts',
+          body: [
+            'If you encounter `port is already allocated` when running `docker compose up -d` (port 5432 or 27017):',
+            '• Cause: You have a local PostgreSQL or MongoDB instance running outside Docker.',
+            '• Solution: Stop the local system service or edit `docker-compose.yml` to map host ports to an alternative number (e.g. `"5433:5432"`).'
+          ]
+        },
+        {
+          anchorId: 'unix-permissions',
+          title: 'Execution Permissions on macOS & Linux',
+          body: [
+            'If you download native binaries directly from GitHub Releases and receive `permission denied` or Gatekeeper security prompts:',
+            '• On Linux/macOS: Grant execution permissions using `chmod +x koko`.',
+            '• On macOS (Gatekeeper): If the binary is quarantined, run `xattr -d com.apple.quarantine koko` or allow it via System Settings > Privacy & Security.'
+          ]
+        },
+        {
+          anchorId: 'pnpm-workspace-issues',
+          title: 'Monorepo Workspace Linking (pnpm)',
+          body: [
+            'If local package symlinks in `packages/db` fail to resolve:',
+            '• Make sure you have `pnpm` (v9 or newer) installed.',
+            '• Run `pnpm install` from the project root so workspace symlinks are properly established.'
+          ]
         }
       ]
     },
     {
       id: 'contributing',
-      title: 'Contributing',
+      title: 'Contributing Guide',
       category: 'Advanced',
       content: [
         {
-          anchorId: 'overview',
-          title: 'Open Source',
+          anchorId: 'open-source',
+          title: 'Open Source Community',
           body: [
-            'Claw is a community project. At this early stage, we welcome reports on generator bugs, CLI compiler optimizations in Go, and Web UI style enhancements.'
+            'Koko CLI is 100% open source under the MIT license. We actively welcome contributions including new templates, Go engine performance improvements, bug fixes, and documentation updates.'
           ]
         },
         {
-          anchorId: 'setup',
-          title: 'Development Environment Setup',
+          anchorId: 'local-setup',
+          title: 'Local Development Environment Setup',
           body: [
-            'Follow these quick instructions to compile Claw-CLI locally and host the Stack Builder on your machine:'
+            'Steps to clone, build, and test Koko CLI locally on your machine:'
           ],
           nestedBlocks: [
             {
-              anchorId: 'setup-prerequisites',
-              title: 'Prerequisites',
-              body: ['Ensure Go v1.21+ (to compile CLI) and Node.js v22+ (to run Astro/Svelte Web UI) are set up.']
+              anchorId: 'step-clone',
+              title: '1. Clone Repository',
+              body: ['Clone the official GitHub repository and navigate to the directory:'],
+              pre: 'git clone https://github.com/BlasVernazza06/koko-cli.git\ncd koko-cli'
             },
             {
-              anchorId: 'setup-install',
-              title: 'Installation',
-              body: [
-                'Clone repository and launch the local Astro dev server:',
-                'git clone https://github.com/clawproject/claw.git\ncd claw\nnpm install\nnpm run dev'
-              ]
+              anchorId: 'step-run-go',
+              title: '2. Run and Build in Go',
+              body: ['Requires Go 1.21+. You can run the CLI directly from source or compile the binary:'],
+              pre: '# Run directly from source\ngo run main.go init\n\n# Compile binary locally\ngo build -o koko main.go'
+            },
+            {
+              anchorId: 'step-tests',
+              title: '3. Run Test Suite',
+              body: ['Execute the automated unit and compatibility test suite:'],
+              pre: 'go test ./... -v'
             }
+          ]
+        },
+        {
+          anchorId: 'project-architecture-code',
+          title: 'Go Codebase Architecture',
+          body: [
+            '• `cmd/`: Cobra CLI commands (`init.go`, `version.go`, `root.go`), Bubble Tea TUI state machine (`tui.go`), and Lipgloss views (`cmd/views/`).',
+            '• `internal/compatibility/`: Real-time cross-validation engine and logical safety rules.',
+            '• `internal/config/`: `koko.config.json` manifest builder and serializer.',
+            '• `internal/scaffold/`: Scaffolding engine, template handlers, and Virtual File System (`vfs`).',
+            '• `internal/catalog/`: Central master catalog for npm and external library package versions.'
           ]
         }
       ]
     },
+
+    // ==========================================
+    // CATEGORY: FAQ
+    // ==========================================
     {
       id: 'faq',
       title: 'Frequently Asked Questions',
@@ -583,43 +1196,51 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
       content: [
         {
           anchorId: 'why-go',
-          title: 'Why is the Claw CLI written in Go?',
+          title: 'Why is the Koko CLI written in Go?',
           body: [
             'Go enables us to compile a single, dependency-free binary for the end-user. This guarantees instant execution (sub-millisecond cold start) and removes the need to configure global Node.js setups or manage npm version conflicts just to scaffold a project.'
           ],
-          tags: ['go', 'cli']
-        },
-        {
-          anchorId: 'customize-templates',
-          title: 'Can I customize the default templates?',
-          body: [
-            'In the MVP release (v0.1.0), recipes are preconfigured based on industry best practices. However, the v0.2.0 roadmap includes functionality to let you load custom templates directly from remote Git repositories or local folders.'
-          ],
-          tags: ['templates', 'customization']
-        },
-        {
-          anchorId: 'modify-later',
-          title: 'How do I add modules (like Auth or DB) after initialization?',
-          body: [
-            'For projects generated using the MVP, post-setup features must be configured manually. We are actively developing the `claw add` sub-command to automatically read your `claw.config.json` manifest and securely inject these modules in v0.2.0.'
-          ],
-          tags: ['architecture', 'modules']
-        },
-        {
-          anchorId: 'is-free',
-          title: 'Is Koko open source and free to use?',
-          body: [
-            'Yes, Koko is 100% open source under the MIT license. You can use it completely free of charge for both personal and commercial projects, and contributions are highly welcome on our GitHub repository.'
-          ],
-          tags: ['general', 'license']
+          tags: ['go', 'cli', 'performance']
         },
         {
           anchorId: 'offline-mode',
           title: 'Can I run Koko offline without an internet connection?',
           body: [
-            'Absolutely! The Koko CLI runs completely locally on your computer. You will only need an internet connection the first time you execute the CLI (if run via npx) and when installing NPM dependencies (e.g. `npm install`) or pulling Docker images.'
+            'Absolutely! Once you have the Koko binary or package installed, the CLI generates all files, configurations, schemas, and scripts 100% locally on your machine without contacting external servers.'
           ],
-          tags: ['general', 'infrastructure']
+          tags: ['offline', 'general', 'infrastructure']
+        },
+        {
+          anchorId: 'monorepo-support',
+          title: 'How does Koko handle Monorepo workspaces?',
+          body: [
+            'When you choose separate frontend and backend frameworks (or select recipes like PERN or MERN), Koko automatically scaffolds a monorepo workspace powered by pnpm workspaces and Turborepo (`turbo.json`). This enables shared database schemas (`packages/db`) and TypeScript configs with zero code duplication.'
+          ],
+          tags: ['monorepo', 'architecture', 'turborepo']
+        },
+        {
+          anchorId: 'docker-compose-default',
+          title: 'Is Docker required to use Koko?',
+          body: [
+            'No, Docker is completely optional. If you prefer cloud-hosted database providers (such as Supabase, Neon, or MongoDB Atlas), you can set `--docker=false` or deselect Docker Compose during manual configuration.'
+          ],
+          tags: ['docker', 'databases']
+        },
+        {
+          anchorId: 'is-free',
+          title: 'Is Koko open source and free for commercial use?',
+          body: [
+            'Yes, Koko is 100% open source under the MIT license. You can use it completely free of charge for personal projects, open-source work, and commercial production products.'
+          ],
+          tags: ['general', 'license', 'commercial']
+        },
+        {
+          anchorId: 'supported-os',
+          title: 'What operating systems are supported?',
+          body: [
+            'Koko is completely cross-platform and thoroughly tested on Windows (PowerShell, CMD, WSL2), macOS (Apple Silicon M1/M2/M3 and Intel x86_64), and all major Linux distributions.'
+          ],
+          tags: ['general', 'os', 'compatibility']
         }
       ]
     }

@@ -21,7 +21,7 @@ const outlines = activeSection.content.flatMap((block) => {
 });
 ---
 
-<aside class="w-56 shrink-0 hidden xl:block sticky top-24 self-start max-h-[calc(100vh-8rem)] overflow-y-auto select-none pl-5 border-l border-border-subtle/50 text-xs scrollable-right-sidebar">
+<aside class="w-56 shrink-0 hidden xl:block sticky top-24 self-start max-h-[calc(100vh-8rem)] overflow-y-auto overflow-x-hidden select-none pl-5 text-xs scrollable-right-sidebar">
   <h5 class="text-xs font-bold uppercase tracking-wider text-text-main mb-4 flex items-center gap-1.5">
     <HelpCircle size={12} />
     {lang === 'es' ? 'En esta página' : 'On this page'}
@@ -29,16 +29,16 @@ const outlines = activeSection.content.flatMap((block) => {
   
   <ul class="relative border-l-2 border-border-subtle/60 space-y-4 pl-4 text-xs text-text-muted" id="toc-list">
     {outlines.map((item, idx) => (
-      <li class={`relative ${item.isNested ? 'pl-3' : ''}`}>
+      <li class={`relative ${item.isNested ? 'pl-3' : ''}`} data-anchor={item.anchorId}>
         <!-- Bubble bullet timeline nodes -->
-        <div class={`absolute -left-[22px] top-1.5 w-2 h-2 rounded-full border bg-bg-base transition-all duration-300 ring-brand-primary/0
+        <div class={`toc-bullet absolute -left-[22px] top-1.5 w-2 h-2 rounded-full border bg-bg-base transition-all duration-300 ring-brand-primary/0
           ${idx === 0 
             ? 'border-brand-primary bg-brand-primary ring-4 ring-brand-primary/20' 
             : 'border-transparent bg-border-subtle/60'}`}>
         </div>
         <a 
           href={`#${item.anchorId}`} 
-          class={`hover:text-brand-primary block transition-all duration-200
+          class={`toc-link hover:text-brand-primary block transition-all duration-200 truncate
             ${idx === 0 
               ? 'text-brand-primary font-bold translate-x-1' 
               : 'text-text-muted font-medium'}`}
@@ -51,76 +51,109 @@ const outlines = activeSection.content.flatMap((block) => {
 </aside>
 
 <style>
+  .scrollable-right-sidebar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
   .scrollable-right-sidebar::-webkit-scrollbar {
-    width: 4px;
-  }
-  .scrollable-right-sidebar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .scrollable-right-sidebar::-webkit-scrollbar-thumb {
-    background: var(--border-subtle);
-    border-radius: 8px;
+    display: none;
   }
 </style>
 
 <script>
-  // Simple intersection highlighting tracking script
-  document.addEventListener('DOMContentLoaded', () => {
-    const setupObserver = () => {
-      const asideLinks = document.querySelectorAll('.scrollable-right-sidebar a');
-      const sections = Array.from(asideLinks)
-        .map(link => {
-          const href = link.getAttribute('href');
-          if (href && href.startsWith('#')) {
-            return document.querySelector(href);
+  function initTOCScrollSpy() {
+    const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.scrollable-right-sidebar a.toc-link'));
+    if (!tocLinks.length) return () => {};
+
+    const items = tocLinks.map(link => {
+      const href = link.getAttribute('href');
+      const id = href && href.startsWith('#') ? href.slice(1) : '';
+      const target = id ? document.getElementById(id) : null;
+      const li = link.closest('li');
+      const bullet = li ? li.querySelector('.toc-bullet') : null;
+      return { id, link, target, bullet };
+    }).filter(item => item.target !== null);
+
+    if (!items.length) return () => {};
+
+    let currentActiveId = '';
+    let ticking = false;
+
+    function updateActiveState() {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const offset = 140; // Viewing offset beneath sticky header
+
+      let activeId = items[0].id;
+
+      // When at the very bottom of the document, activate the last element
+      if (scrollY + windowHeight >= documentHeight - 50) {
+        activeId = items[items.length - 1].id;
+      } else {
+        // Find the last section whose top is at or above the reading offset
+        for (let i = 0; i < items.length; i++) {
+          const rect = items[i].target!.getBoundingClientRect();
+          if (rect.top <= offset) {
+            activeId = items[i].id;
+          } else {
+            break;
           }
-          return null;
-        })
-        .filter(el => el !== null) as Element[];
+        }
+      }
 
-      // Scroll tracking helper using intersection observer
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px 0px -65% 0px',
-        threshold: 0.1
-      };
+      if (activeId !== currentActiveId) {
+        currentActiveId = activeId;
 
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const id = entry.target.getAttribute('id');
-            if (!id) return;
-
-            asideLinks.forEach(link => {
-              const href = link.getAttribute('href');
-              const containerLi = link.closest('li');
-              const bullet = containerLi?.querySelector('.absolute');
-              
-              if (href === `#${id}`) {
-                link.classList.add('text-brand-primary', 'font-bold', 'translate-x-1');
-                link.classList.remove('text-text-muted');
-                if (bullet) {
-                  bullet.classList.add('border-brand-primary', 'bg-brand-primary', 'ring-4', 'ring-brand-primary/20');
-                  bullet.classList.remove('border-transparent', 'bg-border-subtle/60');
-                }
-              } else {
-                link.classList.remove('text-brand-primary', 'font-bold', 'translate-x-1');
-                link.classList.add('text-text-muted');
-                if (bullet) {
-                  bullet.classList.remove('border-brand-primary', 'bg-brand-primary', 'ring-4', 'ring-brand-primary/20');
-                  bullet.classList.add('border-transparent', 'bg-border-subtle/60');
-                }
-              }
-            });
+        items.forEach(item => {
+          const isActive = item.id === activeId;
+          if (isActive) {
+            item.link.classList.add('text-brand-primary', 'font-bold', 'translate-x-1');
+            item.link.classList.remove('text-text-muted', 'font-medium');
+            if (item.bullet) {
+              item.bullet.classList.add('border-brand-primary', 'bg-brand-primary', 'ring-4', 'ring-brand-primary/20');
+              item.bullet.classList.remove('border-transparent', 'bg-border-subtle/60');
+            }
+          } else {
+            item.link.classList.remove('text-brand-primary', 'font-bold', 'translate-x-1');
+            item.link.classList.add('text-text-muted', 'font-medium');
+            if (item.bullet) {
+              item.bullet.classList.remove('border-brand-primary', 'bg-brand-primary', 'ring-4', 'ring-brand-primary/20');
+              item.bullet.classList.add('border-transparent', 'bg-border-subtle/60');
+            }
           }
         });
-      }, observerOptions);
+      }
 
-      sections.forEach(s => observer.observe(s));
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(updateActiveState);
+        ticking = true;
+      }
+    }
+
+    // Run initial update
+    updateActiveState();
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
     };
+  }
 
-    setupObserver();
-    document.addEventListener('astro:after-swap', setupObserver);
-  });
+  let cleanupSpy: (() => void) | null = null;
+  const setupSpy = () => {
+    if (cleanupSpy) cleanupSpy();
+    cleanupSpy = initTOCScrollSpy();
+  };
+
+  setupSpy();
+  document.addEventListener('astro:after-swap', setupSpy);
 </script>
 

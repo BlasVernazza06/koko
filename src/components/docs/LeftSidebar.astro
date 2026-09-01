@@ -19,78 +19,80 @@ const activeSection = sections.find(s => s.id === activeSectionId);
 const activeCategory = activeSection ? activeSection.category : categories[0];
 ---
 
-<aside class="w-60 shrink-0 hidden lg:block sticky top-24 self-start max-h-[calc(100vh-8rem)] overflow-y-auto select-none pr-4 text-sm scrollable-sidebar">
-  <div class="flex flex-col justify-between min-h-[calc(100vh-10rem)]">
-    <div class="space-y-1">
-      {categories.map((category) => {
-        const categorySections = sections.filter(s => s.category === category);
-        const isExpanded = category === activeCategory;
-        const categorySlug = category.toLowerCase().replace(/[^a-z0-9]/g, '-');
-        
-        return (
-          <div class="space-y-1 category-group" data-category={categorySlug}>
-            <!-- Accordion Header -->
-            <button 
-              type="button"
-              class="w-full flex items-center justify-between text-xs font-bold text-text-muted hover:bg-gray-300/40 hover:text-text-main rounded-xl px-2 py-1.5 select-none text-left cursor-pointer transition-colors duration-150 category-toggle"
-              aria-expanded={isExpanded ? "true" : "false"}
-            >
-              <span class="text-sm">{category}</span>
-              <ChevronDown 
-                size={12} 
-                class={`transform transition-transform duration-200 opacity-70 chevron-icon ${isExpanded ? 'rotate-180' : ''}`} 
-              />
-            </button>
+<aside class="w-60 shrink-0 hidden lg:flex flex-col sticky top-24 self-start h-[calc(100vh-8rem)] select-none pr-3 text-sm">
+  
+  <!-- Scrollable Categories Area (No Scrollbar visible) -->
+  <div class="flex-1 overflow-y-auto overflow-x-hidden pr-1 space-y-1 scrollable-sections">
+    {categories.map((category) => {
+      const categorySections = sections.filter(s => s.category === category);
+      const isExpanded = category === activeCategory;
+      const categorySlug = category.toLowerCase().replace(/[^a-z0-9]/g, '-');
+      
+      return (
+        <div class="space-y-1 category-group" data-category={categorySlug}>
+          <!-- Accordion Header -->
+          <button 
+            type="button"
+            class="w-full flex items-center justify-between text-xs font-bold text-text-muted hover:bg-bg-surface hover:text-text-main rounded-xl px-2 py-1.5 select-none text-left cursor-pointer transition-colors duration-150 category-toggle"
+            aria-expanded={isExpanded ? "true" : "false"}
+          >
+            <span class="text-sm">{category}</span>
+            <ChevronDown 
+              size={12} 
+              class={`transform transition-transform duration-200 opacity-70 chevron-icon ${isExpanded ? 'rotate-180' : ''}`} 
+            />
+          </button>
 
-            <!-- Accordion List Body -->
-            <ul 
-              class={`space-y-1 pl-3 border-l border-border-subtle/60 ml-2 transition-all duration-200 overflow-hidden category-list ${isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}
-            >
-              {categorySections.map((item) => {
-                const isActive = item.id === activeSectionId;
-                return (
-                  <li>
-                    <a 
-                      href={`${basePath}/${item.id}`}
-                      class={`block text-sm py-1.5 px-3 rounded-lg transition-all duration-200 hover:bg-border-subtle/50 hover:text-text-main group/nav-link
-                        ${isActive 
-                          ? 'bg-brand-primary/10 !text-brand-primary !font-bold border border-brand-primary/20 shadow-xs border-l-2 border-l-brand-primary' 
-                          : 'text-text-muted'}`}
-                    >
-                      {item.title}
-                    </a>
-                    {isActive && item.subItems && (
-                      <ul class="mt-1 pl-3 space-y-1 border-l border-border-subtle/40 text-sm text-text-muted">
-                        {item.subItems.map((sub) => (
-                          <li>
-                            <a href={`${basePath}/${item.id}#${sub.id}`} class="hover:text-brand-primary block py-1 transition-colors hover:pl-1 transition-all duration-150">
-                              {sub.title}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        );
-      })}
-    </div>
+          <!-- Accordion List Body -->
+          <ul 
+            class={`space-y-1 pl-3 border-l border-border-subtle/60 ml-2 transition-all duration-200 overflow-hidden category-list ${isExpanded ? 'max-h-[1200px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}
+          >
+            {categorySections.map((item) => {
+              const isActive = item.id === activeSectionId;
+              return (
+                <li>
+                  <a 
+                    href={`${basePath}/${item.id}`}
+                    class={`block text-sm py-1.5 px-3 rounded-lg transition-all duration-200 hover:bg-border-subtle/50 hover:text-text-main group/nav-link
+                      ${isActive 
+                        ? 'bg-brand-primary/10 !text-brand-primary !font-bold border border-brand-primary/20 shadow-xs border-l-2 border-l-brand-primary' 
+                        : 'text-text-muted'}`}
+                  >
+                    {item.title}
+                  </a>
+                  {isActive && item.subItems && (
+                    <ul class="mt-1 pl-3 space-y-1 border-l border-border-subtle/40 text-sm text-text-muted">
+                      {item.subItems.map((sub) => (
+                        <li>
+                          <a href={`${basePath}/${item.id}#${sub.id}`} class="hover:text-brand-primary block py-1 transition-colors hover:pl-1 transition-all duration-150">
+                            {sub.title}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      );
+    })}
+  </div>
 
-    <!-- Visual Stack Builder Promo Card -->
-    <div class="mt-8 mb-4 p-4 rounded-2xl border border-brand-primary/15 bg-gradient-to-br from-brand-primary/5 via-brand-secondary/2 to-bg-surface/50 relative overflow-hidden select-none group">
+  <!-- Fixed Visual Stack Builder Promo Card at the Bottom -->
+  <div class="pt-4 mt-auto shrink-0 select-none">
+    <div class="p-3.5 rounded-2xl border border-brand-primary/15 bg-gradient-to-br from-brand-primary/5 via-brand-secondary/2 to-bg-surface/50 relative overflow-hidden group">
       <div class="absolute -top-6 -right-6 w-20 h-20 bg-brand-primary/10 rounded-full blur-xl pointer-events-none"></div>
-      <div class="relative z-10 space-y-2.5">
+      <div class="relative z-10 space-y-2">
         <div class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-primary">
           <span class="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse"></span>
           {lang === 'es' ? 'Stack Builder' : 'Stack Builder'}
         </div>
-        <p class="text-xs text-text-muted leading-relaxed font-sans font-medium">
+        <p class="text-[11px] text-text-muted leading-relaxed font-sans font-medium">
           {lang === 'es' 
-            ? 'Configura tu stack visualmente y genera el comando exacto para tu terminal.' 
-            : 'Configure your stack visually and generate the exact command for your terminal.'}
+            ? 'Configura tu stack visualmente y genera el comando exacto.' 
+            : 'Configure your stack visually and generate the exact command.'}
         </p>
         <a 
           href={lang === 'es' ? '/builder' : '/en/builder'} 
@@ -104,23 +106,18 @@ const activeCategory = activeSection ? activeSection.category : categories[0];
 </aside>
 
 <style>
-  .scrollable-sidebar::-webkit-scrollbar {
-    width: 4px;
+  /* Hide scrollbar completely while retaining smooth scrolling */
+  .scrollable-sections {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
   }
-  .scrollable-sidebar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .scrollable-sidebar::-webkit-scrollbar-thumb {
-    background: var(--border-subtle);
-    border-radius: 8px;
-  }
-  .scrollable-sidebar::-webkit-scrollbar-thumb:hover {
-    background: var(--brand-primary);
+  .scrollable-sections::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 </style>
 
 <script>
-  // Setup accordion toggle interaction
+  // Setup accordion toggle interaction with exclusive single-open behavior
   document.addEventListener('DOMContentLoaded', () => {
     const setupAccordions = () => {
       const groups = document.querySelectorAll('.category-group');
@@ -131,7 +128,6 @@ const activeCategory = activeSection ? activeSection.category : categories[0];
         const chevron = group.querySelector('.chevron-icon');
 
         if (toggle && list) {
-          // Prevent multiple listeners if setup again
           if (toggle.getAttribute('data-listener-setup') === 'true') return;
           toggle.setAttribute('data-listener-setup', 'true');
 
@@ -139,14 +135,32 @@ const activeCategory = activeSection ? activeSection.category : categories[0];
             const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
             
             if (isExpanded) {
+              // Close this category
               toggle.setAttribute('aria-expanded', 'false');
               list.style.maxHeight = '0px';
               list.style.opacity = '0';
               list.style.pointerEvents = 'none';
               chevron?.classList.remove('rotate-180');
             } else {
+              // Close ALL other categories first (single open accordion)
+              groups.forEach((otherGroup) => {
+                if (otherGroup !== group) {
+                  const otherToggle = otherGroup.querySelector('.category-toggle');
+                  const otherList = otherGroup.querySelector('.category-list') as HTMLElement;
+                  const otherChevron = otherGroup.querySelector('.chevron-icon');
+                  if (otherToggle && otherList) {
+                    otherToggle.setAttribute('aria-expanded', 'false');
+                    otherList.style.maxHeight = '0px';
+                    otherList.style.opacity = '0';
+                    otherList.style.pointerEvents = 'none';
+                    otherChevron?.classList.remove('rotate-180');
+                  }
+                }
+              });
+
+              // Open this category
               toggle.setAttribute('aria-expanded', 'true');
-              list.style.maxHeight = '500px';
+              list.style.maxHeight = '1200px';
               list.style.opacity = '1';
               list.style.pointerEvents = 'auto';
               chevron?.classList.add('rotate-180');
