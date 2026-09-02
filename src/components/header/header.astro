@@ -1,10 +1,10 @@
 ---
-import Logo from './logo.astro';
-import NavList from './navList.astro';
-import SocialNav from './socialNav.astro';
-import ThemeToggle from './themeToggle.astro';
-import LanguageToggle from './languageToggle.astro';
-import SearchModal from './SearchModal.svelte';
+import Logo from '@/components/header/logo.astro';
+import NavList from '@/components/header/navList.astro';
+import SocialNav from '@/components/header/socialNav.astro';
+import ThemeToggle from '@/components/header/themeToggle.astro';
+import LanguageToggle from '@/components/header/languageToggle.astro';
+import SearchModal from '@/components/header/SearchModal.svelte';
 
 const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
 ---
@@ -24,7 +24,7 @@ const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
     <div class="flex items-center gap-4">
       
       <!-- Searchbar Modal -->
-      <SearchModal lang={currentLang} client:load />
+      <SearchModal lang={currentLang} client:idle />
 
       <div class="h-4 w-px bg-border-subtle/50 opacity-60"></div>
 

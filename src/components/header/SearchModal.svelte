@@ -314,16 +314,19 @@
       </div>
 
       <!-- Search Results Area -->
-      <div class="overflow-y-auto p-2 min-h-[150px] max-h-[50vh]">
+      <div class="overflow-y-auto p-2 min-h-[160px] max-h-[50vh]">
         {#if !query}
           <!-- Default view / suggestions -->
-          <div class="p-6 text-center text-text-muted text-xs space-y-2">
+          <div class="p-6 text-center text-text-muted text-xs space-y-3 flex flex-col items-center">
+            <div class="w-24 h-24 rounded-2xl p-2 flex items-center justify-center">
+              <img src="/koko-binoculares.png" alt="Koko explorando" class="w-full h-full object-contain" />
+            </div>
             <p>{lang === 'es' ? 'Busca comandos, guías o configuraciones de Koko.' : 'Search commands, guides, or Koko configurations.'}</p>
-            <div class="flex flex-wrap justify-center gap-1.5 pt-2">
-              {#each ['scaffold', 'drift', 'getting started', 'koko.json'] as term}
+            <div class="flex flex-wrap justify-center gap-1.5 pt-1">
+              {#each ['quick-start', 'saas', 'docker', 'tui-wizard', 'orm', 'koko.config.json'] as term}
                 <button 
                   on:click={() => { query = term; document.getElementById('search-input')?.focus(); }}
-                  class="px-2 py-1 rounded bg-bg-base border border-border-subtle text-xs hover:border-brand-primary/40 text-text-muted hover:text-text-main cursor-pointer"
+                  class="px-2.5 py-1 rounded-lg bg-bg-base border border-border-subtle text-xs hover:border-brand-primary/40 text-text-muted hover:text-text-main transition-colors cursor-pointer"
                 >
                   {term}
                 </button>
@@ -332,8 +335,16 @@
           </div>
         {:else if results.length === 0}
           <!-- No results found -->
-          <div class="p-8 text-center text-text-muted text-xs">
-            {lang === 'es' ? 'No se encontraron resultados para ' : 'No results found for '} <strong>"{query}"</strong>
+          <div class="p-8 text-center text-text-muted text-xs flex flex-col items-center justify-center gap-3">
+            <div class="w-24 h-24 rounded-2xl p-2 flex items-center justify-center">
+              <img src="/koko-binoculares.png" alt="Koko buscando" class="w-full h-full object-contain" />
+            </div>
+            <p class="text-sm font-semibold text-text-main">
+              {lang === 'es' ? 'No se encontraron resultados para ' : 'No results found for '} <span class="text-brand-primary">"{query}"</span>
+            </p>
+            <span class="text-[11px] text-text-muted">
+              {lang === 'es' ? 'Intenta buscar con otros términos como "init", "saas", "docker" o "orm".' : 'Try searching with different keywords like "init", "saas", "docker" or "orm".'}
+            </span>
           </div>
         {:else}
           <!-- Results list -->

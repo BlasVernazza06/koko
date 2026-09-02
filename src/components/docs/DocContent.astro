@@ -1,10 +1,10 @@
 ---
 import type { DocSection } from '@/lib/docsData';
 import { docsData } from '@/lib/docsData';
-import DocCodeBlock from './DocCodeBlock.astro';
-import DocDirectoryTree from './DocDirectoryTree.astro';
-import DocPagination from './DocPagination.astro';
-import DocFaq from './DocFaq.svelte';
+import DocCodeBlock from '@/components/docs/DocCodeBlock.astro';
+import DocDirectoryTree from '@/components/docs/DocDirectoryTree.astro';
+import DocPagination from '@/components/docs/DocPagination.astro';
+import DocFaq from '@/components/docs/DocFaq.svelte';
 import { Link } from '@lucide/svelte';
 
 interface Props {
@@ -37,19 +37,6 @@ const basePath = lang === 'es' ? '/docs' : '/en/docs';
     <div class="space-y-3">
       <span class="text-xs font-bold uppercase tracking-widest text-brand-primary">{activeSection.category}</span>
       <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-main font-sans">{activeSection.title}</h1>
-    </div>
-    <div class="w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-2xl bg-bg-surface/50 border border-border-subtle/60 p-1.5 flex items-center justify-center shadow-xs transition-transform duration-300 hover:scale-105 hover:rotate-3 select-none">
-      <img 
-        src={
-          activeSection.id === 'faq' ? '/koko-pregunta.png' :
-          activeSection.id === 'quick-start' ? '/koko-saludando.png' :
-          activeSection.id === 'recipes-deep-dive' ? '/koko-clebrando.png' :
-          activeSection.id === 'troubleshooting' ? '/koko-pensando.png' :
-          '/koko-libro.png'
-        } 
-        alt="Koko mascot" 
-        class="w-full h-full object-contain" 
-      />
     </div>
   </div>
 
