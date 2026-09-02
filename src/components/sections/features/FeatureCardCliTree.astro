@@ -10,6 +10,10 @@ import {
   SvglNuxtLogo as NuxtAstroComponent
 } from '@selemondev/svgl-svelte';
 
+interface Props {
+  lang?: string;
+}
+
 const { lang = 'es' } = Astro.props;
 ---
 
@@ -109,7 +113,7 @@ const { lang = 'es' } = Astro.props;
     </div>
 
     <!-- ── TIER 2 LEAF NODES ── -->
-    <!-- React — 7% -->
+    <!-- React -->
     <div class="absolute top-[170px] left-[7%] -translate-x-1/2 z-10">
       <div class="tree-node leaf-node leaf-1 flex flex-col items-center gap-1">
         <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
@@ -119,7 +123,7 @@ const { lang = 'es' } = Astro.props;
       </div>
     </div>
 
-    <!-- Vue — 23% -->
+    <!-- Vue -->
     <div class="absolute top-[170px] left-[23%] -translate-x-1/2 z-10">
       <div class="tree-node leaf-node leaf-2 flex flex-col items-center gap-1">
         <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
@@ -129,7 +133,7 @@ const { lang = 'es' } = Astro.props;
       </div>
     </div>
 
-    <!-- Nextjs — 42% -->
+    <!-- Nextjs -->
     <div class="absolute top-[170px] left-[42%] -translate-x-1/2 z-10">
       <div class="tree-node leaf-node leaf-3 flex flex-col items-center gap-1">
         <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
@@ -139,7 +143,7 @@ const { lang = 'es' } = Astro.props;
       </div>
     </div>
 
-    <!-- Nuxt — 58% -->
+    <!-- Nuxt -->
     <div class="absolute top-[170px] left-[58%] -translate-x-1/2 z-10">
       <div class="tree-node leaf-node leaf-4 flex flex-col items-center gap-1">
         <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
@@ -149,7 +153,7 @@ const { lang = 'es' } = Astro.props;
       </div>
     </div>
 
-    <!-- Hono API — 77% -->
+    <!-- Hono API -->
     <div class="absolute top-[170px] left-[77%] -translate-x-1/2 z-10">
       <div class="tree-node leaf-node leaf-5 flex flex-col items-center gap-1">
         <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
@@ -159,7 +163,7 @@ const { lang = 'es' } = Astro.props;
       </div>
     </div>
 
-    <!-- Flutter — 93% -->
+    <!-- Flutter -->
     <div class="absolute top-[170px] left-[93%] -translate-x-1/2 z-10">
       <div class="tree-node leaf-node leaf-6 flex flex-col items-center gap-1">
         <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
@@ -192,7 +196,6 @@ const { lang = 'es' } = Astro.props;
 </div>
 
 <style>
-  /* ── Branch draw-in animation ── */
   .tree-branch {
     stroke-dasharray: 200;
     stroke-dashoffset: 200;
@@ -215,7 +218,6 @@ const { lang = 'es' } = Astro.props;
     }
   }
 
-  /* ── Node fade-in with scale ── */
   .tree-node {
     opacity: 0;
     animation: node-appear 0.5s ease-out forwards;
@@ -243,7 +245,6 @@ const { lang = 'es' } = Astro.props;
     }
   }
 
-  /* ── Root pulse ring ── */
   .root-pulse {
     animation: pulse-ring 3s ease-in-out infinite;
   }
@@ -259,7 +260,6 @@ const { lang = 'es' } = Astro.props;
     }
   }
 
-  /* ── Gentle float for leaf icon boxes on hover ── */
   .cli-tree:hover .leaf-1 .leaf-icon-box {
     animation: leaf-float 3s ease-in-out infinite 0s;
   }

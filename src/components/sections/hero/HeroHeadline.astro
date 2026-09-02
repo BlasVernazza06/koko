@@ -1,0 +1,26 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class={`text-center max-w-4xl mx-auto mb-16 animate-fade-in-up animation-delay-100 ${className}`}>
+  <h1 class="text-4xl sm:text-5xl md:text-[64px] font-extrabold tracking-tight leading-[1.15] mb-6 font-sans">
+    <span class="lang-es">Pasa de cero a producción <br class="hidden md:inline" /> en menos de <span class="font-serif-italic text-brand-primary font-bold text-5xl sm:text-6xl md:text-[76px] relative top-[2px] lowercase">5 segundos.</span></span>
+    <span class="lang-en">Go from zero to production <br class="hidden md:inline" /> in less than <span class="font-serif-italic text-brand-primary font-bold text-5xl sm:text-6xl md:text-[76px] relative top-[2px] lowercase">5 seconds.</span></span>
+  </h1>
+  <p class="text-base sm:text-lg text-text-muted leading-relaxed max-w-2xl mx-auto font-sans">
+    <span class="lang-es">Diseña, inicializa y escala tu arquitectura en segundos. La herramienta moderna en Go que elimina la fricción de configuración inicial (Día 1) y evoluciona tu stack de forma inteligente (Día 2).</span>
+    <span class="lang-en">Design, scaffold, and scale your tech stack in seconds. A developer ergonomics tool built in Go to eliminate setup friction (Day 1) and intelligently evolve your architecture (Day 2).</span>
+  </p>
+</div>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&display=swap');
+  .font-serif-italic {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+  }
+</style>

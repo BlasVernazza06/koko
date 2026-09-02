@@ -1,0 +1,80 @@
+---
+import NavDocsMegaMenu from './NavDocsMegaMenu.astro';
+import NavRecipesMegaMenu from './NavRecipesMegaMenu.astro';
+
+interface Props {
+  lang?: string;
+}
+
+const { lang } = Astro.props;
+const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es');
+---
+
+<nav class="flex items-center gap-7 select-none font-sans relative">
+  <!-- Docs with Mega Dropdown -->
+  <div class="relative group py-3">
+    <a 
+      href={currentLang === 'es' ? '/docs' : '/en/docs'}
+      class="text-[13.5px] font-bold text-text-muted hover:text-text-main transition-colors duration-300 flex items-center gap-1.5 cursor-pointer relative py-1"
+    >
+      <span class="lang-es">Docs</span>
+      <span class="lang-en">Docs</span>
+      <svg class="w-3 h-3 opacity-60 group-hover:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
+      <!-- Active glow line -->
+      <span class="absolute bottom-0 left-0 w-full h-[2px] bg-brand-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-350 ease-out origin-center rounded-full opacity-80 shadow-[0_0_8px_var(--brand-primary)]"></span>
+    </a>
+    
+    <NavDocsMegaMenu currentLang={currentLang} />
+  </div>
+
+  <!-- Builder Link -->
+  <div class="relative py-3 group">
+    <a 
+      href={currentLang === 'es' ? '/builder' : '/en/builder'}
+      class="text-[13.5px] font-bold text-text-muted hover:text-text-main transition-colors duration-300 py-1 relative block"
+    >
+      <span class="lang-es">Builder</span>
+      <span class="lang-en">Builder</span>
+      <span class="absolute bottom-0 left-0 w-full h-[2px] bg-brand-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-350 ease-out origin-center rounded-full opacity-80 shadow-[0_0_8px_var(--brand-primary)]"></span>
+    </a>
+  </div>
+
+  <!-- Recetas with Mega Dropdown -->
+  <div class="relative group py-3">
+    <a 
+      href={currentLang === 'es' ? '/#showcase' : '/en/#showcase'}
+      class="text-[13.5px] font-bold text-brand-primary hover:text-brand-primary/80 transition-colors duration-300 flex items-center gap-1.5 cursor-pointer relative py-1"
+    >
+      <span class="lang-es">Recetas</span>
+      <span class="lang-en">Showcase</span>
+      <svg class="w-3 h-3 opacity-60 group-hover:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
+      <span class="absolute bottom-0 left-0 w-full h-[2px] bg-brand-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-350 ease-out origin-center rounded-full opacity-80 shadow-[0_0_8px_var(--brand-secondary)]"></span>
+    </a>
+    
+    <NavRecipesMegaMenu currentLang={currentLang} />
+  </div>
+</nav>
+
+<style>
+  :global(.nav-dropdown) {
+    pointer-events: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    transform: translateY(6px);
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  :global(.group:hover > .nav-dropdown),
+  :global(.group:focus-within > .nav-dropdown) {
+    pointer-events: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translateY(0);
+  }
+</style>

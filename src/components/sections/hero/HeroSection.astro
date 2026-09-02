@@ -1,0 +1,34 @@
+---
+import HeroAnnouncementBadge from './HeroAnnouncementBadge.astro';
+import HeroHeadline from './HeroHeadline.astro';
+import PackageCommandCard from './PackageCommandCard.svelte';
+import BuilderCardLink from './BuilderCardLink.astro';
+
+interface Props {
+  lang?: string;
+  class?: string;
+}
+
+const { lang = 'es', class: className = '' } = Astro.props;
+---
+
+<section id="hero" class={`max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col items-center justify-center relative z-10 ${className}`}>
+  <!-- Top Announcement Badge -->
+  <HeroAnnouncementBadge />
+
+  <!-- Main Headline & Subtitle -->
+  <HeroHeadline />
+
+  <!-- Dual Cards Grid: Interactive Installation & Builder Launcher -->
+  <div class="max-w-4xl mx-auto my-12 w-full font-sans grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch animate-fade-in-up animation-delay-200">
+    <!-- Left Card: Package manager command copy island -->
+    <div class="w-full flex flex-col">
+      <PackageCommandCard client:load lang={lang} />
+    </div>
+    
+    <!-- Right Card: Wizard Builder launcher (Pure static Astro) -->
+    <div class="w-full flex">
+      <BuilderCardLink lang={lang} />
+    </div>
+  </div>
+</section>

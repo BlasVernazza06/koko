@@ -1,7 +1,11 @@
 ---
-import FaqSection from "./FaqSection.svelte";
+import FaqSection from '@/components/sections/faq/FaqSection.astro';
+
+interface Props {
+  lang?: string;
+}
 
 const { lang = 'es' } = Astro.props;
 ---
 
-<FaqSection client:load lang={lang} />
+<FaqSection lang={lang} />

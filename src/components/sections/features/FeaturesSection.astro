@@ -1,0 +1,57 @@
+---
+import { ArrowRight } from "@lucide/svelte";
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+import FeatureCardCliTree from "./FeatureCardCliTree.astro";
+import FeatureCardAddonsOrbit from "./FeatureCardAddonsOrbit.astro";
+import FeatureCardOfflineGlobe from "./FeatureCardOfflineGlobe.astro";
+import FeatureCardPerformanceBenchmark from "./FeatureCardPerformanceBenchmark.astro";
+import FeatureCardPipelineStepper from "./FeatureCardPipelineStepper.astro";
+
+interface Props {
+  lang?: string;
+  class?: string;
+}
+
+const { lang = 'es', class: className = '' } = Astro.props;
+---
+
+<section id="features" class={`w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 mx-auto ${className}`}>
+  <!-- Section Badge & Header -->
+  <SectionHeader align="center">
+    <Fragment slot="badge">
+      <span class="lang-es">Características Interactivas</span>
+      <span class="lang-en">Interactive Features</span>
+    </Fragment>
+
+    <Fragment slot="title">
+      <span class="lang-es">Construye rápido. Escala sin fricción.</span>
+      <span class="lang-en">Build fast. Scale without friction.</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      <span class="lang-es">Un ecosistema completo diseñado en Go para inicializar, estructurar y proteger la arquitectura de tus proyectos. Pruébalo en vivo interactuando con nuestros módulos.</span>
+      <span class="lang-en">A Go-powered developer ecosystem to bootstrap, scaffold, and safeguard your project's architecture. Test it live by interacting with our modules.</span>
+    </Fragment>
+  </SectionHeader>
+
+  <!-- Bento Grid Layout (6 Columns) -->
+  <div class="grid grid-cols-1 md:grid-cols-6 gap-6 lg:gap-8 auto-rows-auto scroll-reveal-children">
+    <FeatureCardCliTree lang={lang} />
+    <FeatureCardAddonsOrbit lang={lang} />
+    <FeatureCardOfflineGlobe lang={lang} />
+    <FeatureCardPerformanceBenchmark lang={lang} />
+    <FeatureCardPipelineStepper lang={lang} />
+  </div>
+
+  <!-- Bento footer note -->
+  <div class="text-center mt-12">
+    <a
+      href={lang === 'es' ? '/docs' : '/en/docs'} 
+      class="text-xs text-text-muted font-medium inline-flex items-center gap-1 hover:text-brand-primary transition-colors cursor-pointer"
+    >
+      <span class="lang-es">Y muchas más opciones pensadas para desarrolladores...</span>
+      <span class="lang-en">And much more developer-centric options...</span>
+      <ArrowRight size={12} />
+    </a>
+  </div>
+</section>

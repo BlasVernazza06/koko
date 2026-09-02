@@ -1,0 +1,78 @@
+---
+import { ArrowRight, Settings, Blocks, Cpu, Database } from '@lucide/svelte';
+
+interface Props {
+  lang?: string;
+  class?: string;
+}
+
+const { lang = 'es', class: className = '' } = Astro.props;
+---
+
+<div class={`w-full h-full font-sans select-none flex flex-col justify-between ${className}`}>
+  <!-- Premium Redirect Card -->
+  <a
+    href={lang === 'es' ? '/builder' : '/en/builder'}
+    class="group/box rounded-2xl border border-border-subtle/50 bg-bg-surface/50 backdrop-blur-md p-6 shadow-lg hover:shadow-[0_20px_50px_rgba(90,79,196,0.12)] hover:-translate-y-0.5 hover:border-brand-secondary/45 transition-all duration-500 flex flex-col justify-between flex-1 relative overflow-hidden text-left cursor-pointer"
+  >
+    <!-- Background Dot Grid Pattern -->
+    <div class="absolute inset-0 opacity-[0.06] bg-[radial-gradient(var(--brand-secondary)_1.5px,transparent_1.5px)] [background-size:16px_16px] pointer-events-none"></div>
+    <div class="absolute -right-12 -top-12 w-32 h-32 bg-brand-secondary/5 rounded-full blur-xl pointer-events-none transition-all duration-500 group-hover/box:bg-brand-secondary/15"></div>
+
+    <div class="flex flex-col gap-4.5">
+      <!-- Title & Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-border-subtle/40">
+        <div class="flex items-center gap-2">
+          <Settings size={15} class="text-brand-primary animate-spin-slow" />
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-text-muted/80">
+            <span class="lang-es">Constructor Visual</span>
+            <span class="lang-en">Visual Builder</span>
+          </span>
+        </div>
+        <span class="text-[9px] font-mono uppercase bg-brand-primary/15 text-brand-primary border border-brand-primary/20 px-2 py-0.5 rounded font-extrabold tracking-wider">
+          <span class="lang-es">Interactivo</span>
+          <span class="lang-en">Interactive</span>
+        </span>
+      </div>
+
+      <!-- Main Pitch Text -->
+      <div class="flex flex-col gap-1.5">
+        <h3 class="text-base sm:text-lg font-bold text-text-main tracking-tight leading-snug">
+          <span class="lang-es">Diseña tu Arquitectura en Pantalla</span>
+          <span class="lang-en">Design Your Architecture Visually</span>
+        </h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          <span class="lang-es">Configura visualmente cada capa de tu stack: frontend, servicios API, base de datos y herramientas de calidad de código.</span>
+          <span class="lang-en">Configure every layer of your stack visually: frontend, API services, database, and code quality tools.</span>
+        </p>
+      </div>
+
+      <!-- Layer mockup visualization -->
+      <div class="flex items-center gap-2 mt-1">
+        <div class="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-border-subtle/40 bg-bg-base/30 group-hover/box:border-brand-primary/30 transition-all duration-300">
+          <Blocks size={14} class="text-brand-primary shrink-0" />
+          <span class="text-[10px] font-semibold text-text-muted group-hover/box:text-text-main transition-colors">Frontend</span>
+        </div>
+        <div class="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-border-subtle/40 bg-bg-base/30 group-hover/box:border-brand-secondary/30 transition-all duration-300">
+          <Cpu size={14} class="text-brand-secondary shrink-0" />
+          <span class="text-[10px] font-semibold text-text-muted group-hover/box:text-text-main transition-colors">Backend</span>
+        </div>
+        <div class="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-border-subtle/40 bg-bg-base/30 group-hover/box:border-emerald-500/20 transition-all duration-300">
+          <Database size={14} class="text-emerald-500 shrink-0" />
+          <span class="text-[10px] font-semibold text-text-muted group-hover/box:text-text-main transition-colors">Database</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Launcher Link -->
+    <div class="mt-6 flex items-center justify-between border-t border-border-subtle/40 pt-4">
+      <span class="text-xs font-mono font-bold text-text-muted group-hover/box:text-text-main transition-colors">
+        <span class="lang-es">CONSTRUIR STACK</span>
+        <span class="lang-en">BUILD STACK</span>
+      </span>
+      <div class="flex items-center justify-center w-8 h-8 rounded-xl bg-bg-surface border border-border-subtle text-text-muted group-hover/box:bg-gradient-to-r group-hover/box:from-brand-primary group-hover/box:to-brand-primary group-hover/box:border-transparent group-hover/box:text-white transition-all duration-300">
+        <ArrowRight size={14} class="group-hover/box:translate-x-0.5 transition-transform duration-200" />
+      </div>
+    </div>
+  </a>
+</div>

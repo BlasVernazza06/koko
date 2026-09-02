@@ -1,0 +1,66 @@
+---
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import DocsEngineStatsCard from './DocsEngineStatsCard.astro';
+import DocsCliScaffoldCard from './DocsCliScaffoldCard.svelte';
+import DocsBlueprintSelectorCard from './DocsBlueprintSelectorCard.svelte';
+import DocsDriftScannerCard from './DocsDriftScannerCard.svelte';
+import { getDocsForLang } from '@/data/docs-section.data';
+
+interface Props {
+  lang?: string;
+  class?: string;
+}
+
+const { lang = 'es', class: className = '' } = Astro.props;
+const docs = getDocsForLang(lang);
+
+const docScaffold = docs.find(d => d.id === 'scaffolding') || docs[0];
+const docPresets = docs.find(d => d.id === 'presets') || docs[1];
+const docDrift = docs.find(d => d.id === 'drift') || docs[2];
+const docOffline = docs.find(d => d.id === 'offline') || docs[3];
+---
+
+<section id="docs" class={`w-full max-w-5xl px-4 py-16 mx-auto border-t border-border-subtle/60 select-none ${className}`}>
+  <!-- Section Header -->
+  <SectionHeader align="center">
+    <Fragment slot="badge">
+      <span class="lang-es">Documentación del Proyecto</span>
+      <span class="lang-en">Project Documentation</span>
+    </Fragment>
+
+    <Fragment slot="title">
+      <span class="lang-es">Explora la Documentación</span>
+      <span class="lang-en">Explore the Docs</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      <span class="lang-es">Domina todos los subcomandos, recetas y flujos de trabajo para elevar la ergonomía de tu equipo.</span>
+      <span class="lang-en">Master all subcommands, blueprints and developer workflows to elevate your team's velocity.</span>
+    </Fragment>
+
+    <!-- Main Docs Link Button -->
+    <a 
+      href={lang === 'es' ? '/docs' : '/en/docs'} 
+      class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-bg-surface hover:bg-bg-base border border-border-subtle hover:border-brand-primary/45 text-text-main font-bold text-xs sm:text-sm transition-all group shrink-0 mt-6"
+    >
+      <span class="lang-es">Ir a Docs</span>
+      <span class="lang-en">Go to Docs</span>
+      <span class="group-hover:translate-x-0.5 transition-transform duration-200">&rarr;</span>
+    </a>
+  </SectionHeader>
+
+  <!-- Bento Grid of Interactive & Static Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 items-stretch w-full select-none text-left scroll-reveal-children pt-8 sm:pt-12">
+    <!-- Card 1: Interactive CLI Builder (Scaffolding) - Span 7 -->
+    <DocsCliScaffoldCard doc={docScaffold} lang={lang} client:visible />
+
+    <!-- Card 2: Zero-dependency Engine (Static Astro Card) - Span 5 -->
+    <DocsEngineStatsCard doc={docOffline} lang={lang} />
+
+    <!-- Card 3: Architecture Blueprint Selector - Span 5 -->
+    <DocsBlueprintSelectorCard doc={docPresets} lang={lang} client:visible />
+
+    <!-- Card 4: Code Drift Integrity Scanner - Span 7 -->
+    <DocsDriftScannerCard doc={docDrift} lang={lang} client:visible />
+  </div>
+</section>

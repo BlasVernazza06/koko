@@ -1,7 +1,6 @@
 ---
 import Header from '@/components/header/header.astro';
-import logoImg from '../assets/logo.webp';
-import '../styles/global.css';
+import '@/styles/global.css';
 
 const { lang = 'es', title, description } = Astro.props;
 
@@ -24,8 +23,9 @@ const enAlternateURL = new URL(cleanPath === '/' ? '/en' : `/en${cleanPath}`, si
 <html lang={lang} data-lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/webp" href={logoImg.src} />
+		<link rel="icon" type="image/png" href="/logo.png" />
+		<link rel="shortcut icon" type="image/png" href="/logo.png" />
+		<link rel="apple-touch-icon" href="/logo.png" />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
@@ -46,14 +46,14 @@ const enAlternateURL = new URL(cleanPath === '/' ? '/en' : `/en${cleanPath}`, si
 		<meta property="og:url" content={canonicalURL} />
 		<meta property="og:title" content={metaTitle} />
 		<meta property="og:description" content={metaDesc} />
-		<meta property="og:image" content="/og-image.png" />
+		<meta property="og:image" content="/logo.png" />
 
 		<!-- Twitter -->
 		<meta property="twitter:card" content="summary_large_image" />
 		<meta property="twitter:url" content={canonicalURL} />
 		<meta property="twitter:title" content={metaTitle} />
 		<meta property="twitter:description" content={metaDesc} />
-		<meta property="twitter:image" content="/og-image.png" />
+		<meta property="twitter:image" content="/logo.png" />
 		<script is:inline>
 			const theme = (() => {
 				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {

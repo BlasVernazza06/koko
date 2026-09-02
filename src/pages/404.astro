@@ -1,0 +1,52 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Footer from '@/components/footer/footer.astro';
+---
+
+<Layout title="404 — Página no encontrada | Koko CLI" description="La página que buscas no existe o fue movida.">
+  <main class="min-h-[75vh] flex items-center justify-center px-4 py-16 font-sans select-none">
+    <div class="max-w-md w-full text-center space-y-6">
+      
+      <!-- Mascot Container -->
+      <div class="relative w-36 h-36 mx-auto flex items-center justify-center">
+        <div class="absolute inset-0 rounded-full bg-brand-primary/15 blur-2xl pointer-events-none"></div>
+        <div class="w-32 h-32 rounded-3xl flex items-center justify-center relative z-10 backdrop-blur-md">
+          <img 
+            src="/koko-404.png" 
+            alt="Koko perdido en el error 404" 
+            class="w-full h-full object-contain filter drop-shadow-md" 
+          />
+        </div>
+      </div>
+
+      <!-- 404 Texts -->
+      <div class="space-y-2">
+        <span class="text-xs font-mono font-bold tracking-widest text-brand-primary uppercase">Error 404</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-main">
+          Página no encontrada
+        </h1>
+        <p class="text-sm text-text-muted leading-relaxed max-w-sm mx-auto">
+          Koko estuvo buscando con sus binoculares por todo el árbol del proyecto, pero no encontramos esta ruta.
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <a 
+          href="/" 
+          class="px-5 py-2.5 rounded-xl text-xs font-bold text-bg-base bg-brand-primary hover:bg-brand-primary/95 transition-all shadow-md hover:shadow-lg cursor-pointer"
+        >
+          Volver al Inicio
+        </a>
+        <a 
+          href="/docs" 
+          class="px-5 py-2.5 rounded-xl text-xs font-bold text-text-main bg-bg-surface border border-border-subtle hover:border-brand-primary/40 transition-all cursor-pointer"
+        >
+          Ir a Documentación
+        </a>
+      </div>
+
+    </div>
+  </main>
+  <Footer />
+</Layout>

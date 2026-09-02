@@ -140,7 +140,9 @@ html[data-lang="en"] .lang-es {
 :root[data-theme="dark"] img[src*="better-auth"],
 :root[data-theme="dark"] img[src*="resend"],
 :root[data-theme="dark"] img[src*="clerk"],
-:root[data-theme="dark"] img[src*="prisma"] {
+:root[data-theme="dark"] img[src*="prisma"],
+:root[data-theme="dark"] img[src*="github"],
+:root[data-theme="dark"] img[src*="shadcn"] {
   filter: invert(1) brightness(1.25);
 }
 
@@ -151,7 +153,9 @@ html[data-lang="en"] .lang-es {
   :root:not([data-theme="light"]) img[src*="better-auth"],
   :root:not([data-theme="light"]) img[src*="resend"],
   :root:not([data-theme="light"]) img[src*="clerk"],
-  :root:not([data-theme="light"]) img[src*="prisma"] {
+  :root:not([data-theme="light"]) img[src*="prisma"],
+  :root:not([data-theme="light"]) img[src*="github"],
+  :root:not([data-theme="light"]) img[src*="shadcn"] {
     filter: invert(1) brightness(1.25);
   }
 }

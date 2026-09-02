@@ -1,0 +1,17 @@
+---
+import TerminalSimulator from './TerminalSimulator.svelte';
+
+interface Props {
+  lang?: string;
+  class?: string;
+}
+
+const { lang = 'es', class: className = '' } = Astro.props;
+---
+
+<div class={`max-w-7xl mx-auto px-6 flex flex-col items-center justify-center relative z-10 ${className}`}>
+  <section id="terminal" class="w-full max-w-[1300px]">
+    <TerminalSimulator client:visible lang={lang} />
+  </section>
+  <div class="w-full max-w-5xl h-px bg-border-subtle my-20"></div>
+</div>

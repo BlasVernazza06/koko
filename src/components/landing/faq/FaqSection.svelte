@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Plus, Minus, ArrowUpRight } from '@lucide/svelte';
-  import { faqsEs, faqsEn, type FAQItem } from './faqData';
+  import { faqsEs, faqsEn, type FAQItem } from '@/components/landing/faq/faqData';
 
   let { lang = 'es' } = $props<{ lang?: string }>();
 

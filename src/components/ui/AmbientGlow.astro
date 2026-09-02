@@ -1,0 +1,65 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class={`hero-bg-glow ${className}`}>
+  <div class="glow-primary"></div>
+  <div class="glow-secondary-left"></div>
+  <div class="glow-secondary-right"></div>
+  <div class="glow-wash"></div>
+</div>
+
+<style>
+  .hero-bg-glow {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    height: 900px;
+    pointer-events: none;
+    overflow: hidden;
+    user-select: none;
+    z-index: 1;
+    mask-image: linear-gradient(to bottom, transparent, black 15%, black 40%, transparent 95%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 40%, transparent 95%);
+  }
+  .glow-primary {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, var(--brand-primary) 0%, transparent 50%);
+    opacity: 0.28;
+    transition: opacity 0.3s ease;
+  }
+  .glow-secondary-left {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 5% 0%, var(--brand-secondary) 0%, transparent 40%);
+    opacity: 0.18;
+    transition: opacity 0.3s ease;
+  }
+  .glow-secondary-right {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 95% 0%, var(--brand-secondary) 0%, transparent 40%);
+    opacity: 0.18;
+    transition: opacity 0.3s ease;
+  }
+  .glow-wash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 400px;
+    background: linear-gradient(to bottom, var(--brand-primary), transparent);
+    opacity: 0.04;
+  }
+
+  :global([data-theme="dark"]) .glow-primary { opacity: 0.12; }
+  :global([data-theme="dark"]) .glow-secondary-left { opacity: 0.08; }
+  :global([data-theme="dark"]) .glow-secondary-right { opacity: 0.08; }
+  :global([data-theme="dark"]) .glow-wash { opacity: 0.02; }
+</style>

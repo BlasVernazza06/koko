@@ -1,0 +1,48 @@
+---
+interface Props {
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  align?: 'center' | 'left';
+  class?: string;
+}
+
+const { 
+  badge, 
+  title, 
+  subtitle, 
+  align = 'center',
+  class: className = '' 
+} = Astro.props;
+
+const hasBadge = badge || Astro.slots.has('badge');
+const hasTitle = title || Astro.slots.has('title');
+const hasSubtitle = subtitle || Astro.slots.has('subtitle');
+const alignmentClasses = align === 'center' ? 'text-center items-center' : 'text-left items-start';
+---
+
+<div class={`flex flex-col ${alignmentClasses} ${className}`}>
+  {hasBadge && (
+    <div class="mb-4 scroll-reveal">
+      <span class="text-xs font-bold text-brand-primary tracking-widest uppercase select-none">
+        {badge ? badge : <slot name="badge" />}
+      </span>
+    </div>
+  )}
+
+  <div class={`mb-16 max-w-2xl ${align === 'center' ? 'mx-auto text-center' : ''} scroll-reveal`}>
+    {hasTitle && (
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-text-main tracking-tight mb-4 leading-tight">
+        {title ? title : <slot name="title" />}
+      </h2>
+    )}
+    
+    {hasSubtitle && (
+      <p class="text-sm text-text-muted leading-relaxed">
+        {subtitle ? subtitle : <slot name="subtitle" />}
+      </p>
+    )}
+
+    <slot />
+  </div>
+</div>

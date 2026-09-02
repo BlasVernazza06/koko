@@ -1,53 +1,11 @@
 ---
-import { Sparkles, ArrowRight } from "@lucide/svelte";
-import FeatureCardCLI from "./FeatureCardCLI.astro";
-import FeatureCardAddOns from "./FeatureCardAddOns.astro";
-import FeatureCardOffline from "./FeatureCardOffline.astro";
-import FeatureCardPerformance from "./FeatureCardPerformance.astro";
-import FeatureCardCustomizer from "./FeatureCardCustomizer.astro";
+import FeaturesSection from '@/components/sections/features/FeaturesSection.astro';
+
+interface Props {
+  lang?: string;
+}
 
 const { lang = 'es' } = Astro.props;
 ---
 
-<section id="features" class="w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 mx-auto">
-  <!-- Section Badge & Header -->
-  <div class="text-center mb-4 scroll-reveal">
-    <span class="text-xs font-bold text-brand-primary tracking-widest uppercase select-none">
-      <span class="lang-es">Características Interactivas</span>
-      <span class="lang-en">Interactive Features</span>
-    </span>
-  </div>
-  
-  <div class="text-center mb-16 max-w-2xl mx-auto scroll-reveal">
-    <h2 class="text-3xl sm:text-4xl font-extrabold text-text-main tracking-tight mb-4 leading-tight">
-      <span class="lang-es">Construye rápido. Escala sin fricción.</span>
-      <span class="lang-en">Build fast. Scale without friction.</span>
-    </h2>
-    
-    <p class="text-sm text-text-muted">
-      <span class="lang-es">Un ecosistema completo diseñado en Go para inicializar, estructurar y proteger la arquitectura de tus proyectos. Pruébalo en vivo interactuando con nuestros módulos.</span>
-      <span class="lang-en">A Go-powered developer ecosystem to bootstrap, scaffold, and safeguard your project's architecture. Test it live by interacting with our modules.</span>
-    </p>
-  </div>
-
-  <!-- Bento Grid Layout (6 Columns) -->
-  <div class="grid grid-cols-1 md:grid-cols-6 gap-6 lg:gap-8 auto-rows-auto scroll-reveal-children">
-    <FeatureCardCLI lang={lang} />
-    <FeatureCardAddOns lang={lang} />
-    <FeatureCardOffline lang={lang} />
-    <FeatureCardPerformance lang={lang} />
-    <FeatureCardCustomizer lang={lang} />
-  </div>
-
-  <!-- Bento footer note -->
-  <div class="text-center mt-12">
-    <a
-      href={lang === 'es' ? '/docs' : '/en/docs'} 
-      class="text-xs text-text-muted font-medium inline-flex items-center gap-1 hover:text-brand-primary transition-colors cursor-pointer"
-    >
-      <span class="lang-es">Y muchas más opciones pensadas para desarrolladores...</span>
-      <span class="lang-en">And much more developer-centric options...</span>
-      <ArrowRight size={12} />
-    </a>
-  </div>
-</section>
+<FeaturesSection lang={lang} />

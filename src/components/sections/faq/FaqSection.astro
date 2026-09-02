@@ -1,0 +1,33 @@
+---
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import FaqAccordion from './FaqAccordion.svelte';
+import FaqSupportCard from './FaqSupportCard.astro';
+import { faqLabels } from '@/data/faq.data';
+
+interface Props {
+  lang?: string;
+  class?: string;
+}
+
+const { lang = 'es', class: className = '' } = Astro.props;
+const currentLang = lang as 'es' | 'en';
+const labels = faqLabels[currentLang] || faqLabels.es;
+---
+
+<section id="faq" class={`w-full max-w-6xl px-6 py-24 mx-auto font-sans select-none ${className}`}>
+  <!-- Static Section Header -->
+  <SectionHeader 
+    badge={labels.badge}
+    title={labels.title}
+    subtitle={labels.subtitle}
+    align="center"
+  />
+
+  <!-- Interactive Accordion Island -->
+  <FaqAccordion client:visible lang={currentLang} />
+
+  <!-- Support Card -->
+  <div class="md:pl-[25%] md:pr-0 mt-6">
+    <FaqSupportCard lang={currentLang} />
+  </div>
+</section>

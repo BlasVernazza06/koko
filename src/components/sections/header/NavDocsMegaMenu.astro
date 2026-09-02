@@ -1,0 +1,68 @@
+---
+import { docsDropdownItems } from '@/data/navigation.data';
+import NavFaqCarousel from '@/components/sections/header/NavFaqCarousel.svelte';
+
+interface Props {
+  currentLang?: string;
+}
+
+const { currentLang = 'es' } = Astro.props;
+---
+
+<div class="nav-dropdown pointer-events-none invisible opacity-0 absolute top-full left-0 pt-2 origin-top-left z-50">
+  <div class="bg-bg-surface border border-border-subtle rounded-2xl p-6 shadow-[0_12px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_50px_rgba(0,0,0,0.35)] w-[690px] flex gap-6">
+    <!-- Left Column: Links (58%) -->
+    <div class="w-[58%] flex flex-col justify-between">
+      <div>
+        <div class="border-l-2 border-brand-secondary pl-3 mb-4">
+          <span class="block text-xs font-bold uppercase tracking-wider text-text-main">
+            <span class="lang-es">Documentación de Claw</span>
+            <span class="lang-en">Claw Documentation</span>
+          </span>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-x-3 gap-y-2">
+          {docsDropdownItems.slice(0, 8).map((doc) => (
+            <a 
+              href={currentLang === 'en' ? doc.hrefEn : doc.href} 
+              class="group/doc flex items-start gap-2.5 p-2 rounded-xl border border-transparent hover:border-border-subtle/50 hover:bg-bg-base/40 transition-all duration-200"
+            >
+              <!-- Glow bullet on hover -->
+              <div class="w-1.5 h-1.5 rounded-full bg-text-muted/30 group-hover/doc:bg-brand-primary group-hover/doc:scale-125 transition-all mt-1.5 shrink-0"></div>
+              <div class="flex flex-col gap-0.5">
+                <span class="text-xs font-bold text-text-main group-hover/doc:text-brand-primary transition-colors duration-200">
+                  <span class="lang-es">{doc.titleEs}</span>
+                  <span class="lang-en">{doc.titleEn}</span>
+                </span>
+                <span class="text-[10px] text-text-muted leading-tight line-clamp-1">
+                  <span class="lang-es">{doc.descEs}</span>
+                  <span class="lang-en">{doc.descEn}</span>
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Bottom View All Button -->
+      <a 
+        href={currentLang === 'en' ? docsDropdownItems[8].hrefEn : docsDropdownItems[8].href}
+        class="mt-4 flex items-center justify-between py-2 px-3.5 rounded-xl bg-bg-surface/85 hover:bg-bg-base border border-border-subtle text-xs font-extrabold text-brand-primary hover:text-brand-secondary/80 transition-all duration-200 shadow-sm"
+      >
+        <span class="flex items-center gap-1.5">
+          <span class="lang-es">Ver toda la documentación</span>
+          <span class="lang-en">View all documentation</span>
+        </span>
+        <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </div>
+
+    <!-- Vertical Divider -->
+    <div class="w-px bg-border-subtle/60 self-stretch"></div>
+
+    <!-- Right Column: Interactive FAQ Carousel (42%) -->
+    <NavFaqCarousel lang={currentLang} client:idle />
+  </div>
+</div>
