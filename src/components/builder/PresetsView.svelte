@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ArrowRight } from '@lucide/svelte';
-  import type { KokoTemplate, KokoTemplateConfig } from './templates';
+  import type { KokoTemplate, KokoTemplateConfig } from '@/components/builder/templates';
 
   let {
     templates,

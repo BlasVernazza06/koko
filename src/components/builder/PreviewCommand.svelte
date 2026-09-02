@@ -183,7 +183,6 @@
   <!-- Header Layout: Title on Left, Selector & Flags toggle on Right -->
   <div class="flex items-center justify-between pb-3 select-none">
     <div class="flex items-center gap-1.5">
-      <img src="/koko-clebrando.png" alt="Koko" class="w-4.5 h-4.5 object-contain" />
       <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-text-muted">
         {t.commandLabel}
       </span>
@@ -267,7 +266,7 @@
             : 'bg-white/10 hover:bg-white/15 border-white/15 text-slate-200 hover:text-white hover:border-white/25'}"
       >
         {#if isCopied}
-          <Check size={12} strokeWidth={2.5} class="text-emerald-400 animate-bounce" />
+          <img src="/koko-thumb-up.png" alt="Thumbs Up" class="w-3.5 h-3.5 object-contain animate-bounce" />
           <span class="text-emerald-400">{t.copiedBtn}</span>
         {:else}
           <Copy size={12} class="opacity-80" />

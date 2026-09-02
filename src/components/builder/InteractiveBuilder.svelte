@@ -1,13 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { templates } from './templates';
-  import VisualControls from './VisualControls.svelte';
-  import VisualPreview from './VisualPreview.svelte';
+  import { templates } from '@/components/builder/templates';
+  import VisualControls from '@/components/builder/VisualControls.svelte';
+  import VisualPreview from '@/components/builder/VisualPreview.svelte';
   import { Terminal, Folder, FileCode, Check, Copy, Settings, Cpu, Database, Blocks } from '@lucide/svelte';
 
   let { lang = 'es' } = $props<{ lang?: string }>();
 
-  import { getLayers, getInfrastructureOptions } from './builderData';
+  import { getLayers, getInfrastructureOptions } from '@/components/builder/builderData';
 
   const defaultLayers = getLayers('es');
   function getDefault(key: string, fallback: string): string {
@@ -34,16 +34,16 @@
   let selectedApi = $state(getDefault('api', 'trpc'));
   let selectedDb = $state(getDefault('db', 'postgres'));
   let selectedAuth = $state(getDefault('auth', 'none'));
-  const hasValidator = $derived(selectedTools === 'zod' || selectedTools === 'valibot');
+  const hasValidator = $derived(selectedTools.split(',').includes('zod') || selectedTools.split(',').includes('valibot'));
   let selectedPackageManager = $state(getDefault('package_manager', 'pnpm'));
   let selectedTools = $state(getDefault('tools', 'zod'));
   let selectedPayments = $state(getDefault('payments', 'none'));
-  let selectedEmail = $state('resend');
+  let selectedEmail = $state(getDefault('email', 'none'));
   let withDocker = $state(isInfraDefault('docker', true));
   let withCi = $state(isInfraDefault('ci', false));
   let withLinter = $state(isInfraDefault('linter', false));
   let withTesting = $state(isInfraDefault('testing', false));
-  let withTurborepo = $state(isInfraDefault('turborepo', true));
+  let withTurborepo = $state(true);
 
   onMount(() => {
     const params = new URLSearchParams(window.location.search);
@@ -60,9 +60,9 @@
         selectedPackageManager = template.config.selectedPackageManager;
         selectedTools = template.config.selectedTools;
         selectedPayments = template.config.selectedPayments;
-        selectedEmail = template.config.selectedEmail;
+        selectedEmail = template.config.selectedEmail || 'none';
         withDocker = template.config.withDocker;
-        withTurborepo = template.config.withTurborepo;
+        withTurborepo = true;
         selectedRuntime = template.config.selectedRuntime || (template.config.selectedBack === 'go' || template.config.selectedBack === 'python' ? 'none' : 'node');
         withCi = template.config.withCi || false;
         withLinter = template.config.withLinter || false;
@@ -85,15 +85,22 @@
       if (params.has('ci')) withCi = params.get('ci') === 'true';
       if (params.has('linter')) withLinter = params.get('linter') === 'true';
       if (params.has('test')) withTesting = params.get('test') === 'true';
-      if (params.has('turbo')) withTurborepo = params.get('turbo') === 'true';
+      withTurborepo = true;
     }
   });
 
-  // Reactively auto-resolve selection conflicts when users change backend or frontend
+  // Reactively auto-resolve selection conflicts
   $effect(() => {
+    // Turborepo always active
+    if (!withTurborepo) {
+      withTurborepo = true;
+    }
+
     // Sync ORM rules based on backend & db choices
     if (selectedDb === 'mongodb') {
-      selectedOrm = 'mongoose';
+      if (selectedOrm !== 'mongoose' && selectedOrm !== 'prisma' && selectedOrm !== 'none') {
+        selectedOrm = 'mongoose';
+      }
     } else if (selectedDb === 'none') {
       selectedOrm = 'none';
     } else {
@@ -101,59 +108,110 @@
         selectedOrm = 'drizzle';
       }
     }
+
+    // Convex BaaS handling
+    if (selectedBack === 'convex') {
+      if (selectedOrm !== 'none') selectedOrm = 'none';
+    }
+
+    // Elysia requires Bun
+    if (selectedBack === 'elysia' && selectedRuntime !== 'bun') {
+      selectedRuntime = 'bun';
+    }
+
+    // Go / FastAPI do not use JS runtimes
+    if ((selectedBack === 'go' || selectedBack === 'fastapi') && selectedRuntime !== 'none') {
+      selectedRuntime = 'none';
+    }
+
+    // API (tRPC / oRPC) requires TypeScript backend
+    if ((selectedBack === 'go' || selectedBack === 'fastapi') && (selectedApi === 'trpc' || selectedApi === 'orpc')) {
+      selectedApi = 'none';
+    }
+
+    // shadcn requires frontend
+    if (selectedFront === 'none' && selectedTools.split(',').includes('shadcn')) {
+      const remaining = selectedTools.split(',').filter(t => t !== 'shadcn');
+      selectedTools = remaining.length > 0 ? remaining.join(',') : 'none';
+    }
   });
 
   const selectedTechOptions = $derived.by(() => {
-    const list = [
-      { key: 'frontend', id: selectedFront, isInfra: false },
-      { key: 'native_frontend', id: selectedNativeFront, isInfra: false },
-      { key: 'backend', id: selectedBack, isInfra: false },
-      { key: 'runtime', id: selectedRuntime, isInfra: false },
-      { key: 'orm', id: selectedOrm, isInfra: false },
-      { key: 'api', id: selectedApi, isInfra: false },
-      { key: 'auth', id: selectedAuth, isInfra: false },
-      { key: 'db', id: selectedDb, isInfra: false },
-      { key: 'package_manager', id: selectedPackageManager, isInfra: false },
-      { key: 'tools', id: selectedTools, isInfra: false },
-      { key: 'payments', id: selectedPayments, isInfra: false },
-      // Infrastructure options mapped to their boolean state
-      { key: 'docker', id: 'docker', active: withDocker, isInfra: true },
-      { key: 'ci', id: 'ci', active: withCi, isInfra: true },
-      { key: 'linter', id: 'linter', active: withLinter, isInfra: true },
-      { key: 'testing', id: 'testing', active: withTesting, isInfra: true },
-      { key: 'turborepo', id: 'turborepo', active: withTurborepo, isInfra: true }
-    ];
-
+    const list: Array<{ layerKey: string; id: string; name: string; iconComponent: any }> = [];
+    const layers = getLayers('es');
     const infraOptions = getInfrastructureOptions('es');
 
-    return list
-      .map(item => {
-        if (item.isInfra) {
-          if (!item.active) return null;
-          const opt = infraOptions.find(o => o.id === item.id);
-          if (!opt) return null;
-          return {
-            layerKey: item.key,
-            id: opt.id,
-            name: opt.title,
-            iconComponent: opt.iconComponent
-          };
-        } else {
-          const layer = defaultLayers.find(l => l.key === item.key);
-          const option = layer?.options.find(o => o.id === item.id);
-          if (!option || option.isNone) return null;
-          return {
-            layerKey: item.key,
+    const singleLayers = [
+      { key: 'frontend', id: selectedFront },
+      { key: 'native_frontend', id: selectedNativeFront },
+      { key: 'backend', id: selectedBack },
+      { key: 'runtime', id: selectedRuntime },
+      { key: 'orm', id: selectedOrm },
+      { key: 'api', id: selectedApi },
+      { key: 'auth', id: selectedAuth },
+      { key: 'db', id: selectedDb },
+      { key: 'package_manager', id: selectedPackageManager },
+      { key: 'payments', id: selectedPayments },
+      { key: 'email', id: selectedEmail }
+    ];
+
+    for (const item of singleLayers) {
+      const layer = layers.find(l => l.key === item.key);
+      const option = layer?.options.find(o => o.id === item.id);
+      if (option && !option.isNone) {
+        list.push({
+          layerKey: item.key,
+          id: option.id,
+          name: option.name,
+          iconComponent: option.iconComponent
+        });
+      }
+    }
+
+    // Multi-selection tools
+    const toolsLayer = layers.find(l => l.key === 'tools');
+    if (toolsLayer && selectedTools && selectedTools !== 'none') {
+      const toolIds = selectedTools.split(',').filter(Boolean);
+      for (const toolId of toolIds) {
+        const option = toolsLayer.options.find(o => o.id === toolId);
+        if (option && !option.isNone) {
+          list.push({
+            layerKey: 'tools',
             id: option.id,
             name: option.name,
             iconComponent: option.iconComponent
-          };
+          });
         }
-      })
-      .filter(Boolean) as Array<{ layerKey: string; id: string; name: string; iconComponent: any }>;
+      }
+    }
+
+    // Infrastructure options mapped to their boolean state
+    const infraList = [
+      { id: 'docker', active: withDocker },
+      { id: 'ci', active: withCi },
+      { id: 'linter', active: withLinter },
+      { id: 'testing', active: withTesting },
+      { id: 'turborepo', active: withTurborepo }
+    ];
+
+    for (const item of infraList) {
+      if (item.active) {
+        const opt = infraOptions.find(o => o.id === item.id);
+        if (opt) {
+          list.push({
+            layerKey: item.id,
+            id: opt.id,
+            name: opt.title,
+            iconComponent: opt.iconComponent
+          });
+        }
+      }
+    }
+
+    return list;
   });
 
-  function removeTech(layerKey: string) {
+  function removeTech(layerKey: string, id?: string) {
     if (layerKey === 'frontend') selectedFront = 'none';
     else if (layerKey === 'native_frontend') selectedNativeFront = 'none';
     else if (layerKey === 'backend') selectedBack = 'none';
@@ -163,14 +221,22 @@
     else if (layerKey === 'auth') selectedAuth = 'none';
     else if (layerKey === 'db') selectedDb = 'none';
     else if (layerKey === 'package_manager') selectedPackageManager = 'none';
-    else if (layerKey === 'tools') selectedTools = 'none';
+    else if (layerKey === 'tools') {
+      if (id) {
+        const tools = selectedTools.split(',').filter(t => t && t !== id);
+        selectedTools = tools.length > 0 ? tools.join(',') : 'none';
+      } else {
+        selectedTools = 'none';
+      }
+    }
     else if (layerKey === 'payments') selectedPayments = 'none';
+    else if (layerKey === 'email') selectedEmail = 'none';
     // Infrastructure options
     else if (layerKey === 'docker') withDocker = false;
     else if (layerKey === 'ci') withCi = false;
     else if (layerKey === 'linter') withLinter = false;
     else if (layerKey === 'testing') withTesting = false;
-    else if (layerKey === 'turborepo') withTurborepo = false;
+    // Turborepo is always true
   }
 
   let isCopied = $state(false);

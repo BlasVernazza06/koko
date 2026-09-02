@@ -1,9 +1,9 @@
 <script lang="ts">
-  import PresetsView from './PresetsView.svelte';
-  import ManualConfigView from './ManualConfigView.svelte';
-  import { templates } from './templates';
-  import type { KokoTemplateConfig } from './templates';
-  import { SlidersHorizontal, Layers } from '@lucide/svelte';
+  import PresetsView from '@/components/builder/PresetsView.svelte';
+  import ManualConfigView from '@/components/builder/ManualConfigView.svelte';
+  import { templates } from '@/components/builder/templates';
+  import type { KokoTemplateConfig } from '@/components/builder/templates';
+  import { Sparkles } from '@lucide/svelte';
 
   // Svelte 5 bindable props
   let {
@@ -19,7 +19,7 @@
     selectedPayments = $bindable('stripe'),
     selectedDb = $bindable('postgres'),
     selectedAuth = $bindable('better-auth'),
-    selectedEmail = $bindable('resend'),
+    selectedEmail = $bindable('none'),
     withDocker = $bindable(true),
     withCi = $bindable(false),
     withLinter = $bindable(true),
@@ -101,7 +101,7 @@
           : 'text-text-muted hover:text-text-main hover:bg-bg-surface/50'}"
       onclick={() => activeTab = 'presets'}
     >
-      <img src="/icons-receta.png" alt="receta-icono" class="size-4 transition-all duration-300 {activeTab === 'presets' ? 'opacity-100' : 'opacity-70'}">
+      <Sparkles class="size-4 transition-all duration-300 {activeTab === 'presets' ? 'opacity-100' : 'opacity-70'}" />
       <span>{lang === 'es' ? 'Recetas (Presets)' : 'Presets (Recipes)'}</span>
     </button>
   </div>

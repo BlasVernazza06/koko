@@ -5,6 +5,7 @@
     iconComponent = null,
     lucideIcon = '',
     isActive = false,
+    isLocked = false,
     onclick = () => {}
   } = $props<{
     title: string;
@@ -12,6 +13,7 @@
     iconComponent?: any;
     lucideIcon?: string;
     isActive?: boolean;
+    isLocked?: boolean;
     onclick: () => void;
   }>();
 </script>
@@ -20,26 +22,29 @@
   .editorial-extra {
     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
-  .editorial-extra:hover {
+  .editorial-extra:hover:not(.locked) {
     transform: translateY(-2px);
     border-color: var(--brand-primary);
   }
   .icon-holder {
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
-  .editorial-extra:hover .icon-holder {
+  .editorial-extra:hover:not(.locked) .icon-holder {
     transform: scale(1.05);
   }
 </style>
 
 <button
   type="button"
-  onclick={onclick}
-  aria-pressed={isActive}
-  class="editorial-extra group/btn flex items-center justify-between p-5 rounded-xl border border-border-subtle transition-all duration-300 text-left cursor-pointer active:scale-[0.99] w-full select-none
-    {isActive 
-      ? 'bg-bg-base  border-brand-primary shadow-xs font-semibold' 
-      : 'bg-bg-base hover:border-brand-primary/40 hover:shadow-xs text-text-main'}"
+  onclick={isLocked ? undefined : onclick}
+  disabled={isLocked}
+  aria-pressed={isLocked ? true : isActive}
+  class="editorial-extra group/btn flex items-center justify-between p-5 rounded-xl border border-border-subtle transition-all duration-300 text-left w-full select-none
+    {isLocked
+      ? 'bg-bg-base border-brand-primary/60 shadow-xs font-semibold cursor-default opacity-90 locked'
+      : isActive 
+        ? 'bg-bg-base border-brand-primary shadow-xs font-semibold cursor-pointer active:scale-[0.99]' 
+        : 'bg-bg-base hover:border-brand-primary/40 hover:shadow-xs text-text-main cursor-pointer active:scale-[0.99]'}"
 >
   <div class="flex items-center gap-4">
     <div class="icon-holder w-8 h-8 flex items-center justify-center rounded-lg bg-bg-base border border-border-subtle p-1.5 shrink-0 shadow-2xs">
@@ -74,9 +79,16 @@
     </div>
   </div>
   
-  <!-- Sleek Switch slider -->
-  <div class="w-10 h-6 flex items-center rounded-full p-1 transition-all duration-300 shrink-0 relative {isActive ? 'bg-brand-primary' : 'bg-border-subtle'}">
-    <span class="w-4 h-4 rounded-full bg-white shadow-sm transition-all duration-300 transform {isActive ? 'translate-x-4' : 'translate-x-0'}"></span>
+  <div class="flex items-center gap-3 shrink-0">
+    {#if isLocked}
+      <span class="text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded border border-brand-primary/30 bg-brand-primary/10 text-brand-primary">
+        Default
+      </span>
+    {/if}
+    <!-- Sleek Switch slider -->
+    <div class="w-10 h-6 flex items-center rounded-full p-1 transition-all duration-300 shrink-0 relative {isLocked || isActive ? 'bg-brand-primary' : 'bg-border-subtle'}">
+      <span class="w-4 h-4 rounded-full bg-white shadow-sm transition-all duration-300 transform {isLocked || isActive ? 'translate-x-4' : 'translate-x-0'}"></span>
+    </div>
   </div>
 </button>
 

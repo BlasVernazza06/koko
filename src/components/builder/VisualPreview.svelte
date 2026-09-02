@@ -2,9 +2,9 @@
   import { Blocks, Folder } from '@lucide/svelte';
   import { fade, scale } from 'svelte/transition';
   import { flip } from 'svelte/animate';
-  import PreviewCommand from './PreviewCommand.svelte';
-  import PreviewStructure from './PreviewStructure.svelte';
-  import SelectedTechBadge from './SelectedTechBadge.svelte';
+  import PreviewCommand from '@/components/builder/PreviewCommand.svelte';
+  import PreviewStructure from '@/components/builder/PreviewStructure.svelte';
+  import SelectedTechBadge from '@/components/builder/SelectedTechBadge.svelte';
 
   type Translation = {
     summaryTitle: string;
@@ -42,7 +42,7 @@
     selectedTechs: Array<{ layerKey: string; id: string; name: string; iconComponent: any }>;
     selectedPackageManager: string;
     selectedCommandType: string;
-    onremove: (layerKey: string) => void;
+    onremove: (layerKey: string, id?: string) => void;
     lang?: 'es' | 'en' | string;
   }>();
 
@@ -108,7 +108,7 @@
 
           {#if selectedTechs.length > 0}
             <div class="flex flex-wrap gap-2.5">
-              {#each selectedTechs as tech (tech.layerKey)}
+              {#each selectedTechs as tech (tech.layerKey + '-' + tech.id)}
                 <div
                   in:scale={{ duration: 250, start: 0.8 }}
                   out:scale={{ duration: 150, start: 0.8 }}
@@ -118,7 +118,7 @@
                   <SelectedTechBadge
                     name={tech.name}
                     iconComponent={tech.iconComponent}
-                    onremove={() => onremove(tech.layerKey)}
+                    onremove={() => onremove(tech.layerKey, tech.id)}
                   />
                 </div>
               {/each}
