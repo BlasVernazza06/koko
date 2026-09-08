@@ -1,4 +1,6 @@
 import { Monitor, Smartphone, Server, Cpu, Database, Network, Package, KeyRound, Wrench, CreditCard, GitBranch, Sparkles, TestTube, Mail } from '@lucide/svelte';
+import type { TechOption, Layer, InfraOption } from '@/types/builder.types';
+
 const SvglNextjsLogo = '/logos/nextjs.svg';
 const SvglReactLogo = '/logos/react.svg';
 const SvglSvelteLogo = '/logos/svelte.svg';
@@ -35,6 +37,8 @@ const SvglHonoLogo = '/logos/hono.svg';
 const SvglGithubLogo = '/logos/github.svg';
 const SvglBiomeLogo = '/logos/biome.svg';
 const SvglShadcnLogo = '/logos/shadcn.svg';
+const SvglJavaLogo = '/logos/java.svg';
+const SvglSpringLogo = '/logos/spring.svg';
 
 // Custom icons
 import AstroIcon from '@/components/icons/AstroIcon.svelte';
@@ -47,37 +51,6 @@ import LucideIcon from '@/components/icons/LucideIcon.svelte';
 import SvglIcon from '@/components/icons/SvglIcon.svelte';
 import SonnerIcon from '@/components/icons/SonnerIcon.svelte';
 import ExpoIcon from '@/components/icons/ExpoIcon.svelte';
-
-export interface TechOption {
-  id: string;
-  name: string;
-  desc: string;
-  hoverColor?: string;
-  activeColor?: string;
-  iconComponent?: any;
-  isNone?: boolean;
-  default?: boolean;
-}
-
-export interface Layer {
-  key: string;
-  label: string;
-  step: string;
-  icon: any;
-  colorClass: string;
-  options: TechOption[];
-}
-
-export interface InfraOption {
-  id: string;
-  title: string;
-  description: string;
-  iconComponent?: any;
-  lucideIcon?: any;
-  bindingKey: string;
-  default?: boolean;
-  isLocked?: boolean;
-}
 
 export const getLayers = (lang: string): Layer[] => {
   const isEs = lang === 'es';
@@ -125,6 +98,7 @@ export const getLayers = (lang: string): Layer[] => {
         { id: 'express', name: 'Express', desc: isEs ? 'Framework clásico y popular de Node.js' : 'Popular classic Node.js framework', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: SvglExpressjsLogo, default: true },
         { id: 'fastify', name: 'Fastify', desc: isEs ? 'Framework web rápido y de bajo consumo para Node.js' : 'Fast, low-overhead web framework for Node.js', hoverColor: 'group-hover/btn:text-[#ffffff]', activeColor: 'text-[#ffffff]', iconComponent: SvglFastifyLogo },
         { id: 'nestjs', name: 'NestJS', desc: isEs ? 'Framework empresarial para Node.js con TypeScript' : 'Enterprise architecture framework for Node.js', hoverColor: 'group-hover/btn:text-[#e0234e]', activeColor: 'text-[#e0234e]', iconComponent: SvglNestJSLogo },
+        { id: 'spring', name: 'Spring Boot (Java)', desc: isEs ? 'Framework empresarial robusto en Java' : 'Robust enterprise Java framework', hoverColor: 'group-hover/btn:text-[#6db33f]', activeColor: 'text-[#6db33f]', iconComponent: SvglSpringLogo },
         { id: 'go', name: 'Go Fiber', desc: isEs ? 'Servidor web en Go ultrarrápido y concurrente' : 'Blazing fast concurrent Go web server', hoverColor: 'group-hover/btn:text-[#00add8]', activeColor: 'text-[#00add8]', iconComponent: SvglGoLogo },
         { id: 'fastapi', name: 'FastAPI', desc: isEs ? 'Framework moderno y de alto rendimiento en Python' : 'Modern, high-performance Python web framework', hoverColor: 'group-hover/btn:text-[#05998b]', activeColor: 'text-[#05998b]', iconComponent: SvglPythonLogo },
         { id: 'convex', name: 'Convex', desc: isEs ? 'Backend reactivo con persistencia integrada' : 'Reactive backend-as-a-service with built-in data', hoverColor: 'group-hover/btn:text-[#f43f5e]', activeColor: 'text-[#f43f5e]', iconComponent: SvglMongoDBLogo },

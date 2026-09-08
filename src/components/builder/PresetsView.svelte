@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ArrowRight } from '@lucide/svelte';
-  import type { KokoTemplate, KokoTemplateConfig } from '@/components/builder/templates';
+  import type { KokoTemplate, KokoTemplateConfig } from '@/types/builder.types';
 
   let {
     templates,
@@ -9,7 +9,7 @@
   } = $props<{
     templates: KokoTemplate[];
     lang: string;
-    onapply: (config: KokoTemplateConfig) => void;
+    onapply: (config: KokoTemplateConfig, template?: KokoTemplate) => void;
   }>();
 
   // Helper to extract technology labels for quick visual scan
@@ -30,8 +30,9 @@
     if (config.selectedBack !== 'none') {
       if (config.selectedBack === 'go') badges.push('Go Fiber');
       else if (config.selectedBack === 'nestjs') badges.push('NestJS');
-      else if (config.selectedBack === 'node') badges.push('Express');
-      else if (config.selectedBack === 'python') badges.push('FastAPI');
+      else if (config.selectedBack === 'spring') badges.push('Spring Boot');
+      else if (config.selectedBack === 'node' || config.selectedBack === 'express') badges.push('Express');
+      else if (config.selectedBack === 'python' || config.selectedBack === 'fastapi') badges.push('FastAPI');
       else if (config.selectedBack === 'hono') badges.push('Hono');
     }
     if (config.selectedDb !== 'none') {
@@ -81,7 +82,7 @@
       <button
         type="button"
         onclick={() => {
-          onapply(template.config);
+          onapply(template.config, template);
         }}
         class="flex flex-col justify-between items-start gap-5 p-6 rounded-2xl border border-border-subtle bg-bg-base text-left hover:border-brand-primary/45 hover:shadow-[0_12px_35px_-15px_rgba(90,79,196,0.12)] hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.99] cursor-pointer w-full group"
       >

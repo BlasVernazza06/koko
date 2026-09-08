@@ -1,7 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import InteractiveBuilder from '@/components/builder/InteractiveBuilder.svelte';
-import Footer from '@/components/footer/footer.astro';
+import FooterSection from '@/components/sections/footer/FooterSection.astro';
 ---
 
 <Layout 
@@ -22,7 +22,7 @@ import Footer from '@/components/footer/footer.astro';
     <InteractiveBuilder lang="en" client:load />
 
     <!-- Footer -->
-    <Footer />
+    <FooterSection lang="en" />
   </div>
 </Layout>
 

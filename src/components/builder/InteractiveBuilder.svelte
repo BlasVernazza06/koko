@@ -1,13 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { templates } from '@/components/builder/templates';
+  import { templates } from '@/data/templates.data';
   import VisualControls from '@/components/builder/VisualControls.svelte';
   import VisualPreview from '@/components/builder/VisualPreview.svelte';
   import { Terminal, Folder, FileCode, Check, Copy, Settings, Cpu, Database, Blocks } from '@lucide/svelte';
 
   let { lang = 'es' } = $props<{ lang?: string }>();
 
-  import { getLayers, getInfrastructureOptions } from '@/components/builder/builderData';
+  import { getLayers, getInfrastructureOptions } from '@/data/builder.data';
 
   const defaultLayers = getLayers('es');
   function getDefault(key: string, fallback: string): string {
@@ -63,7 +63,9 @@
         selectedEmail = template.config.selectedEmail || 'none';
         withDocker = template.config.withDocker;
         withTurborepo = true;
-        selectedRuntime = template.config.selectedRuntime || (template.config.selectedBack === 'go' || template.config.selectedBack === 'python' ? 'none' : 'node');
+        selectedRuntime = template.config.selectedRuntime || (template.config.selectedBack === 'go' || template.config.selectedBack === 'python' || template.config.selectedBack === 'fastapi' || template.config.selectedBack === 'spring' ? 'none' : 'node');
+        if (template.config.selectedOrm !== undefined) selectedOrm = template.config.selectedOrm;
+        if (template.config.selectedApi !== undefined) selectedApi = template.config.selectedApi;
         withCi = template.config.withCi || false;
         withLinter = template.config.withLinter || false;
         withTesting = template.config.withTesting || false;
@@ -119,13 +121,13 @@
       selectedRuntime = 'bun';
     }
 
-    // Go / FastAPI do not use JS runtimes
-    if ((selectedBack === 'go' || selectedBack === 'fastapi') && selectedRuntime !== 'none') {
+    // Go / FastAPI / Spring do not use JS runtimes
+    if ((selectedBack === 'go' || selectedBack === 'fastapi' || selectedBack === 'spring') && selectedRuntime !== 'none') {
       selectedRuntime = 'none';
     }
 
     // API (tRPC / oRPC) requires TypeScript backend
-    if ((selectedBack === 'go' || selectedBack === 'fastapi') && (selectedApi === 'trpc' || selectedApi === 'orpc')) {
+    if ((selectedBack === 'go' || selectedBack === 'fastapi' || selectedBack === 'spring') && (selectedApi === 'trpc' || selectedApi === 'orpc')) {
       selectedApi = 'none';
     }
 
@@ -333,112 +335,330 @@
 
   // Computes directory structure preview dynamically
   const structurePreview = $derived.by(() => {
-    let tree = [{ type: 'dir', name: `${projectName || 'my-koko-app'}/` }];
+    let tree: Array<{ type: string; name: string; depth?: number; highlight?: string }> = [
+      { type: 'dir', depth: 0, name: `${projectName || 'my-koko-app'}/` }
+    ];
+
     if (withTurborepo) {
-      tree.push({ type: 'file', indent: true, name: 'turbo.json', highlight: 'text-brand-primary' });
-      tree.push({ type: 'file', indent: true, name: 'package.json' });
-      tree.push({ type: 'dir', indent: true, name: 'apps/' });
+      tree.push({ type: 'file', depth: 1, name: 'turbo.json', highlight: 'text-brand-primary font-bold' });
+      tree.push({ type: 'file', depth: 1, name: 'package.json' });
+      tree.push({ type: 'file', depth: 1, name: selectedPackageManager === 'pnpm' ? 'pnpm-workspace.yaml' : 'package-lock.json' });
+      tree.push({ type: 'file', depth: 1, name: 'koko.config.json', highlight: 'text-brand-primary font-bold' });
+
+      if (withDocker) {
+        tree.push({ type: 'file', depth: 1, name: 'docker-compose.yml', highlight: 'text-brand-primary' });
+      }
+      if (withCi) {
+        tree.push({ type: 'dir', depth: 1, name: '.github/' });
+        tree.push({ type: 'dir', depth: 2, name: 'workflows/' });
+        tree.push({ type: 'file', depth: 3, name: 'ci.yml' });
+      }
+      if (withLinter) {
+        tree.push({ type: 'file', depth: 1, name: 'biome.json', highlight: 'text-brand-secondary' });
+      }
+      if (withTesting) {
+        tree.push({ type: 'file', depth: 1, name: 'vitest.config.ts' });
+      }
+
+      // ================= apps/ =================
+      tree.push({ type: 'dir', depth: 1, name: 'apps/' });
+
+      // Web Frontend
       if (selectedFront !== 'none') {
-        let fName = `web/ [${selectedFront}]`;
-        if (selectedFront === 'react-native') fName = 'mobile/ [react-native]';
-        if (selectedFront === 'flutter') fName = 'mobile/ [flutter]';
-        tree.push({ type: 'dir', indent: true, doubleIndent: true, name: fName });
-      }
-      if (selectedBack !== 'none') {
-        let bname = selectedBack;
-        if (selectedBack === 'go') bname = 'go-fiber';
-        if (selectedBack === 'node') bname = 'express';
-        tree.push({ type: 'dir', indent: true, doubleIndent: true, name: `api/ [${bname}]` });
-      }
-      
-      tree.push({ type: 'dir', indent: true, name: 'packages/' });
-      
-      if (selectedDb !== 'none') {
-        tree.push({ type: 'dir', indent: true, doubleIndent: true, name: 'database/' });
-        tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'package.json' });
-        tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'tsconfig.json' });
-        if (selectedDb === 'prisma') {
-          tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'prisma/schema.prisma', highlight: 'text-brand-secondary' });
-        } else if (selectedDb === 'sqlx') {
-          tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'schema.sql', highlight: 'text-brand-primary' });
-        } else if (selectedDb === 'mongo') {
-          tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'models/user.js', highlight: 'text-brand-secondary' });
-        } else if (selectedDb === 'drizzle') {
-          tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'schema.ts', highlight: 'text-brand-primary' });
+        tree.push({ type: 'dir', depth: 2, name: `web/ [${selectedFront}]` });
+        tree.push({ type: 'file', depth: 3, name: 'package.json' });
+        tree.push({ type: 'file', depth: 3, name: 'tsconfig.json' });
+
+        if (selectedFront === 'nextjs') {
+          tree.push({ type: 'file', depth: 3, name: 'next.config.ts' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'dir', depth: 4, name: 'app/' });
+          tree.push({ type: 'file', depth: 5, name: 'layout.tsx', highlight: 'text-brand-secondary' });
+          tree.push({ type: 'file', depth: 5, name: 'page.tsx', highlight: 'text-brand-primary' });
+          tree.push({ type: 'file', depth: 5, name: 'globals.css' });
+          if (selectedBack === 'fullstack-next') {
+            tree.push({ type: 'dir', depth: 5, name: 'api/health/' });
+            tree.push({ type: 'file', depth: 6, name: 'route.ts' });
+          }
+          tree.push({ type: 'dir', depth: 4, name: 'components/' });
+          if (selectedTools.includes('shadcn')) {
+            tree.push({ type: 'file', depth: 5, name: 'ui/button.tsx' });
+          }
+          tree.push({ type: 'file', depth: 5, name: 'Navbar.tsx' });
+        } else if (selectedFront === 'react') {
+          tree.push({ type: 'file', depth: 3, name: 'vite.config.ts' });
+          tree.push({ type: 'file', depth: 3, name: 'index.html' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'file', depth: 4, name: 'main.tsx' });
+          tree.push({ type: 'file', depth: 4, name: 'App.tsx', highlight: 'text-brand-primary' });
+          tree.push({ type: 'file', depth: 4, name: 'App.css' });
+          tree.push({ type: 'dir', depth: 4, name: 'components/' });
+          tree.push({ type: 'file', depth: 5, name: 'Header.tsx' });
+        } else if (selectedFront === 'sveltekit') {
+          tree.push({ type: 'file', depth: 3, name: 'svelte.config.js' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'dir', depth: 4, name: 'routes/' });
+          tree.push({ type: 'file', depth: 5, name: '+layout.svelte' });
+          tree.push({ type: 'file', depth: 5, name: '+page.svelte', highlight: 'text-brand-primary' });
+          tree.push({ type: 'file', depth: 4, name: 'app.html' });
+        } else if (selectedFront === 'svelte') {
+          tree.push({ type: 'file', depth: 3, name: 'vite.config.ts' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'file', depth: 4, name: 'main.ts' });
+          tree.push({ type: 'file', depth: 4, name: 'App.svelte', highlight: 'text-brand-primary' });
+        } else if (selectedFront === 'nuxt' || selectedFront === 'vue') {
+          tree.push({ type: 'file', depth: 3, name: 'nuxt.config.ts' });
+          tree.push({ type: 'file', depth: 3, name: 'app.vue', highlight: 'text-brand-primary' });
+          tree.push({ type: 'dir', depth: 3, name: 'pages/' });
+          tree.push({ type: 'file', depth: 4, name: 'index.vue' });
+        } else if (selectedFront === 'astro') {
+          tree.push({ type: 'file', depth: 3, name: 'astro.config.mjs' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/pages/' });
+          tree.push({ type: 'file', depth: 4, name: 'index.astro', highlight: 'text-brand-primary' });
+        } else if (selectedFront === 'angular') {
+          tree.push({ type: 'file', depth: 3, name: 'angular.json' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/app/' });
+          tree.push({ type: 'file', depth: 4, name: 'app.component.ts', highlight: 'text-brand-primary' });
         }
       }
+
+      // Native Mobile Client
+      if (selectedNativeFront && selectedNativeFront !== 'none') {
+        tree.push({ type: 'dir', depth: 2, name: 'mobile/ [expo]' });
+        tree.push({ type: 'file', depth: 3, name: 'package.json' });
+        tree.push({ type: 'file', depth: 3, name: 'app.json' });
+        tree.push({ type: 'file', depth: 3, name: 'tsconfig.json' });
+        tree.push({ type: 'dir', depth: 3, name: 'app/' });
+        tree.push({ type: 'file', depth: 4, name: '_layout.tsx', highlight: 'text-brand-secondary' });
+        tree.push({ type: 'file', depth: 4, name: 'index.tsx', highlight: 'text-brand-primary' });
+        tree.push({ type: 'dir', depth: 3, name: 'components/' });
+        tree.push({ type: 'file', depth: 4, name: 'ScreenView.tsx' });
+      }
+
+      // Backend API Service
+      if (selectedBack !== 'none' && selectedBack !== 'fullstack-next') {
+        let bname = selectedBack;
+        if (selectedBack === 'go') bname = 'go-fiber';
+        if (selectedBack === 'node' || selectedBack === 'express') bname = 'express';
+        if (selectedBack === 'spring') bname = 'spring-boot';
+        if (selectedBack === 'fastapi') bname = 'fastapi';
+        if (selectedBack === 'nestjs') bname = 'nestjs';
+
+        tree.push({ type: 'dir', depth: 2, name: `api/ [${bname}]` });
+
+        if (selectedBack === 'spring') {
+          tree.push({ type: 'file', depth: 3, name: 'pom.xml', highlight: 'text-brand-secondary font-bold' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/main/java/com/koko/api/' });
+          tree.push({ type: 'file', depth: 4, name: 'Application.java', highlight: 'text-brand-primary font-bold' });
+          tree.push({ type: 'file', depth: 4, name: 'controller/ApiController.java' });
+          tree.push({ type: 'file', depth: 4, name: 'service/UserService.java' });
+          tree.push({ type: 'file', depth: 4, name: 'model/User.java' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/main/resources/' });
+          tree.push({ type: 'file', depth: 4, name: 'application.yml' });
+        } else if (selectedBack === 'go') {
+          tree.push({ type: 'file', depth: 3, name: 'go.mod', highlight: 'text-brand-secondary font-bold' });
+          tree.push({ type: 'file', depth: 3, name: 'go.sum' });
+          tree.push({ type: 'dir', depth: 3, name: 'cmd/api/' });
+          tree.push({ type: 'file', depth: 4, name: 'main.go', highlight: 'text-brand-primary font-bold' });
+          tree.push({ type: 'dir', depth: 3, name: 'pkg/handlers/' });
+          tree.push({ type: 'file', depth: 4, name: 'routes.go' });
+          tree.push({ type: 'file', depth: 4, name: 'middleware.go' });
+        } else if (selectedBack === 'fastapi') {
+          tree.push({ type: 'file', depth: 3, name: 'requirements.txt', highlight: 'text-brand-secondary' });
+          tree.push({ type: 'file', depth: 3, name: 'main.py', highlight: 'text-brand-primary font-bold' });
+          tree.push({ type: 'dir', depth: 3, name: 'routers/' });
+          tree.push({ type: 'file', depth: 4, name: 'users.py' });
+          tree.push({ type: 'file', depth: 4, name: 'health.py' });
+          tree.push({ type: 'dir', depth: 3, name: 'core/' });
+          tree.push({ type: 'file', depth: 4, name: 'config.py' });
+        } else if (selectedBack === 'nestjs') {
+          tree.push({ type: 'file', depth: 3, name: 'package.json' });
+          tree.push({ type: 'file', depth: 3, name: 'tsconfig.json' });
+          tree.push({ type: 'file', depth: 3, name: 'nest-cli.json' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'file', depth: 4, name: 'main.ts', highlight: 'text-brand-primary font-bold' });
+          tree.push({ type: 'file', depth: 4, name: 'app.module.ts' });
+          tree.push({ type: 'file', depth: 4, name: 'app.controller.ts' });
+          tree.push({ type: 'file', depth: 4, name: 'app.service.ts' });
+        } else if (selectedBack === 'express' || selectedBack === 'node') {
+          tree.push({ type: 'file', depth: 3, name: 'package.json' });
+          tree.push({ type: 'file', depth: 3, name: 'tsconfig.json' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'file', depth: 4, name: 'index.ts', highlight: 'text-brand-primary font-bold' });
+          tree.push({ type: 'dir', depth: 4, name: 'routes/' });
+          tree.push({ type: 'file', depth: 5, name: 'api.ts' });
+          tree.push({ type: 'dir', depth: 4, name: 'middleware/' });
+          tree.push({ type: 'file', depth: 5, name: 'auth.ts' });
+        } else if (selectedBack === 'hono') {
+          tree.push({ type: 'file', depth: 3, name: 'package.json' });
+          tree.push({ type: 'file', depth: 3, name: 'tsconfig.json' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'file', depth: 4, name: 'index.ts', highlight: 'text-brand-primary font-bold' });
+          tree.push({ type: 'file', depth: 4, name: 'routes.ts' });
+        } else if (selectedBack === 'fastify') {
+          tree.push({ type: 'file', depth: 3, name: 'package.json' });
+          tree.push({ type: 'file', depth: 3, name: 'tsconfig.json' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'file', depth: 4, name: 'server.ts', highlight: 'text-brand-primary font-bold' });
+        } else if (selectedBack === 'elysia') {
+          tree.push({ type: 'file', depth: 3, name: 'package.json' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'file', depth: 4, name: 'index.ts', highlight: 'text-brand-primary font-bold' });
+        } else if (selectedBack === 'convex') {
+          tree.push({ type: 'dir', depth: 3, name: 'convex/' });
+          tree.push({ type: 'file', depth: 4, name: 'schema.ts', highlight: 'text-brand-primary font-bold' });
+          tree.push({ type: 'file', depth: 4, name: 'users.ts' });
+        }
+      }
+
+      // ================= packages/ =================
+      tree.push({ type: 'dir', depth: 1, name: 'packages/' });
+
+      // Database Package
+      if (selectedDb !== 'none' || selectedOrm !== 'none') {
+        tree.push({ type: 'dir', depth: 2, name: 'db/' });
+        tree.push({ type: 'file', depth: 3, name: 'package.json' });
+        tree.push({ type: 'file', depth: 3, name: 'tsconfig.json' });
+
+        if (selectedOrm === 'drizzle') {
+          tree.push({ type: 'file', depth: 3, name: 'drizzle.config.ts', highlight: 'text-brand-primary font-bold' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'file', depth: 4, name: 'schema.ts', highlight: 'text-brand-secondary font-bold' });
+          tree.push({ type: 'file', depth: 4, name: 'client.ts' });
+          tree.push({ type: 'dir', depth: 4, name: 'migrations/' });
+          tree.push({ type: 'file', depth: 5, name: '0001_initial.sql' });
+        } else if (selectedOrm === 'prisma') {
+          tree.push({ type: 'dir', depth: 3, name: 'prisma/' });
+          tree.push({ type: 'file', depth: 4, name: 'schema.prisma', highlight: 'text-brand-secondary font-bold' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'file', depth: 4, name: 'client.ts' });
+          tree.push({ type: 'file', depth: 4, name: 'index.ts' });
+        } else if (selectedOrm === 'mongoose' || selectedDb === 'mongodb') {
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'file', depth: 4, name: 'models/user.model.ts', highlight: 'text-brand-secondary font-bold' });
+          tree.push({ type: 'file', depth: 4, name: 'connection.ts' });
+        } else {
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'file', depth: 4, name: 'schema.sql', highlight: 'text-brand-secondary' });
+          tree.push({ type: 'file', depth: 4, name: 'pool.ts' });
+        }
+      }
+
+      // Auth Package
       if (selectedAuth !== 'none') {
-        tree.push({ type: 'dir', indent: true, doubleIndent: true, name: 'auth/' });
-        tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'package.json' });
-        tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'tsconfig.json' });
-        tree.push({ type: 'file', indent: true, tripleIndent: true, name: `index.${selectedAuth === 'supabase' ? 'js' : 'ts'}`, highlight: 'text-emerald-500' });
+        tree.push({ type: 'dir', depth: 2, name: 'auth/' });
+        tree.push({ type: 'file', depth: 3, name: 'package.json' });
+        tree.push({ type: 'file', depth: 3, name: 'tsconfig.json' });
+        tree.push({ type: 'dir', depth: 3, name: 'src/' });
+
+        if (selectedAuth === 'better-auth') {
+          tree.push({ type: 'file', depth: 4, name: 'auth.ts', highlight: 'text-emerald-500 font-bold' });
+          tree.push({ type: 'file', depth: 4, name: 'client.ts' });
+        } else if (selectedAuth === 'clerk') {
+          tree.push({ type: 'file', depth: 4, name: 'clerk.config.ts', highlight: 'text-emerald-500 font-bold' });
+        } else if (selectedAuth === 'authjs') {
+          tree.push({ type: 'file', depth: 4, name: 'auth.config.ts', highlight: 'text-emerald-500 font-bold' });
+        } else if (selectedAuth === 'supabase') {
+          tree.push({ type: 'file', depth: 4, name: 'supabase.client.ts', highlight: 'text-emerald-500 font-bold' });
+        }
       }
-      
+
+      // Validator Package
       if (hasValidator) {
-        tree.push({ type: 'dir', indent: true, doubleIndent: true, name: 'validator/' });
-        tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'package.json' });
-        tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'tsconfig.json' });
-        tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'schemas/user.ts', highlight: 'text-brand-secondary' });
+        tree.push({ type: 'dir', depth: 2, name: 'validator/' });
+        tree.push({ type: 'file', depth: 3, name: 'package.json' });
+        tree.push({ type: 'file', depth: 3, name: 'tsconfig.json' });
+        tree.push({ type: 'dir', depth: 3, name: 'src/' });
+
+        if (selectedTools.includes('zod')) {
+          tree.push({ type: 'file', depth: 4, name: 'schemas/user.schema.ts', highlight: 'text-brand-secondary font-bold' });
+        }
+        if (selectedTools.includes('valibot')) {
+          tree.push({ type: 'file', depth: 4, name: 'schemas/user.valibot.ts', highlight: 'text-brand-secondary font-bold' });
+        }
+        tree.push({ type: 'file', depth: 4, name: 'index.ts' });
       }
-      tree.push({ type: 'dir', indent: true, doubleIndent: true, name: 'config/' });
-      if (withLinter) {
-        tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'biome.json', highlight: 'text-brand-secondary' });
+
+      // Payments Package
+      if (selectedPayments !== 'none') {
+        tree.push({ type: 'dir', depth: 2, name: 'payments/' });
+        tree.push({ type: 'file', depth: 3, name: 'package.json' });
+        tree.push({ type: 'dir', depth: 3, name: 'src/' });
+        if (selectedPayments === 'stripe') {
+          tree.push({ type: 'file', depth: 4, name: 'stripe.ts', highlight: 'text-brand-primary font-bold' });
+          tree.push({ type: 'file', depth: 4, name: 'webhooks.ts' });
+        } else if (selectedPayments === 'polar') {
+          tree.push({ type: 'file', depth: 4, name: 'polar.ts', highlight: 'text-brand-primary font-bold' });
+        }
       }
-      tree.push({ type: 'file', indent: true, tripleIndent: true, name: 'tsconfig.json' });
+
+      // Email Package
+      if (selectedEmail !== 'none') {
+        tree.push({ type: 'dir', depth: 2, name: 'email/' });
+        tree.push({ type: 'file', depth: 3, name: 'package.json' });
+        tree.push({ type: 'dir', depth: 3, name: 'src/' });
+        tree.push({ type: 'file', depth: 4, name: 'resend.ts', highlight: 'text-brand-primary font-bold' });
+        tree.push({ type: 'file', depth: 4, name: 'templates/welcome.tsx' });
+      }
+
+      // Shared Config Package
+      tree.push({ type: 'dir', depth: 2, name: 'config/' });
+      tree.push({ type: 'file', depth: 3, name: 'tsconfig.base.json' });
+      tree.push({ type: 'file', depth: 3, name: 'biome.json', highlight: 'text-brand-secondary' });
+
     } else {
-      if (selectedFront !== 'none') {
-        let fName = `frontend-${selectedFront}/`;
-        if (selectedFront === 'react-native') fName = 'mobile-react-native/';
-        if (selectedFront === 'flutter') fName = 'mobile-flutter/';
-        tree.push({ type: 'dir', indent: true, name: fName });
-      }
-      if (selectedBack !== 'none') {
-        let bname = selectedBack;
-        if (selectedBack === 'go') bname = 'go-fiber';
-        if (selectedBack === 'node') bname = 'express';
-        tree.push({ type: 'dir', indent: true, name: `backend-${bname}/` });
-      }
-      
-      if (selectedDb !== 'none') {
-        if (selectedDb === 'prisma') {
-          tree.push({ type: 'file', indent: true, name: 'prisma/schema.prisma', highlight: 'text-brand-secondary' });
-        } else if (selectedDb === 'sqlx') {
-          tree.push({ type: 'file', indent: true, name: 'db/schema.sql', highlight: 'text-brand-primary' });
-        } else if (selectedDb === 'mongo') {
-          tree.push({ type: 'file', indent: true, name: 'db/models/user.js', highlight: 'text-brand-secondary' });
-        } else if (selectedDb === 'drizzle') {
-          tree.push({ type: 'file', indent: true, name: 'db/schema.ts', highlight: 'text-brand-primary' });
-        }
-      }
-      if (selectedAuth !== 'none') {
-        tree.push({ type: 'file', indent: true, name: `lib/auth.${selectedAuth === 'supabase' ? 'js' : 'ts'}`, highlight: 'text-emerald-500' });
-      }
-      if (hasValidator) {
-        tree.push({ type: 'file', indent: true, name: 'shared/schemas/user.ts', highlight: 'text-brand-secondary' });
+      // Standalone Structure (Single package repo)
+      tree.push({ type: 'file', depth: 1, name: 'package.json' });
+      tree.push({ type: 'file', depth: 1, name: 'tsconfig.json' });
+      tree.push({ type: 'file', depth: 1, name: 'koko.config.json', highlight: 'text-brand-primary font-bold' });
+
+      if (withDocker) {
+        tree.push({ type: 'file', depth: 1, name: 'docker-compose.yml', highlight: 'text-brand-primary' });
       }
       if (withLinter) {
-        tree.push({ type: 'file', indent: true, name: 'biome.json', highlight: 'text-brand-secondary' });
+        tree.push({ type: 'file', depth: 1, name: 'biome.json', highlight: 'text-brand-secondary' });
+      }
+      if (withTesting) {
+        tree.push({ type: 'file', depth: 1, name: 'vitest.config.ts' });
+      }
+
+      tree.push({ type: 'dir', depth: 1, name: 'src/' });
+
+      if (selectedFront !== 'none') {
+        tree.push({ type: 'dir', depth: 2, name: 'components/' });
+        tree.push({ type: 'file', depth: 3, name: 'Navbar.tsx' });
+        tree.push({ type: 'file', depth: 3, name: 'Hero.tsx' });
+      }
+
+      if (selectedBack !== 'none') {
+        tree.push({ type: 'dir', depth: 2, name: 'routes/' });
+        tree.push({ type: 'file', depth: 3, name: 'api.ts' });
+      }
+
+      if (selectedDb !== 'none') {
+        if (selectedOrm === 'drizzle') {
+          tree.push({ type: 'file', depth: 1, name: 'drizzle.config.ts', highlight: 'text-brand-primary font-bold' });
+          tree.push({ type: 'dir', depth: 2, name: 'db/' });
+          tree.push({ type: 'file', depth: 3, name: 'schema.ts', highlight: 'text-brand-secondary font-bold' });
+          tree.push({ type: 'file', depth: 3, name: 'client.ts' });
+        } else if (selectedOrm === 'prisma') {
+          tree.push({ type: 'dir', depth: 1, name: 'prisma/' });
+          tree.push({ type: 'file', depth: 2, name: 'schema.prisma', highlight: 'text-brand-secondary font-bold' });
+        } else if (selectedOrm === 'mongoose' || selectedDb === 'mongodb') {
+          tree.push({ type: 'dir', depth: 2, name: 'models/' });
+          tree.push({ type: 'file', depth: 3, name: 'user.model.ts', highlight: 'text-brand-secondary' });
+        }
+      }
+
+      if (selectedAuth !== 'none') {
+        tree.push({ type: 'file', depth: 2, name: `lib/auth.${selectedAuth === 'supabase' ? 'js' : 'ts'}`, highlight: 'text-emerald-500 font-bold' });
+      }
+
+      if (hasValidator) {
+        tree.push({ type: 'file', depth: 2, name: 'schemas/user.schema.ts', highlight: 'text-brand-secondary' });
       }
     }
-    if (selectedPayments !== 'none') {
-      tree.push({ type: 'file', indent: true, name: `routes/payments/${selectedPayments}.ts`, highlight: 'text-brand-primary' });
-    }
-    if (selectedEmail !== 'none') {
-      tree.push({ type: 'file', indent: true, name: `services/email.${selectedEmail === 'resend' ? 'ts' : 'js'}` });
-    }
-    if (withDocker) {
-      tree.push({ type: 'file', indent: true, name: 'docker-compose.yml', highlight: 'text-brand-primary' });
-    }
-    if (withCi) {
-      tree.push({ type: 'file', indent: true, name: '.github/workflows/ci.yml' });
-    }
-    if (withLinter) {
-      tree.push({ type: 'file', indent: true, name: 'biome.json', highlight: 'text-brand-primary' });
-    }
-    if (withTesting) {
-      tree.push({ type: 'file', indent: true, name: 'vitest.config.ts' });
-    }
-    tree.push({ type: 'file', indent: true, name: 'koko.config.json', highlight: 'text-brand-primary font-bold' });
+
     return tree;
   });
 

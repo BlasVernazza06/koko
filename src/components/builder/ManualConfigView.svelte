@@ -1,9 +1,22 @@
 <script lang="ts">
-  import { Settings, FolderCode, MonitorSmartphone, Server, Database, Fingerprint, Rocket, ArrowLeft, ArrowRight, Mail } from '@lucide/svelte';
-  import { getLayers, getInfrastructureOptions } from '@/components/builder/builderData';
+  import { fade } from 'svelte/transition';
+  import { 
+    Settings, 
+    FolderCode, 
+    MonitorSmartphone, 
+    Server, 
+    Database, 
+    Fingerprint, 
+    Rocket, 
+    ArrowLeft, 
+    ArrowRight, 
+    Mail,
+    ListOrdered,
+    LayoutGrid
+  } from '@lucide/svelte';
+  import { getLayers, getInfrastructureOptions } from '@/data/builder.data';
   import TechCard from '@/components/builder/TechCard.svelte';
   import ExtraCard from '@/components/builder/ExtraCard.svelte';
-  import { fade } from 'svelte/transition';
 
   let {
     projectName = $bindable('my-koko-app'),
@@ -304,6 +317,24 @@
     }
   ];
 
+  // Derived reactive layer lookups for maximum reactivity & zero redundant array allocations
+  const currentLayers = $derived(getLayers(lang));
+  const currentInfraOptions = $derived(getInfrastructureOptions(lang));
+  const layersMap = $derived(new Map(currentLayers.map(l => [l.key, l])));
+
+  const pmLayer = $derived(layersMap.get('package_manager'));
+  const feLayer = $derived(layersMap.get('frontend'));
+  const mobLayer = $derived(layersMap.get('native_frontend'));
+  const toolsLayer = $derived(layersMap.get('tools'));
+  const beLayer = $derived(layersMap.get('backend'));
+  const runtimeLayer = $derived(layersMap.get('runtime'));
+  const apiLayer = $derived(layersMap.get('api'));
+  const dbLayer = $derived(layersMap.get('db'));
+  const ormLayer = $derived(layersMap.get('orm'));
+  const authLayer = $derived(layersMap.get('auth'));
+  const payLayer = $derived(layersMap.get('payments'));
+  const turboOpt = $derived(currentInfraOptions.find(o => o.id === 'turborepo'));
+
   const t = $derived({
     es: {
       projectNameLabel: 'Nombre del Proyecto',
@@ -328,33 +359,35 @@
     <span class="text-xs font-bold uppercase tracking-widest text-text-muted">
       {lang === 'es' ? 'Modo de Configuración' : 'Configuration Mode'}
     </span>
-    <div class="flex items-center gap-1 bg-bg-base border border-border-subtle p-1 rounded-xl text-xs">
+    <div class="inline-flex items-center gap-1.5 bg-bg-base border border-border-subtle p-1 rounded-xl text-xs shadow-xs">
       <button
         type="button"
         onclick={() => viewMode = 'stepper'}
-        class="px-3.5 py-1.5 rounded-lg font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95
+        class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95
           {viewMode === 'stepper' 
             ? 'bg-brand-primary text-white shadow-sm' 
-            : 'text-text-muted hover:text-text-main hover:bg-bg-base/50'}"
+            : 'text-text-muted hover:text-text-main hover:bg-bg-surface/50'}"
       >
-        {lang === 'es' ? 'Paso a Paso' : 'Step by Step'}
+        <ListOrdered size={14} class={viewMode === 'stepper' ? 'opacity-100' : 'opacity-70'} />
+        <span>{lang === 'es' ? 'Paso a Paso' : 'Step by Step'}</span>
       </button>
       <button
         type="button"
         onclick={() => viewMode = 'expanded'}
-        class="px-3.5 py-1.5 rounded-lg font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95
+        class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95
           {viewMode === 'expanded' 
             ? 'bg-brand-primary text-white shadow-sm' 
-            : 'text-text-muted hover:text-text-main hover:bg-bg-base/50'}"
+            : 'text-text-muted hover:text-text-main hover:bg-bg-surface/50'}"
       >
-        {lang === 'es' ? 'Ver Todo' : 'Show All'}
+        <LayoutGrid size={14} class={viewMode === 'expanded' ? 'opacity-100' : 'opacity-70'} />
+        <span>{lang === 'es' ? 'Ver Todo' : 'Show All'}</span>
       </button>
     </div>
   </div>
 
   {#if viewMode === 'stepper'}
     <!-- STEPPER LAYOUT -->
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+    <div in:fade={{ duration: 120 }} class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
       <!-- Steps Navigation Sidebar (Sticky to accompany scroll) -->
       <div class="md:col-span-4 flex flex-row md:flex-col gap-3 overflow-x-auto pb-4 md:pb-0 md:pr-4 md:border-r border-border-subtle/30 select-none custom-scrollbar relative md:sticky md:top-24 md:self-start">
         {#each steps as step, idx}
@@ -414,10 +447,8 @@
             >
               <!-- Step Fields -->
               {#if activeStep === 0}
-                {@const pmLayer = getLayers(lang).find(l => l.key === 'package_manager')}
-                {@const turboOpt = getInfrastructureOptions(lang).find(o => o.id === 'turborepo')}
                 <!-- Step 1: Proyecto -->
-                <div class="space-y-6" transition:fade={{ duration: 120 }}>
+                <div class="space-y-6" in:fade={{ duration: 100 }}>
                   <!-- Project Name Input -->
                   <div class="space-y-2.5">
                     <label for="pname" class="block text-xs font-extrabold uppercase tracking-widest text-text-muted border-l-3 border-brand-primary pl-3 select-none">
@@ -473,11 +504,8 @@
                 </div>
 
               {:else if activeStep === 1}
-                {@const feLayer = getLayers(lang).find(l => l.key === 'frontend')}
-                {@const mobLayer = getLayers(lang).find(l => l.key === 'native_frontend')}
-                {@const toolsLayer = getLayers(lang).find(l => l.key === 'tools')}
                 <!-- Step 2: Frontend -->
-                <div class="space-y-6" transition:fade={{ duration: 120 }}>
+                <div class="space-y-6" in:fade={{ duration: 100 }}>
                   <!-- Web Frontend -->
                   {#if feLayer}
                     <div class="space-y-3">
@@ -552,11 +580,8 @@
                 </div>
 
               {:else if activeStep === 2}
-                {@const beLayer = getLayers(lang).find(l => l.key === 'backend')}
-                {@const runtimeLayer = getLayers(lang).find(l => l.key === 'runtime')}
-                {@const apiLayer = getLayers(lang).find(l => l.key === 'api')}
                 <!-- Step 3: Backend & APIs -->
-                <div class="space-y-6" transition:fade={{ duration: 120 }}>
+                <div class="space-y-6" in:fade={{ duration: 100 }}>
                   <!-- Backend Framework -->
                   {#if beLayer}
                     <div class="space-y-3">
@@ -631,10 +656,8 @@
                 </div>
 
               {:else if activeStep === 3}
-                {@const dbLayer = getLayers(lang).find(l => l.key === 'db')}
-                {@const ormLayer = getLayers(lang).find(l => l.key === 'orm')}
                 <!-- Step 4: Datos -->
-                <div class="space-y-6" transition:fade={{ duration: 120 }}>
+                <div class="space-y-6" in:fade={{ duration: 100 }}>
                   <!-- Database -->
                   {#if dbLayer}
                     <div class="space-y-3">
@@ -685,10 +708,8 @@
                 </div>
 
               {:else if activeStep === 4}
-                {@const authLayer = getLayers(lang).find(l => l.key === 'auth')}
-                {@const payLayer = getLayers(lang).find(l => l.key === 'payments')}
                 <!-- Step 5: Servicios -->
-                <div class="space-y-6" transition:fade={{ duration: 120 }}>
+                <div class="space-y-6" in:fade={{ duration: 100 }}>
                   <!-- Auth -->
                   {#if authLayer}
                     <div class="space-y-3">
@@ -757,8 +778,8 @@
 
               {:else if activeStep === 5}
                 <!-- Step 6: DevOps y Calidad -->
-                <div class="space-y-4" transition:fade={{ duration: 120 }}>
-                  {#each getInfrastructureOptions(lang) as option}
+                <div class="space-y-4" in:fade={{ duration: 100 }}>
+                  {#each currentInfraOptions as option (option.id)}
                     <!-- Skip turborepo since it is managed in step 1 -->
                     {#if option.id !== 'turborepo'}
                       <ExtraCard
@@ -818,9 +839,9 @@
     </div>
   {:else}
     <!-- EXPANDED/SCROLL LAYOUT -->
-    <div class="space-y-8" transition:fade={{ duration: 150 }}>
+    <div in:fade={{ duration: 120 }} class="space-y-8">
       <!-- Project Name Input -->
-      <div class="rounded-3xl border border-border-subtle bg-bg-surface/30 p-6 backdrop-blur-md shadow-xs hover:border-brand-primary/25 transition-all duration-300">
+      <div class="rounded-3xl border border-border-subtle bg-bg-surface/30 p-6 shadow-xs hover:border-brand-primary/25 transition-all duration-300">
         <label for="pname-exp" class="block text-xs font-extrabold uppercase tracking-widest text-text-muted mb-3.5 select-none border-l-3 border-brand-primary pl-3">
           {t.projectNameLabel}
         </label>
@@ -837,9 +858,9 @@
       </div>
 
       <!-- Technology Layers mapped dynamically (including email) -->
-      {#each getLayers(lang) as layer}
+      {#each currentLayers as layer (layer.key)}
         {@const LayerIcon = layer.icon}
-        <div class="rounded-2xl border border-border-subtle bg-bg-surface/30 p-6 backdrop-blur-xs shadow-sm space-y-6">
+        <div class="rounded-2xl border border-border-subtle bg-bg-surface/30 p-6 shadow-sm space-y-6">
           <div class="flex items-center justify-between pb-3 border-b border-border-subtle/50 select-none">
             <div class="flex items-center gap-2.5">
               <LayerIcon size={18} class="{layer.colorClass}" aria-hidden="true" />
@@ -849,7 +870,7 @@
           </div>
           
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {#each layer.options as opt}
+            {#each layer.options as opt (opt.id)}
               {@const isActive = layer.key === 'tools' ? isToolActive(opt.id) : getSelectedId(layer.key) === opt.id}
               {@const isDisabled = isOptionDisabled(layer.key, opt.id)}
               <TechCard
@@ -871,7 +892,7 @@
       {/each}
 
       <!-- Infrastructure / Quality Add-ons mapped dynamically -->
-      <div class="rounded-2xl border border-border-subtle bg-bg-surface/30 p-6 backdrop-blur-xs shadow-sm space-y-6">
+      <div class="rounded-2xl border border-border-subtle bg-bg-surface/30 p-6 shadow-sm space-y-6">
         <div class="flex items-center justify-between pb-3 border-b border-border-subtle/50 select-none">
           <div class="flex items-center gap-2.5">
             <Settings size={18} class="text-text-muted" aria-hidden="true" />
@@ -881,7 +902,7 @@
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {#each getInfrastructureOptions(lang) as option}
+          {#each currentInfraOptions as option (option.id)}
             <ExtraCard
               title={option.title}
               description={option.description}
