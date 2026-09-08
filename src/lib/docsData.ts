@@ -92,7 +92,7 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           title: 'Modos de Inicialización',
           body: [
             'Koko CLI ofrece dos modos de uso interactivo diseñados para maximizar tu productividad:',
-            '• Quick Setup (Recetas de Producción): Selecciona un preset completo probado en producción (SaaS Starter, MERN, PERN o FastAPI + React) y comienza a codificar en 2 segundos.',
+            '• Quick Setup (Recetas de Producción): Selecciona un preset completo probado en producción (SaaS Starter, Java Spring Boot, Enterprise NestJS, MERN, PERN o FastAPI + React) y comienza a codificar en 2 segundos.',
             '• Manual Configuration (Configuración Paso a Paso): Diseña tu stack pieza por pieza eligiendo Frontend, Backend, Base de Datos, ORM, Addons y Git con validación en tiempo real.'
           ]
         },
@@ -204,7 +204,7 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
               body: [
                 '1. Ingresa el nombre de tu proyecto (ej: `my-saas`).',
                 '2. Selecciona "Quick Setup".',
-                '3. Elige una de las 4 recetas curadas: ⚡ SaaS Starter, 💻 MERN Stack, 🚀 PERN Stack o 🐍 FastAPI + React.',
+                '3. Elige una de las recetas oficiales de producción: ⚡ SaaS Starter, ☕ Java Spring Boot, 🏢 Enterprise NestJS, 💻 MERN Stack, 🚀 PERN Stack, 🐍 FastAPI + React o 📱 Mobile Expo.',
                 '4. Koko genera automáticamente todos los archivos, inicializa Git y crea el manifiesto en menos de 1 segundo.'
               ]
             },
@@ -456,11 +456,38 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
         },
         {
           anchorId: 'recipe-saas',
-          title: '⚡ SaaS Starter (Fullstack TypeScript)',
+          title: '⚡ SaaS Starter (Fullstack Next.js)',
           body: [
-            '• Stack: Next.js (App Router, React 19) + Drizzle ORM + Better-Auth + Stripe + Docker PostgreSQL.',
-            '• Características: Autenticación completa configurada con sesiones seguras, esquema relacional en PostgreSQL con Drizzle Kit para migraciones, componentes accesibles con Tailwind CSS y Lucide Icons.',
-            '• Comando rápido: `koko init my-saas -r saas`'
+            '• Stack: Next.js (App Router, React 19) + PostgreSQL + Prisma ORM + Better-Auth + Stripe + Resend + Docker.',
+            '• Características: Autenticación completa configurada con sesiones seguras, esquema relacional en PostgreSQL con migraciones, integración de pagos con Stripe y componentes accesibles con Tailwind CSS.',
+            '• Comando rápido: `koko init my-saas -r saas-next`'
+          ]
+        },
+        {
+          anchorId: 'recipe-java-spring',
+          title: '☕ Enterprise Java Spring Boot (Spring Boot 3 + PostgreSQL)',
+          body: [
+            '• Stack: React SPA (o Angular) + Java Spring Boot 3 (JDK 21) + PostgreSQL + Spring Security + Docker Compose.',
+            '• Características: Arquitectura multicapa empresarial de alta concurrencia, JPA/Hibernate con conexión relacional a PostgreSQL, configuración Docker Compose y perfiles de testing con JUnit 5.',
+            '• Comando rápido: `koko init my-enterprise-app -r java-spring`'
+          ]
+        },
+        {
+          anchorId: 'recipe-enterprise-nestjs',
+          title: '🏢 Enterprise Full-Stack NestJS (NestJS + Next.js Monorepo)',
+          body: [
+            '• Stack: Next.js + NestJS + PostgreSQL + Prisma ORM + Better-Auth + Docker Compose + Turborepo.',
+            '• Características: Arquitectura modular Clean Architecture / DDD, inyección de dependencias estricta, validación Zod y monorrepo unificado con Turborepo.',
+            '• Comando rápido: `koko init my-corp-app -r enterprise-nestjs`'
+          ]
+        },
+        {
+          anchorId: 'recipe-mern',
+          title: '💻 MERN Stack (MongoDB + Express + React + Node)',
+          body: [
+            '• Stack: React (Vite, TS) + Node.js Express (TS) + MongoDB + Mongoose + Docker.',
+            '• Arquitectura: Configuración con contenedor Docker de MongoDB listo para usar, modelos Mongoose tipados y validación de esquemas.',
+            '• Comando rápido: `koko init my-mern -r mern`'
           ]
         },
         {
@@ -473,21 +500,21 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           ]
         },
         {
-          anchorId: 'recipe-mern',
-          title: '💻 MERN Stack (MongoDB + Express + React + Node)',
-          body: [
-            '• Stack: React (Vite, TS) + Node.js Express (TS) + MongoDB + Mongoose + Docker.',
-            '• Arquitectura: Configuración monorepo con contenedor Docker de MongoDB listo para usar, modelos Mongoose tipados y validación de esquemas.',
-            '• Comando rápido: `koko init my-mern -r mern`'
-          ]
-        },
-        {
           anchorId: 'recipe-fastapi',
           title: '🐍 FastAPI + React (Python Async + Vite SPA)',
           body: [
-            '• Stack: Python FastAPI + React (Vite) SPA + Pydantic v2 + Uvicorn.',
+            '• Stack: Python FastAPI + React (Vite) SPA + PostgreSQL + Pydantic v2 + Uvicorn.',
             '• Características: Backend asíncrono con CORS configurado para el frontend de Vite, documentación Swagger interactiva en `/docs`, y gestión de dependencias vía `requirements.txt`.',
-            '• Comando rápido: `koko init my-python -r fastapi_react`'
+            '• Comando rápido: `koko init my-python -r python-fastapi`'
+          ]
+        },
+        {
+          anchorId: 'recipe-mobile-expo',
+          title: '📱 Mobile Cross-Platform Expo (Expo React Native + Express API)',
+          body: [
+            '• Stack: Expo (React Native, TS) + Node Express API + PostgreSQL + Supabase Auth + Turborepo.',
+            '• Características: Aplicación móvil multiplataforma para iOS y Android compartiendo tipos y esquemas de base de datos con el backend en Node.js.',
+            '• Comando rápido: `koko init my-mobile-app -r mobile-expo`'
           ]
         }
       ]
@@ -699,7 +726,7 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           title: 'Initialization Modes',
           body: [
             'Koko CLI features two distinct interactive modes tailored for maximum developer agility:',
-            '• Quick Setup (Production Recipes): Pick a pre-configured production blueprint (SaaS Starter, MERN, PERN, or FastAPI + React) and start building in under 2 seconds.',
+            '• Quick Setup (Production Recipes): Pick a pre-configured production blueprint (SaaS Starter, Java Spring Boot, Enterprise NestJS, MERN, PERN, or FastAPI + React) and start building in under 2 seconds.',
             '• Manual Configuration (Step-by-Step): Customize your architecture layer by layer selecting Frontend, Backend, Database, ORM, Addons, and Git with live validation checks.'
           ]
         },
@@ -811,7 +838,7 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
               body: [
                 '1. Enter your project name (e.g. `my-saas`).',
                 '2. Select "Quick Setup".',
-                '3. Pick one of the 4 production recipes: ⚡ SaaS Starter, 💻 MERN Stack, 🚀 PERN Stack, or 🐍 FastAPI + React.',
+                '3. Pick one of the official production recipes: ⚡ SaaS Starter, ☕ Java Spring Boot, 🏢 Enterprise NestJS, 💻 MERN Stack, 🚀 PERN Stack, 🐍 FastAPI + React, or 📱 Mobile Expo.',
                 '4. Koko scaffolds files, initializes Git, and generates the manifest in less than a second.'
               ]
             },
@@ -1063,20 +1090,29 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
         },
         {
           anchorId: 'recipe-saas',
-          title: '⚡ SaaS Starter (Fullstack TypeScript)',
+          title: '⚡ SaaS Starter (Fullstack Next.js)',
           body: [
-            '• Stack: Next.js (App Router, React 19) + Drizzle ORM + Better-Auth + Stripe + Docker PostgreSQL.',
-            '• Features: Complete authentication flow with secure sessions, PostgreSQL relational schema with Drizzle Kit migrations, accessible UI components with Tailwind CSS and Lucide Icons.',
-            '• Quick command: `koko init my-saas -r saas`'
+            '• Stack: Next.js (App Router, React 19) + PostgreSQL + Prisma ORM + Better-Auth + Stripe + Resend + Docker.',
+            '• Features: Complete authentication flow with secure sessions, PostgreSQL relational schema with migrations, Stripe subscription payments, and accessible UI components with Tailwind CSS.',
+            '• Quick command: `koko init my-saas -r saas-next`'
           ]
         },
         {
-          anchorId: 'recipe-pern',
-          title: '🚀 PERN Stack (PostgreSQL + Express + React + Node)',
+          anchorId: 'recipe-java-spring',
+          title: '☕ Enterprise Java Spring Boot (Spring Boot 3 + PostgreSQL)',
           body: [
-            '• Stack: React (Vite, TS) + Node.js Express (TS) + PostgreSQL + Prisma ORM + Docker.',
-            '• Architecture: Decoupled Turborepo monorepo, shared `packages/db` package for the generated Prisma client, and unified development scripts.',
-            '• Quick command: `koko init my-pern -r pern`'
+            '• Stack: React SPA (or Angular) + Java Spring Boot 3 (JDK 21) + PostgreSQL + Spring Security + Docker Compose.',
+            '• Features: High-concurrency enterprise multi-tier architecture, JPA/Hibernate PostgreSQL connection, production Docker Compose configuration, and JUnit 5 testing suite.',
+            '• Quick command: `koko init my-enterprise-app -r java-spring`'
+          ]
+        },
+        {
+          anchorId: 'recipe-enterprise-nestjs',
+          title: '🏢 Enterprise Full-Stack NestJS (NestJS + Next.js Monorepo)',
+          body: [
+            '• Stack: Next.js + NestJS + PostgreSQL + Prisma ORM + Better-Auth + Docker Compose + Turborepo.',
+            '• Features: Clean Architecture / DDD modular architecture, strict dependency injection, Zod schema validation, and unified Turborepo monorepo workspace.',
+            '• Quick command: `koko init my-corp-app -r enterprise-nestjs`'
           ]
         },
         {
@@ -1089,12 +1125,30 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           ]
         },
         {
+          anchorId: 'recipe-pern',
+          title: '🚀 PERN Stack (PostgreSQL + Express + React + Node)',
+          body: [
+            '• Stack: React (Vite, TS) + Node.js Express (TS) + PostgreSQL + Prisma ORM + Docker.',
+            '• Architecture: Decoupled Turborepo monorepo, shared `packages/db` package for the generated Prisma client, and unified development scripts.',
+            '• Quick command: `koko init my-pern -r pern`'
+          ]
+        },
+        {
           anchorId: 'recipe-fastapi',
           title: '🐍 FastAPI + React (Python Async + Vite SPA)',
           body: [
-            '• Stack: Python FastAPI + React (Vite) SPA + Pydantic v2 + Uvicorn.',
+            '• Stack: Python FastAPI + React (Vite) SPA + PostgreSQL + Pydantic v2 + Uvicorn.',
             '• Features: Asynchronous Python backend with preconfigured CORS for Vite client, interactive Swagger API docs at `/docs`, and dependency management via `requirements.txt`.',
-            '• Quick command: `koko init my-python -r fastapi_react`'
+            '• Quick command: `koko init my-python -r python-fastapi`'
+          ]
+        },
+        {
+          anchorId: 'recipe-mobile-expo',
+          title: '📱 Mobile Cross-Platform Expo (Expo React Native + Express API)',
+          body: [
+            '• Stack: Expo (React Native, TS) + Node Express API + PostgreSQL + Supabase Auth + Turborepo.',
+            '• Features: Cross-platform mobile application for iOS and Android sharing schemas and validation types with a Node.js backend.',
+            '• Quick command: `koko init my-mobile-app -r mobile-expo`'
           ]
         }
       ]

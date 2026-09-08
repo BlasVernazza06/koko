@@ -62,11 +62,11 @@
         keywords: ['koko.config.json', 'manifiesto', 'schema', 'configuracion', 'json', 'especificacion']
       },
       {
-        title: 'Recetas de Producción (SaaS, PERN, MERN, FastAPI)',
+        title: 'Recetas de Producción (SaaS, Java Spring, NestJS, MERN, PERN, FastAPI, Expo)',
         section: 'Avanzado',
-        desc: 'Análisis detallado de las 4 recetas oficiales probadas en producción listas para codificar.',
+        desc: 'Análisis detallado de las recetas oficiales probadas en producción listas para codificar.',
         url: '/docs/recipes-deep-dive',
-        keywords: ['recetas', 'recipes', 'saas', 'pern', 'mern', 'fastapi', 'starter', 'production']
+        keywords: ['recetas', 'recipes', 'saas', 'java', 'spring', 'nestjs', 'pern', 'mern', 'fastapi', 'expo', 'starter', 'production']
       },
       {
         title: 'Solución de Problemas (Troubleshooting)',
@@ -143,9 +143,9 @@
       {
         title: 'Production Recipes Deep-Dive',
         section: 'Advanced',
-        desc: 'In-depth breakdown of the 4 production recipes: SaaS Starter, PERN, MERN, and FastAPI + React.',
+        desc: 'In-depth breakdown of official production recipes: SaaS Starter, Java Spring, NestJS, PERN, MERN, FastAPI, and Expo.',
         url: '/en/docs/recipes-deep-dive',
-        keywords: ['recipes', 'saas', 'pern', 'mern', 'fastapi', 'blueprints', 'starter', 'production']
+        keywords: ['recipes', 'saas', 'java', 'spring', 'nestjs', 'pern', 'mern', 'fastapi', 'expo', 'blueprints', 'starter', 'production']
       },
       {
         title: 'Troubleshooting Guide',

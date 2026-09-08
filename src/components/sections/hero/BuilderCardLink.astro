@@ -13,11 +13,11 @@ const { lang = 'es', class: className = '' } = Astro.props;
   <!-- Premium Redirect Card -->
   <a
     href={lang === 'es' ? '/builder' : '/en/builder'}
-    class="group/box rounded-2xl border border-border-subtle/50 bg-bg-surface/50 backdrop-blur-md p-6 shadow-lg hover:shadow-[0_20px_50px_rgba(90,79,196,0.12)] hover:-translate-y-0.5 hover:border-brand-secondary/45 transition-all duration-500 flex flex-col justify-between flex-1 relative overflow-hidden text-left cursor-pointer"
+    class="group/box rounded-2xl border border-border-subtle/50 bg-bg-surface/50 backdrop-blur-md p-6 shadow-lg hover:shadow-[0_20px_50px_rgba(90,79,196,0.12)] hover:-translate-y-0.5 hover:border-brand-secondary/45 transition-all duration-200 ease-out flex flex-col justify-between flex-1 relative overflow-hidden text-left cursor-pointer"
   >
     <!-- Background Dot Grid Pattern -->
     <div class="absolute inset-0 opacity-[0.06] bg-[radial-gradient(var(--brand-secondary)_1.5px,transparent_1.5px)] [background-size:16px_16px] pointer-events-none"></div>
-    <div class="absolute -right-12 -top-12 w-32 h-32 bg-brand-secondary/5 rounded-full blur-xl pointer-events-none transition-all duration-500 group-hover/box:bg-brand-secondary/15"></div>
+    <div class="absolute -right-12 -top-12 w-32 h-32 bg-brand-secondary/5 rounded-full blur-xl pointer-events-none transition-all duration-200 group-hover/box:bg-brand-secondary/15"></div>
 
     <div class="flex flex-col gap-4.5">
       <!-- Title & Header -->
@@ -29,7 +29,7 @@ const { lang = 'es', class: className = '' } = Astro.props;
             <span class="lang-en">Visual Builder</span>
           </span>
         </div>
-        <span class="text-[9px] font-mono uppercase bg-brand-primary/15 text-brand-primary border border-brand-primary/20 px-2 py-0.5 rounded font-extrabold tracking-wider">
+        <span class="text-[11px] font-mono uppercase bg-brand-primary/15 text-brand-primary border border-brand-primary/20 px-2 py-0.5 rounded font-extrabold tracking-wider">
           <span class="lang-es">Interactivo</span>
           <span class="lang-en">Interactive</span>
         </span>
@@ -47,19 +47,19 @@ const { lang = 'es', class: className = '' } = Astro.props;
         </p>
       </div>
 
-      <!-- Layer mockup visualization -->
-      <div class="flex items-center gap-2 mt-1">
-        <div class="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-border-subtle/40 bg-bg-base/30 group-hover/box:border-brand-primary/30 transition-all duration-300">
+      <!-- Layer mockup visualization (Non-interactive preview chips) -->
+      <div class="flex items-center gap-2 mt-1 pointer-events-none select-none">
+        <div class="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-border-subtle/40 bg-bg-base/40 group-hover/box:border-brand-primary/40 group-hover/box:bg-bg-base/70 transition-all duration-200">
           <Blocks size={14} class="text-brand-primary shrink-0" />
-          <span class="text-[10px] font-semibold text-text-muted group-hover/box:text-text-main transition-colors">Frontend</span>
+          <span class="text-xs font-medium text-text-muted group-hover/box:text-text-main transition-colors">Frontend</span>
         </div>
-        <div class="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-border-subtle/40 bg-bg-base/30 group-hover/box:border-brand-secondary/30 transition-all duration-300">
+        <div class="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-border-subtle/40 bg-bg-base/40 group-hover/box:border-brand-secondary/40 group-hover/box:bg-bg-base/70 transition-all duration-200">
           <Cpu size={14} class="text-brand-secondary shrink-0" />
-          <span class="text-[10px] font-semibold text-text-muted group-hover/box:text-text-main transition-colors">Backend</span>
+          <span class="text-xs font-medium text-text-muted group-hover/box:text-text-main transition-colors">Backend</span>
         </div>
-        <div class="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-border-subtle/40 bg-bg-base/30 group-hover/box:border-emerald-500/20 transition-all duration-300">
+        <div class="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-border-subtle/40 bg-bg-base/40 group-hover/box:border-emerald-500/30 group-hover/box:bg-bg-base/70 transition-all duration-200">
           <Database size={14} class="text-emerald-500 shrink-0" />
-          <span class="text-[10px] font-semibold text-text-muted group-hover/box:text-text-main transition-colors">Database</span>
+          <span class="text-xs font-medium text-text-muted group-hover/box:text-text-main transition-colors">Database</span>
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@ const { lang = 'es', class: className = '' } = Astro.props;
         <span class="lang-es">CONSTRUIR STACK</span>
         <span class="lang-en">BUILD STACK</span>
       </span>
-      <div class="flex items-center justify-center w-8 h-8 rounded-xl bg-bg-surface border border-border-subtle text-text-muted group-hover/box:bg-gradient-to-r group-hover/box:from-brand-primary group-hover/box:to-brand-primary group-hover/box:border-transparent group-hover/box:text-white transition-all duration-300">
+      <div class="flex items-center justify-center w-8 h-8 rounded-xl bg-bg-surface border border-border-subtle text-text-muted group-hover/box:bg-gradient-to-r group-hover/box:from-brand-primary group-hover/box:to-brand-primary group-hover/box:border-transparent group-hover/box:text-white transition-all duration-200">
         <ArrowRight size={14} class="group-hover/box:translate-x-0.5 transition-transform duration-200" />
       </div>
     </div>

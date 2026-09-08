@@ -1,6 +1,6 @@
 ---
 import Logo from '@/components/header/logo.astro';
-import NavList from '@/components/header/navList.astro';
+import HeaderNavList from '@/components/sections/header/HeaderNavList.astro';
 import SocialNav from '@/components/header/socialNav.astro';
 import ThemeToggle from '@/components/header/themeToggle.astro';
 import LanguageToggle from '@/components/header/languageToggle.astro';
@@ -16,7 +16,7 @@ const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
     <div class="flex items-center gap-8">
       <Logo />
       <div class="hidden md:block">
-        <NavList />
+        <HeaderNavList />
       </div>
     </div>
 

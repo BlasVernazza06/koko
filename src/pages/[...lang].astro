@@ -61,118 +61,70 @@ const description = currentLang === 'es'
   let scrollListenerCleanup: (() => void) | null = null;
 
   function setupScrollReveals() {
+    // Respect reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
     try {
-      // Clean up previous listeners if any
       if (scrollListenerCleanup) {
         scrollListenerCleanup();
       }
 
-      const mainSections = document.querySelectorAll('.scroll-reveal');
-      const gridItems = document.querySelectorAll('.scroll-reveal-children > *');
+      const mainSections = document.querySelectorAll<HTMLElement>('.scroll-reveal');
+      const gridItems = document.querySelectorAll<HTMLElement>('.scroll-reveal-children > *');
       
-      const allElements: Array<{
-        el: HTMLElement;
-        isMain: boolean;
-        delay: number;
-        animated: boolean;
-      }> = [];
-      
-      // Initialize main sections
-      mainSections.forEach(el => {
-        const htmlEl = el as HTMLElement;
-        htmlEl.setAttribute('style', 'opacity: 0; transform: translateY(35px) scale(0.98); filter: blur(5px);');
-        allElements.push({
-          el: htmlEl,
-          isMain: true,
-          delay: 0,
-          animated: false
-        });
+      const elementsToAnimate: Array<{ el: HTMLElement; isMain: boolean; delay: number }> = [];
+
+      mainSections.forEach((el) => {
+        // Skip elements in hero or header
+        if (el.closest('#hero') || el.closest('header')) return;
+        elementsToAnimate.push({ el, isMain: true, delay: 0 });
       });
-      
-      // Initialize staggered grid/list items
-      gridItems.forEach(el => {
+
+      gridItems.forEach((el) => {
         if (el.closest('#hero') || el.closest('header') || el.closest('footer')) return;
-        
-        const htmlEl = el as HTMLElement;
-        const siblings = Array.from(htmlEl.parentNode?.children || []);
-        const idx = siblings.indexOf(htmlEl);
-        const delay = Math.min((idx >= 0 ? idx : 0) * 0.05, 0.25);
-        
-        htmlEl.setAttribute('style', 'opacity: 0; transform: translateY(20px) scale(0.99); filter: blur(4px);');
-        allElements.push({
-          el: htmlEl,
-          isMain: false,
-          delay,
-          animated: false
-        });
+        const siblings = Array.from(el.parentElement?.children || []);
+        const idx = siblings.indexOf(el);
+        const delay = Math.min((idx >= 0 ? idx : 0) * 0.04, 0.2);
+        elementsToAnimate.push({ el, isMain: false, delay });
       });
-      
-      function handleScroll() {
-        const scrollY = window.scrollY || document.documentElement.scrollTop;
-        const vh = window.innerHeight;
-        
-        allElements.forEach(item => {
-          const el = item.el;
-          const rect = el.getBoundingClientRect();
-          // Absolute top coordinate of the element relative to the document
-          const elementTop = rect.top + scrollY;
-          
-          // Trigger animation when the element's top is 90% down the viewport (10% has entered)
-          const triggerPoint = elementTop - vh * 0.9;
-          
-          if (scrollY > triggerPoint) {
-            if (!item.animated) {
-              item.animated = true;
+
+      if (elementsToAnimate.length === 0) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const target = entry.target as HTMLElement;
+              const meta = elementsToAnimate.find((item) => item.el === target);
+              const delay = meta ? meta.delay : 0;
+              const isMain = meta ? meta.isMain : true;
+
               animate(
-                el,
-                { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
-                { 
-                  duration: item.isMain ? 0.75 : 0.6, 
-                  delay: item.delay, 
-                  easing: [0.16, 1, 0.3, 1] 
-                }
+                target,
+                { opacity: [0, 1], y: [isMain ? 24 : 16, 0], scale: [0.99, 1] },
+                { duration: 0.5, delay, easing: [0.16, 1, 0.3, 1] }
               );
+              observer.unobserve(target);
             }
-          } else {
-            // Reset to initial state when scrolled back up
-            if (item.animated) {
-              item.animated = false;
-              animate(
-                el,
-                { 
-                  opacity: 0, 
-                  y: item.isMain ? 35 : 20, 
-                  scale: item.isMain ? 0.98 : 0.99, 
-                  filter: item.isMain ? "blur(5px)" : "blur(4px)" 
-                },
-                { duration: 0.25 }
-              );
-            }
-          }
-        });
-      }
-      
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      window.addEventListener('resize', handleScroll);
-      
-      // Initial check
-      handleScroll();
-      
-      // Cleanup handler
+          });
+        },
+        { rootMargin: '0px 0px -50px 0px', threshold: 0.1 }
+      );
+
+      elementsToAnimate.forEach((item) => {
+        observer.observe(item.el);
+      });
+
       scrollListenerCleanup = () => {
-        window.removeEventListener('scroll', handleScroll);
-        window.removeEventListener('resize', handleScroll);
+        observer.disconnect();
       };
     } catch (e) {
-      console.error("Scroll reveal error:", e);
-      // Fallback
-      document.querySelectorAll('.scroll-reveal, .scroll-reveal-children > *').forEach(el => {
-        el.removeAttribute('style');
-      });
+      console.warn("Scroll reveal warning:", e);
     }
   }
 
-  // Ensure DOM is fully loaded and styles parsed before running Motion
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", setupScrollReveals);
   } else {

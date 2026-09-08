@@ -80,21 +80,31 @@ export const recipesDropdownItems: RecipeDropdownItem[] = [
     id: 'saas-next',
     nameEs: 'SaaS Next.js',
     nameEn: 'SaaS Next.js',
-    descEs: 'Next.js + Go + Prisma',
-    descEn: 'Next.js + Go + Prisma',
+    descEs: 'Next.js + Prisma + Stripe',
+    descEn: 'Next.js + Prisma + Stripe',
     icon: '/logos/nextjs.svg',
     shadow: 'hover:shadow-[0_0_20px_rgba(255,255,255,0.06)] hover:border-text-main/20 dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.04)]',
     color: 'group-hover/card:text-brand-secondary'
   },
   {
-    id: 'fullstack-svelte',
-    nameEs: 'Svelte 5 + NestJS',
-    nameEn: 'Svelte 5 + NestJS',
-    descEs: 'SvelteKit + NestJS + Drizzle',
-    descEn: 'SvelteKit + NestJS + Drizzle',
-    icon: '/logos/svelte.svg',
-    shadow: 'hover:shadow-[0_0_20px_rgba(255,62,0,0.1)] hover:border-[rgba(255,62,0,0.35)]',
-    color: 'group-hover/card:text-[orange]'
+    id: 'java-spring',
+    nameEs: 'Java Spring Boot',
+    nameEn: 'Java Spring Boot',
+    descEs: 'React + Spring Boot 3 + Postgres',
+    descEn: 'React + Spring Boot 3 + Postgres',
+    icon: '/logos/java.svg',
+    shadow: 'hover:shadow-[0_0_20px_rgba(83,130,161,0.15)] hover:border-[rgba(83,130,161,0.35)]',
+    color: 'group-hover/card:text-[#5382a1]'
+  },
+  {
+    id: 'enterprise-nestjs',
+    nameEs: 'Enterprise NestJS',
+    nameEn: 'Enterprise NestJS',
+    descEs: 'Next.js + NestJS + Prisma',
+    descEn: 'Next.js + NestJS + Prisma',
+    icon: '/logos/nestjs.svg',
+    shadow: 'hover:shadow-[0_0_20px_rgba(224,35,78,0.15)] hover:border-[rgba(224,35,78,0.35)]',
+    color: 'group-hover/card:text-[#e0234e]'
   },
   {
     id: 'mern',
@@ -127,11 +137,11 @@ export const recipesDropdownItems: RecipeDropdownItem[] = [
     color: 'group-hover/card:text-[#009688]'
   },
   {
-    id: 'mobile-go',
-    nameEs: 'Native + Go',
-    nameEn: 'Native + Go',
-    descEs: 'Expo + Go Fiber + Supabase',
-    descEn: 'Expo + Go Fiber + Supabase',
+    id: 'mobile-expo',
+    nameEs: 'Mobile Expo + Node',
+    nameEn: 'Mobile Expo + Node',
+    descEs: 'Expo + Express + Supabase',
+    descEn: 'Expo + Express + Supabase',
     icon: '/logos/react.svg',
     shadow: 'hover:shadow-[0_0_20px_rgba(0,208,255,0.1)] hover:border-[rgba(0,208,255,0.35)]',
     color: 'group-hover/card:text-[#00d0ff]'

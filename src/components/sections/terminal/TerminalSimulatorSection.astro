@@ -1,5 +1,6 @@
 ---
 import TerminalSimulator from './TerminalSimulator.svelte';
+import { Terminal, Sparkles, ShieldCheck, PlusCircle, HelpCircle } from '@lucide/svelte';
 
 interface Props {
   lang?: string;
@@ -7,11 +8,49 @@ interface Props {
 }
 
 const { lang = 'es', class: className = '' } = Astro.props;
+
+const quickCommands = [
+  { cmd: 'koko init', labelEs: 'Scaffold interactivo', labelEn: 'Interactive scaffold', icon: Sparkles },
+  { cmd: 'koko add auth', labelEs: 'Inyección de módulos', labelEn: 'Module injection', icon: PlusCircle },
+  { cmd: 'koko check', labelEs: 'Auditoría de drift', labelEn: 'Drift integrity check', icon: ShieldCheck },
+  { cmd: 'koko --help', labelEs: 'Referencia de comandos', labelEn: 'CLI reference', icon: HelpCircle },
+];
 ---
 
 <div class={`max-w-7xl mx-auto px-6 flex flex-col items-center justify-center relative z-10 ${className}`}>
+  <!-- Live Terminal Header Pill Bar -->
+  <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 select-none">
+    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-bg-surface/80 border border-border-subtle backdrop-blur-md text-xs font-mono text-text-muted">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="lang-es font-semibold text-text-main">Simulador TUI interactivo</span>
+      <span class="lang-en font-semibold text-text-main">Interactive TUI simulator</span>
+    </div>
+    
+    <div class="hidden sm:flex items-center gap-1.5 text-xs text-text-muted/70 font-mono">
+      <span>•</span>
+      <span class="lang-es">Comandos rápidos disponibles:</span>
+      <span class="lang-en">Quick available commands:</span>
+    </div>
+  </div>
+
   <section id="terminal" class="w-full max-w-[1300px]">
     <TerminalSimulator client:visible lang={lang} />
   </section>
+
+  <!-- Quick Command Chips -->
+  <div class="w-full max-w-4xl mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 select-none">
+    {quickCommands.map((item) => (
+      <div class="group flex items-center gap-2 px-3.5 py-2 rounded-xl bg-bg-surface/40 hover:bg-bg-surface/90 border border-border-subtle/60 hover:border-brand-primary/40 text-xs font-mono transition-all duration-200 shadow-sm backdrop-blur-sm">
+        <item.icon size={13} class="text-brand-primary shrink-0 group-hover:scale-110 transition-transform duration-200" />
+        <code class="font-bold text-text-main">{item.cmd}</code>
+        <span class="text-text-muted/60 font-sans text-[11px] hidden md:inline">•</span>
+        <span class="text-text-muted font-sans text-[11px] hidden md:inline">
+          <span class="lang-es">{item.labelEs}</span>
+          <span class="lang-en">{item.labelEn}</span>
+        </span>
+      </div>
+    ))}
+  </div>
+
   <div class="w-full max-w-5xl h-px bg-border-subtle my-20"></div>
 </div>
