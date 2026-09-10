@@ -121,9 +121,19 @@
       selectedRuntime = 'bun';
     }
 
-    // Go / FastAPI / Spring do not use JS runtimes
-    if ((selectedBack === 'go' || selectedBack === 'fastapi' || selectedBack === 'spring') && selectedRuntime !== 'none') {
-      selectedRuntime = 'none';
+    // Non-JS backends (Go / FastAPI / Spring) MUST be 'none'
+    const isNonJs = ['go', 'fastapi', 'spring'].includes(selectedBack);
+    const isFullstack = selectedFront === 'nextjs' || selectedFront === 'nuxt' || selectedBack === 'fullstack-next' || selectedBack === 'fullstack-nuxt' || selectedBack === 'fullstack-sveltekit' || selectedBack === 'fullstack-astro' || selectedBack === 'fullstack-tanstack';
+
+    if (isNonJs) {
+      if (selectedRuntime !== 'none') {
+        selectedRuntime = 'none';
+      }
+    } else if (!isFullstack && selectedBack !== 'none') {
+      // JS/TS decoupled backends cannot be 'none'
+      if (selectedRuntime === 'none') {
+        selectedRuntime = 'node';
+      }
     }
 
     // API (tRPC / oRPC) requires TypeScript backend
@@ -217,7 +227,11 @@
     if (layerKey === 'frontend') selectedFront = 'none';
     else if (layerKey === 'native_frontend') selectedNativeFront = 'none';
     else if (layerKey === 'backend') selectedBack = 'none';
-    else if (layerKey === 'runtime') selectedRuntime = 'none';
+    else if (layerKey === 'runtime') {
+      const isNonJs = ['go', 'fastapi', 'spring'].includes(selectedBack);
+      const isFullstack = selectedFront === 'nextjs' || selectedFront === 'nuxt' || selectedBack === 'fullstack-next' || selectedBack === 'fullstack-nuxt' || selectedBack === 'fullstack-sveltekit' || selectedBack === 'fullstack-astro' || selectedBack === 'fullstack-tanstack';
+      selectedRuntime = (isNonJs || isFullstack || selectedBack === 'none') ? 'none' : 'node';
+    }
     else if (layerKey === 'orm') selectedOrm = 'none';
     else if (layerKey === 'api') selectedApi = 'none';
     else if (layerKey === 'auth') selectedAuth = 'none';
@@ -394,18 +408,20 @@
           tree.push({ type: 'file', depth: 4, name: 'App.css' });
           tree.push({ type: 'dir', depth: 4, name: 'components/' });
           tree.push({ type: 'file', depth: 5, name: 'Header.tsx' });
-        } else if (selectedFront === 'sveltekit') {
-          tree.push({ type: 'file', depth: 3, name: 'svelte.config.js' });
-          tree.push({ type: 'dir', depth: 3, name: 'src/' });
-          tree.push({ type: 'dir', depth: 4, name: 'routes/' });
-          tree.push({ type: 'file', depth: 5, name: '+layout.svelte' });
-          tree.push({ type: 'file', depth: 5, name: '+page.svelte', highlight: 'text-brand-primary' });
-          tree.push({ type: 'file', depth: 4, name: 'app.html' });
-        } else if (selectedFront === 'svelte') {
-          tree.push({ type: 'file', depth: 3, name: 'vite.config.ts' });
-          tree.push({ type: 'dir', depth: 3, name: 'src/' });
-          tree.push({ type: 'file', depth: 4, name: 'main.ts' });
-          tree.push({ type: 'file', depth: 4, name: 'App.svelte', highlight: 'text-brand-primary' });
+        } else if (selectedFront === 'svelte' || selectedFront === 'sveltekit') {
+          if (selectedBack === 'fullstack-sveltekit' || selectedFront === 'sveltekit') {
+            tree.push({ type: 'file', depth: 3, name: 'svelte.config.js' });
+            tree.push({ type: 'dir', depth: 3, name: 'src/' });
+            tree.push({ type: 'dir', depth: 4, name: 'routes/' });
+            tree.push({ type: 'file', depth: 5, name: '+layout.svelte' });
+            tree.push({ type: 'file', depth: 5, name: '+page.svelte', highlight: 'text-brand-primary' });
+            tree.push({ type: 'file', depth: 4, name: 'app.html' });
+          } else {
+            tree.push({ type: 'file', depth: 3, name: 'vite.config.ts' });
+            tree.push({ type: 'dir', depth: 3, name: 'src/' });
+            tree.push({ type: 'file', depth: 4, name: 'main.ts' });
+            tree.push({ type: 'file', depth: 4, name: 'App.svelte', highlight: 'text-brand-primary' });
+          }
         } else if (selectedFront === 'nuxt' || selectedFront === 'vue') {
           tree.push({ type: 'file', depth: 3, name: 'nuxt.config.ts' });
           tree.push({ type: 'file', depth: 3, name: 'app.vue', highlight: 'text-brand-primary' });

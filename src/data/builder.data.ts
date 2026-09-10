@@ -65,8 +65,6 @@ export const getLayers = (lang: string): Layer[] => {
         { id: 'nextjs', name: 'Next.js', desc: isEs ? 'Framework SSR de React, App Router.' : 'React SSR Framework, App Router.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglNextjsLogo, default: true },
         { id: 'react', name: 'React SPA', desc: isEs ? 'React SPA del lado del cliente, motor Vite.' : 'React Client-side SPA, Vite engine.', hoverColor: 'group-hover/btn:text-[#61dafb]', activeColor: 'text-[#61dafb]', iconComponent: SvglReactLogo },
         { id: 'nuxt', name: 'Nuxt', desc: isEs ? 'Framework SSR de Vue, enrutamiento basado en archivos.' : 'Vue SSR Framework, file-based routing.', hoverColor: 'group-hover/btn:text-[#00dc82]', activeColor: 'text-[#00dc82]', iconComponent: SvglNuxtLogo },
-        { id: 'vue', name: 'Vue SPA', desc: isEs ? 'Vue 3 SPA del lado del cliente, Composition API.' : 'Vue 3 Client-side SPA, Composition API.', hoverColor: 'group-hover/btn:text-[#42b883]', activeColor: 'text-[#42b883]', iconComponent: SvglVueLogo },
-        { id: 'sveltekit', name: 'SvelteKit', desc: isEs ? 'Framework SSR de Svelte, enrutamiento robusto.' : 'Svelte SSR Framework, robust routing.', hoverColor: 'group-hover/btn:text-[#ff3e00]', activeColor: 'text-[#ff3e00]', iconComponent: SvglSvelteLogo },
         { id: 'svelte', name: 'Svelte SPA', desc: isEs ? 'Svelte 5 SPA del lado del cliente, Runes.' : 'Svelte 5 Client-side SPA, Runes.', hoverColor: 'group-hover/btn:text-[#ff3e00]', activeColor: 'text-[#ff3e00]', iconComponent: SvglSvelteLogo },
         { id: 'astro', name: 'Astro', desc: isEs ? 'Arquitectura de islas, enfocada en contenido.' : 'Islands Architecture, content-driven.', hoverColor: 'group-hover/btn:text-[#ff5d01]', activeColor: 'text-[#ff5d01]', iconComponent: AstroIcon },
         { id: 'angular', name: 'Angular', desc: isEs ? 'Framework preparado para empresas por Google.' : 'Enterprise-ready framework by Google.', hoverColor: 'group-hover/btn:text-[#dd0031]', activeColor: 'text-[#dd0031]', iconComponent: SvglAngularLogo },
@@ -94,18 +92,16 @@ export const getLayers = (lang: string): Layer[] => {
       colorClass: 'text-brand-primary',
       options: [
         { id: 'hono', name: 'Hono', desc: isEs ? 'Framework web ultrarrápido para TypeScript' : 'Ultrafast TypeScript web framework', hoverColor: 'group-hover/btn:text-[#e36002]', activeColor: 'text-[#e36002]', iconComponent: SvglHonoLogo },
-        { id: 'elysia', name: 'Elysia', desc: isEs ? 'Framework web para TypeScript (Requiere Bun)' : 'TypeScript web framework (Requires Bun runtime)', hoverColor: 'group-hover/btn:text-[#42b883]', activeColor: 'text-[#42b883]', iconComponent: SvglBunLogo },
         { id: 'express', name: 'Express', desc: isEs ? 'Framework clásico y popular de Node.js' : 'Popular classic Node.js framework', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: SvglExpressjsLogo, default: true },
         { id: 'fastify', name: 'Fastify', desc: isEs ? 'Framework web rápido y de bajo consumo para Node.js' : 'Fast, low-overhead web framework for Node.js', hoverColor: 'group-hover/btn:text-[#ffffff]', activeColor: 'text-[#ffffff]', iconComponent: SvglFastifyLogo },
         { id: 'nestjs', name: 'NestJS', desc: isEs ? 'Framework empresarial para Node.js con TypeScript' : 'Enterprise architecture framework for Node.js', hoverColor: 'group-hover/btn:text-[#e0234e]', activeColor: 'text-[#e0234e]', iconComponent: SvglNestJSLogo },
         { id: 'spring', name: 'Spring Boot (Java)', desc: isEs ? 'Framework empresarial robusto en Java' : 'Robust enterprise Java framework', hoverColor: 'group-hover/btn:text-[#6db33f]', activeColor: 'text-[#6db33f]', iconComponent: SvglSpringLogo },
         { id: 'go', name: 'Go Fiber', desc: isEs ? 'Servidor web en Go ultrarrápido y concurrente' : 'Blazing fast concurrent Go web server', hoverColor: 'group-hover/btn:text-[#00add8]', activeColor: 'text-[#00add8]', iconComponent: SvglGoLogo },
         { id: 'fastapi', name: 'FastAPI', desc: isEs ? 'Framework moderno y de alto rendimiento en Python' : 'Modern, high-performance Python web framework', hoverColor: 'group-hover/btn:text-[#05998b]', activeColor: 'text-[#05998b]', iconComponent: SvglPythonLogo },
-        { id: 'convex', name: 'Convex', desc: isEs ? 'Backend reactivo con persistencia integrada' : 'Reactive backend-as-a-service with built-in data', hoverColor: 'group-hover/btn:text-[#f43f5e]', activeColor: 'text-[#f43f5e]', iconComponent: SvglMongoDBLogo },
         { id: 'fullstack-next', name: 'Fullstack Next.js', desc: isEs ? 'Usa las rutas de API integradas de Next.js' : 'Use Next.js built-in API routes', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglNextjsLogo },
         { id: 'fullstack-tanstack', name: 'Fullstack TanStack Start', desc: isEs ? 'Usa las rutas de API de TanStack Start (Requiere frontend React SPA)' : 'Use TanStack Start\'s built-in API routes (Requires React SPA frontend)', hoverColor: 'group-hover/btn:text-[#ff5d01]', activeColor: 'text-[#ff5d01]', iconComponent: SvglReactLogo },
         { id: 'fullstack-nuxt', name: 'Fullstack Nuxt', desc: isEs ? 'Usa las rutas de servidor de Nuxt (Requiere frontend Nuxt)' : 'Use Nuxt\'s built-in server routes (Requires Nuxt frontend)', hoverColor: 'group-hover/btn:text-[#00dc82]', activeColor: 'text-[#00dc82]', iconComponent: SvglNuxtLogo },
-        { id: 'fullstack-sveltekit', name: 'Fullstack SvelteKit', desc: isEs ? 'Usa las rutas de servidor de SvelteKit (Requiere frontend SvelteKit)' : 'Use SvelteKit\'s built-in server routes (Requires SvelteKit frontend)', hoverColor: 'group-hover/btn:text-[#ff3e00]', activeColor: 'text-[#ff3e00]', iconComponent: SvglSvelteLogo },
+        { id: 'fullstack-sveltekit', name: 'Fullstack SvelteKit', desc: isEs ? 'Usa las rutas de servidor de SvelteKit (Requiere frontend Svelte SPA)' : 'Use SvelteKit\'s built-in server routes (Requires Svelte SPA frontend)', hoverColor: 'group-hover/btn:text-[#ff3e00]', activeColor: 'text-[#ff3e00]', iconComponent: SvglSvelteLogo },
         { id: 'fullstack-astro', name: 'Fullstack Astro', desc: isEs ? 'Usa las rutas de API de Astro (Requiere frontend Astro)' : 'Use Astro\'s built-in API routes (Requires Astro frontend)', hoverColor: 'group-hover/btn:text-[#ff5d01]', activeColor: 'text-[#ff5d01]', iconComponent: AstroIcon },
         { id: 'none', name: isEs ? 'Sin Backend' : 'No Backend', desc: isEs ? 'Omitir integración de backend (solo frontend)' : 'Skip backend integration (frontend only)', isNone: true }
       ]
@@ -119,7 +115,6 @@ export const getLayers = (lang: string): Layer[] => {
       options: [
         { id: 'bun', name: 'Bun', desc: isEs ? 'Runtime y conjunto de herramientas rápidas de JS' : 'Fast JavaScript runtime & toolkit', hoverColor: 'group-hover/btn:text-[#fbf0e9]', activeColor: 'text-[#fbf0e9]', iconComponent: SvglBunLogo },
         { id: 'node', name: 'Node.js', desc: isEs ? 'Entorno de ejecución clásico de JavaScript' : 'JavaScript runtime environment', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: NodejsIcon, default: true },
-        { id: 'cloudflare', name: 'Cloudflare Workers', desc: isEs ? 'Entorno serverless para el edge' : 'Serverless runtime for the edge', hoverColor: 'group-hover/btn:text-[#f38020]', activeColor: 'text-[#f38020]', iconComponent: SvglRustLogo },
         { id: 'none', name: isEs ? 'Sin Runtime' : 'No Runtime', desc: isEs ? 'Sin entorno de ejecución específico' : 'No specific runtime', isNone: true }
       ]
     },
@@ -181,13 +176,10 @@ export const getLayers = (lang: string): Layer[] => {
       colorClass: 'text-brand-primary',
       options: [
         { id: 'zod', name: 'Zod', desc: isEs ? 'Validación de esquemas enfocada en TypeScript.' : 'TypeScript-first schema validation library.', hoverColor: 'group-hover/btn:text-[#3e67ad]', activeColor: 'text-[#3e67ad]', iconComponent: ZodIcon, default: true },
-        { id: 'valibot', name: 'Valibot', desc: isEs ? 'Validador de esquemas modular y ultraligero.' : 'Modular, ultra-light schema validator.', hoverColor: 'group-hover/btn:text-[#e0234e]', activeColor: 'text-[#e0234e]', iconComponent: SvglValibotLogo },
         { id: 'shadcn', name: 'shadcn/ui', desc: isEs ? 'Componentes accesibles y personalizables con Radix y Tailwind.' : 'Accessible, customizable UI components built with Radix & Tailwind.', hoverColor: 'group-hover/btn:text-white', activeColor: 'text-white', iconComponent: SvglShadcnLogo },
-        { id: 'tanstack-query', name: 'TanStack Query', desc: isEs ? 'Gestión y sincronización de estado asíncrono y caché.' : 'Powerful asynchronous state management & data fetching.', hoverColor: 'group-hover/btn:text-[#ff4154]', activeColor: 'text-[#ff4154]', iconComponent: SvglReactLogo },
         { id: 'motion', name: 'Motion', desc: isEs ? 'Librería de animaciones fluida y declarativa.' : 'Fluid and declarative animation library.', hoverColor: 'group-hover/btn:text-[#ff0055]', activeColor: 'text-[#ff0055]', iconComponent: MotionIcon },
         { id: 'lucide', name: 'Lucide', desc: isEs ? 'Set de iconos vectoriales consistentes y hermosos.' : 'Consistent and beautiful vector icon set.', hoverColor: 'group-hover/btn:text-[#f43f5e]', activeColor: 'text-[#f43f5e]', iconComponent: LucideIcon },
         { id: 'svgl', name: 'SVGL', desc: isEs ? 'Biblioteca de logotipos SVG para tecnología moderna.' : 'SVG logo library for modern tech stack.', hoverColor: 'group-hover/btn:text-[#38bdf8]', activeColor: 'text-[#38bdf8]', iconComponent: SvglIcon },
-        { id: 'sonner', name: 'Sonner', desc: isEs ? 'Componente de notificaciones toast elegante.' : 'Elegant toast notifications component.', hoverColor: 'group-hover/btn:text-[#10b981]', activeColor: 'text-[#10b981]', iconComponent: SonnerIcon },
         { id: 'none', name: isEs ? 'Sin Herramientas' : 'No Tool', desc: isEs ? 'Sin herramientas de utilidad seleccionadas.' : 'No utility tools selected.', isNone: true }
       ]
     },
@@ -248,20 +240,6 @@ export const getInfrastructureOptions = (lang: string): InfraOption[] => {
       description: isEs ? 'Configurar workflows de GitHub Actions para CI/CD continuo' : 'Configure GitHub Actions workflows for continuous CI/CD',
       iconComponent: SvglGithubLogo,
       bindingKey: 'withCi'
-    },
-    {
-      id: 'linter',
-      title: isEs ? 'Configuración de Biome / Linter' : 'Biome / Linter Config',
-      description: isEs ? 'Añadir reglas estándar de formateo y linter de Biome' : 'Add standard Biome formatting and linting rules',
-      iconComponent: SvglBiomeLogo,
-      bindingKey: 'withLinter'
-    },
-    {
-      id: 'testing',
-      title: isEs ? 'Entorno de Pruebas Unitarias' : 'Unit Testing Environment',
-      description: isEs ? 'Configurar Vitest y suite de pruebas unitarias' : 'Set up Vitest and unit testing environment suite',
-      iconComponent: TestTube,
-      bindingKey: 'withTesting'
     },
     {
       id: 'turborepo',

@@ -89,7 +89,7 @@
       if (selectedBack === 'fullstack-next' && optionId !== 'nextjs') return true;
       if (selectedBack === 'fullstack-tanstack' && optionId !== 'react') return true;
       if (selectedBack === 'fullstack-nuxt' && optionId !== 'nuxt') return true;
-      if (selectedBack === 'fullstack-sveltekit' && optionId !== 'sveltekit') return true;
+      if (selectedBack === 'fullstack-sveltekit' && optionId !== 'svelte') return true;
       if (selectedBack === 'fullstack-astro' && optionId !== 'astro') return true;
     }
     if (layerKey === 'backend') {
@@ -97,7 +97,7 @@
         if (optionId === 'fullstack-next' && selectedFront !== 'nextjs') return true;
         if (optionId === 'fullstack-tanstack' && selectedFront !== 'react') return true;
         if (optionId === 'fullstack-nuxt' && selectedFront !== 'nuxt') return true;
-        if (optionId === 'fullstack-sveltekit' && selectedFront !== 'sveltekit') return true;
+        if (optionId === 'fullstack-sveltekit' && selectedFront !== 'svelte') return true;
         if (optionId === 'fullstack-astro' && selectedFront !== 'astro') return true;
       }
       if (optionId === 'elysia' && (selectedRuntime === 'node' || selectedRuntime === 'cloudflare')) {
@@ -105,8 +105,18 @@
       }
     }
     if (layerKey === 'runtime') {
-      if (selectedBack === 'elysia' && optionId !== 'bun') return true;
-      if ((selectedBack === 'go' || selectedBack === 'fastapi') && optionId !== 'none') return true;
+      const isNonJs = ['go', 'fastapi', 'spring'].includes(selectedBack);
+      const isFullstack = selectedFront === 'nextjs' || selectedFront === 'nuxt' || selectedBack === 'fullstack-next' || selectedBack === 'fullstack-nuxt' || selectedBack === 'fullstack-sveltekit' || selectedBack === 'fullstack-astro' || selectedBack === 'fullstack-tanstack';
+
+      if (isNonJs) {
+        // Non-JS backends MUST be 'none'. Node and Bun are disabled.
+        if (optionId !== 'none') return true;
+      } else {
+        // JS/TS environment:
+        if (selectedBack === 'elysia' && optionId !== 'bun') return true;
+        // 'none' is ONLY allowed if it's a Fullstack setup or if there's no backend
+        if (optionId === 'none' && !isFullstack && selectedBack !== 'none') return true;
+      }
     }
     if (layerKey === 'orm') {
       if (selectedBack === 'convex' && optionId !== 'none') return true;
@@ -133,7 +143,7 @@
       if (selectedBack === 'fullstack-next' && optionId !== 'nextjs') return lang === 'es' ? 'Requiere Next.js para Fullstack' : 'Requires Next.js for Fullstack';
       if (selectedBack === 'fullstack-tanstack' && optionId !== 'react') return lang === 'es' ? 'Requiere React para Fullstack' : 'Requires React for Fullstack';
       if (selectedBack === 'fullstack-nuxt' && optionId !== 'nuxt') return lang === 'es' ? 'Requiere Nuxt para Fullstack' : 'Requires Nuxt for Fullstack';
-      if (selectedBack === 'fullstack-sveltekit' && optionId !== 'sveltekit') return lang === 'es' ? 'Requiere SvelteKit para Fullstack' : 'Requires SvelteKit for Fullstack';
+      if (selectedBack === 'fullstack-sveltekit' && optionId !== 'svelte') return lang === 'es' ? 'Requiere Svelte SPA para Fullstack' : 'Requires Svelte SPA for Fullstack';
       if (selectedBack === 'fullstack-astro' && optionId !== 'astro') return lang === 'es' ? 'Requiere Astro para Fullstack' : 'Requires Astro for Fullstack';
     }
     if (layerKey === 'backend') {
@@ -141,7 +151,7 @@
         if (optionId === 'fullstack-next' && selectedFront !== 'nextjs') return lang === 'es' ? 'Requiere frontend Next.js' : 'Requires Next.js frontend';
         if (optionId === 'fullstack-tanstack' && selectedFront !== 'react') return lang === 'es' ? 'Requiere frontend React SPA' : 'Requires React SPA frontend';
         if (optionId === 'fullstack-nuxt' && selectedFront !== 'nuxt') return lang === 'es' ? 'Requiere frontend Nuxt' : 'Requires Nuxt frontend';
-        if (optionId === 'fullstack-sveltekit' && selectedFront !== 'sveltekit') return lang === 'es' ? 'Requiere frontend SvelteKit' : 'Requires SvelteKit frontend';
+        if (optionId === 'fullstack-sveltekit' && selectedFront !== 'svelte') return lang === 'es' ? 'Requiere frontend Svelte SPA' : 'Requires Svelte SPA frontend';
         if (optionId === 'fullstack-astro' && selectedFront !== 'astro') return lang === 'es' ? 'Requiere frontend Astro' : 'Requires Astro frontend';
       }
       if (optionId === 'elysia' && (selectedRuntime === 'node' || selectedRuntime === 'cloudflare')) {
@@ -149,17 +159,25 @@
       }
     }
     if (layerKey === 'runtime') {
+      const isNonJs = ['go', 'fastapi', 'spring'].includes(selectedBack);
+      const isFullstack = selectedFront === 'nextjs' || selectedFront === 'nuxt' || selectedBack === 'fullstack-next' || selectedBack === 'fullstack-nuxt' || selectedBack === 'fullstack-sveltekit' || selectedBack === 'fullstack-astro' || selectedBack === 'fullstack-tanstack';
+
+      if (isNonJs && optionId !== 'none') {
+        return lang === 'es'
+          ? 'Go, Python y Java no utilizan runtimes de JavaScript; deben ser "Sin runtime"'
+          : 'Go, Python and Java do not use JavaScript runtimes; they must use "No Runtime"';
+      }
       if (selectedBack === 'elysia' && optionId !== 'bun') {
         return lang === 'es' ? 'Elysia solo es compatible con Bun' : 'Elysia is only compatible with Bun';
       }
-      if ((selectedBack === 'go' || selectedBack === 'fastapi') && optionId !== 'none') {
-        return lang === 'es' ? 'Go y Python gestionan su propio runtime' : 'Go and Python manage their own runtime';
+      if (optionId === 'none' && !isFullstack && selectedBack !== 'none') {
+        return lang === 'es'
+          ? 'Los backends de Node/TS requieren un entorno de ejecución (Node.js o Bun). "Sin runtime" solo está disponible en frameworks Fullstack'
+          : 'Node/TS backends require a runtime (Node.js or Bun). "No Runtime" is only available in Fullstack frameworks';
       }
     }
     if (layerKey === 'orm') {
-      if (selectedBack === 'convex' && optionId !== 'none') {
-        return lang === 'es' ? 'Convex incluye su propio motor de persistencia' : 'Convex includes its own persistence engine';
-      }
+      if (selectedBack === 'convex' && optionId !== 'none') return true;
       if (optionId === 'mongoose' && selectedDb !== 'mongodb') {
         return lang === 'es' ? 'Mongoose requiere base de datos MongoDB' : 'Mongoose requires MongoDB database';
       }
@@ -224,7 +242,7 @@
       } else if (selectedBack === 'fullstack-nuxt' && selectedFront === 'none') {
         selectedFront = 'nuxt';
       } else if (selectedBack === 'fullstack-sveltekit' && selectedFront === 'none') {
-        selectedFront = 'sveltekit';
+        selectedFront = 'svelte';
       } else if (selectedBack === 'fullstack-astro' && selectedFront === 'none') {
         selectedFront = 'astro';
       }
