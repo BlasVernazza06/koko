@@ -1,4 +1,4 @@
-﻿export interface TechOption {
+export interface TechOption {
   id: string;
   name: string;
   desc: string;
@@ -41,6 +41,8 @@ export interface KokoTemplateConfig {
   selectedEmail: string;
   withDocker: boolean;
   withTurborepo: boolean;
+  selectedOrm?: string;
+  selectedApi?: string;
   selectedRuntime?: string;
   withCi?: boolean;
   withLinter?: boolean;

@@ -29,12 +29,12 @@
 
   function resetToDefaults() {
     projectName = 'my-koko-app';
-    selectedFront = getDefault('frontend', 'nextjs');
+    selectedFront = getDefault('frontend', 'next');
     selectedNativeFront = getDefault('native_frontend', 'none');
-    selectedBack = getDefault('backend', 'express');
-    selectedRuntime = getDefault('runtime', 'node');
+    selectedBack = getDefault('backend', 'hono');
+    selectedRuntime = getDefault('runtime', 'bun');
     selectedOrm = getDefault('orm', 'drizzle');
-    selectedApi = getDefault('api', 'none');
+    selectedApi = getDefault('api', 'trpc');
     selectedPackageManager = getDefault('package_manager', 'pnpm');
     selectedTools = getDefault('tools', 'zod');
     selectedPayments = getDefault('payments', 'none');
@@ -56,7 +56,7 @@
   // Svelte 5 bindable props
   let {
     projectName = $bindable('my-koko-app'),
-    selectedFront = $bindable('nextjs'),
+    selectedFront = $bindable('next'),
     selectedNativeFront = $bindable('none'),
     selectedBack = $bindable('hono'),
     selectedRuntime = $bindable('bun'),

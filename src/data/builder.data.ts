@@ -28,6 +28,7 @@ const SvglStripeLogo = '/logos/stripe.svg';
 const SvglLemonSqueezyLogo = '/logos/lemonsqueezy.svg';
 const SvglMercadoPagoLogo = '/logos/mercado-pago.svg';
 const SvglResendLogo = '/logos/resend.svg';
+const SvglBrevoLogo = '/logos/brevo.svg';
 const SvglNPMLogo = '/logos/npm.svg';
 const SvglPnpmLogo = '/logos/pnpm.svg';
 const SvglExpressjsLogo = '/logos/express.svg';
@@ -62,11 +63,13 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Monitor,
       colorClass: 'text-brand-secondary',
       options: [
-        { id: 'nextjs', name: 'Next.js', desc: isEs ? 'Framework SSR de React, App Router.' : 'React SSR Framework, App Router.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglNextjsLogo, default: true },
-        { id: 'react', name: 'React SPA', desc: isEs ? 'React SPA del lado del cliente, motor Vite.' : 'React Client-side SPA, Vite engine.', hoverColor: 'group-hover/btn:text-[#61dafb]', activeColor: 'text-[#61dafb]', iconComponent: SvglReactLogo },
+        { id: 'next', name: 'Next.js', desc: isEs ? 'Framework SSR de React, App Router.' : 'React SSR Framework, App Router.', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglNextjsLogo, default: true },
+        { id: 'tanstack-start', name: 'TanStack Start', desc: isEs ? 'Framework fullstack moderno con tipado de extremo a extremo.' : 'Modern fullstack framework with end-to-end type safety.', hoverColor: 'group-hover/btn:text-[#ff5d01]', activeColor: 'text-[#ff5d01]', iconComponent: SvglReactLogo },
+        { id: 'tanstack-router', name: 'TanStack Router', desc: isEs ? 'React SPA con enrutamiento tipado seguro del lado del cliente.' : 'React SPA with typesafe client-side routing.', hoverColor: 'group-hover/btn:text-[#61dafb]', activeColor: 'text-[#61dafb]', iconComponent: SvglReactLogo },
+        { id: 'react-router', name: 'React Router', desc: isEs ? 'React SPA tradicional con Vite y React Router v7.' : 'Traditional React SPA with Vite and React Router v7.', hoverColor: 'group-hover/btn:text-[#ca424b]', activeColor: 'text-[#ca424b]', iconComponent: SvglReactLogo },
         { id: 'nuxt', name: 'Nuxt', desc: isEs ? 'Framework SSR de Vue, enrutamiento basado en archivos.' : 'Vue SSR Framework, file-based routing.', hoverColor: 'group-hover/btn:text-[#00dc82]', activeColor: 'text-[#00dc82]', iconComponent: SvglNuxtLogo },
         { id: 'svelte', name: 'Svelte SPA', desc: isEs ? 'Svelte 5 SPA del lado del cliente, Runes.' : 'Svelte 5 Client-side SPA, Runes.', hoverColor: 'group-hover/btn:text-[#ff3e00]', activeColor: 'text-[#ff3e00]', iconComponent: SvglSvelteLogo },
-        { id: 'astro', name: 'Astro', desc: isEs ? 'Arquitectura de islas, enfocada en contenido.' : 'Islands Architecture, content-driven.', hoverColor: 'group-hover/btn:text-[#ff5d01]', activeColor: 'text-[#ff5d01]', iconComponent: AstroIcon },
+        { id: 'astro', name: 'Astro', desc: isEs ? 'Arquitectura de islas, enfocada en contenido y rendimiento.' : 'Islands Architecture, content and performance driven.', hoverColor: 'group-hover/btn:text-[#ff5d01]', activeColor: 'text-[#ff5d01]', iconComponent: AstroIcon },
         { id: 'angular', name: 'Angular', desc: isEs ? 'Framework preparado para empresas por Google.' : 'Enterprise-ready framework by Google.', hoverColor: 'group-hover/btn:text-[#dd0031]', activeColor: 'text-[#dd0031]', iconComponent: SvglAngularLogo },
         { id: 'none', name: isEs ? 'Sin Frontend' : 'No Frontend', desc: isEs ? 'No crear estructura para frontend.' : 'No frontend framework scaffold.', isNone: true }
       ]
@@ -78,9 +81,9 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Smartphone,
       colorClass: 'text-brand-secondary',
       options: [
-        { id: 'expo-bare', name: 'Expo + Bare', desc: isEs ? 'Expo con StyleSheet (sin librería de estilos)' : 'Expo with StyleSheet (no styling library)', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: ExpoIcon },
-        { id: 'expo-uniwind', name: 'Expo + Uniwind', desc: isEs ? 'Bindings rápidos de Tailwind para React Native con HeroUI Native' : 'Fastest Tailwind bindings for React Native with HeroUI Native', hoverColor: 'group-hover/btn:text-[#38bdf8]', activeColor: 'text-[#38bdf8]', iconComponent: ExpoIcon },
-        { id: 'expo-unistyles', name: 'Expo + Unistyles', desc: isEs ? 'Expo con Unistyles (estilos con tipado seguro)' : 'Expo with Unistyles (type-safe styling)', hoverColor: 'group-hover/btn:text-[#ff3e00]', activeColor: 'text-[#ff3e00]', iconComponent: ExpoIcon },
+        { id: 'native-bare', name: 'Expo + Bare', desc: isEs ? 'Expo con StyleSheet (sin librería de estilos)' : 'Expo with StyleSheet (no styling library)', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: ExpoIcon },
+        { id: 'native-uniwind', name: 'Expo + Uniwind', desc: isEs ? 'Bindings rápidos de Tailwind para React Native con HeroUI Native' : 'Fastest Tailwind bindings for React Native with HeroUI Native', hoverColor: 'group-hover/btn:text-[#38bdf8]', activeColor: 'text-[#38bdf8]', iconComponent: ExpoIcon },
+        { id: 'native-unistyles', name: 'Expo + Unistyles', desc: isEs ? 'Expo con Unistyles (estilos con tipado seguro)' : 'Expo with Unistyles (type-safe styling)', hoverColor: 'group-hover/btn:text-[#ff3e00]', activeColor: 'text-[#ff3e00]', iconComponent: ExpoIcon },
         { id: 'none', name: isEs ? 'Sin Frontend Nativo' : 'No Native Frontend', desc: isEs ? 'Sin frontend nativo para móvil' : 'No native mobile frontend', isNone: true, default: true }
       ]
     },
@@ -91,18 +94,14 @@ export const getLayers = (lang: string): Layer[] => {
       icon: Server,
       colorClass: 'text-brand-primary',
       options: [
-        { id: 'hono', name: 'Hono', desc: isEs ? 'Framework web ultrarrápido para TypeScript' : 'Ultrafast TypeScript web framework', hoverColor: 'group-hover/btn:text-[#e36002]', activeColor: 'text-[#e36002]', iconComponent: SvglHonoLogo },
-        { id: 'express', name: 'Express', desc: isEs ? 'Framework clásico y popular de Node.js' : 'Popular classic Node.js framework', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: SvglExpressjsLogo, default: true },
+        { id: 'self', name: isEs ? 'Monolítico (Self)' : 'Monolithic (Self)', desc: isEs ? 'Usa las rutas de API/servidor del framework frontend elegido' : 'Uses built-in API/server routes from the selected frontend', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglNextjsLogo },
+        { id: 'hono', name: 'Hono', desc: isEs ? 'Framework web ultrarrápido para TypeScript' : 'Ultrafast TypeScript web framework', hoverColor: 'group-hover/btn:text-[#e36002]', activeColor: 'text-[#e36002]', iconComponent: SvglHonoLogo, default: true },
+        { id: 'express', name: 'Express', desc: isEs ? 'Framework clásico y popular de Node.js' : 'Popular classic Node.js framework', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: SvglExpressjsLogo },
         { id: 'fastify', name: 'Fastify', desc: isEs ? 'Framework web rápido y de bajo consumo para Node.js' : 'Fast, low-overhead web framework for Node.js', hoverColor: 'group-hover/btn:text-[#ffffff]', activeColor: 'text-[#ffffff]', iconComponent: SvglFastifyLogo },
         { id: 'nestjs', name: 'NestJS', desc: isEs ? 'Framework empresarial para Node.js con TypeScript' : 'Enterprise architecture framework for Node.js', hoverColor: 'group-hover/btn:text-[#e0234e]', activeColor: 'text-[#e0234e]', iconComponent: SvglNestJSLogo },
         { id: 'spring', name: 'Spring Boot (Java)', desc: isEs ? 'Framework empresarial robusto en Java' : 'Robust enterprise Java framework', hoverColor: 'group-hover/btn:text-[#6db33f]', activeColor: 'text-[#6db33f]', iconComponent: SvglSpringLogo },
         { id: 'go', name: 'Go Fiber', desc: isEs ? 'Servidor web en Go ultrarrápido y concurrente' : 'Blazing fast concurrent Go web server', hoverColor: 'group-hover/btn:text-[#00add8]', activeColor: 'text-[#00add8]', iconComponent: SvglGoLogo },
         { id: 'fastapi', name: 'FastAPI', desc: isEs ? 'Framework moderno y de alto rendimiento en Python' : 'Modern, high-performance Python web framework', hoverColor: 'group-hover/btn:text-[#05998b]', activeColor: 'text-[#05998b]', iconComponent: SvglPythonLogo },
-        { id: 'fullstack-next', name: 'Fullstack Next.js', desc: isEs ? 'Usa las rutas de API integradas de Next.js' : 'Use Next.js built-in API routes', hoverColor: 'group-hover/btn:text-brand-secondary', activeColor: 'text-brand-secondary', iconComponent: SvglNextjsLogo },
-        { id: 'fullstack-tanstack', name: 'Fullstack TanStack Start', desc: isEs ? 'Usa las rutas de API de TanStack Start (Requiere frontend React SPA)' : 'Use TanStack Start\'s built-in API routes (Requires React SPA frontend)', hoverColor: 'group-hover/btn:text-[#ff5d01]', activeColor: 'text-[#ff5d01]', iconComponent: SvglReactLogo },
-        { id: 'fullstack-nuxt', name: 'Fullstack Nuxt', desc: isEs ? 'Usa las rutas de servidor de Nuxt (Requiere frontend Nuxt)' : 'Use Nuxt\'s built-in server routes (Requires Nuxt frontend)', hoverColor: 'group-hover/btn:text-[#00dc82]', activeColor: 'text-[#00dc82]', iconComponent: SvglNuxtLogo },
-        { id: 'fullstack-sveltekit', name: 'Fullstack SvelteKit', desc: isEs ? 'Usa las rutas de servidor de SvelteKit (Requiere frontend Svelte SPA)' : 'Use SvelteKit\'s built-in server routes (Requires Svelte SPA frontend)', hoverColor: 'group-hover/btn:text-[#ff3e00]', activeColor: 'text-[#ff3e00]', iconComponent: SvglSvelteLogo },
-        { id: 'fullstack-astro', name: 'Fullstack Astro', desc: isEs ? 'Usa las rutas de API de Astro (Requiere frontend Astro)' : 'Use Astro\'s built-in API routes (Requires Astro frontend)', hoverColor: 'group-hover/btn:text-[#ff5d01]', activeColor: 'text-[#ff5d01]', iconComponent: AstroIcon },
         { id: 'none', name: isEs ? 'Sin Backend' : 'No Backend', desc: isEs ? 'Omitir integración de backend (solo frontend)' : 'Skip backend integration (frontend only)', isNone: true }
       ]
     },
@@ -217,7 +216,8 @@ export const getLayers = (lang: string): Layer[] => {
       colorClass: 'text-brand-primary',
       options: [
         { id: 'none', name: isEs ? 'Sin Correo' : 'No Email', desc: isEs ? 'Omitir integración de servicio de correo' : 'Skip email service integration', isNone: true, default: true },
-        { id: 'resend', name: 'Resend', desc: isEs ? 'Plataforma de correo moderna para desarrolladores' : 'Modern email platform for developers', hoverColor: 'group-hover/btn:text-white', activeColor: 'text-white', iconComponent: SvglResendLogo }
+        { id: 'resend', name: 'Resend', desc: isEs ? 'Plataforma de correo moderna para desarrolladores' : 'Modern email platform for developers', hoverColor: 'group-hover/btn:text-white', activeColor: 'text-white', iconComponent: SvglResendLogo },
+        { id: 'brevo', name: 'Brevo', desc: isEs ? 'Plataforma de correo transaccional y automatización' : 'Transactional email and marketing automation platform', hoverColor: 'group-hover/btn:text-[#0B996F]', activeColor: 'text-[#0B996F]', iconComponent: SvglBrevoLogo }
       ]
     }
   ];

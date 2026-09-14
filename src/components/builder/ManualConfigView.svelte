@@ -20,7 +20,7 @@
 
   let {
     projectName = $bindable('my-koko-app'),
-    selectedFront = $bindable('nextjs'),
+    selectedFront = $bindable('next'),
     selectedNativeFront = $bindable('none'),
     selectedBack = $bindable('hono'),
     selectedRuntime = $bindable('bun'),
@@ -84,131 +84,197 @@
   }
 
   // Constraints helper
-  function isOptionDisabled(layerKey: string, optionId: string) {
-    if (layerKey === 'frontend') {
-      if (selectedBack === 'fullstack-next' && optionId !== 'nextjs') return true;
-      if (selectedBack === 'fullstack-tanstack' && optionId !== 'react') return true;
-      if (selectedBack === 'fullstack-nuxt' && optionId !== 'nuxt') return true;
-      if (selectedBack === 'fullstack-sveltekit' && optionId !== 'svelte') return true;
-      if (selectedBack === 'fullstack-astro' && optionId !== 'astro') return true;
-    }
-    if (layerKey === 'backend') {
-      if (selectedFront !== 'none') {
-        if (optionId === 'fullstack-next' && selectedFront !== 'nextjs') return true;
-        if (optionId === 'fullstack-tanstack' && selectedFront !== 'react') return true;
-        if (optionId === 'fullstack-nuxt' && selectedFront !== 'nuxt') return true;
-        if (optionId === 'fullstack-sveltekit' && selectedFront !== 'svelte') return true;
-        if (optionId === 'fullstack-astro' && selectedFront !== 'astro') return true;
-      }
-      if (optionId === 'elysia' && (selectedRuntime === 'node' || selectedRuntime === 'cloudflare')) {
-        return true;
-      }
-    }
-    if (layerKey === 'runtime') {
-      const isNonJs = ['go', 'fastapi', 'spring'].includes(selectedBack);
-      const isFullstack = selectedFront === 'nextjs' || selectedFront === 'nuxt' || selectedBack === 'fullstack-next' || selectedBack === 'fullstack-nuxt' || selectedBack === 'fullstack-sveltekit' || selectedBack === 'fullstack-astro' || selectedBack === 'fullstack-tanstack';
+  function isOptionDisabled(layerKey: string, optionId: string): boolean {
+    const FULLSTACK_FRONTENDS = ['next', 'tanstack-start', 'nuxt', 'svelte', 'astro'];
+    const isNonJs = ['go', 'fastapi', 'spring'].includes(selectedBack);
 
-      if (isNonJs) {
-        // Non-JS backends MUST be 'none'. Node and Bun are disabled.
+    if (layerKey === 'frontend') {
+      if (selectedBack === 'self' && !FULLSTACK_FRONTENDS.includes(optionId)) return true;
+      if (selectedBack === 'self' && selectedAuth === 'clerk' && !['next', 'tanstack-start'].includes(optionId)) return true;
+      if (selectedApi === 'trpc' && ['nuxt', 'svelte', 'astro', 'angular'].includes(optionId)) return true;
+      if (selectedAuth === 'clerk' && ['nuxt', 'svelte', 'astro', 'angular'].includes(optionId)) return true;
+    }
+
+    if (layerKey === 'backend') {
+      if (optionId === 'self') {
+        if (!FULLSTACK_FRONTENDS.includes(selectedFront)) return true;
+        if (selectedAuth === 'clerk' && !['next', 'tanstack-start'].includes(selectedFront)) return true;
+      }
+    }
+
+    if (layerKey === 'runtime') {
+      if (selectedBack === 'self' || isNonJs || selectedBack === 'none') {
         if (optionId !== 'none') return true;
       } else {
-        // JS/TS environment:
-        if (selectedBack === 'elysia' && optionId !== 'bun') return true;
-        // 'none' is ONLY allowed if it's a Fullstack setup or if there's no backend
-        if (optionId === 'none' && !isFullstack && selectedBack !== 'none') return true;
+        // Dedicated TS/JS servers (hono, express, fastify, nestjs)
+        if (optionId === 'none') return true;
       }
     }
+
     if (layerKey === 'orm') {
-      if (selectedBack === 'convex' && optionId !== 'none') return true;
+      if (selectedBack === 'none' && optionId !== 'none') return true;
+      if (selectedDb === 'none' && optionId !== 'none') return true;
       if (optionId === 'mongoose' && selectedDb !== 'mongodb') return true;
-      if (optionId === 'drizzle' && (selectedDb === 'mongodb' || selectedDb === 'none')) return true;
-      if (optionId === 'prisma' && selectedDb === 'none') return true;
+      if (optionId === 'drizzle' && selectedDb === 'mongodb') return true;
     }
+
     if (layerKey === 'db') {
-      if (selectedBack === 'convex' && optionId !== 'none') return true;
+      if (selectedBack === 'none' && optionId !== 'none') return true;
       if (selectedOrm === 'mongoose' && optionId !== 'mongodb') return true;
       if (selectedOrm === 'drizzle' && optionId === 'mongodb') return true;
     }
+
     if (layerKey === 'api') {
-      if ((selectedBack === 'go' || selectedBack === 'fastapi') && (optionId === 'trpc' || optionId === 'orpc')) return true;
+      if (selectedBack === 'none' && optionId !== 'none') return true;
+      if (isNonJs && optionId !== 'none') return true;
+      if (optionId === 'trpc' && ['nuxt', 'svelte', 'astro', 'angular'].includes(selectedFront)) return true;
     }
+
+    if (layerKey === 'auth') {
+      if (selectedBack === 'none' && optionId !== 'none') return true;
+      if (optionId === 'clerk') {
+        if (['nuxt', 'svelte', 'astro', 'angular'].includes(selectedFront)) return true;
+        if (selectedBack === 'self' && !['next', 'tanstack-start'].includes(selectedFront)) return true;
+      }
+    }
+
+    if (layerKey === 'payments') {
+      if (selectedBack === 'none' && optionId !== 'none') return true;
+      if (selectedAuth === 'none' && optionId !== 'none') return true;
+      if (optionId === 'polar' && selectedAuth !== 'better-auth') return true;
+    }
+
+    if (layerKey === 'email') {
+      if (selectedBack === 'none' && optionId !== 'none') return true;
+    }
+
     if (layerKey === 'tools') {
       if (optionId === 'shadcn' && selectedFront === 'none') return true;
     }
+
     return false;
   }
 
-  function getDisabledReason(layerKey: string, optionId: string) {
-    if (layerKey === 'frontend') {
-      if (selectedBack === 'fullstack-next' && optionId !== 'nextjs') return lang === 'es' ? 'Requiere Next.js para Fullstack' : 'Requires Next.js for Fullstack';
-      if (selectedBack === 'fullstack-tanstack' && optionId !== 'react') return lang === 'es' ? 'Requiere React para Fullstack' : 'Requires React for Fullstack';
-      if (selectedBack === 'fullstack-nuxt' && optionId !== 'nuxt') return lang === 'es' ? 'Requiere Nuxt para Fullstack' : 'Requires Nuxt for Fullstack';
-      if (selectedBack === 'fullstack-sveltekit' && optionId !== 'svelte') return lang === 'es' ? 'Requiere Svelte SPA para Fullstack' : 'Requires Svelte SPA for Fullstack';
-      if (selectedBack === 'fullstack-astro' && optionId !== 'astro') return lang === 'es' ? 'Requiere Astro para Fullstack' : 'Requires Astro for Fullstack';
-    }
-    if (layerKey === 'backend') {
-      if (selectedFront !== 'none') {
-        if (optionId === 'fullstack-next' && selectedFront !== 'nextjs') return lang === 'es' ? 'Requiere frontend Next.js' : 'Requires Next.js frontend';
-        if (optionId === 'fullstack-tanstack' && selectedFront !== 'react') return lang === 'es' ? 'Requiere frontend React SPA' : 'Requires React SPA frontend';
-        if (optionId === 'fullstack-nuxt' && selectedFront !== 'nuxt') return lang === 'es' ? 'Requiere frontend Nuxt' : 'Requires Nuxt frontend';
-        if (optionId === 'fullstack-sveltekit' && selectedFront !== 'svelte') return lang === 'es' ? 'Requiere frontend Svelte SPA' : 'Requires Svelte SPA frontend';
-        if (optionId === 'fullstack-astro' && selectedFront !== 'astro') return lang === 'es' ? 'Requiere frontend Astro' : 'Requires Astro frontend';
-      }
-      if (optionId === 'elysia' && (selectedRuntime === 'node' || selectedRuntime === 'cloudflare')) {
-        return lang === 'es' ? 'Elysia requiere runtime Bun' : 'Elysia requires Bun runtime';
-      }
-    }
-    if (layerKey === 'runtime') {
-      const isNonJs = ['go', 'fastapi', 'spring'].includes(selectedBack);
-      const isFullstack = selectedFront === 'nextjs' || selectedFront === 'nuxt' || selectedBack === 'fullstack-next' || selectedBack === 'fullstack-nuxt' || selectedBack === 'fullstack-sveltekit' || selectedBack === 'fullstack-astro' || selectedBack === 'fullstack-tanstack';
+  function getDisabledReason(layerKey: string, optionId: string): string {
+    const isEs = lang === 'es';
+    const FULLSTACK_FRONTENDS = ['next', 'tanstack-start', 'nuxt', 'svelte', 'astro'];
+    const isNonJs = ['go', 'fastapi', 'spring'].includes(selectedBack);
 
-      if (isNonJs && optionId !== 'none') {
-        return lang === 'es'
-          ? 'Go, Python y Java no utilizan runtimes de JavaScript; deben ser "Sin runtime"'
-          : 'Go, Python and Java do not use JavaScript runtimes; they must use "No Runtime"';
+    if (layerKey === 'frontend') {
+      if (selectedBack === 'self' && !FULLSTACK_FRONTENDS.includes(optionId)) {
+        return isEs ? 'El backend Monolítico (Self) requiere un framework fullstack' : 'Monolithic (Self) backend requires a fullstack framework';
       }
-      if (selectedBack === 'elysia' && optionId !== 'bun') {
-        return lang === 'es' ? 'Elysia solo es compatible con Bun' : 'Elysia is only compatible with Bun';
+      if (selectedBack === 'self' && selectedAuth === 'clerk' && !['next', 'tanstack-start'].includes(optionId)) {
+        return isEs ? 'Clerk en modo Self solo está soportado en Next.js y TanStack Start' : 'Clerk in Self mode is only supported in Next.js and TanStack Start';
       }
-      if (optionId === 'none' && !isFullstack && selectedBack !== 'none') {
-        return lang === 'es'
-          ? 'Los backends de Node/TS requieren un entorno de ejecución (Node.js o Bun). "Sin runtime" solo está disponible en frameworks Fullstack'
-          : 'Node/TS backends require a runtime (Node.js or Bun). "No Runtime" is only available in Fullstack frameworks';
+      if (selectedApi === 'trpc' && ['nuxt', 'svelte', 'astro', 'angular'].includes(optionId)) {
+        return isEs ? 'tRPC requiere un frontend en el ecosistema React' : 'tRPC requires a React ecosystem frontend';
+      }
+      if (selectedAuth === 'clerk' && ['nuxt', 'svelte', 'astro', 'angular'].includes(optionId)) {
+        return isEs ? 'Clerk requiere un frontend en el ecosistema React' : 'Clerk requires a React ecosystem frontend';
       }
     }
+
+    if (layerKey === 'backend') {
+      if (optionId === 'self') {
+        if (!FULLSTACK_FRONTENDS.includes(selectedFront)) {
+          return isEs ? 'El modo Self requiere un frontend fullstack (Next.js, TanStack Start, Nuxt, Svelte o Astro)' : 'Self mode requires a fullstack frontend (Next.js, TanStack Start, Nuxt, Svelte or Astro)';
+        }
+        if (selectedAuth === 'clerk' && !['next', 'tanstack-start'].includes(selectedFront)) {
+          return isEs ? 'Clerk en modo Self requiere Next.js o TanStack Start' : 'Clerk in Self mode requires Next.js or TanStack Start';
+        }
+      }
+    }
+
+    if (layerKey === 'runtime') {
+      if (selectedBack === 'self' || isNonJs || selectedBack === 'none') {
+        if (optionId !== 'none') {
+          return isEs ? 'No aplica runtime de Node/Bun para este tipo de backend' : 'Node/Bun runtime does not apply for this backend';
+        }
+      } else {
+        if (optionId === 'none') {
+          return isEs ? 'Los servidores dedicados requieren un runtime (Node.js o Bun)' : 'Dedicated servers require a runtime (Node.js or Bun)';
+        }
+      }
+    }
+
     if (layerKey === 'orm') {
-      if (selectedBack === 'convex' && optionId !== 'none') return true;
+      if (selectedBack === 'none' && optionId !== 'none') {
+        return isEs ? 'Sin backend configurado' : 'No backend configured';
+      }
+      if (selectedDb === 'none' && optionId !== 'none') {
+        return isEs ? 'Requiere una base de datos activa' : 'Requires an active database';
+      }
       if (optionId === 'mongoose' && selectedDb !== 'mongodb') {
-        return lang === 'es' ? 'Mongoose requiere base de datos MongoDB' : 'Mongoose requires MongoDB database';
+        return isEs ? 'Mongoose requiere base de datos MongoDB' : 'Mongoose requires MongoDB database';
       }
       if (optionId === 'drizzle' && selectedDb === 'mongodb') {
-        return lang === 'es' ? 'Drizzle no soporta MongoDB (usa Postgres, MySQL o SQLite)' : 'Drizzle does not support MongoDB (use Postgres, MySQL or SQLite)';
-      }
-      if ((optionId === 'drizzle' || optionId === 'prisma') && selectedDb === 'none') {
-        return lang === 'es' ? 'Requiere una base de datos activa' : 'Requires an active database';
+        return isEs ? 'Drizzle no soporta MongoDB (usa Postgres, MySQL o SQLite)' : 'Drizzle does not support MongoDB (use Postgres, MySQL or SQLite)';
       }
     }
+
     if (layerKey === 'db') {
-      if (selectedBack === 'convex' && optionId !== 'none') {
-        return lang === 'es' ? 'Convex gestiona los datos de forma integrada' : 'Convex manages data in a fully integrated way';
+      if (selectedBack === 'none' && optionId !== 'none') {
+        return isEs ? 'Sin backend configurado' : 'No backend configured';
       }
       if (selectedOrm === 'mongoose' && optionId !== 'mongodb') {
-        return lang === 'es' ? 'Mongoose solo es compatible con MongoDB' : 'Mongoose only works with MongoDB';
+        return isEs ? 'Mongoose solo es compatible con MongoDB' : 'Mongoose only works with MongoDB';
       }
       if (selectedOrm === 'drizzle' && optionId === 'mongodb') {
-        return lang === 'es' ? 'Drizzle requiere una base de datos relacional SQL' : 'Drizzle requires a relational SQL database';
+        return isEs ? 'Drizzle requiere una base de datos relacional SQL' : 'Drizzle requires a relational SQL database';
       }
     }
+
     if (layerKey === 'api') {
-      if ((selectedBack === 'go' || selectedBack === 'fastapi') && (optionId === 'trpc' || optionId === 'orpc')) {
-        return lang === 'es' ? 'Requiere un backend en TypeScript' : 'Requires a TypeScript backend';
+      if (selectedBack === 'none' && optionId !== 'none') {
+        return isEs ? 'Sin backend configurado' : 'No backend configured';
+      }
+      if (isNonJs && optionId !== 'none') {
+        return isEs ? 'Requiere un backend en TypeScript' : 'Requires a TypeScript backend';
+      }
+      if (optionId === 'trpc' && ['nuxt', 'svelte', 'astro', 'angular'].includes(selectedFront)) {
+        return isEs ? 'tRPC requiere un frontend en el ecosistema React' : 'tRPC requires a React ecosystem frontend';
       }
     }
+
+    if (layerKey === 'auth') {
+      if (selectedBack === 'none' && optionId !== 'none') {
+        return isEs ? 'Sin backend configurado' : 'No backend configured';
+      }
+      if (optionId === 'clerk') {
+        if (['nuxt', 'svelte', 'astro', 'angular'].includes(selectedFront)) {
+          return isEs ? 'Clerk requiere un frontend en el ecosistema React' : 'Clerk requires a React ecosystem frontend';
+        }
+        if (selectedBack === 'self' && !['next', 'tanstack-start'].includes(selectedFront)) {
+          return isEs ? 'Clerk en modo Self requiere Next.js o TanStack Start' : 'Clerk in Self mode requires Next.js or TanStack Start';
+        }
+      }
+    }
+
+    if (layerKey === 'payments') {
+      if (selectedBack === 'none' && optionId !== 'none') {
+        return isEs ? 'Sin backend configurado' : 'No backend configured';
+      }
+      if (selectedAuth === 'none' && optionId !== 'none') {
+        return isEs ? 'Requiere configurar autenticación' : 'Requires authentication configured';
+      }
+      if (optionId === 'polar' && selectedAuth !== 'better-auth') {
+        return isEs ? 'Polar requiere autenticación con Better-Auth' : 'Polar requires Better-Auth authentication';
+      }
+    }
+
+    if (layerKey === 'email') {
+      if (selectedBack === 'none' && optionId !== 'none') {
+        return isEs ? 'Sin backend configurado' : 'No backend configured';
+      }
+    }
+
     if (layerKey === 'tools') {
       if (optionId === 'shadcn' && selectedFront === 'none') {
-        return lang === 'es' ? 'shadcn requiere un framework frontend' : 'shadcn requires a frontend framework';
+        return isEs ? 'shadcn requiere un framework frontend' : 'shadcn requires a frontend framework';
       }
     }
+
     return '';
   }
 
@@ -229,22 +295,15 @@
   }
 
   function setSelectedId(layerKey: string, optionId: string) {
+    const FULLSTACK_FRONTENDS = ['next', 'tanstack-start', 'nuxt', 'svelte', 'astro'];
     if (layerKey === 'frontend') {
       selectedFront = selectedFront === optionId ? 'none' : optionId;
     } else if (layerKey === 'native_frontend') {
       selectedNativeFront = selectedNativeFront === optionId ? 'none' : optionId;
     } else if (layerKey === 'backend') {
       selectedBack = selectedBack === optionId ? 'none' : optionId;
-      if (selectedBack === 'fullstack-next' && selectedFront === 'none') {
-        selectedFront = 'nextjs';
-      } else if (selectedBack === 'fullstack-tanstack' && selectedFront === 'none') {
-        selectedFront = 'react';
-      } else if (selectedBack === 'fullstack-nuxt' && selectedFront === 'none') {
-        selectedFront = 'nuxt';
-      } else if (selectedBack === 'fullstack-sveltekit' && selectedFront === 'none') {
-        selectedFront = 'svelte';
-      } else if (selectedBack === 'fullstack-astro' && selectedFront === 'none') {
-        selectedFront = 'astro';
+      if (selectedBack === 'self' && !FULLSTACK_FRONTENDS.includes(selectedFront)) {
+        selectedFront = 'next';
       }
     } else if (layerKey === 'runtime') {
       selectedRuntime = selectedRuntime === optionId ? 'none' : optionId;
@@ -351,6 +410,7 @@
   const ormLayer = $derived(layersMap.get('orm'));
   const authLayer = $derived(layersMap.get('auth'));
   const payLayer = $derived(layersMap.get('payments'));
+  const emailLayer = $derived(layersMap.get('email'));
   const turboOpt = $derived(currentInfraOptions.find(o => o.id === 'turborepo'));
 
   const t = $derived({
@@ -770,28 +830,28 @@
                     </div>
                   {/if}
 
-                  <!-- Email (None by default) -->
-                  <div class="space-y-3">
-                    <span class="block text-xs font-bold uppercase tracking-widest text-text-muted border-l-2 border-brand-primary pl-2.5">{lang === 'es' ? 'Servicio de Correo' : 'Email Service'}</span>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <TechCard
-                        name={lang === 'es' ? 'Sin Correo' : 'No Email'}
-                        desc={lang === 'es' ? 'Omitir integración de servicio de correo' : 'Skip email service integration'}
-                        default={true}
-                        isActive={selectedEmail === 'none'}
-                        layerKey="email"
-                        onclick={() => selectedEmail = 'none'}
-                      />
-                      <TechCard
-                        name="Resend"
-                        desc={lang === 'es' ? 'Plataforma de correo moderna para desarrolladores' : 'Modern email platform for developers'}
-                        iconComponent="/logos/resend.svg"
-                        isActive={selectedEmail === 'resend'}
-                        layerKey="email"
-                        onclick={() => selectedEmail = 'resend'}
-                      />
+                  <!-- Email -->
+                  {#if emailLayer}
+                    <div class="space-y-3">
+                      <span class="block text-xs font-bold uppercase tracking-widest text-text-muted border-l-2 border-brand-primary pl-2.5">{emailLayer.label}</span>
+                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        {#each emailLayer.options as opt}
+                          {@const isActive = selectedEmail === opt.id}
+                          <TechCard
+                            name={opt.name}
+                            desc={opt.desc}
+                            iconComponent={opt.iconComponent}
+                            default={opt.default}
+                            {isActive}
+                            hoverColor={opt.hoverColor}
+                            activeColor={opt.activeColor}
+                            layerKey="email"
+                            onclick={() => selectedEmail = opt.id}
+                          />
+                        {/each}
+                      </div>
                     </div>
-                  </div>
+                  {/if}
                 </div>
 
               {:else if activeStep === 5}

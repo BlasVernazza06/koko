@@ -26,14 +26,14 @@
   // State variables
   let projectName = $state('my-koko-app');
   let selectedCommandType = $state('wrapper');
-  let selectedFront = $state(getDefault('frontend', 'nextjs'));
+  let selectedFront = $state(getDefault('frontend', 'next'));
   let selectedNativeFront = $state(getDefault('native_frontend', 'none'));
   let selectedBack = $state(getDefault('backend', 'hono'));
   let selectedRuntime = $state(getDefault('runtime', 'bun'));
   let selectedOrm = $state(getDefault('orm', 'drizzle'));
   let selectedApi = $state(getDefault('api', 'trpc'));
   let selectedDb = $state(getDefault('db', 'postgres'));
-  let selectedAuth = $state(getDefault('auth', 'none'));
+  let selectedAuth = $state(getDefault('auth', 'better-auth'));
   const hasValidator = $derived(selectedTools.split(',').includes('zod') || selectedTools.split(',').includes('valibot'));
   let selectedPackageManager = $state(getDefault('package_manager', 'pnpm'));
   let selectedTools = $state(getDefault('tools', 'zod'));
@@ -63,7 +63,7 @@
         selectedEmail = template.config.selectedEmail || 'none';
         withDocker = template.config.withDocker;
         withTurborepo = true;
-        selectedRuntime = template.config.selectedRuntime || (template.config.selectedBack === 'go' || template.config.selectedBack === 'python' || template.config.selectedBack === 'fastapi' || template.config.selectedBack === 'spring' ? 'none' : 'node');
+        selectedRuntime = template.config.selectedRuntime || (template.config.selectedBack === 'go' || template.config.selectedBack === 'fastapi' || template.config.selectedBack === 'spring' || template.config.selectedBack === 'self' ? 'none' : 'node');
         if (template.config.selectedOrm !== undefined) selectedOrm = template.config.selectedOrm;
         if (template.config.selectedApi !== undefined) selectedApi = template.config.selectedApi;
         withCi = template.config.withCi || false;
@@ -91,57 +91,77 @@
     }
   });
 
-  // Reactively auto-resolve selection conflicts
+  // Reactively auto-resolve selection conflicts (Cascading Rules)
   $effect(() => {
-    // Turborepo always active
+    const FULLSTACK_FRONTENDS = ['next', 'tanstack-start', 'nuxt', 'svelte', 'astro'];
+    const isFullstack = selectedBack === 'self';
+    const isNonJs = ['go', 'fastapi', 'spring'].includes(selectedBack);
+
+    // 1. Turborepo always active
     if (!withTurborepo) {
       withTurborepo = true;
     }
 
-    // Sync ORM rules based on backend & db choices
-    if (selectedDb === 'mongodb') {
-      if (selectedOrm !== 'mongoose' && selectedOrm !== 'prisma' && selectedOrm !== 'none') {
+    // 2. If no backend (frontend-only mode), clean up backend-related layers
+    if (selectedBack === 'none') {
+      if (selectedRuntime !== 'none') selectedRuntime = 'none';
+      if (selectedDb !== 'none') selectedDb = 'none';
+      if (selectedOrm !== 'none') selectedOrm = 'none';
+      if (selectedApi !== 'none') selectedApi = 'none';
+      if (selectedAuth !== 'none') selectedAuth = 'none';
+      if (selectedPayments !== 'none') selectedPayments = 'none';
+    }
+
+    // 3. Backend 'self' (Monolithic) constraints
+    if (selectedBack === 'self') {
+      if (selectedRuntime !== 'none') selectedRuntime = 'none';
+      if (!FULLSTACK_FRONTENDS.includes(selectedFront)) {
+        selectedFront = 'next';
+      }
+      if (selectedAuth === 'clerk' && !['next', 'tanstack-start'].includes(selectedFront)) {
+        selectedAuth = 'better-auth';
+      }
+    }
+
+    // 4. Non-JS backends MUST have runtime 'none' and api 'none'
+    if (isNonJs) {
+      if (selectedRuntime !== 'none') selectedRuntime = 'none';
+      if (selectedApi !== 'none') selectedApi = 'none';
+    } else if (!isFullstack && selectedBack !== 'none') {
+      // JS/TS dedicated backends cannot have runtime 'none'
+      if (selectedRuntime === 'none') selectedRuntime = 'node';
+    }
+
+    // 5. Frontend restrictions for non-React against tRPC and Clerk
+    if (['astro', 'nuxt', 'svelte', 'angular'].includes(selectedFront)) {
+      if (selectedApi === 'trpc') selectedApi = 'orpc';
+      if (selectedAuth === 'clerk') selectedAuth = 'better-auth';
+    }
+
+    // 6. DB <-> ORM cross dependency
+    if (selectedDb === 'none') {
+      if (selectedOrm !== 'none') selectedOrm = 'none';
+    } else if (selectedDb === 'mongodb') {
+      if (selectedOrm !== 'mongoose' && selectedOrm !== 'prisma') {
         selectedOrm = 'mongoose';
       }
-    } else if (selectedDb === 'none') {
-      selectedOrm = 'none';
     } else {
+      // SQL DBs
       if (selectedOrm === 'mongoose') {
+        selectedOrm = 'drizzle';
+      } else if (selectedOrm === 'none') {
         selectedOrm = 'drizzle';
       }
     }
 
-    // Convex BaaS handling
-    if (selectedBack === 'convex') {
-      if (selectedOrm !== 'none') selectedOrm = 'none';
+    // 7. Auth <-> Payments
+    if (selectedAuth === 'none') {
+      if (selectedPayments !== 'none') selectedPayments = 'none';
+    } else if (selectedPayments === 'polar' && selectedAuth !== 'better-auth') {
+      selectedPayments = 'none';
     }
 
-    // Elysia requires Bun
-    if (selectedBack === 'elysia' && selectedRuntime !== 'bun') {
-      selectedRuntime = 'bun';
-    }
-
-    // Non-JS backends (Go / FastAPI / Spring) MUST be 'none'
-    const isNonJs = ['go', 'fastapi', 'spring'].includes(selectedBack);
-    const isFullstack = selectedFront === 'nextjs' || selectedFront === 'nuxt' || selectedBack === 'fullstack-next' || selectedBack === 'fullstack-nuxt' || selectedBack === 'fullstack-sveltekit' || selectedBack === 'fullstack-astro' || selectedBack === 'fullstack-tanstack';
-
-    if (isNonJs) {
-      if (selectedRuntime !== 'none') {
-        selectedRuntime = 'none';
-      }
-    } else if (!isFullstack && selectedBack !== 'none') {
-      // JS/TS decoupled backends cannot be 'none'
-      if (selectedRuntime === 'none') {
-        selectedRuntime = 'node';
-      }
-    }
-
-    // API (tRPC / oRPC) requires TypeScript backend
-    if ((selectedBack === 'go' || selectedBack === 'fastapi' || selectedBack === 'spring') && (selectedApi === 'trpc' || selectedApi === 'orpc')) {
-      selectedApi = 'none';
-    }
-
-    // shadcn requires frontend
+    // 8. Tools & shadcn
     if (selectedFront === 'none' && selectedTools.split(',').includes('shadcn')) {
       const remaining = selectedTools.split(',').filter(t => t !== 'shadcn');
       selectedTools = remaining.length > 0 ? remaining.join(',') : 'none';
@@ -229,7 +249,7 @@
     else if (layerKey === 'backend') selectedBack = 'none';
     else if (layerKey === 'runtime') {
       const isNonJs = ['go', 'fastapi', 'spring'].includes(selectedBack);
-      const isFullstack = selectedFront === 'nextjs' || selectedFront === 'nuxt' || selectedBack === 'fullstack-next' || selectedBack === 'fullstack-nuxt' || selectedBack === 'fullstack-sveltekit' || selectedBack === 'fullstack-astro' || selectedBack === 'fullstack-tanstack';
+      const isFullstack = selectedBack === 'self';
       selectedRuntime = (isNonJs || isFullstack || selectedBack === 'none') ? 'none' : 'node';
     }
     else if (layerKey === 'orm') selectedOrm = 'none';
@@ -383,14 +403,14 @@
         tree.push({ type: 'file', depth: 3, name: 'package.json' });
         tree.push({ type: 'file', depth: 3, name: 'tsconfig.json' });
 
-        if (selectedFront === 'nextjs') {
+        if (selectedFront === 'next') {
           tree.push({ type: 'file', depth: 3, name: 'next.config.ts' });
           tree.push({ type: 'dir', depth: 3, name: 'src/' });
           tree.push({ type: 'dir', depth: 4, name: 'app/' });
           tree.push({ type: 'file', depth: 5, name: 'layout.tsx', highlight: 'text-brand-secondary' });
           tree.push({ type: 'file', depth: 5, name: 'page.tsx', highlight: 'text-brand-primary' });
           tree.push({ type: 'file', depth: 5, name: 'globals.css' });
-          if (selectedBack === 'fullstack-next') {
+          if (selectedBack === 'self') {
             tree.push({ type: 'dir', depth: 5, name: 'api/health/' });
             tree.push({ type: 'file', depth: 6, name: 'route.ts' });
           }
@@ -399,7 +419,17 @@
             tree.push({ type: 'file', depth: 5, name: 'ui/button.tsx' });
           }
           tree.push({ type: 'file', depth: 5, name: 'Navbar.tsx' });
-        } else if (selectedFront === 'react') {
+        } else if (selectedFront === 'tanstack-start') {
+          tree.push({ type: 'file', depth: 3, name: 'app.config.ts' });
+          tree.push({ type: 'dir', depth: 3, name: 'src/' });
+          tree.push({ type: 'dir', depth: 4, name: 'routes/' });
+          tree.push({ type: 'file', depth: 5, name: '__root.tsx', highlight: 'text-brand-secondary' });
+          tree.push({ type: 'file', depth: 5, name: 'index.tsx', highlight: 'text-brand-primary' });
+          if (selectedBack === 'self') {
+            tree.push({ type: 'file', depth: 5, name: 'api.health.ts' });
+          }
+          tree.push({ type: 'dir', depth: 4, name: 'components/' });
+        } else if (selectedFront === 'tanstack-router' || selectedFront === 'react-router') {
           tree.push({ type: 'file', depth: 3, name: 'vite.config.ts' });
           tree.push({ type: 'file', depth: 3, name: 'index.html' });
           tree.push({ type: 'dir', depth: 3, name: 'src/' });
@@ -408,13 +438,15 @@
           tree.push({ type: 'file', depth: 4, name: 'App.css' });
           tree.push({ type: 'dir', depth: 4, name: 'components/' });
           tree.push({ type: 'file', depth: 5, name: 'Header.tsx' });
-        } else if (selectedFront === 'svelte' || selectedFront === 'sveltekit') {
-          if (selectedBack === 'fullstack-sveltekit' || selectedFront === 'sveltekit') {
+        } else if (selectedFront === 'svelte') {
+          if (selectedBack === 'self') {
             tree.push({ type: 'file', depth: 3, name: 'svelte.config.js' });
             tree.push({ type: 'dir', depth: 3, name: 'src/' });
             tree.push({ type: 'dir', depth: 4, name: 'routes/' });
             tree.push({ type: 'file', depth: 5, name: '+layout.svelte' });
             tree.push({ type: 'file', depth: 5, name: '+page.svelte', highlight: 'text-brand-primary' });
+            tree.push({ type: 'dir', depth: 5, name: 'api/health/' });
+            tree.push({ type: 'file', depth: 6, name: '+server.ts' });
             tree.push({ type: 'file', depth: 4, name: 'app.html' });
           } else {
             tree.push({ type: 'file', depth: 3, name: 'vite.config.ts' });
@@ -422,15 +454,22 @@
             tree.push({ type: 'file', depth: 4, name: 'main.ts' });
             tree.push({ type: 'file', depth: 4, name: 'App.svelte', highlight: 'text-brand-primary' });
           }
-        } else if (selectedFront === 'nuxt' || selectedFront === 'vue') {
+        } else if (selectedFront === 'nuxt') {
           tree.push({ type: 'file', depth: 3, name: 'nuxt.config.ts' });
           tree.push({ type: 'file', depth: 3, name: 'app.vue', highlight: 'text-brand-primary' });
           tree.push({ type: 'dir', depth: 3, name: 'pages/' });
           tree.push({ type: 'file', depth: 4, name: 'index.vue' });
+          if (selectedBack === 'self') {
+            tree.push({ type: 'dir', depth: 3, name: 'server/api/' });
+            tree.push({ type: 'file', depth: 4, name: 'health.ts' });
+          }
         } else if (selectedFront === 'astro') {
           tree.push({ type: 'file', depth: 3, name: 'astro.config.mjs' });
           tree.push({ type: 'dir', depth: 3, name: 'src/pages/' });
           tree.push({ type: 'file', depth: 4, name: 'index.astro', highlight: 'text-brand-primary' });
+          if (selectedBack === 'self') {
+            tree.push({ type: 'file', depth: 4, name: 'api/health.ts' });
+          }
         } else if (selectedFront === 'angular') {
           tree.push({ type: 'file', depth: 3, name: 'angular.json' });
           tree.push({ type: 'dir', depth: 3, name: 'src/app/' });
@@ -440,7 +479,7 @@
 
       // Native Mobile Client
       if (selectedNativeFront && selectedNativeFront !== 'none') {
-        tree.push({ type: 'dir', depth: 2, name: 'mobile/ [expo]' });
+        tree.push({ type: 'dir', depth: 2, name: `mobile/ [${selectedNativeFront}]` });
         tree.push({ type: 'file', depth: 3, name: 'package.json' });
         tree.push({ type: 'file', depth: 3, name: 'app.json' });
         tree.push({ type: 'file', depth: 3, name: 'tsconfig.json' });
@@ -451,11 +490,10 @@
         tree.push({ type: 'file', depth: 4, name: 'ScreenView.tsx' });
       }
 
-      // Backend API Service
-      if (selectedBack !== 'none' && selectedBack !== 'fullstack-next') {
+      // Backend API Service (dedicated servers only)
+      if (selectedBack !== 'none' && selectedBack !== 'self') {
         let bname = selectedBack;
         if (selectedBack === 'go') bname = 'go-fiber';
-        if (selectedBack === 'node' || selectedBack === 'express') bname = 'express';
         if (selectedBack === 'spring') bname = 'spring-boot';
         if (selectedBack === 'fastapi') bname = 'fastapi';
         if (selectedBack === 'nestjs') bname = 'nestjs';
@@ -613,7 +651,11 @@
         tree.push({ type: 'dir', depth: 2, name: 'email/' });
         tree.push({ type: 'file', depth: 3, name: 'package.json' });
         tree.push({ type: 'dir', depth: 3, name: 'src/' });
-        tree.push({ type: 'file', depth: 4, name: 'resend.ts', highlight: 'text-brand-primary font-bold' });
+        if (selectedEmail === 'brevo') {
+          tree.push({ type: 'file', depth: 4, name: 'brevo.ts', highlight: 'text-brand-primary font-bold' });
+        } else {
+          tree.push({ type: 'file', depth: 4, name: 'resend.ts', highlight: 'text-brand-primary font-bold' });
+        }
         tree.push({ type: 'file', depth: 4, name: 'templates/welcome.tsx' });
       }
 
@@ -668,6 +710,10 @@
 
       if (selectedAuth !== 'none') {
         tree.push({ type: 'file', depth: 2, name: `lib/auth.${selectedAuth === 'supabase' ? 'js' : 'ts'}`, highlight: 'text-emerald-500 font-bold' });
+      }
+
+      if (selectedEmail !== 'none') {
+        tree.push({ type: 'file', depth: 2, name: `lib/${selectedEmail}.ts`, highlight: 'text-brand-primary font-bold' });
       }
 
       if (hasValidator) {

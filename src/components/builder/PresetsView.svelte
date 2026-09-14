@@ -49,6 +49,7 @@
     }
     if (config.selectedPayments === 'stripe') badges.push('Stripe');
     if (config.selectedEmail === 'resend') badges.push('Resend');
+    else if (config.selectedEmail === 'brevo') badges.push('Brevo');
     return badges.slice(0, 5); // Max 5 badges to avoid overflow
   }
 
