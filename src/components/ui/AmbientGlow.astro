@@ -58,8 +58,15 @@ const { class: className = '' } = Astro.props;
     opacity: 0.04;
   }
 
+  :global(.dark) .glow-primary,
   :global([data-theme="dark"]) .glow-primary { opacity: 0.12; }
+  
+  :global(.dark) .glow-secondary-left,
   :global([data-theme="dark"]) .glow-secondary-left { opacity: 0.08; }
+  
+  :global(.dark) .glow-secondary-right,
   :global([data-theme="dark"]) .glow-secondary-right { opacity: 0.08; }
+  
+  :global(.dark) .glow-wash,
   :global([data-theme="dark"]) .glow-wash { opacity: 0.02; }
 </style>

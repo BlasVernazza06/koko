@@ -1,3 +1,16 @@
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource/plus-jakarta-sans/400.css";
+@import "@fontsource/plus-jakarta-sans/500.css";
+@import "@fontsource/plus-jakarta-sans/600.css";
+@import "@fontsource/plus-jakarta-sans/700.css";
+@import "@fontsource/plus-jakarta-sans/800.css";
+@import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/600.css";
+@import "@fontsource/jetbrains-mono/700.css";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
@@ -11,18 +24,35 @@
   --color-text-main: var(--text-main);
   --color-text-muted: var(--text-muted);
   --color-border-subtle: var(--border-subtle);
+
+  /* Standard shadcn semantic tokens */
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
   
-  --font-sans: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Plus Jakarta Sans", "Plus Jakarta Sans Variable", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "JetBrains Mono Variable", monospace;
+  --font-serif: "Instrument Serif", Georgia, serif;
 }
 
 /* -------------------------------------------------------------
    COLOR SYSTEM
    Theme: "Monochromatic Lavender & Periwinkle"
-   Cohesive, soft-contrast tech palette matching Koko the Koala.
+   Cohesive, high-fidelity tech palette matching Koko the Koala.
    ------------------------------------------------------------- */
 
-:root {
+:root,
+[data-theme="light"] {
   /* LIGHT MODE (Clean Crisp Studio / Pure White Theme) */
   --brand-primary: #5a4fc4;      /* Deep Amethyst Purple (From Koala outlines, highly readable) */
   --brand-secondary: #8095f8;    /* Luminous Periwinkle Blue (From Koala body, soft accent) */
@@ -30,52 +60,95 @@
   --bg-surface: #f9fafb;         /* Very clean soft white surface */
   --text-main: #110f1d;          /* Deep crisp text */
   --text-muted: #605c75;         /* Muted slate-purple gray */
-  --border-subtle: #e5e7eb;      /* Clean light border */
+  --border-subtle: #e2e4e9;      /* Crisp, defined light border */
+
+  /* Shadcn aliases */
+  --border: #e2e4e9;
+  --input: #e2e4e9;
+  --ring: #5a4fc4;
+  --background: #ffffff;
+  --foreground: #110f1d;
+  --primary: #5a4fc4;
+  --primary-foreground: #ffffff;
+  --secondary: #8095f8;
+  --secondary-foreground: #ffffff;
+  --muted: #f3f4f6;
+  --muted-foreground: #605c75;
+  --card: #f9fafb;
+  --card-foreground: #110f1d;
   color-scheme: light;
 }
 
+.dark,
+[data-theme="dark"],
+:root.dark,
+html.dark,
+html[data-theme="dark"] {
+  /* DARK MODE (Lavender Obsidian / Blackberry Slate) */
+  --brand-primary: #9b8df7;    /* Luminous Warm Wisteria */
+  --brand-secondary: #8095f8;  /* Luminous Periwinkle Blue */
+  --bg-base: #0a0911;          /* Deep Obsidian Purple-Black */
+  --bg-surface: #14131e;       /* Blackberry Charcoal Slate */
+  --text-main: #f1edf8;        /* Soft ash wisteria-white */
+  --text-muted: #88839d;       /* Muted slate-purple gray */
+  --border-subtle: #242236;    /* Deep wisteria-slate border with crisp edge definition */
+
+  /* Shadcn aliases */
+  --border: #242236;
+  --input: #242236;
+  --ring: #9b8df7;
+  --background: #0a0911;
+  --foreground: #f1edf8;
+  --primary: #9b8df7;
+  --primary-foreground: #0a0911;
+  --secondary: #8095f8;
+  --secondary-foreground: #0a0911;
+  --muted: #14131e;
+  --muted-foreground: #88839d;
+  --card: #14131e;
+  --card-foreground: #f1edf8;
+  color-scheme: dark;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
-    /* DARK MODE (Lavender Obsidian / Blackberry Slate) */
-    --brand-primary: #9b8df7;    /* Luminous Warm Wisteria */
-    --brand-secondary: #8095f8;  /* Luminous Periwinkle Blue */
-    --bg-base: #0a0911;          /* Deep Obsidian Purple-Black */
-    --bg-surface: #14131e;       /* Blackberry Charcoal Slate */
-    --text-main: #f1edf8;        /* Soft ash wisteria-white */
-    --text-muted: #88839d;       /* Muted slate-purple gray */
-    --border-subtle: #222031;    /* Deep wisteria-slate border */
+  :root:not([data-theme="light"]) {
+    --brand-primary: #9b8df7;
+    --brand-secondary: #8095f8;
+    --bg-base: #0a0911;
+    --bg-surface: #14131e;
+    --text-main: #f1edf8;
+    --text-muted: #88839d;
+    --border-subtle: #242236;
+
+    --border: #242236;
+    --input: #242236;
+    --ring: #9b8df7;
+    --background: #0a0911;
+    --foreground: #f1edf8;
+    --primary: #9b8df7;
+    --primary-foreground: #0a0911;
+    --secondary: #8095f8;
+    --secondary-foreground: #0a0911;
+    --muted: #14131e;
+    --muted-foreground: #88839d;
+    --card: #14131e;
+    --card-foreground: #f1edf8;
     color-scheme: dark;
   }
 }
 
-/* Support for explicit user overrides using data-theme attribute */
-[data-theme="light"] {
-  --brand-primary: #5a4fc4;
-  --brand-secondary: #8095f8;
-  --bg-base: #ffffff;
-  --bg-surface: #f9fafb;
-  --text-main: #110f1d;
-  --text-muted: #605c75;
-  --border-subtle: #e5e7eb;
-  color-scheme: light;
-}
-
-[data-theme="dark"] {
-  --brand-primary: #9b8df7;
-  --brand-secondary: #8095f8;
-  --bg-base: #0a0911;
-  --bg-surface: #14131e;
-  --text-main: #f1edf8;
-  --text-muted: #88839d;
-  --border-subtle: #222031;
-  color-scheme: dark;
-}
-
 /* Base Styles */
+html,
 body {
+  font-family: var(--font-sans);
   background-color: var(--bg-base);
   color: var(--text-main);
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
 }
 
 /* Translation visibility helper */
@@ -157,6 +230,71 @@ html[data-lang="en"] .lang-es {
   :root:not([data-theme="light"]) img[src*="github"],
   :root:not([data-theme="light"]) img[src*="shadcn"] {
     filter: invert(1) brightness(1.25);
+  }
+}
+
+/* -------------------------------------------------------------
+   HERO ENTRANCE & SECTION TRANSITIONS
+   ------------------------------------------------------------- */
+
+@keyframes heroFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: heroFadeInUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+/* Scroll Reveal progressive enhancement */
+.scroll-reveal,
+.scroll-reveal-child {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.is-visible,
+.scroll-reveal-child.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fallback when JS is disabled or before script execution */
+html:not(.js) .scroll-reveal,
+html:not(.js) .scroll-reveal-child {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .scroll-reveal,
+  .scroll-reveal-child {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
