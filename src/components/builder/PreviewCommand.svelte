@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Check, Copy, ChevronDown } from '@lucide/svelte';
+  import { Check, Copy } from '@lucide/svelte';
 
   let {
     generatedCommand = '',
@@ -14,144 +14,39 @@
   }>();
 
   let isCopied = $state(false);
-  let isExpanded = $state(false);
 
   const t = $derived({
     es: {
       commandLabel: 'CLI COMMAND',
       copiedBtn: 'Copiado',
-      copyBtn: 'Copiar',
-      flagsBtn: 'Flags'
+      copyBtn: 'Copiar'
     },
     en: {
       commandLabel: 'CLI COMMAND',
       copiedBtn: 'Copied',
-      copyBtn: 'Copy',
-      flagsBtn: 'Flags'
+      copyBtn: 'Copy'
     }
   }[lang] || {
     commandLabel: 'CLI COMMAND',
     copiedBtn: 'Copiado',
-    copyBtn: 'Copiar',
-    flagsBtn: 'Flags'
+    copyBtn: 'Copiar'
   });
 
-  const hasFlags = $derived(generatedCommand.includes('--'));
-
-  // Extract base command without flags
-  const baseCommandText = $derived.by(() => {
-    if (!generatedCommand) return '';
-    const parts = generatedCommand.split(' ');
-    let text = '';
-    let i = 0;
-    while (i < parts.length && !parts[i].startsWith('--') && parts[i] !== '--') {
-      if (parts[i]) {
-        text += (text ? ' ' : '') + parts[i];
-      }
-      i++;
+  // Parse command into base command and individual flags
+  const parsedCommand = $derived.by(() => {
+    if (!generatedCommand) {
+      return { baseCmd: '', flags: [] };
     }
-    if (i < parts.length && parts[i] === '--') {
-      text += ' --';
-    }
-    return text;
-  });
-
-  // Get raw formatted lines for multi-line clipboard copy
-  function getCommandLinesRaw(): string[] {
-    if (!generatedCommand) return [];
-    const parts = generatedCommand.split(' ');
-    const lines: string[] = [];
+    const parts = generatedCommand.trim().split(/\s+/);
     let i = 0;
-    
-    let baseCmd = '';
+    const baseParts: string[] = [];
     while (i < parts.length && !parts[i].startsWith('--')) {
-      if (parts[i]) {
-        baseCmd += (baseCmd ? ' ' : '') + parts[i];
-      }
+      baseParts.push(parts[i]);
       i++;
     }
-    if (i < parts.length) baseCmd += ' \\';
-    lines.push(baseCmd);
+    const baseCmd = baseParts.join(' ');
 
-    const flagsList: string[] = [];
-    while (i < parts.length) {
-      const part = parts[i];
-      if (part.startsWith('--')) {
-        let flagStr = '  ' + part;
-        if (i + 1 < parts.length && !parts[i + 1].startsWith('--')) {
-          flagStr += ' ' + parts[i + 1];
-          i++;
-        }
-        flagsList.push(flagStr);
-      }
-      i++;
-    }
-
-    for (let j = 0; j < flagsList.length; j++) {
-      let flagLine = flagsList[j];
-      if (j < flagsList.length - 1) {
-        flagLine += ' \\';
-      }
-      lines.push(flagLine);
-    }
-    return lines;
-  }
-
-  function copyCommand() {
-    const textToCopy = isExpanded && hasFlags
-      ? getCommandLinesRaw().join('\n')
-      : generatedCommand;
-
-    navigator.clipboard.writeText(textToCopy);
-    isCopied = true;
-    setTimeout(() => {
-      isCopied = false;
-    }, 2000);
-  }
-
-  // Syntax highlighting for single-line horizontal view
-  const highlightedSingleLine = $derived.by(() => {
-    if (!generatedCommand) return '';
-    const parts = generatedCommand.split(' ');
-    const formattedParts: string[] = [];
-    
-    let isBase = true;
-    for (let i = 0; i < parts.length; i++) {
-      const p = parts[i];
-      if (!p) continue;
-      
-      if (p.startsWith('--')) {
-        isBase = false;
-        formattedParts.push(`<span class="text-brand-secondary font-semibold">${p}</span>`);
-      } else if (isBase) {
-        formattedParts.push(`<span class="text-slate-100 font-semibold">${p}</span>`);
-      } else {
-        formattedParts.push(`<span class="text-emerald-400 font-medium">${p}</span>`);
-      }
-    }
-    return formattedParts.join(' ');
-  });
-
-  // Base command line for multi-line expanded view
-  const highlightedBaseCmd = $derived.by(() => {
-    if (!baseCommandText) return '';
-    return `<span class="text-slate-100 font-semibold">${baseCommandText}</span> <span class="text-slate-500 font-bold">\\</span>`;
-  });
-
-  // Flags list for multi-line expanded view
-  const highlightedFlags = $derived.by(() => {
-    if (!generatedCommand) return [];
-    const parts = generatedCommand.split(' ');
-    let i = 0;
-    
-    while (i < parts.length && !parts[i].startsWith('--') && parts[i] !== '--') {
-      i++;
-    }
-    if (i < parts.length && parts[i] === '--') {
-      i++;
-    }
-    
-    const flagsList: { flag: string; value: string }[] = [];
+    const flags: Array<{ flag: string; value: string }> = [];
     while (i < parts.length) {
       const part = parts[i];
       if (part.startsWith('--')) {
@@ -161,26 +56,46 @@
           value = parts[i + 1];
           i++;
         }
-        flagsList.push({ flag, value });
+        flags.push({ flag, value });
       }
       i++;
     }
-    
-    const lines: string[] = [];
-    for (let j = 0; j < flagsList.length; j++) {
-      const item = flagsList[j];
-      const hasNext = j < flagsList.length - 1;
+
+    return { baseCmd, flags };
+  });
+
+  const hasFlags = $derived(parsedCommand.flags.length > 0);
+
+  // Copy command to clipboard as a single inline string (no newlines, no backslashes)
+  function copyCommand() {
+    const inlineCommand = generatedCommand.trim().replace(/\s+/g, ' ');
+    navigator.clipboard.writeText(inlineCommand);
+    isCopied = true;
+    setTimeout(() => {
+      isCopied = false;
+    }, 2000);
+  }
+
+  // Base command line with trailing backslash if there are flags
+  const highlightedBaseCmd = $derived.by(() => {
+    if (!parsedCommand.baseCmd) return '';
+    const slashHtml = hasFlags ? ` <span class="text-slate-500 font-bold">\\</span>` : '';
+    return `<span class="text-slate-100 font-semibold">${parsedCommand.baseCmd}</span>${slashHtml}`;
+  });
+
+  // Flags list for multi-line visual view
+  const highlightedFlags = $derived.by(() => {
+    return parsedCommand.flags.map((item, idx) => {
+      const hasNext = idx < parsedCommand.flags.length - 1;
       const valHtml = item.value ? ` <span class="text-emerald-400 font-medium">${item.value}</span>` : '';
       const slashHtml = hasNext ? ` <span class="text-slate-500 font-bold">\\</span>` : '';
-      lines.push(`<span class="text-brand-secondary font-semibold">${item.flag}</span>${valHtml}${slashHtml}`);
-    }
-    
-    return lines;
+      return `<span class="text-brand-secondary font-semibold">${item.flag}</span>${valHtml}${slashHtml}`;
+    });
   });
 </script>
 
 <div class="space-y-3 font-sans">
-  <!-- Header Layout: Title on Left, Selector & Flags toggle on Right -->
+  <!-- Header Layout: Title on Left, Selector on Right -->
   <div class="flex items-center justify-between pb-3 select-none">
     <div class="flex items-center gap-1.5">
       <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-text-muted">
@@ -221,42 +136,34 @@
           go
         </button>
       </div>
-
-      <!-- FLAGS DROPDOWN TOGGLE -->
-      {#if hasFlags}
-        <button
-          type="button"
-          onclick={() => isExpanded = !isExpanded}
-          class="flex items-center gap-1.5 px-3 py-1.5 border rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 shadow-2xs
-            {isExpanded
-              ? 'bg-brand-primary/10 border-brand-primary/30 text-brand-primary'
-              : 'bg-bg-base border-border-subtle text-text-muted hover:text-text-main'}"
-        >
-          <ChevronDown size={11} class="transition-transform duration-300 {isExpanded ? 'rotate-180 text-brand-primary' : ''}" />
-          <span>{t.flagsBtn}</span>
-        </button>
-      {/if}
     </div>
   </div>
   <div class="h-px bg-border-subtle w-full !mt-0 !mb-3"></div>
 
   <!-- Command Box Container -->
-  <div class="border border-border-subtle/50 dark:border-border-subtle rounded-2xl bg-[#0c0b14] dark:bg-[#07060b] shadow-[0_4px_24px_rgba(0,0,0,0.18)] p-3 sm:p-4 font-mono text-xs sm:text-[13px] tracking-wide">
+  <div class="border border-border-subtle/50 dark:border-border-subtle rounded-2xl bg-[#0c0b14] dark:bg-[#07060b] shadow-[0_4px_24px_rgba(0,0,0,0.18)] p-3.5 sm:p-4 font-mono text-xs sm:text-[13px] tracking-wide relative">
     
-    <!-- Main Row: Command Text on Left (min-w-0 flex-1 overflow-x-auto) + Copy Button on Right (shrink-0) -->
-    <div class="flex items-center justify-between gap-3">
-      <div class="flex items-center gap-2.5 min-w-0 flex-1 overflow-x-auto no-scrollbar scroll-smooth py-1">
-        <span class="text-brand-primary select-none font-extrabold text-sm shrink-0">$</span>
-        <div class="whitespace-nowrap font-mono text-xs sm:text-[13px] tracking-wide select-all text-slate-300">
-          {#if isExpanded && hasFlags}
+    <!-- Top Row: Base Command & Flags on Left + Copy Button on Right -->
+    <div class="flex items-start justify-between gap-3">
+      <div class="flex items-start gap-2.5 min-w-0 flex-1 overflow-x-auto no-scrollbar scroll-smooth py-0.5">
+        <span class="text-brand-primary select-none font-extrabold text-sm shrink-0 leading-relaxed">$</span>
+        <div class="space-y-1.5 font-mono text-xs sm:text-[13px] tracking-wide select-all text-slate-300 min-w-0 flex-1">
+          <!-- Base Command Line -->
+          <div class="whitespace-nowrap leading-relaxed">
             {@html highlightedBaseCmd}
-          {:else}
-            {@html highlightedSingleLine}
+          </div>
+          <!-- Multi-line formatted flags -->
+          {#if hasFlags}
+            <div class="space-y-1.5 pl-4 sm:pl-5">
+              {#each highlightedFlags as line}
+                <div class="whitespace-nowrap leading-relaxed">{@html line}</div>
+              {/each}
+            </div>
           {/if}
         </div>
       </div>
 
-      <!-- Copy Button inside the box (Always visible, never covers text) -->
+      <!-- Copy Button inside the box (Always visible, top right, never covers text) -->
       <button
         type="button"
         onclick={copyCommand}
@@ -274,17 +181,6 @@
         {/if}
       </button>
     </div>
-
-    <!-- Multi-Line View when Flags are Expanded -->
-    {#if isExpanded && hasFlags}
-      <div class="mt-2.5 pt-2.5 border-t border-white/10 overflow-x-auto max-h-[160px] overflow-y-auto no-scrollbar">
-        <div class="space-y-1.5 font-mono text-xs sm:text-[13px] tracking-wide select-all text-slate-300 pl-5">
-          {#each highlightedFlags as line}
-            <div class="whitespace-pre">{@html line}</div>
-          {/each}
-        </div>
-      </div>
-    {/if}
   </div>
 
   <!-- CTA Button to download native binary from GitHub Releases -->

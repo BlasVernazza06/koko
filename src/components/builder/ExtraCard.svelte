@@ -20,14 +20,14 @@
 
 <style>
   .editorial-extra {
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease, border-color 0.15s ease;
   }
   .editorial-extra:hover:not(.locked) {
     transform: translateY(-2px);
     border-color: var(--brand-primary);
   }
   .icon-holder {
-    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
   }
   .editorial-extra:hover:not(.locked) .icon-holder {
     transform: scale(1.05);

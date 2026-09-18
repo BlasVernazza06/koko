@@ -29,7 +29,6 @@
   let selectedFront = $state(getDefault('frontend', 'next'));
   let selectedNativeFront = $state(getDefault('native_frontend', 'none'));
   let selectedBack = $state(getDefault('backend', 'hono'));
-  let selectedRuntime = $state(getDefault('runtime', 'bun'));
   let selectedOrm = $state(getDefault('orm', 'drizzle'));
   let selectedApi = $state(getDefault('api', 'trpc'));
   let selectedDb = $state(getDefault('db', 'postgres'));
@@ -63,7 +62,6 @@
         selectedEmail = template.config.selectedEmail || 'none';
         withDocker = template.config.withDocker;
         withTurborepo = true;
-        selectedRuntime = template.config.selectedRuntime || (template.config.selectedBack === 'go' || template.config.selectedBack === 'fastapi' || template.config.selectedBack === 'spring' || template.config.selectedBack === 'self' ? 'none' : 'node');
         if (template.config.selectedOrm !== undefined) selectedOrm = template.config.selectedOrm;
         if (template.config.selectedApi !== undefined) selectedApi = template.config.selectedApi;
         withCi = template.config.withCi || false;
@@ -71,16 +69,20 @@
         withTesting = template.config.withTesting || false;
       }
     } else {
-      if (params.has('front')) selectedFront = params.get('front')!;
+      if (params.has('frontend')) selectedFront = params.get('frontend')!;
+      else if (params.has('front')) selectedFront = params.get('front')!;
       if (params.has('mobile')) selectedNativeFront = params.get('mobile')!;
-      if (params.has('back')) selectedBack = params.get('back')!;
-      if (params.has('runtime')) selectedRuntime = params.get('runtime')!;
+      if (params.has('backend')) selectedBack = params.get('backend')!;
+      else if (params.has('back')) selectedBack = params.get('back')!;
       if (params.has('orm')) selectedOrm = params.get('orm')!;
       if (params.has('api')) selectedApi = params.get('api')!;
-      if (params.has('db')) selectedDb = params.get('db')!;
+      if (params.has('database')) selectedDb = params.get('database')!;
+      else if (params.has('db')) selectedDb = params.get('db')!;
       if (params.has('auth')) selectedAuth = params.get('auth')!;
-      if (params.has('pm')) selectedPackageManager = params.get('pm')!;
-      if (params.has('tools')) selectedTools = params.get('tools')!;
+      if (params.has('package-manager')) selectedPackageManager = params.get('package-manager')!;
+      else if (params.has('pm')) selectedPackageManager = params.get('pm')!;
+      if (params.has('addons')) selectedTools = params.get('addons')!;
+      else if (params.has('tools')) selectedTools = params.get('tools')!;
       if (params.has('payments')) selectedPayments = params.get('payments')!;
       if (params.has('email')) selectedEmail = params.get('email')!;
       if (params.has('docker')) withDocker = params.get('docker') === 'true';
@@ -104,7 +106,6 @@
 
     // 2. If no backend (frontend-only mode), clean up backend-related layers
     if (selectedBack === 'none') {
-      if (selectedRuntime !== 'none') selectedRuntime = 'none';
       if (selectedDb !== 'none') selectedDb = 'none';
       if (selectedOrm !== 'none') selectedOrm = 'none';
       if (selectedApi !== 'none') selectedApi = 'none';
@@ -114,7 +115,6 @@
 
     // 3. Backend 'self' (Monolithic) constraints
     if (selectedBack === 'self') {
-      if (selectedRuntime !== 'none') selectedRuntime = 'none';
       if (!FULLSTACK_FRONTENDS.includes(selectedFront)) {
         selectedFront = 'next';
       }
@@ -123,13 +123,9 @@
       }
     }
 
-    // 4. Non-JS backends MUST have runtime 'none' and api 'none'
+    // 4. Non-JS backends MUST have api 'none'
     if (isNonJs) {
-      if (selectedRuntime !== 'none') selectedRuntime = 'none';
       if (selectedApi !== 'none') selectedApi = 'none';
-    } else if (!isFullstack && selectedBack !== 'none') {
-      // JS/TS dedicated backends cannot have runtime 'none'
-      if (selectedRuntime === 'none') selectedRuntime = 'node';
     }
 
     // 5. Frontend restrictions for non-React against tRPC and Clerk
@@ -177,7 +173,6 @@
       { key: 'frontend', id: selectedFront },
       { key: 'native_frontend', id: selectedNativeFront },
       { key: 'backend', id: selectedBack },
-      { key: 'runtime', id: selectedRuntime },
       { key: 'orm', id: selectedOrm },
       { key: 'api', id: selectedApi },
       { key: 'auth', id: selectedAuth },
@@ -247,11 +242,6 @@
     if (layerKey === 'frontend') selectedFront = 'none';
     else if (layerKey === 'native_frontend') selectedNativeFront = 'none';
     else if (layerKey === 'backend') selectedBack = 'none';
-    else if (layerKey === 'runtime') {
-      const isNonJs = ['go', 'fastapi', 'spring'].includes(selectedBack);
-      const isFullstack = selectedBack === 'self';
-      selectedRuntime = (isNonJs || isFullstack || selectedBack === 'none') ? 'none' : 'node';
-    }
     else if (layerKey === 'orm') selectedOrm = 'none';
     else if (layerKey === 'api') selectedApi = 'none';
     else if (layerKey === 'auth') selectedAuth = 'none';
@@ -321,20 +311,20 @@
     }
   }[lang] || t.es);
 
-  // Computes the dynamic command based on state
+  // Computes the dynamic command based on state (Strictly aligned with Koko-CLI flags)
   const generatedCommand = $derived.by(() => {
     let cmd = '';
     const name = projectName || 'my-koko-app';
     
     if (selectedCommandType === 'wrapper') {
       if (selectedPackageManager === 'npm') {
-        cmd = `npm create koko-app@latest ${name}`;
-      } else if (selectedPackageManager === 'pnpm') {
-        cmd = `pnpm create koko-app ${name}`;
+        cmd = `npx koko-app init ${name}`;
+      } else if (selectedPackageManager === 'bun') {
+        cmd = `bunx koko-app init ${name}`;
       } else if (selectedPackageManager === 'yarn') {
-        cmd = `yarn create koko-app ${name}`;
-      } else { // bun
-        cmd = `bun create koko-app ${name}`;
+        cmd = `yarn dlx koko-app init ${name}`;
+      } else { // pnpm or default
+        cmd = `pnpm dlx koko-app init ${name}`;
       }
     } else if (selectedCommandType === 'binary') {
       cmd = `koko init ${name}`;
@@ -342,28 +332,75 @@
       cmd = `go run github.com/BlasVernazza06/koko-cli@latest init ${name}`;
     }
 
-    // Pass options separator to npm wrapper
-    if (selectedCommandType === 'wrapper' && selectedPackageManager === 'npm' && (selectedFront !== 'none' || selectedNativeFront !== 'none' || selectedBack !== 'none' || selectedDb !== 'none' || selectedAuth !== 'none' || selectedPayments !== 'none' || withDocker || withCi || withLinter || withTesting || withTurborepo)) {
-      cmd += ' --';
+    // Resolve frontend flag value (koko-cli: nextjs, react, nuxt, svelte, astro, native, none)
+    let frontVal = selectedFront;
+    if (frontVal === 'next') frontVal = 'nextjs';
+    else if (frontVal === 'tanstack-router' || frontVal === 'tanstack-start' || frontVal === 'react-router') frontVal = 'react';
+    if (selectedFront === 'none' && selectedNativeFront !== 'none') {
+      frontVal = 'native';
     }
 
-    if (selectedFront !== 'none') cmd += ` --frontend ${selectedFront}`;
-    if (selectedNativeFront !== 'none') cmd += ` --mobile ${selectedNativeFront}`;
-    if (selectedBack !== 'none') cmd += ` --backend ${selectedBack}`;
-    if (selectedRuntime !== 'none') cmd += ` --runtime ${selectedRuntime}`;
-    if (selectedOrm !== 'none') cmd += ` --orm ${selectedOrm}`;
-    if (selectedApi !== 'none') cmd += ` --api ${selectedApi}`;
-    if (selectedPackageManager !== 'none') cmd += ` --package-manager ${selectedPackageManager}`;
-    if (selectedTools !== 'none') cmd += ` --tools ${selectedTools}`;
-    if (selectedPayments !== 'none') cmd += ` --payment ${selectedPayments}`;
-    if (selectedDb !== 'none') cmd += ` --db ${selectedDb}`;
-    if (selectedAuth !== 'none') cmd += ` --auth ${selectedAuth}`;
-    if (selectedEmail !== 'none') cmd += ` --email ${selectedEmail}`;
-    if (withDocker) cmd += ` --docker`;
-    if (withCi) cmd += ` --ci`;
-    if (withLinter) cmd += ` --linter`;
-    if (withTesting) cmd += ` --test`;
-    if (withTurborepo) cmd += ` --turborepo`;
+    if (frontVal !== 'none' && frontVal !== '') {
+      cmd += ` --frontend ${frontVal}`;
+    }
+
+    // Resolve backend flag value (koko-cli: express, hono, fastapi, go_chi, spring_boot, nestjs, self, none)
+    if (selectedBack !== 'none' && selectedBack !== '') {
+      let backVal = selectedBack;
+      if (backVal === 'spring') backVal = 'spring_boot';
+      else if (backVal === 'go') backVal = 'go_chi';
+      cmd += ` --backend ${backVal}`;
+    }
+
+    if (selectedApi !== 'none' && selectedApi !== '') {
+      cmd += ` --api ${selectedApi}`;
+    }
+
+    if (selectedPackageManager !== 'none' && selectedPackageManager !== '') {
+      cmd += ` --package-manager ${selectedPackageManager}`;
+    }
+
+    if (selectedDb !== 'none' && selectedDb !== '') {
+      cmd += ` --database ${selectedDb}`;
+    }
+
+    if (selectedOrm !== 'none' && selectedOrm !== '') {
+      cmd += ` --orm ${selectedOrm}`;
+    }
+
+    if (selectedAuth !== 'none' && selectedAuth !== '') {
+      let authVal = selectedAuth;
+      if (authVal === 'authjs') authVal = 'next-auth';
+      cmd += ` --auth ${authVal}`;
+    }
+
+    // Collect all addons into single --addons flag supported by koko-cli
+    const addonsList: string[] = [];
+    if (selectedTools && selectedTools !== 'none') {
+      const toolIds = selectedTools.split(',').map(s => s.trim()).filter(Boolean);
+      for (const t of toolIds) {
+        if (['shadcn', 'lucide', 'svgl', 'motion', 'zod'].includes(t) && !addonsList.includes(t)) {
+          addonsList.push(t);
+        }
+      }
+    }
+    if (selectedPayments !== 'none' && ['stripe', 'polar'].includes(selectedPayments) && !addonsList.includes(selectedPayments)) {
+      addonsList.push(selectedPayments);
+    }
+    if (selectedEmail !== 'none' && ['resend', 'brevo'].includes(selectedEmail) && !addonsList.includes(selectedEmail)) {
+      addonsList.push(selectedEmail);
+    }
+    if (withDocker && !addonsList.includes('docker')) {
+      addonsList.push('docker');
+    }
+    if (withCi && !addonsList.includes('github_actions')) {
+      addonsList.push('github_actions');
+    }
+
+    if (addonsList.length > 0) {
+      cmd += ` --addons ${addonsList.join(',')}`;
+    }
+
     return cmd;
   });
 
@@ -764,7 +801,6 @@
         bind:selectedFront
         bind:selectedNativeFront
         bind:selectedBack
-        bind:selectedRuntime
         bind:selectedOrm
         bind:selectedApi
         bind:selectedPackageManager

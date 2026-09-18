@@ -32,7 +32,6 @@
     selectedFront = getDefault('frontend', 'next');
     selectedNativeFront = getDefault('native_frontend', 'none');
     selectedBack = getDefault('backend', 'hono');
-    selectedRuntime = getDefault('runtime', 'bun');
     selectedOrm = getDefault('orm', 'drizzle');
     selectedApi = getDefault('api', 'trpc');
     selectedPackageManager = getDefault('package_manager', 'pnpm');
@@ -59,7 +58,6 @@
     selectedFront = $bindable('next'),
     selectedNativeFront = $bindable('none'),
     selectedBack = $bindable('hono'),
-    selectedRuntime = $bindable('bun'),
     selectedOrm = $bindable('drizzle'),
     selectedApi = $bindable('trpc'),
     selectedPackageManager = $bindable('pnpm'),
@@ -79,7 +77,6 @@
     selectedFront: string;
     selectedNativeFront: string;
     selectedBack: string;
-    selectedRuntime: string;
     selectedOrm: string;
     selectedApi: string;
     selectedPackageManager: string;
@@ -111,7 +108,6 @@
     withLinter = config.withLinter ?? false;
     withTesting = config.withTesting ?? false;
     withTurborepo = config.withTurborepo ?? true;
-    if (config.selectedRuntime !== undefined) selectedRuntime = config.selectedRuntime;
     if (config.selectedOrm !== undefined) selectedOrm = config.selectedOrm;
     if (config.selectedApi !== undefined) selectedApi = config.selectedApi;
 
@@ -192,7 +188,6 @@
         bind:selectedFront
         bind:selectedNativeFront
         bind:selectedBack
-        bind:selectedRuntime
         bind:selectedOrm
         bind:selectedApi
         bind:selectedPackageManager

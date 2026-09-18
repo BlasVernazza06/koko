@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { fade } from 'svelte/transition';
   import { 
     Settings, 
     FolderCode, 
@@ -23,7 +22,6 @@
     selectedFront = $bindable('next'),
     selectedNativeFront = $bindable('none'),
     selectedBack = $bindable('hono'),
-    selectedRuntime = $bindable('bun'),
     selectedOrm = $bindable('drizzle'),
     selectedApi = $bindable('trpc'),
     selectedPackageManager = $bindable('pnpm'),
@@ -43,7 +41,6 @@
     selectedFront: string;
     selectedNativeFront: string;
     selectedBack: string;
-    selectedRuntime: string;
     selectedOrm: string;
     selectedApi: string;
     selectedPackageManager: string;
@@ -99,15 +96,6 @@
       if (optionId === 'self') {
         if (!FULLSTACK_FRONTENDS.includes(selectedFront)) return true;
         if (selectedAuth === 'clerk' && !['next', 'tanstack-start'].includes(selectedFront)) return true;
-      }
-    }
-
-    if (layerKey === 'runtime') {
-      if (selectedBack === 'self' || isNonJs || selectedBack === 'none') {
-        if (optionId !== 'none') return true;
-      } else {
-        // Dedicated TS/JS servers (hono, express, fastify, nestjs)
-        if (optionId === 'none') return true;
       }
     }
 
@@ -182,18 +170,6 @@
         }
         if (selectedAuth === 'clerk' && !['next', 'tanstack-start'].includes(selectedFront)) {
           return isEs ? 'Clerk en modo Self requiere Next.js o TanStack Start' : 'Clerk in Self mode requires Next.js or TanStack Start';
-        }
-      }
-    }
-
-    if (layerKey === 'runtime') {
-      if (selectedBack === 'self' || isNonJs || selectedBack === 'none') {
-        if (optionId !== 'none') {
-          return isEs ? 'No aplica runtime de Node/Bun para este tipo de backend' : 'Node/Bun runtime does not apply for this backend';
-        }
-      } else {
-        if (optionId === 'none') {
-          return isEs ? 'Los servidores dedicados requieren un runtime (Node.js o Bun)' : 'Dedicated servers require a runtime (Node.js or Bun)';
         }
       }
     }
@@ -282,7 +258,6 @@
     if (layerKey === 'frontend') return selectedFront;
     if (layerKey === 'native_frontend') return selectedNativeFront;
     if (layerKey === 'backend') return selectedBack;
-    if (layerKey === 'runtime') return selectedRuntime;
     if (layerKey === 'orm') return selectedOrm;
     if (layerKey === 'api') return selectedApi;
     if (layerKey === 'package_manager') return selectedPackageManager;
@@ -305,8 +280,6 @@
       if (selectedBack === 'self' && !FULLSTACK_FRONTENDS.includes(selectedFront)) {
         selectedFront = 'next';
       }
-    } else if (layerKey === 'runtime') {
-      selectedRuntime = selectedRuntime === optionId ? 'none' : optionId;
     } else if (layerKey === 'orm') {
       selectedOrm = selectedOrm === optionId ? 'none' : optionId;
     } else if (layerKey === 'api') {
@@ -404,7 +377,6 @@
   const mobLayer = $derived(layersMap.get('native_frontend'));
   const toolsLayer = $derived(layersMap.get('tools'));
   const beLayer = $derived(layersMap.get('backend'));
-  const runtimeLayer = $derived(layersMap.get('runtime'));
   const apiLayer = $derived(layersMap.get('api'));
   const dbLayer = $derived(layersMap.get('db'));
   const ormLayer = $derived(layersMap.get('orm'));
@@ -678,30 +650,6 @@
                             disabledReason={getDisabledReason('backend', opt.id)}
                             layerKey="backend"
                             onclick={() => !isDisabled && setSelectedId('backend', opt.id)}
-                          />
-                        {/each}
-                      </div>
-                    </div>
-                  {/if}
-
-                  <!-- Runtime -->
-                  {#if runtimeLayer}
-                    <div class="space-y-3">
-                      <span class="block text-xs font-bold uppercase tracking-widest text-text-muted border-l-2 border-brand-secondary pl-2.5">{runtimeLayer.label}</span>
-                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        {#each runtimeLayer.options as opt}
-                          {@const isActive = selectedRuntime === opt.id}
-                          {@const isDisabled = isOptionDisabled('runtime', opt.id)}
-                          <TechCard
-                            name={opt.name}
-                            desc={opt.desc}
-                            iconComponent={opt.iconComponent}
-                            default={opt.default}
-                            {isActive}
-                            {isDisabled}
-                            disabledReason={getDisabledReason('runtime', opt.id)}
-                            layerKey="runtime"
-                            onclick={() => !isDisabled && setSelectedId('runtime', opt.id)}
                           />
                         {/each}
                       </div>

@@ -1,4 +1,4 @@
-import { Monitor, Smartphone, Server, Cpu, Database, Network, Package, KeyRound, Wrench, CreditCard, GitBranch, Sparkles, TestTube, Mail } from '@lucide/svelte';
+import { Monitor, Smartphone, Server, Database, Network, Package, KeyRound, Wrench, CreditCard, GitBranch, Sparkles, TestTube, Mail } from '@lucide/svelte';
 import type { TechOption, Layer, InfraOption } from '@/types/builder.types';
 
 const SvglNextjsLogo = '/logos/nextjs.svg';
@@ -106,21 +106,9 @@ export const getLayers = (lang: string): Layer[] => {
       ]
     },
     {
-      key: 'runtime',
-      label: isEs ? 'Entorno de Ejecución' : 'Runtime',
-      step: isEs ? '04 / ENTORNO DE EJECUCIÓN' : '04 / RUNTIME ENVIRONMENT',
-      icon: Cpu,
-      colorClass: 'text-brand-secondary',
-      options: [
-        { id: 'bun', name: 'Bun', desc: isEs ? 'Runtime y conjunto de herramientas rápidas de JS' : 'Fast JavaScript runtime & toolkit', hoverColor: 'group-hover/btn:text-[#fbf0e9]', activeColor: 'text-[#fbf0e9]', iconComponent: SvglBunLogo },
-        { id: 'node', name: 'Node.js', desc: isEs ? 'Entorno de ejecución clásico de JavaScript' : 'JavaScript runtime environment', hoverColor: 'group-hover/btn:text-[#68a063]', activeColor: 'text-[#68a063]', iconComponent: NodejsIcon, default: true },
-        { id: 'none', name: isEs ? 'Sin Runtime' : 'No Runtime', desc: isEs ? 'Sin entorno de ejecución específico' : 'No specific runtime', isNone: true }
-      ]
-    },
-    {
       key: 'orm',
       label: 'ORM',
-      step: isEs ? '05 / MAPEADOR DE BASE DE DATOS' : '05 / DATABASE MAPPER',
+      step: isEs ? '04 / MAPEADOR DE BASE DE DATOS' : '04 / DATABASE MAPPER',
       icon: Database,
       colorClass: 'text-brand-primary',
       options: [
@@ -133,7 +121,7 @@ export const getLayers = (lang: string): Layer[] => {
     {
       key: 'api',
       label: 'API',
-      step: isEs ? '06 / PROTOCOLO API' : '06 / API PROTOCOL',
+      step: isEs ? '05 / PROTOCOLO API' : '05 / API PROTOCOL',
       icon: Network,
       colorClass: 'text-brand-secondary',
       options: [
@@ -145,7 +133,7 @@ export const getLayers = (lang: string): Layer[] => {
     {
       key: 'package_manager',
       label: isEs ? 'Gestor de Paquetes' : 'Package Manager',
-      step: isEs ? '07 / GESTOR DE PAQUETES' : '07 / PACKAGE MANAGER',
+      step: isEs ? '06 / GESTOR DE PAQUETES' : '06 / PACKAGE MANAGER',
       icon: Package,
       colorClass: 'text-brand-secondary',
       options: [
@@ -157,7 +145,7 @@ export const getLayers = (lang: string): Layer[] => {
     {
       key: 'auth',
       label: isEs ? 'Autenticación' : 'Authentication',
-      step: isEs ? '08 / CONTROL DE ACCESO' : '08 / ACCESS CONTROL',
+      step: isEs ? '07 / CONTROL DE ACCESO' : '07 / ACCESS CONTROL',
       icon: KeyRound,
       colorClass: 'text-brand-primary',
       options: [
@@ -170,7 +158,7 @@ export const getLayers = (lang: string): Layer[] => {
     {
       key: 'tools',
       label: isEs ? 'Herramientas' : 'Tools',
-      step: isEs ? '09 / HERRAMIENTAS DE UTILIDAD' : '09 / UTILITY TOOLS',
+      step: isEs ? '08 / HERRAMIENTAS DE UTILIDAD' : '08 / UTILITY TOOLS',
       icon: Wrench,
       colorClass: 'text-brand-primary',
       options: [
@@ -185,7 +173,7 @@ export const getLayers = (lang: string): Layer[] => {
     {
       key: 'payments',
       label: isEs ? 'Pagos' : 'Payments',
-      step: isEs ? '10 / MONETIZACIÓN' : '10 / MONETIZATION',
+      step: isEs ? '09 / MONETIZACIÓN' : '09 / MONETIZATION',
       icon: CreditCard,
       colorClass: 'text-brand-secondary',
       options: [
@@ -197,7 +185,7 @@ export const getLayers = (lang: string): Layer[] => {
     {
       key: 'db',
       label: isEs ? 'Base de Datos' : 'Database',
-      step: isEs ? '11 / ALMACENAMIENTO DE DATOS' : '11 / DATA STORAGE',
+      step: isEs ? '10 / ALMACENAMIENTO DE DATOS' : '10 / DATA STORAGE',
       icon: Database,
       colorClass: 'text-brand-primary',
       options: [
@@ -211,7 +199,7 @@ export const getLayers = (lang: string): Layer[] => {
     {
       key: 'email',
       label: isEs ? 'Servicio de Correo' : 'Email Service',
-      step: isEs ? '12 / SERVICIO DE CORREO' : '12 / EMAIL SERVICE',
+      step: isEs ? '11 / SERVICIO DE CORREO' : '11 / EMAIL SERVICE',
       icon: Mail,
       colorClass: 'text-brand-primary',
       options: [

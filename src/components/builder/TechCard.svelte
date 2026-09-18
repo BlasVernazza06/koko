@@ -26,14 +26,14 @@
 
 <style>
   .editorial-card {
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease, border-color 0.15s ease;
   }
   .editorial-card:hover:not(.disabled) {
     transform: translateY(-2px);
     border-color: var(--brand-primary);
   }
   .icon-wrapper {
-    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
   }
   .editorial-card:hover:not(.disabled) .icon-wrapper {
     transform: scale(1.05);

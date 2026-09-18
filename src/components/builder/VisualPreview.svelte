@@ -1,7 +1,5 @@
 <script lang="ts">
   import { Blocks, Folder } from '@lucide/svelte';
-  import { fade, scale } from 'svelte/transition';
-  import { flip } from 'svelte/animate';
   import PreviewCommand from '@/components/builder/PreviewCommand.svelte';
   import PreviewStructure from '@/components/builder/PreviewStructure.svelte';
   import SelectedTechBadge from '@/components/builder/SelectedTechBadge.svelte';

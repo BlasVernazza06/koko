@@ -43,7 +43,6 @@ export interface KokoTemplateConfig {
   withTurborepo: boolean;
   selectedOrm?: string;
   selectedApi?: string;
-  selectedRuntime?: string;
   withCi?: boolean;
   withLinter?: boolean;
   withTesting?: boolean;
