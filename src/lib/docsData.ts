@@ -64,7 +64,7 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
             'Docker & Docker Compose - Opcional pero recomendado para levantar bases de datos locales (PostgreSQL, MongoDB, MySQL).',
             'Go 1.21+ / Python 3.11+ - Necesarios únicamente si generas backends nativos en Go Chi o Python FastAPI.'
           ],
-          pre: '# Opción 1: Ejecutar directamente con NPX (sin instalación permanente)\nnpx koko-cli init\n\n# Opción 2: Instalación global con npm/pnpm\nnpm install -g koko-cli\nkoko init'
+          pre: '# Opción 1: Ejecutar directamente con NPX (sin instalación permanente)\nnpx koko-app init\n\n# Opción 2: Instalación global con npm/pnpm\nnpm install -g koko-app\nkoko init'
         },
         {
           anchorId: 'native-binaries',
@@ -262,14 +262,16 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           ],
           bullets: [
             '-d, --default - Inicializa inmediatamente usando la receta predeterminada (SaaS Starter con Next.js + Drizzle + Better-Auth).',
-            '-r, --recipie <nombre> - Elige una receta de producción: saas, pern, mern, fastapi_react.',
-            '-f, --frontend <framework> - Framework frontend: nextjs, react, nuxt, svelte, none.',
-            '-b, --backend <runtime> - Framework backend: express, fastapi, go_chi, nestjs, hono, none.',
-            '-p, --package-manager <pm> - Gestor de paquetes: pnpm, npm, bun, go_mod, pip, uv.',
+            '-r, --recipie <nombre> - Elige una receta de producción: saas, pern, mern, fastapi_react, enterprise_nestjs, java_spring, mobile_expo.',
+            '-f, --frontend <framework> - Framework frontend: nextjs, react, nuxt, svelte, astro, native, none.',
+            '-b, --backend <runtime> - Framework backend: express, hono, fastapi, go_chi, spring_boot, nestjs, self, none.',
+            '--api <capa> - Capa de API tipada: trpc, orpc, none.',
+            '-p, --package-manager <pm> - Gestor de paquetes: pnpm, npm, bun, go_mod, pip, uv, mvn, gradle.',
             '--database <motor> - Base de datos: postgres, mongodb, mysql, sqlite, none.',
-            '--orm <mapeador> - ORM o query builder: drizzle, prisma, mongoose, sqlalchemy, gorm, none.',
-            '--auth <proveedor> - Proveedor de autenticación: better-auth, next-auth, none.',
-            '--git <yes|no> - Inicializar repositorio Git local (por defecto: yes).'
+            '--orm <mapeador> - ORM o query builder: drizzle, prisma, mongoose, sqlalchemy, gorm, jpa, none.',
+            '--auth <proveedor> - Proveedor de autenticación: better-auth, clerk, next-auth, none.',
+            '--addons <herramientas> - Addons separados por coma: shadcn, lucide, svgl, motion, stripe, polar, resend, brevo, zod, docker, github_actions.',
+            '--git <yes|no> - Inicializar repositorio Git local (por defecto: no).'
           ]
         },
         {
@@ -300,12 +302,92 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           ]
         },
         {
+          anchorId: 'command-doctor',
+          title: 'Comando koko doctor',
+          body: [
+            'Diagnostica la arquitectura del proyecto, detecta discrepancias y desviaciones (drift) respecto al manifiesto koko.config.json y actualiza la configuración automáticamente. Para una guía exhaustiva con ejemplos de CI/CD, consulta la sección dedicada de Diagnóstico.',
+            '• Sincronización en 1 clic: Utiliza --fix para actualizar el manifiesto y reparar inconsistencias de dependencias.',
+            '• Detección temprana: Encuentra colisiones de puertos en Docker y dependencias desfasadas antes de compilar.'
+          ],
+          bullets: [
+            '-f, --fix - Aplica automáticamente las correcciones y actualiza koko.config.json.',
+            '-d, --dir <ruta> - Especifica la carpeta del proyecto a analizar (por defecto: .).',
+            '-v, --verbose - Muestra la traza detallada de inspección de cada módulo y paquete.',
+            '--json - Salida estructurada para pipelines automatizados de CI/CD.'
+          ],
+          pre: '# Diagnosticar estado del proyecto\nkoko doctor\n\n# Diagnosticar y sincronizar manifiesto automáticamente\nkoko doctor --fix'
+        },
+        {
           anchorId: 'command-version',
           title: 'Comando koko version',
           body: [
             'Imprime en consola los detalles de la versión del CLI, sistema operativo, arquitectura de procesador y versión del compilador de Go con el que fue construido:'
           ],
           pre: 'koko version'
+        }
+      ]
+    },
+    {
+      id: 'doctor',
+      title: 'Diagnóstico (koko doctor)',
+      category: 'CLI',
+      content: [
+        {
+          anchorId: 'doctor-overview',
+          title: 'Diagnóstico e Integridad Arquitectónica',
+          body: [
+            'El comando `koko doctor` es el guardián de consistencia e introspección de Koko CLI. A medida que un proyecto evoluciona y múltiples desarrolladores incorporan dependencias, módulos y variables de entorno, es habitual que la configuración original sufra desviaciones silenciosas (architecture drift).',
+            '• Verificación Instantánea en Milisegundos: `koko doctor` analiza el árbol de archivos, las dependencias y la infraestructura local en menos de 20ms.',
+            '• Detección de Desviación (Drift): Compara la arquitectura física real contra el manifiesto inmutable `koko.config.json` y el Catálogo Maestro de versiones.',
+            '• Auto-Reparación Segura: Mediante el flag `--fix`, resuelve discrepancias, actualiza el manifiesto y sincroniza el entorno sin riesgo de romper código.'
+          ]
+        },
+        {
+          anchorId: 'doctor-flags',
+          title: 'Sintaxis y Flags del Comando',
+          body: [
+            'Sintaxis: `koko doctor [flags]`',
+            'Todos los parámetros disponibles para auditorías locales o integración con pipelines automatizados:'
+          ],
+          bullets: [
+            '-f, --fix - Aplica automáticamente las correcciones detectadas y actualiza koko.config.json.',
+            '-d, --dir <ruta> - Especifica el directorio raíz del proyecto a diagnosticar (por defecto: carpeta actual .).',
+            '-v, --verbose - Imprime información detallada de cada paso de validación y chequeo de paquetes.',
+            '--json - Genera la salida en formato JSON estructurado, ideal para pipelines de CI/CD y webhooks.'
+          ],
+          pre: '# Diagnóstico interactivo estándar\nkoko doctor\n\n# Diagnóstico con auto-reparación de inconsistencias\nkoko doctor --fix\n\n# Analizar una carpeta específica en modo detallado\nkoko doctor --dir ./apps/web --verbose\n\n# Salida JSON para pipelines de CI/CD\nkoko doctor --json'
+        },
+        {
+          anchorId: 'doctor-checks',
+          title: 'Los 5 Pilares de Verificación de Salud',
+          body: [
+            'Durante su ejecución, `koko doctor` evalúa cinco áreas críticas del proyecto:',
+            '• 1. Validación de Esquema de Manifiesto: Valida que `koko.config.json` exista en la raíz y cumpla estrictamente con la especificación JSON Schema oficial.',
+            '• 2. Mapeo de Workspaces y Monorrepos: En arquitecturas monorepo (Turborepo + pnpm), valida que `apps/*` y `packages/*` resuelvan correctamente sus enlaces y alias de TypeScript.',
+            '• 3. Detección de Desviación en Dependencias: Compara las librerías de `package.json`, `go.mod` o `requirements.txt` frente al Catálogo Maestro oficial para advertir sobre versiones no alineadas o incompatibles.',
+            '• 4. Prevención de Conflictos de Puertos Docker: Inspecciona los puertos asignados en `docker-compose.yml` (Postgres 5432, MongoDB 27017, MySQL 3306) para alertar si están ocupados por procesos locales del sistema.',
+            '• 5. Consistencia de Herramientas y Linters: Verifica que las reglas de TypeScript (`tsconfig.json`), ESLint, Prettier o Biome permanezcan sincronizadas con la plantilla original.'
+          ]
+        },
+        {
+          anchorId: 'doctor-autofix',
+          title: 'Modo Auto-Reparación (--fix)',
+          body: [
+            'Al ejecutar `koko doctor --fix`, el motor realiza una reconciliación transaccional segura en cuatro fases:',
+            '1. Análisis en Memoria: Evalúa las discrepancias en el Virtual File System (VFS) sin modificar archivos prematuramente.',
+            '2. Sincronización de Manifiesto: Actualiza `koko.config.json` registrando módulos o addons agregados manualmente.',
+            '3. Alineación de Scripts: Restaura scripts de compilación estándar (`dev`, `build`, `lint`) en el `package.json` raíz si fueron alterados.',
+            '4. Resumen de Ejecución: Emite un reporte limpio de correcciones aplicadas y el tiempo total de ejecución en milisegundos.'
+          ],
+          pre: '$ koko doctor --fix\n\n[✓] koko.config.json schema: OK\n[✓] Monorepo workspace mapping: OK\n[!] Dependency Drift: @auth/core version out of sync\n    -> Applying fix: updated koko.config.json to v2.0.0 catalog standard\n[✓] Docker container ports: No conflicts detected\n\n✓ Diagnostics passed. 1 auto-fix applied successfully in 18ms.'
+        },
+        {
+          anchorId: 'doctor-cicd',
+          title: 'Integración en Pipelines de CI/CD',
+          body: [
+            'Puedes incorporar `koko doctor` como un paso de control de calidad (quality gate) en GitHub Actions para asegurar que ningún pull request introduzca drift arquitectónico en la rama principal:'
+          ],
+          pre: 'name: Architecture Integrity Check\n\non:\n  push:\n    branches: [main]\n  pull_request:\n    branches: [main]\n\njobs:\n  audit:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      \n      - name: Setup Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: 20\n          \n      - name: Install Koko CLI\n        run: npm install -g koko-app\n        \n      - name: Run Koko Doctor Audit\n        run: koko doctor'
         }
       ]
     },
@@ -698,7 +780,7 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
             'Docker & Docker Compose - Optional but recommended for local relational and NoSQL databases (PostgreSQL, MongoDB, MySQL).',
             'Go 1.21+ / Python 3.11+ - Required only if you scaffold pure Go Chi or Python FastAPI backends.'
           ],
-          pre: '# Option 1: Run directly with NPX (No installation required)\nnpx koko-cli init\n\n# Option 2: Global installation via npm/pnpm\nnpm install -g koko-cli\nkoko init'
+          pre: '# Option 1: Run directly with NPX (No installation required)\nnpx koko-app init\n\n# Option 2: Global installation via npm/pnpm\nnpm install -g koko-app\nkoko init'
         },
         {
           anchorId: 'native-binaries',
@@ -896,14 +978,16 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           ],
           bullets: [
             '-d, --default - Instantly bootstraps using the default recipe (SaaS Starter with Next.js + Drizzle + Better-Auth).',
-            '-r, --recipie <name> - Chooses a production blueprint recipe: saas, pern, mern, fastapi_react.',
-            '-f, --frontend <framework> - Frontend framework: nextjs, react, nuxt, svelte, none.',
-            '-b, --backend <runtime> - Backend runtime: express, fastapi, go_chi, nestjs, hono, none.',
-            '-p, --package-manager <pm> - Package manager: pnpm, npm, bun, go_mod, pip, uv.',
+            '-r, --recipie <name> - Chooses a production blueprint recipe: saas, pern, mern, fastapi_react, enterprise_nestjs, java_spring, mobile_expo.',
+            '-f, --frontend <framework> - Frontend framework: nextjs, react, nuxt, svelte, astro, native, none.',
+            '-b, --backend <runtime> - Backend runtime: express, hono, fastapi, go_chi, spring_boot, nestjs, self, none.',
+            '--api <layer> - Typed API layer: trpc, orpc, none.',
+            '-p, --package-manager <pm> - Package manager: pnpm, npm, bun, go_mod, pip, uv, mvn, gradle.',
             '--database <engine> - Database server: postgres, mongodb, mysql, sqlite, none.',
-            '--orm <tool> - ORM or query tool: drizzle, prisma, mongoose, sqlalchemy, gorm, none.',
-            '--auth <provider> - Authentication provider: better-auth, next-auth, none.',
-            '--git <yes|no> - Initialize local Git repository (default: yes).'
+            '--orm <tool> - ORM or query tool: drizzle, prisma, mongoose, sqlalchemy, gorm, jpa, none.',
+            '--auth <provider> - Authentication provider: better-auth, clerk, next-auth, none.',
+            '--addons <tools> - Comma-separated addons: shadcn, lucide, svgl, motion, stripe, polar, resend, brevo, zod, docker, github_actions.',
+            '--git <yes|no> - Initialize local Git repository (default: no in headless CLI mode).'
           ]
         },
         {
@@ -934,12 +1018,92 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           ]
         },
         {
+          anchorId: 'command-doctor',
+          title: 'The koko doctor Command',
+          body: [
+            'Diagnoses project architecture, detects discrepancies and drift against koko.config.json, and synchronizes manifest automatically. For an extensive deep-dive with CI/CD recipes, explore our dedicated Diagnostics guide.',
+            '• 1-Click Manifest Healing: Run --fix to update configuration and align dependency versions.',
+            '• Early Conflict Detection: Identifies Docker database port clashes and outdated packages before compilation.'
+          ],
+          bullets: [
+            '-f, --fix - Automatically apply detected fixes and update koko.config.json.',
+            '-d, --dir <path> - Target project directory to analyze (default: .).',
+            '-v, --verbose - Output comprehensive diagnostic trace for each module.',
+            '--json - Structured machine-readable output for automated CI/CD pipelines.'
+          ],
+          pre: '# Run project diagnostics\nkoko doctor\n\n# Diagnose and auto-repair koko.config.json\nkoko doctor --fix'
+        },
+        {
           anchorId: 'command-version',
           title: 'The koko version Command',
           body: [
             'Prints detailed build information, semantic version, operating system, architecture, and Go runtime version:'
           ],
           pre: 'koko version'
+        }
+      ]
+    },
+    {
+      id: 'doctor',
+      title: 'Diagnostics (koko doctor)',
+      category: 'CLI',
+      content: [
+        {
+          anchorId: 'doctor-overview',
+          title: 'Diagnostics & Architecture Integrity',
+          body: [
+            'The `koko doctor` command is the built-in introspection and drift-control engine of Koko CLI. As codebases grow and engineering teams add dependencies, environment flags, and background services, original architectural conventions often suffer from silent configuration drift.',
+            '• Sub-millisecond Execution: `koko doctor` audits your workspace directory tree, package managers, and container ports in under 20ms.',
+            '• Active Drift Prevention: Verifies real file configurations against the single source of truth in `koko.config.json` and the Master Catalog.',
+            '• Non-destructive Self-Healing: The `--fix` flag reconciles discrepancies and updates manifests automatically without breaking custom business logic.'
+          ]
+        },
+        {
+          anchorId: 'doctor-flags',
+          title: 'Command Syntax & Flags Reference',
+          body: [
+            'Syntax: `koko doctor [flags]`',
+            'All supported options for local developer audits and automated CI/CD quality gates:'
+          ],
+          bullets: [
+            '-f, --fix - Automatically apply detected fixes and update koko.config.json.',
+            '-d, --dir <path> - Target project directory to analyze (default: current directory .).',
+            '-v, --verbose - Output verbose validation traces for all packages and configs.',
+            '--json - Output machine-readable JSON summary for CI/CD pipelines and webhooks.'
+          ],
+          pre: '# Standard interactive audit\nkoko doctor\n\n# Diagnose and auto-repair workspace drift\nkoko doctor --fix\n\n# Analyze specific subdirectory with verbose trace\nkoko doctor --dir ./apps/web --verbose\n\n# JSON output for CI/CD status checks\nkoko doctor --json'
+        },
+        {
+          anchorId: 'doctor-checks',
+          title: 'The 5 Diagnostic Health Pillars',
+          body: [
+            'During execution, `koko doctor` runs five core diagnostic verifications across your codebase:',
+            '• 1. Manifest Schema Validation: Validates that `koko.config.json` exists at the workspace root and strictly conforms to official JSON Schema specifications.',
+            '• 2. Monorepo & Workspaces Mapping: For Turborepo and pnpm monorepos, verifies that `apps/*` and `packages/*` cross-links and TypeScript path aliases resolve cleanly.',
+            '• 3. Dependency Catalog Drift: Compares installed package versions in `package.json`, `go.mod`, or `requirements.txt` against the Master Catalog to prevent outdated or vulnerable libraries.',
+            '• 4. Docker Database Port Health: Probes database container ports declared in `docker-compose.yml` (PostgreSQL 5432, MongoDB 27017, MySQL 3306) to warn about host port collisions.',
+            '• 5. Linter & Tooling Alignment: Checks that TypeScript (`tsconfig.json`), ESLint, Prettier, or Biome configurations adhere to recommended best practices.'
+          ]
+        },
+        {
+          anchorId: 'doctor-autofix',
+          title: 'Self-Healing Mode (--fix)',
+          body: [
+            'Running `koko doctor --fix` executes a transactional reconciliation routine in four distinct phases:',
+            '1. In-Memory Virtual Staging: Evaluates required adjustments inside the Virtual File System (VFS) before writing to disk.',
+            '2. Manifest Re-alignment: Updates `koko.config.json` registering any untracked addons or modules.',
+            '3. Script Reconciliation: Restores missing root development scripts (`dev`, `build`, `lint`) in `package.json`.',
+            '4. Summary Benchmark: Reports all applied patches with execution time in milliseconds.'
+          ],
+          pre: '$ koko doctor --fix\n\n[✓] koko.config.json schema: OK\n[✓] Monorepo workspace mapping: OK\n[!] Dependency Drift: @auth/core version out of sync\n    -> Applying fix: updated koko.config.json to v2.0.0 catalog standard\n[✓] Docker container ports: No conflicts detected\n\n✓ Diagnostics passed. 1 auto-fix applied successfully in 18ms.'
+        },
+        {
+          anchorId: 'doctor-cicd',
+          title: 'CI/CD Pipeline Integration (GitHub Actions)',
+          body: [
+            'Integrate `koko doctor` as an automated gatekeeper in your GitHub Actions workflows to ensure pull requests maintain architectural consistency:'
+          ],
+          pre: 'name: Architecture Integrity Check\n\non:\n  push:\n    branches: [main]\n  pull_request:\n    branches: [main]\n\njobs:\n  audit:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      \n      - name: Setup Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: 20\n          \n      - name: Install Koko CLI\n        run: npm install -g koko-app\n        \n      - name: Run Koko Doctor Audit\n        run: koko doctor'
         }
       ]
     },

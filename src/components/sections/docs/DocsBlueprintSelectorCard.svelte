@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Layers, ArrowRight } from '@lucide/svelte';
-  import { fade } from 'svelte/transition';
   import type { DocItem } from '@/types/docs-section.types';
 
   interface Props {
@@ -60,7 +59,7 @@
     <!-- File Structure Visualizer -->
     <div class="rounded-xl border border-border-subtle/80 bg-bg-base/80 p-3.5 font-mono text-[11px] min-h-[145px] overflow-hidden">
       {#if activeStack === 'saas'}
-        <div in:fade={{ duration: 150 }} class="space-y-1.5 text-text-muted">
+        <div class="space-y-1.5 text-text-muted animate-fade-in-up">
           <div class="text-text-main font-semibold">📁 saas-blueprint/</div>
           <div class="pl-4 border-l border-border-subtle/40 ml-1.5">• 📁 web-dashboard (Next.js)</div>
           <div class="pl-4 border-l border-border-subtle/40 ml-1.5">• 📁 worker-billing (Go)</div>
@@ -68,14 +67,14 @@
           <div class="pl-4 border-l border-border-subtle/40 ml-1.5">• 📄 koko.config.json</div>
         </div>
       {:else if activeStack === 'mobile'}
-        <div in:fade={{ duration: 150 }} class="space-y-1.5 text-text-muted">
+        <div class="space-y-1.5 text-text-muted animate-fade-in-up">
           <div class="text-text-main font-semibold">📁 mobile-api-blueprint/</div>
           <div class="pl-4 border-l border-border-subtle/40 ml-1.5">• 📁 mobile-flutter (App)</div>
           <div class="pl-4 border-l border-border-subtle/40 ml-1.5">• 📁 core-gateway (Gin Gonic)</div>
           <div class="pl-4 border-l border-border-subtle/40 ml-1.5">• 📄 docker-compose.yml</div>
         </div>
       {:else}
-        <div in:fade={{ duration: 150 }} class="space-y-1.5 text-text-muted">
+        <div class="space-y-1.5 text-text-muted animate-fade-in-up">
           <div class="text-text-main font-semibold">📁 fullstack-app/</div>
           <div class="pl-4 border-l border-border-subtle/40 ml-1.5">• 📁 app-svelte (SvelteKit)</div>
           <div class="pl-4 border-l border-border-subtle/40 ml-1.5">• 📁 server-fiber (Go Fiber)</div>

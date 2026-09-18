@@ -91,11 +91,10 @@ El CLI ofrece una interfaz limpia y potente para interactuar con tus proyectos:
 
 | Comando | Acción |
 | :--- | :--- |
-| `koko init` / `npm create koko-app@latest` | Inicia el asistente interactivo para estructurar un nuevo proyecto. |
-| `koko add auth` | Inyecta de forma automática módulos de autenticación listos para usar. |
-| `koko add database` | Configura e inyecta la capa de datos y ORM seleccionados en el workspace. |
-| `koko g component [Name]` | Genera un componente reutilizable siguiendo las guías de estilo del proyecto. |
-| `koko check` | Valida que la estructura del proyecto cumpla con las reglas del manifiesto. |
+| `koko init [name] [flags]` / `npx koko-app init` | Inicia el asistente TUI interactivo o genera el proyecto directamente mediante flags (`-f`, `-b`, `--database`, `--orm`, `--api`, `--addons`, `-p`, `-r`, `-d`, `--git`). |
+| `koko doctor [--fix] [--dir <path>]` | Diagnostica discrepancias entre tu código y `koko.config.json`, detecta drift y sincroniza la configuración con `--fix`. |
+| `koko version` / `koko --version` | Imprime la versión del compilador, arquitectura y versión del CLI. |
+| `koko --help` | Despliega la guía y listado de flags disponibles. |
 
 ---
 

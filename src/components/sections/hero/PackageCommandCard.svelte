@@ -23,9 +23,11 @@
 
 <div class="w-full h-full font-sans select-none flex flex-col justify-between">
   <!-- Modern Linear-style dark card -->
-  <div class="group/box rounded-2xl border border-border-subtle/50 bg-bg-surface/50 backdrop-blur-md p-6 shadow-lg hover:shadow-[0_20px_50px_rgba(90,79,196,0.12)] hover:-translate-y-0.5 hover:border-brand-primary/45 transition-all duration-200 ease-out flex flex-col justify-between flex-1 relative overflow-hidden">
+  <div class="group/box rounded-2xl border border-border-subtle bg-bg-surface/50 backdrop-blur-md p-6 shadow-lg hover:shadow-[0_20px_50px_rgba(90,79,196,0.14)] hover:-translate-y-0.5 hover:border-brand-primary/50 transition-all duration-200 ease-out flex flex-col justify-between flex-1 relative overflow-hidden">
+    <!-- Top-edge light reflection line -->
+    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"></div>
     <!-- Subtle glow dot in corner -->
-    <div class="absolute -right-12 -top-12 w-24 h-24 bg-brand-primary/10 rounded-full blur-xl pointer-events-none transition-all duration-200 group-hover/box:bg-brand-primary/20"></div>
+    <div class="absolute -right-12 -top-12 w-24 h-24 bg-brand-primary/10 rounded-full blur-xl pointer-events-none transition-all duration-200 group-hover/box:bg-brand-primary/25"></div>
 
     <div class="flex flex-col gap-4">
       <!-- Title & Header -->
@@ -34,7 +36,7 @@
           <Terminal size={15} class="text-brand-secondary" />
           <span class="text-xs font-mono font-bold uppercase tracking-wider text-text-muted/80">{lang === 'es' ? 'Instalación Rápida' : 'Quick Install'}</span>
         </div>
-        <span class="text-[11px] font-mono bg-bg-base/80 border border-border-subtle/50 px-2.5 py-0.5 rounded text-text-muted">v0.1.0</span>
+        <span class="text-[11px] font-mono bg-bg-base/80 border border-border-subtle/50 px-2.5 py-0.5 rounded text-text-muted">v1.0.0</span>
       </div>
 
       <!-- Segmented Select Row -->

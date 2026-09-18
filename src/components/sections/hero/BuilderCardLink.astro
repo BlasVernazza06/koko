@@ -13,11 +13,13 @@ const { lang = 'es', class: className = '' } = Astro.props;
   <!-- Premium Redirect Card -->
   <a
     href={lang === 'es' ? '/builder' : '/en/builder'}
-    class="group/box rounded-2xl border border-border-subtle/50 bg-bg-surface/50 backdrop-blur-md p-6 shadow-lg hover:shadow-[0_20px_50px_rgba(90,79,196,0.12)] hover:-translate-y-0.5 hover:border-brand-secondary/45 transition-all duration-200 ease-out flex flex-col justify-between flex-1 relative overflow-hidden text-left cursor-pointer"
+    class="group/box rounded-2xl border border-border-subtle bg-bg-surface/50 backdrop-blur-md p-6 shadow-lg hover:shadow-[0_20px_50px_rgba(90,79,196,0.14)] hover:-translate-y-0.5 hover:border-brand-secondary/50 transition-all duration-200 ease-out flex flex-col justify-between flex-1 relative overflow-hidden text-left cursor-pointer"
   >
+    <!-- Top-edge light reflection line -->
+    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"></div>
     <!-- Background Dot Grid Pattern -->
     <div class="absolute inset-0 opacity-[0.06] bg-[radial-gradient(var(--brand-secondary)_1.5px,transparent_1.5px)] [background-size:16px_16px] pointer-events-none"></div>
-    <div class="absolute -right-12 -top-12 w-32 h-32 bg-brand-secondary/5 rounded-full blur-xl pointer-events-none transition-all duration-200 group-hover/box:bg-brand-secondary/15"></div>
+    <div class="absolute -right-12 -top-12 w-32 h-32 bg-brand-secondary/5 rounded-full blur-xl pointer-events-none transition-all duration-200 group-hover/box:bg-brand-secondary/20"></div>
 
     <div class="flex flex-col gap-4.5">
       <!-- Title & Header -->

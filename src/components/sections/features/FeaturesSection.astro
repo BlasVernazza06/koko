@@ -1,6 +1,7 @@
 ---
 import { ArrowRight } from "@lucide/svelte";
 import SectionHeader from "@/components/ui/SectionHeader.astro";
+import SectionDivider from "@/components/ui/SectionDivider.astro";
 import FeatureCardCliTree from "./FeatureCardCliTree.astro";
 import FeatureCardAddonsOrbit from "./FeatureCardAddonsOrbit.astro";
 import FeatureCardOfflineGlobe from "./FeatureCardOfflineGlobe.astro";
@@ -44,7 +45,7 @@ const { lang = 'es', class: className = '' } = Astro.props;
   </div>
 
   <!-- Bento footer note -->
-  <div class="text-center mt-12">
+  <div class="text-center mt-12 scroll-reveal">
     <a
       href={lang === 'es' ? '/docs' : '/en/docs'} 
       class="text-xs text-text-muted font-medium inline-flex items-center gap-1 hover:text-brand-primary transition-colors cursor-pointer"
@@ -54,4 +55,7 @@ const { lang = 'es', class: className = '' } = Astro.props;
       <ArrowRight size={12} />
     </a>
   </div>
+
+  <!-- Section Transition Divider -->
+  <SectionDivider />
 </section>

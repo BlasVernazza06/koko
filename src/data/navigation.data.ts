@@ -4,8 +4,8 @@ export const docsDropdownItems: DocsDropdownItem[] = [
   {
     titleEs: 'Inicio Rápido',
     titleEn: 'Quick Start',
-    descEs: 'Empieza en minutos con Claw',
-    descEn: 'Get started in minutes with Claw',
+    descEs: 'Empieza en minutos con Koko',
+    descEn: 'Get started in minutes with Koko',
     href: '/docs/quick-start',
     hrefEn: '/en/docs/quick-start'
   },
@@ -16,6 +16,14 @@ export const docsDropdownItems: DocsDropdownItem[] = [
     descEn: 'Complete CLI reference guide',
     href: '/docs/cli-commands',
     hrefEn: '/en/docs/cli-commands'
+  },
+  {
+    titleEs: 'koko doctor',
+    titleEn: 'koko doctor',
+    descEs: 'Diagnóstico e integridad del workspace',
+    descEn: 'Workspace diagnostics & integrity',
+    href: '/docs/doctor',
+    hrefEn: '/en/docs/doctor'
   },
   {
     titleEs: 'Limitaciones',
@@ -46,14 +54,14 @@ export const docsDropdownItems: DocsDropdownItem[] = [
     titleEn: 'Koko Config',
     descEs: 'Manifiesto y koko.config.json',
     descEn: 'Manifest & koko.config.json',
-    href: '/docs/claw-config',
-    hrefEn: '/en/docs/claw-config'
+    href: '/docs/koko-config',
+    hrefEn: '/en/docs/koko-config'
   },
   {
     titleEs: 'Contribución',
     titleEn: 'Contributing',
-    descEs: 'Cómo colaborar en Claw',
-    descEn: 'How to collaborate on Claw',
+    descEs: 'Cómo colaborar en Koko',
+    descEn: 'How to collaborate on Koko',
     href: '/docs/contributing',
     hrefEn: '/en/docs/contributing'
   },

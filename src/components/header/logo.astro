@@ -1,8 +1,14 @@
 ---
-// Logo component using Koko the Koala icon
+interface Props {
+  lang?: string;
+}
+
+const { lang } = Astro.props;
+const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es');
+const homeUrl = currentLang === 'en' ? '/en' : '/';
 ---
 
-<a href="/" class="flex items-center gap-1 group select-none">
+<a href={homeUrl} class="flex items-center gap-1 group select-none">
   <!-- Rounded container for the icon -->
   <div class="flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-500 overflow-hidden relative">
     <div class="absolute inset-0 rounded-xl transition-opacity duration-500"></div>

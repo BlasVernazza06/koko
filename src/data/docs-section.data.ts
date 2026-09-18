@@ -15,9 +15,9 @@ export const docsEs: DocItem[] = [
   },
   {
     id: "drift",
-    title: "Control de Desviación (Drift)",
-    desc: "Mantén sincronizados los parámetros, reglas del linter y dependencias de tu proyecto detectando cualquier desvío desde el inicio.",
-    path: "/docs/contributing#overview"
+    title: "Diagnóstico con koko doctor",
+    desc: "Audita la integridad de tu proyecto, detecta desviaciones (drift) respecto al manifiesto koko.config.json y repara inconsistencias automáticamente con un solo comando.",
+    path: "/docs/doctor"
   },
   {
     id: "offline",
@@ -42,9 +42,9 @@ export const docsEn: DocItem[] = [
   },
   {
     id: "drift",
-    title: "Drift Prevention",
-    desc: "Keep your workspace parameters, linter configs, and dependencies synchronized and detect deviations from Day 1 to Day 2.",
-    path: "/docs/contributing#overview"
+    title: "Diagnostics with koko doctor",
+    desc: "Audit workspace integrity, detect architecture drift against koko.config.json, and auto-repair inconsistencies instantly with a single command.",
+    path: "/en/docs/doctor"
   },
   {
     id: "offline",

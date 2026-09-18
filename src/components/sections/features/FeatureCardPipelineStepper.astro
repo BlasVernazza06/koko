@@ -253,6 +253,15 @@ const { lang = 'es' } = Astro.props;
       { sel: '.step-4', activeAt: 4000, doneAt: 5200 },
     ];
     const CYCLE = 7000;
+    let activeIntervals: number[] = [];
+    let activeTimeouts: number[] = [];
+
+    function clearTimers() {
+      activeIntervals.forEach(clearInterval);
+      activeTimeouts.forEach(clearTimeout);
+      activeIntervals = [];
+      activeTimeouts = [];
+    }
 
     function runCycle(wrapper: Element) {
       STEPS.forEach(({ sel }) => {
@@ -263,25 +272,29 @@ const { lang = 'es' } = Astro.props;
       });
 
       STEPS.forEach(({ sel, activeAt, doneAt }) => {
-        setTimeout(() => {
+        const t1 = window.setTimeout(() => {
           const el = wrapper.querySelector(sel);
           if (el) el.classList.add('is-active');
         }, activeAt);
+        activeTimeouts.push(t1);
 
-        setTimeout(() => {
+        const t2 = window.setTimeout(() => {
           const el = wrapper.querySelector(sel);
           if (el) {
             el.classList.remove('is-active');
             el.classList.add('is-done');
           }
         }, doneAt);
+        activeTimeouts.push(t2);
       });
     }
 
     function init() {
+      clearTimers();
       document.querySelectorAll('.pipeline-wrapper').forEach((wrapper) => {
         runCycle(wrapper);
-        setInterval(() => runCycle(wrapper), CYCLE);
+        const iv = window.setInterval(() => runCycle(wrapper), CYCLE);
+        activeIntervals.push(iv);
       });
     }
 
@@ -290,5 +303,8 @@ const { lang = 'es' } = Astro.props;
     } else {
       init();
     }
+
+    document.addEventListener('astro:before-swap', clearTimers);
+    document.addEventListener('astro:after-swap', init);
   })();
 </script>

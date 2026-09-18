@@ -1,16 +1,27 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
   import { Search, CornerDownLeft } from '@lucide/svelte';
 
-  export let lang = 'es';
+  interface SearchItem {
+    title: string;
+    section: string;
+    desc: string;
+    url: string;
+    keywords: string[];
+  }
 
-  let isOpen = false;
-  let query = '';
-  let selectedIndex = 0;
-  let results = [];
+  interface Props {
+    lang?: string;
+  }
+
+  let { lang = 'es' } = $props<Props>();
+
+  let isOpen = $state(false);
+  let query = $state('');
+  let selectedIndex = $state(0);
 
   // Content to search
-  const content = {
+  const content: Record<string, SearchItem[]> = {
     es: [
       {
         title: 'Inicio Rápido y Filosofía',
@@ -39,6 +50,13 @@
         desc: 'Referencia exhaustiva de comandos (koko init, koko version) y flags para automatización y CI/CD.',
         url: '/docs/cli-commands',
         keywords: ['comandos', 'flags', 'init', 'version', 'default', 'recipie', 'automatizacion', 'ci/cd']
+      },
+      {
+        title: 'Diagnóstico e Integridad (koko doctor)',
+        section: 'CLI',
+        desc: 'Diagnostica la arquitectura del proyecto, detecta drift contra koko.config.json y auto-repara inconsistencias con --fix.',
+        url: '/docs/doctor',
+        keywords: ['doctor', 'diagnostico', 'drift', 'fix', 'reparar', 'salud', 'consistencia', 'puertos', 'docker', 'catalogo', 'koko doctor']
       },
       {
         title: 'Reglas de Validación y Seguridad',
@@ -120,6 +138,13 @@
         keywords: ['commands', 'flags', 'init', 'version', 'default', 'recipie', 'automation', 'scripting']
       },
       {
+        title: 'Diagnostics & Drift Control (koko doctor)',
+        section: 'CLI',
+        desc: 'Diagnose workspace architecture, detect drift against koko.config.json, and auto-repair inconsistencies with --fix.',
+        url: '/en/docs/doctor',
+        keywords: ['doctor', 'diagnostics', 'drift', 'fix', 'repair', 'health', 'consistency', 'ports', 'docker', 'catalog', 'koko doctor']
+      },
+      {
         title: 'Cross-Validation Safety Rules',
         section: 'CLI',
         desc: 'Real-time compatibility engine preventing conflicting stack choices before file creation.',
@@ -171,31 +196,28 @@
     ]
   };
 
-  $: items = content[lang] || content['es'];
+  const items = $derived(content[lang] || content['es']);
 
-  // Perform search on query change
-  $: {
-    if (!query.trim()) {
-      results = [];
-    } else {
-      const q = query.toLowerCase().trim();
-      results = items.filter(item => {
-        return (
-          item.title.toLowerCase().includes(q) ||
-          item.desc.toLowerCase().includes(q) ||
-          item.section.toLowerCase().includes(q) ||
-          item.keywords.some(keyword => keyword.toLowerCase().includes(q))
-        );
-      });
-      selectedIndex = 0;
-    }
-  }
+  const results = $derived.by(() => {
+    if (!query.trim()) return [];
+    const q = query.toLowerCase().trim();
+    return items.filter(item => (
+      item.title.toLowerCase().includes(q) ||
+      item.desc.toLowerCase().includes(q) ||
+      item.section.toLowerCase().includes(q) ||
+      item.keywords.some(keyword => keyword.toLowerCase().includes(q))
+    ));
+  });
+
+  $effect(() => {
+    results;
+    selectedIndex = 0;
+  });
 
   function toggleModal() {
     isOpen = !isOpen;
     if (isOpen) {
       query = '';
-      results = [];
       selectedIndex = 0;
       setTimeout(() => {
         const input = document.getElementById('search-input');
@@ -204,7 +226,7 @@
     }
   }
 
-  function handleKeydown(e) {
+  function handleKeydown(e: KeyboardEvent) {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault();
       toggleModal();
@@ -230,7 +252,7 @@
     }
   }
 
-  function selectResult(result) {
+  function selectResult(result: SearchItem) {
     toggleModal();
     window.location.href = result.url;
   }
@@ -249,14 +271,13 @@
     };
   });
 
-  // Highlight matches helper
-  function highlightText(text, search) {
+  function highlightText(text: string, search: string) {
     if (!search.trim()) return text;
     const regex = new RegExp(`(${search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
     return text.replace(regex, '<mark class="bg-brand-primary/30 text-text-main rounded-sm px-0.5">$1</mark>');
   }
-  // Portal action to render modal outside sticky header context
-  function portal(node) {
+
+  function portal(node: HTMLElement) {
     document.body.appendChild(node);
     return {
       destroy() {
@@ -270,15 +291,16 @@
 
 <!-- Searchbar Trigger Button -->
 <button 
-  on:click={toggleModal}
-  class="flex items-center justify-between gap-3 px-3 py-1.5 rounded-lg border border-border-subtle bg-bg-surface/50 hover:bg-bg-surface hover:border-brand-primary/40 text-text-muted hover:text-text-main text-xs transition-all duration-200 cursor-pointer select-none min-w-[140px] md:min-w-[180px]"
+  type="button"
+  onclick={toggleModal}
+  class="flex items-center justify-between gap-3 px-3 py-1.5 rounded-xl border border-border-subtle bg-bg-surface/50 hover:bg-bg-surface hover:border-brand-primary/40 text-text-muted hover:text-text-main text-xs transition-all duration-200 cursor-pointer select-none min-w-[140px] md:min-w-[180px] shadow-2xs group"
   aria-label="Search"
 >
   <div class="flex items-center gap-2">
-    <Search size={14} class="opacity-80" />
+    <Search size={14} class="opacity-70 group-hover:text-brand-primary group-hover:opacity-100 transition-all" />
     <span>{lang === 'es' ? 'Buscar...' : 'Search...'}</span>
   </div>
-  <kbd class="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-mono border border-border-subtle bg-bg-base/80 text-text-muted shadow-xs">
+  <kbd class="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-mono border border-border-subtle bg-bg-base text-text-muted/80 shadow-2xs group-hover:border-brand-primary/30">
     <span>Ctrl</span>
     <span>K</span>
   </kbd>
@@ -288,45 +310,50 @@
   <!-- Modal Overlay Backdrop -->
   <div 
     use:portal
-    class="fixed inset-0 z-[999] bg-[#0a0911]/65 backdrop-blur-md flex items-start justify-center pt-[10vh] px-4 animate-fade-in"
-    on:click|self={toggleModal}
-    on:keydown={handleKeydown}
+    class="fixed inset-0 z-[999] bg-[#0a0911]/75 backdrop-blur-md flex items-start justify-center pt-[10vh] px-4 animate-fade-in select-none"
+    onclick={(e) => { if (e.target === e.currentTarget) toggleModal(); }}
+    onkeydown={handleKeydown}
+    role="dialog"
+    aria-modal="true"
+    tabindex="-1"
   >
     <!-- Modal Window -->
-    <div class="w-full max-w-xl rounded-xl border border-border-subtle bg-bg-surface shadow-2xl overflow-hidden flex flex-col max-h-[80vh] animate-scale-up">
+    <div class="w-full max-w-xl rounded-2xl border border-border-subtle bg-bg-surface shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col max-h-[80vh] animate-scale-up">
       <!-- Search Input Header -->
-      <div class="flex items-center px-4 border-b border-border-subtle py-3 gap-3">
+      <div class="flex items-center px-4 border-b border-border-subtle/80 py-3.5 gap-3 bg-bg-base/50">
         <Search class="text-brand-primary shrink-0" size={18} />
         <input 
           id="search-input"
           bind:value={query}
           type="text" 
-          placeholder={lang === 'es' ? 'Buscar en la documentación...' : 'Search documentation...'}
-          class="w-full bg-transparent text-sm text-text-main placeholder-text-muted focus:outline-hidden"
+          placeholder={lang === 'es' ? 'Buscar comandos, guías o arquitectura...' : 'Search commands, guides, or architecture...'}
+          class="w-full bg-transparent text-sm text-text-main placeholder-text-muted focus:outline-none"
           autocomplete="off"
         />
         <button 
-          on:click={toggleModal}
-          class="px-1.5 py-0.5 rounded text-[10px] font-mono border border-border-subtle bg-bg-base text-text-muted hover:text-text-main cursor-pointer"
+          type="button"
+          onclick={toggleModal}
+          class="px-2 py-0.5 rounded-md text-[10px] font-mono border border-border-subtle bg-bg-base text-text-muted hover:text-text-main cursor-pointer transition-colors"
         >
           ESC
         </button>
       </div>
 
       <!-- Search Results Area -->
-      <div class="overflow-y-auto p-2 min-h-[160px] max-h-[50vh]">
+      <div class="overflow-y-auto p-2.5 min-h-[160px] max-h-[50vh]">
         {#if !query}
           <!-- Default view / suggestions -->
           <div class="p-6 text-center text-text-muted text-xs space-y-3 flex flex-col items-center">
             <div class="w-24 h-24 rounded-2xl p-2 flex items-center justify-center">
-              <img src="/koko-binoculares.png" alt="Koko explorando" class="w-full h-full object-contain" />
+              <img src="/koko-binoculares.png" alt="Koko explorando" class="w-full h-full object-contain filter drop-shadow-md" />
             </div>
-            <p>{lang === 'es' ? 'Busca comandos, guías o configuraciones de Koko.' : 'Search commands, guides, or Koko configurations.'}</p>
+            <p class="font-medium text-text-muted">{lang === 'es' ? 'Busca comandos, guías o recetas oficiales de Koko.' : 'Search commands, guides, or official Koko recipes.'}</p>
             <div class="flex flex-wrap justify-center gap-1.5 pt-1">
-              {#each ['quick-start', 'saas', 'docker', 'tui-wizard', 'orm', 'koko.config.json'] as term}
+              {#each ['quick-start', 'saas', 'docker', 'tui-wizard', 'doctor', 'koko.config.json'] as term}
                 <button 
-                  on:click={() => { query = term; document.getElementById('search-input')?.focus(); }}
-                  class="px-2.5 py-1 rounded-lg bg-bg-base border border-border-subtle text-xs hover:border-brand-primary/40 text-text-muted hover:text-text-main transition-colors cursor-pointer"
+                  type="button"
+                  onclick={() => { query = term; document.getElementById('search-input')?.focus(); }}
+                  class="px-2.5 py-1 rounded-lg bg-bg-base border border-border-subtle text-xs hover:border-brand-primary/40 hover:text-brand-primary text-text-muted transition-colors cursor-pointer"
                 >
                   {term}
                 </button>
@@ -337,38 +364,38 @@
           <!-- No results found -->
           <div class="p-8 text-center text-text-muted text-xs flex flex-col items-center justify-center gap-3">
             <div class="w-24 h-24 rounded-2xl p-2 flex items-center justify-center">
-              <img src="/koko-binoculares.png" alt="Koko buscando" class="w-full h-full object-contain" />
+              <img src="/koko-binoculares.png" alt="Koko buscando" class="w-full h-full object-contain filter drop-shadow-md" />
             </div>
             <p class="text-sm font-semibold text-text-main">
-              {lang === 'es' ? 'No se encontraron resultados para ' : 'No results found for '} <span class="text-brand-primary">"{query}"</span>
+              {lang === 'es' ? 'No se encontraron resultados para ' : 'No results found for '} <span class="text-brand-primary font-bold">"{query}"</span>
             </p>
             <span class="text-[11px] text-text-muted">
-              {lang === 'es' ? 'Intenta buscar con otros términos como "init", "saas", "docker" o "orm".' : 'Try searching with different keywords like "init", "saas", "docker" or "orm".'}
+              {lang === 'es' ? 'Intenta buscar términos como "init", "saas", "docker" o "doctor".' : 'Try searching keywords like "init", "saas", "docker" or "doctor".'}
             </span>
           </div>
         {:else}
           <!-- Results list -->
           <div class="space-y-1">
             {#each results as result, idx}
-              <a 
-                href={result.url}
+              <button 
+                type="button"
                 id="result-item-{idx}"
-                on:click|preventDefault={() => selectResult(result)}
-                class="flex items-start gap-3 p-3 rounded-lg border transition-all duration-150 group/item cursor-pointer block
+                onclick={() => selectResult(result)}
+                class="w-full text-left flex items-start gap-3 p-3 rounded-xl border transition-all duration-150 group/item cursor-pointer
                   {idx === selectedIndex 
-                    ? 'bg-brand-primary/10 border-brand-primary/40' 
-                    : 'bg-transparent border-transparent hover:bg-bg-base/50'}"
+                    ? 'bg-brand-primary/10 border-brand-primary/40 shadow-xs' 
+                    : 'bg-transparent border-transparent hover:bg-bg-base/60'}"
               >
                 <div class="flex flex-col flex-1 min-w-0">
-                  <div class="flex items-center gap-2 mb-0.5">
-                    <span class="text-[10px] px-1.5 py-0.25 rounded-md font-semibold tracking-wider uppercase bg-bg-base border border-border-subtle text-brand-primary">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-[9px] px-1.5 py-0.5 rounded font-bold tracking-wider uppercase bg-bg-base border border-border-subtle text-brand-primary">
                       {result.section}
                     </span>
-                    <h4 class="text-xs sm:text-sm font-bold text-text-main group-hover/item:text-brand-primary transition-colors">
+                    <h4 class="text-xs sm:text-sm font-bold text-text-main group-hover/item:text-brand-primary transition-colors truncate">
                       {@html highlightText(result.title, query)}
                     </h4>
                   </div>
-                  <p class="text-[11px] sm:text-xs text-text-muted line-clamp-2 leading-relaxed">
+                  <p class="text-[11px] text-text-muted line-clamp-2 leading-relaxed font-sans">
                     {@html highlightText(result.desc, query)}
                   </p>
                 </div>
@@ -378,7 +405,7 @@
                     <CornerDownLeft size={14} />
                   </div>
                 {/if}
-              </a>
+              </button>
             {/each}
           </div>
         {/if}
@@ -386,12 +413,12 @@
 
       <!-- Footer Info -->
       {#if results.length > 0}
-        <div class="px-4 py-2 border-t border-border-subtle bg-bg-base/50 flex justify-between text-[10px] text-text-muted">
+        <div class="px-4 py-2.5 border-t border-border-subtle bg-bg-base/70 flex justify-between text-[11px] text-text-muted">
           <div class="flex gap-3">
             <span>↑↓ {lang === 'es' ? 'Navegar' : 'Navigate'}</span>
             <span>↵ {lang === 'es' ? 'Seleccionar' : 'Select'}</span>
           </div>
-          <span>{results.length} {lang === 'es' ? 'resultados encontrados' : 'results found'}</span>
+          <span>{results.length} {lang === 'es' ? 'resultados' : 'results'}</span>
         </div>
       {/if}
     </div>

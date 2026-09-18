@@ -40,7 +40,7 @@ const { lang = 'es' } = Astro.props;
     <div class="flex items-stretch gap-3 w-full relative">
 
       <!-- Y-Axis Scale (Left) -->
-      <div class="relative flex flex-col justify-between text-[10px] font-mono text-text-muted/80 h-[140px] pr-3 shrink-0 border-r border-gray-500/30 select-none">
+      <div class="relative flex flex-col justify-between text-[10px] font-mono text-text-muted/80 h-[140px] pr-3 shrink-0 border-r border-border-subtle/60 select-none">
         <span>150ms</span>
         <span>100ms</span>
         <span>50ms</span>
@@ -53,11 +53,11 @@ const { lang = 'es' } = Astro.props;
         <!-- Chart Area -->
         <div class="relative h-[140px] grid grid-cols-3 items-end justify-items-center">
           
-          <!-- Visible Gray Dashed Grid Lines -->
+          <!-- Visible Dashed Grid Lines -->
           <div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
-            <div class="border-b border-dashed border-gray-500/40 w-full"></div>
-            <div class="border-b border-dashed border-gray-500/40 w-full"></div>
-            <div class="border-b border-dashed border-gray-500/40 w-full"></div>
+            <div class="border-b border-dashed border-border-subtle/50 w-full"></div>
+            <div class="border-b border-dashed border-border-subtle/50 w-full"></div>
+            <div class="border-b border-dashed border-border-subtle/50 w-full"></div>
           </div>
 
           <!-- Column 1: Node.js -->
@@ -112,7 +112,9 @@ const { lang = 'es' } = Astro.props;
               </div>
             </div>
 
-            <div class="w-12 h-[22px] rounded-md bg-[#00ADD8] border border-[#0092b8] shadow-sm hover:brightness-110 transition-all duration-300"></div>
+            <div class="w-12 h-[22px] rounded-md bg-gradient-to-t from-[#0092b8] to-[#00ADD8] border border-[#00ADD8] shadow-[0_0_20px_rgba(0,173,216,0.35)] hover:brightness-110 transition-all duration-300 relative overflow-hidden">
+              <div class="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)] animate-[pulse_2s_ease-in-out_infinite]"></div>
+            </div>
           </div>
 
           <!-- Column 3: Rust -->
@@ -172,14 +174,14 @@ const { lang = 'es' } = Astro.props;
   <div class="mt-auto relative z-15 select-none">
     <div class="flex items-center gap-2 mb-2">
       <div class="w-1 h-4 bg-brand-secondary rounded-full"></div>
-      <h3 class="text-lg font-bold text-text-main lang-es">Performance superior</h3>
-      <h3 class="text-lg font-bold text-text-main lang-en">Superior Perfomance</h3>
+      <h3 class="text-lg font-bold text-text-main lang-es">Rendimiento superior</h3>
+      <h3 class="text-lg font-bold text-text-main lang-en">Superior Performance</h3>
     </div>
     <p class="text-xs sm:text-sm text-text-muted leading-relaxed lang-es align-middle">
-      CLI tool creada en <span class="inline-block align-middle mx-1"><SvglGoLogo width={30} height={10} class="text-[#00ADD8] fill-current [&_g]:fill-current" /></span>, con un rendimiento y velocidades de carga instantáneas
+      CLI construida en <span class="inline-block align-middle mx-1"><SvglGoLogo width={30} height={10} class="text-[#00ADD8] fill-current [&_g]:fill-current" /></span> con arranque instantáneo en 1.2ms, bajo consumo de memoria (~1.5MB) y ejecución 100x más veloz que alternativas tradicionales en Node.js.
     </p>
     <p class="text-xs sm:text-sm text-text-muted leading-relaxed lang-en">
-      Configure backend models, frontend rendering methods, databases, and linters visually and interactively.
+      Engineered in native Go for blazing-fast execution speeds, near-instant sub-2ms scaffolding, and minimal memory footprint (~1.5MB RAM).
     </p>
   </div>
 </div>

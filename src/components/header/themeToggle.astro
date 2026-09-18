@@ -65,7 +65,26 @@
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     };
 
-    const setTheme = (theme: string) => {
+    const setTheme = (theme: string, skipTransitionLock = false) => {
+      let css: HTMLStyleElement | null = null;
+      
+      // Temporarily disable CSS transitions on the DOM during theme change (excluding indicator)
+      if (!skipTransitionLock) {
+        css = document.createElement('style');
+        css.appendChild(
+          document.createTextNode(
+            `*:not(#theme-toggle-indicator, #theme-toggle-indicator *) {
+              -webkit-transition: none !important;
+              -moz-transition: none !important;
+              -o-transition: none !important;
+              -ms-transition: none !important;
+              transition: none !important;
+            }`
+          )
+        );
+        document.head.appendChild(css);
+      }
+
       if (theme === 'light') {
         document.documentElement.classList.remove('dark');
         document.documentElement.setAttribute('data-theme', 'light');
@@ -74,11 +93,25 @@
         document.documentElement.setAttribute('data-theme', 'dark');
       }
       localStorage.setItem('theme', theme);
+
+      if (css) {
+        // Force synchronous style calculation
+        const _ = window.getComputedStyle(css).opacity;
+        
+        // Re-enable interactive transitions on subsequent frame
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            if (css && css.parentNode) {
+              css.parentNode.removeChild(css);
+            }
+          });
+        });
+      }
     };
 
     // Set initial theme without animation to avoid flash
     const initialTheme = getTheme();
-    setTheme(initialTheme);
+    setTheme(initialTheme, true);
 
     // Apply smooth spring-like animation transition after mount to prevent sliding on load
     setTimeout(() => {

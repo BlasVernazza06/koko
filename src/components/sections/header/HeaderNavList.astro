@@ -45,7 +45,7 @@ const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es')
   <div class="relative group py-3">
     <a 
       href={currentLang === 'es' ? '/#showcase' : '/en/#showcase'}
-      class="text-[13.5px] font-bold text-brand-primary hover:text-brand-primary/80 transition-colors duration-300 flex items-center gap-1.5 cursor-pointer relative py-1"
+      class="text-[13.5px] font-bold text-text-muted hover:text-text-main transition-colors duration-300 flex items-center gap-1.5 cursor-pointer relative py-1"
     >
       <span class="lang-es">Recetas</span>
       <span class="lang-en">Showcase</span>

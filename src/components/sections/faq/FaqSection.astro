@@ -1,5 +1,6 @@
 ---
 import SectionHeader from '@/components/ui/SectionHeader.astro';
+import SectionDivider from '@/components/ui/SectionDivider.astro';
 import FaqAccordion from './FaqAccordion.svelte';
 import FaqSupportCard from './FaqSupportCard.astro';
 import { faqLabels } from '@/data/faq.data';
@@ -14,7 +15,7 @@ const currentLang = lang as 'es' | 'en';
 const labels = faqLabels[currentLang] || faqLabels.es;
 ---
 
-<section id="faq" class={`w-full max-w-6xl px-6 py-24 mx-auto font-sans select-none ${className}`}>
+<section id="faq" class={`w-full max-w-6xl px-6 py-16 mx-auto font-sans select-none ${className}`}>
   <!-- Static Section Header -->
   <SectionHeader 
     badge={labels.badge}
@@ -24,10 +25,15 @@ const labels = faqLabels[currentLang] || faqLabels.es;
   />
 
   <!-- Interactive Accordion Island -->
-  <FaqAccordion client:visible lang={currentLang} />
+  <div class="scroll-reveal">
+    <FaqAccordion client:visible lang={currentLang} />
+  </div>
 
   <!-- Support Card -->
-  <div class="md:pl-[25%] md:pr-0 mt-6">
+  <div class="md:pl-[25%] md:pr-0 mt-6 scroll-reveal">
     <FaqSupportCard lang={currentLang} />
   </div>
+
+  <!-- Section Transition Divider -->
+  <SectionDivider />
 </section>

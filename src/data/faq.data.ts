@@ -30,7 +30,7 @@ export const faqsEs: FAQItem[] = [
     id: "how-to-start",
     category: "general",
     question: "¿Cómo puedo empezar a usar Koko CLI en mi terminal?",
-    answer: "Puedes ejecutarlo instantáneamente sin instalación previa con <code>npx koko-cli init</code> (o mediante <code>bun create koko-app</code> o <code>pnpm create koko-app</code>). También puedes descargar el binario nativo compilado en Go para Windows (<code>koko.exe</code>), macOS o Linux desde las <a href=\"https://github.com/BlasVernazza06/koko-cli/releases\" target=\"_blank\" rel=\"noopener noreferrer\">Releases oficiales de GitHub</a>."
+    answer: "Puedes ejecutarlo instantáneamente sin instalación previa con <code>npx koko-app init</code> (o mediante <code>bunx koko-app init</code> o <code>pnpm dlx koko-app init</code>). También puedes instalarlo globalmente con <code>npm install -g koko-app</code> o descargar el binario nativo compilado en Go para Windows (<code>koko.exe</code>), macOS o Linux desde las <a href=\"https://github.com/BlasVernazza06/koko-cli/releases\" target=\"_blank\" rel=\"noopener noreferrer\">Releases oficiales de GitHub</a>."
   },
   {
     id: "offline-support",
@@ -160,7 +160,7 @@ export const faqsEs: FAQItem[] = [
     id: "cli-commands-flags",
     category: "config",
     question: "¿Qué comandos y flags ofrece Koko CLI?",
-    answer: "Cuenta con <code>koko init</code> (inicia el asistente interactivo o acepta flags directos como <code>--name</code>, <code>--front</code>, <code>--db</code>), <code>koko --version</code> y <code>koko --help</code> para asistencia rápida en terminal."
+    answer: "Cuenta con <code>koko init [nombre]</code> (acepta flags como <code>--frontend</code>, <code>--backend</code>, <code>--database</code>, <code>--orm</code>, <code>--api</code>, <code>--addons</code>, <code>--package-manager</code>, <code>--recipie</code> y <code>--default</code>), <code>koko doctor</code> (con <code>--fix</code> y <code>--dir</code> para diagnosticar y sincronizar tu proyecto con <code>koko.config.json</code>), <code>koko --version</code> y <code>koko --help</code> para asistencia rápida en terminal."
   },
   {
     id: "stack-evolution",
@@ -188,7 +188,7 @@ export const faqsEn: FAQItem[] = [
     id: "how-to-start",
     category: "general",
     question: "How do I get started using Koko CLI in my terminal?",
-    answer: "You can run it instantly without prior installation using <code>npx koko-cli init</code> (or via <code>bun create koko-app</code> or <code>pnpm create koko-app</code>). You can also download pre-compiled native Go binaries for Windows (<code>koko.exe</code>), macOS, or Linux directly from our official <a href=\"https://github.com/BlasVernazza06/koko-cli/releases\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub Releases</a>."
+    answer: "You can run it instantly without prior installation using <code>npx koko-app init</code> (or via <code>bunx koko-app init</code> or <code>pnpm dlx koko-app init</code>). You can also install it globally with <code>npm install -g koko-app</code> or download pre-compiled native Go binaries for Windows (<code>koko.exe</code>), macOS, or Linux directly from our official <a href=\"https://github.com/BlasVernazza06/koko-cli/releases\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub Releases</a>."
   },
   {
     id: "offline-support",
@@ -318,7 +318,7 @@ export const faqsEn: FAQItem[] = [
     id: "cli-commands-flags",
     category: "config",
     question: "Which commands and flags does Koko CLI provide?",
-    answer: "It provides <code>koko init</code> (launches the interactive TUI or accepts direct flags like <code>--name</code>, <code>--front</code>, <code>--db</code>), <code>koko --version</code>, and <code>koko --help</code> for quick command-line assistance."
+    answer: "It provides <code>koko init [name]</code> (accepts flags such as <code>--frontend</code>, <code>--backend</code>, <code>--database</code>, <code>--orm</code>, <code>--api</code>, <code>--addons</code>, <code>--package-manager</code>, <code>--recipie</code>, and <code>--default</code>), <code>koko doctor</code> (with <code>--fix</code> and <code>--dir</code> to diagnose and sync project state with <code>koko.config.json</code>), <code>koko --version</code>, and <code>koko --help</code> for quick command-line assistance."
   },
   {
     id: "stack-evolution",

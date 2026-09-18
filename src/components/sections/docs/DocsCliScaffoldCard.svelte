@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Terminal, ArrowRight } from '@lucide/svelte';
+  import DropdownSelect from '@/components/ui/DropdownSelect.svelte';
   import type { DocItem } from '@/types/docs-section.types';
 
   interface Props {
@@ -10,11 +11,66 @@
   let { doc, lang = 'es' } = $props<Props>();
 
   let selectedFramework = $state('Next.js');
-  let selectedBackend = $state('Go Fiber');
+  let selectedBackend = $state('Hono');
   let selectedDb = $state('PostgreSQL');
   let isBuilding = $state(false);
   let buildProgress = $state(0);
   let buildComplete = $state(false);
+
+  const frameworkOptions = [
+    { value: 'Next.js', label: 'Next.js' },
+    { value: 'React + Vite', label: 'React + Vite' },
+    { value: 'Astro', label: 'Astro' },
+    { value: 'Svelte', label: 'Svelte' },
+    { value: 'Nuxt', label: 'Nuxt' }
+  ];
+
+  const backendOptions = [
+    { value: 'Hono', label: 'Hono' },
+    { value: 'Express', label: 'Express' },
+    { value: 'FastAPI', label: 'FastAPI' },
+    { value: 'Go Chi', label: 'Go Chi' },
+    { value: 'NestJS', label: 'NestJS' }
+  ];
+
+  const dbOptions = [
+    { value: 'PostgreSQL', label: 'PostgreSQL' },
+    { value: 'MySQL', label: 'MySQL' },
+    { value: 'MongoDB', label: 'MongoDB' },
+    { value: 'SQLite', label: 'SQLite' }
+  ];
+
+  const frontSlug = $derived(() => {
+    switch (selectedFramework) {
+      case 'Next.js': return 'nextjs';
+      case 'React + Vite': return 'react';
+      case 'Astro': return 'astro';
+      case 'Svelte': return 'svelte';
+      case 'Nuxt': return 'nuxt';
+      default: return 'nextjs';
+    }
+  });
+
+  const backSlug = $derived(() => {
+    switch (selectedBackend) {
+      case 'Hono': return 'hono';
+      case 'Express': return 'express';
+      case 'FastAPI': return 'fastapi';
+      case 'Go Chi': return 'go_chi';
+      case 'NestJS': return 'nestjs';
+      default: return 'hono';
+    }
+  });
+
+  const dbSlug = $derived(() => {
+    switch (selectedDb) {
+      case 'PostgreSQL': return 'postgres';
+      case 'MySQL': return 'mysql';
+      case 'MongoDB': return 'mongodb';
+      case 'SQLite': return 'sqlite';
+      default: return 'postgres';
+    }
+  });
 
   function startCliBuild() {
     if (isBuilding) return;
@@ -60,45 +116,25 @@
     </p>
 
     <!-- Selector controls -->
-    <div class="grid grid-cols-3 gap-3 mb-5">
-      <div class="space-y-1.5">
-        <label class="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Frontend</label>
-        <select 
-          bind:value={selectedFramework}
-          disabled={isBuilding}
-          class="w-full text-xs font-semibold px-2 py-1.5 rounded-lg border border-border-subtle bg-bg-base/80 text-text-main focus:outline-none focus:border-brand-primary disabled:opacity-60 cursor-pointer"
-        >
-          <option>Next.js</option>
-          <option>Astro</option>
-          <option>SvelteKit</option>
-        </select>
-      </div>
-
-      <div class="space-y-1.5">
-        <label class="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Backend</label>
-        <select 
-          bind:value={selectedBackend}
-          disabled={isBuilding}
-          class="w-full text-xs font-semibold px-2 py-1.5 rounded-lg border border-border-subtle bg-bg-base/80 text-text-main focus:outline-none focus:border-brand-primary disabled:opacity-60 cursor-pointer"
-        >
-          <option>Go Fiber</option>
-          <option>Gin Gonic</option>
-          <option>Go Standard</option>
-        </select>
-      </div>
-
-      <div class="space-y-1.5">
-        <label class="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Database</label>
-        <select 
-          bind:value={selectedDb}
-          disabled={isBuilding}
-          class="w-full text-xs font-semibold px-2 py-1.5 rounded-lg border border-border-subtle bg-bg-base/80 text-text-main focus:outline-none focus:border-brand-primary disabled:opacity-60 cursor-pointer"
-        >
-          <option>PostgreSQL</option>
-          <option>SQLite</option>
-          <option>MySQL</option>
-        </select>
-      </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+      <DropdownSelect
+        label="Frontend"
+        bind:value={selectedFramework}
+        options={frameworkOptions}
+        disabled={isBuilding}
+      />
+      <DropdownSelect
+        label="Backend"
+        bind:value={selectedBackend}
+        options={backendOptions}
+        disabled={isBuilding}
+      />
+      <DropdownSelect
+        label="Database"
+        bind:value={selectedDb}
+        options={dbOptions}
+        disabled={isBuilding}
+      />
     </div>
 
     <!-- Live Terminal Mockup -->
@@ -109,9 +145,9 @@
           <span class="w-2 h-2 rounded-full bg-brand-primary animate-pulse"></span>
         </div>
 
-        <div class="flex gap-1.5 text-text-muted">
+        <div class="flex gap-1.5 text-text-muted flex-wrap">
           <span class="text-brand-primary font-bold">$</span>
-          <span class="text-text-main">koko init my-app --stack={selectedFramework.toLowerCase()}</span>
+          <span class="text-text-main">koko init my-app --frontend {frontSlug()} --backend {backSlug()} --database {dbSlug()}</span>
         </div>
 
         {#if isBuilding}
