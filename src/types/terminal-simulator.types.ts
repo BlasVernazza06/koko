@@ -9,16 +9,27 @@ export interface SidebarFileItem {
 }
 
 export interface TerminalTranslation {
-  welcome: string;
-  projectNamePrompt: string;
-  typeInit: string;
-  flowChoice: string;
-  flowRapido: string;
-  flowManual: string;
-  recipeChoice: string;
-  recipeSaas: string;
-  analyzing: string;
-  downloading: string;
-  injecting: string;
-  done: string;
+  creatingProject: string;
+  projectNameLabel: string;
+  chooseModeLabel: string;
+  quickModeLabel: string;
+  quickModeHint: string;
+  manualModeLabel: string;
+  manualModeHint: string;
+  frontendTitle: string;
+  backendTitle: string;
+  apiTitle: string;
+  pmTitle: string;
+  dbTitle: string;
+  ormTitle: string;
+  authTitle: string;
+  addonsTitle: string;
+  gitTitle: string;
+  stepGenMemory: string;
+  stepWritingDisk: string;
+  stepInitGit: string;
+  stepManifest: string;
+  scaffoldingInProgress: string;
+  projectCreatedSuccess: string;
+  nextSteps: string;
 }
