@@ -12,94 +12,176 @@ interface Props {
   lang?: string;
 }
 
-const { lang = 'es' } = Astro.props;
+const { lang: _lang = 'es' } = Astro.props;
 ---
 
 <div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-primary/10 hover:border-brand-primary/40">
   <!-- Ambient background glow -->
-  <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/8 via-transparent to-brand-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+  <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/8 via-transparent to-brand-secondary/6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+  <!-- Ambient subtle radial grid -->
+  <div class="absolute inset-0 opacity-[0.025] dark:opacity-[0.04] pointer-events-none bg-[radial-gradient(var(--color-border-subtle)_1px,transparent_1px)] bg-[size:16px_16px]"></div>
 
   <!-- Card Visual Mockup -->
-  <div class="relative w-full aspect-[320/230] mb-6 flex items-center justify-center select-none overflow-visible">
+  <div class="addons-orbit-wrapper relative w-full aspect-[340/230] mb-6 flex items-center justify-center select-none overflow-visible">
     
-    <!-- Static Radiant Halos & SVG Circuit Connections -->
-    <svg class="absolute inset-0 w-full h-full pointer-events-none overflow-visible" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Radiant Halos & SVG Circuit Connections -->
+    <svg 
+      class="absolute inset-0 w-full h-full pointer-events-none overflow-visible" 
+      viewBox="0 0 340 230" 
+      preserveAspectRatio="none"
+      fill="none" 
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <defs>
-        <linearGradient id="haloGrad1" x1="160" y1="70" x2="160" y2="150" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="var(--brand-primary)" stop-opacity="0.45" />
-          <stop offset="100%" stop-color="var(--brand-secondary)" stop-opacity="0.2" />
+        <linearGradient id="orbitHalo1" x1="170" y1="65" x2="170" y2="165" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="var(--brand-primary)" stop-opacity="0.4" />
+          <stop offset="100%" stop-color="var(--brand-secondary)" stop-opacity="0.15" />
         </linearGradient>
-        <linearGradient id="haloGrad2" x1="100" y1="110" x2="220" y2="110" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="var(--brand-primary)" stop-opacity="0.3" />
-          <stop offset="50%" stop-color="var(--brand-secondary)" stop-opacity="0.45" />
-          <stop offset="100%" stop-color="var(--brand-primary)" stop-opacity="0.3" />
+
+        <linearGradient id="circuitGradLeft" x1="50" y1="115" x2="170" y2="115" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="var(--brand-secondary)" stop-opacity="0.6" />
+          <stop offset="100%" stop-color="var(--brand-primary)" stop-opacity="0.8" />
         </linearGradient>
-        <radialGradient id="centerAura" cx="160" cy="110" r="60" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="var(--brand-primary)" stop-opacity="0.25" />
-          <stop offset="60%" stop-color="var(--brand-secondary)" stop-opacity="0.1" />
+
+        <linearGradient id="circuitGradRight" x1="290" y1="115" x2="170" y2="115" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="var(--brand-secondary)" stop-opacity="0.6" />
+          <stop offset="100%" stop-color="var(--brand-primary)" stop-opacity="0.8" />
+        </linearGradient>
+
+        <radialGradient id="centerAuraField" cx="170" cy="115" r="75" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="var(--brand-primary)" stop-opacity="0.22" />
+          <stop offset="60%" stop-color="var(--brand-secondary)" stop-opacity="0.08" />
           <stop offset="100%" stop-color="transparent" stop-opacity="0" />
         </radialGradient>
       </defs>
 
       <!-- Center Aura Field -->
-      <circle cx="160" cy="110" r="70" fill="url(#centerAura)" />
+      <circle cx="170" cy="115" r="75" fill="url(#centerAuraField)" />
 
-      <!-- Concentric Radiant Halos -->
-      <circle cx="160" cy="110" r="42" stroke="url(#haloGrad1)" stroke-width="1.5" />
-      <circle cx="160" cy="110" r="58" stroke="url(#haloGrad2)" stroke-width="1.2" stroke-dasharray="4 4" class="opacity-80" />
-      <circle cx="160" cy="110" r="76" class="stroke-brand-primary/20" stroke-width="1" stroke-dasharray="2 6" />
-      <circle cx="160" cy="110" r="95" class="stroke-brand-primary/10" stroke-width="0.8" />
+      <!-- Concentric Radiant Orbital Rings -->
+      <circle cx="170" cy="115" r="46" stroke="url(#orbitHalo1)" stroke-width="1.4" class="orbit-ring-1" />
+      <circle cx="170" cy="115" r="64" stroke="var(--brand-primary)" stroke-opacity="0.25" stroke-width="1.2" stroke-dasharray="4 4" class="orbit-ring-2" />
+      <circle cx="170" cy="115" r="84" stroke="var(--brand-secondary)" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="2 6" class="orbit-ring-3" />
+      <circle cx="170" cy="115" r="104" stroke="var(--brand-primary)" stroke-opacity="0.08" stroke-width="0.8" />
 
-      <!-- Left connection paths -->
-      <path d="M 85 45 C 120 45, 115 110, 126 110" class="stroke-brand-primary/35 group-hover:stroke-brand-primary/65 transition-colors duration-300" stroke-width="1.5" stroke-linecap="round" />
-      <path d="M 75 110 L 126 110" class="stroke-brand-primary/35 group-hover:stroke-brand-primary/65 transition-colors duration-300" stroke-width="1.5" stroke-linecap="round" />
-      <path d="M 85 175 C 120 175, 115 110, 126 110" class="stroke-brand-primary/35 group-hover:stroke-brand-primary/65 transition-colors duration-300" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Left Circuit Connection Paths (Connecting directly into pills) -->
+      <!-- Docker (Top-Left) → Center -->
+      <path 
+        id="path-docker"
+        d="M 85 46 C 130 46, 126 115, 145 115" 
+        class="circuit-trace" 
+        stroke="url(#circuitGradLeft)" 
+        stroke-width="1.6" 
+        stroke-linecap="round" 
+      />
+      <!-- Playwright Testing (Mid-Left) → Center -->
+      <path 
+        id="path-testing"
+        d="M 75 115 L 145 115" 
+        class="circuit-trace" 
+        stroke="url(#circuitGradLeft)" 
+        stroke-width="1.6" 
+        stroke-linecap="round" 
+      />
+      <!-- GitHub CI/CD (Bottom-Left) → Center -->
+      <path 
+        id="path-cicd"
+        d="M 85 184 C 130 184, 126 115, 145 115" 
+        class="circuit-trace" 
+        stroke="url(#circuitGradLeft)" 
+        stroke-width="1.6" 
+        stroke-linecap="round" 
+      />
 
-      <!-- Right connection paths -->
-      <path d="M 235 45 C 200 45, 205 110, 194 110" class="stroke-brand-primary/35 group-hover:stroke-brand-primary/65 transition-colors duration-300" stroke-width="1.5" stroke-linecap="round" />
-      <path d="M 245 110 L 194 110" class="stroke-brand-primary/35 group-hover:stroke-brand-primary/65 transition-colors duration-300" stroke-width="1.5" stroke-linecap="round" />
-      <path d="M 235 175 C 200 175, 205 110, 194 110" class="stroke-brand-primary/35 group-hover:stroke-brand-primary/65 transition-colors duration-300" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Right Circuit Connection Paths (Connecting directly into pills) -->
+      <!-- BetterAuth (Top-Right) → Center -->
+      <path 
+        id="path-auth"
+        d="M 255 46 C 210 46, 214 115, 195 115" 
+        class="circuit-trace" 
+        stroke="url(#circuitGradRight)" 
+        stroke-width="1.6" 
+        stroke-linecap="round" 
+      />
+      <!-- PostgreSQL DB (Mid-Right) → Center (Connecting directly flush to DB card) -->
+      <path 
+        id="path-db"
+        d="M 272 115 L 195 115" 
+        class="circuit-trace" 
+        stroke="url(#circuitGradRight)" 
+        stroke-width="1.6" 
+        stroke-linecap="round" 
+      />
+      <!-- Prettier Linting (Bottom-Right) → Center -->
+      <path 
+        id="path-linting"
+        d="M 255 184 C 210 184, 214 115, 195 115" 
+        class="circuit-trace" 
+        stroke="url(#circuitGradRight)" 
+        stroke-width="1.6" 
+        stroke-linecap="round" 
+      />
     </svg>
 
-    <!-- Center Mascot Hero -->
+    <!-- Center Mascot Core -->
     <div class="absolute z-10 flex items-center justify-center pointer-events-none">
-      <div class="absolute w-28 h-28 rounded-full bg-brand-primary/22 blur-2xl pointer-events-none"></div>
+      <div class="absolute w-28 h-28 rounded-full bg-brand-primary/20 blur-2xl pointer-events-none"></div>
       <img 
         src="/koko-escribiendo.png" 
         alt="Koko Escribiendo" 
-        class="w-24 h-24 sm:w-30 sm:h-30 object-contain filter drop-shadow-[0_4px_16px_rgba(90,79,196,0.3)] dark:drop-shadow-[0_4px_20px_rgba(155,141,247,0.35)] select-none" 
+        class="w-24 h-24 sm:w-28 sm:h-28 object-contain filter drop-shadow-[0_6px_20px_rgba(90,79,196,0.35)] dark:drop-shadow-[0_6px_24px_rgba(155,141,247,0.4)] transition-transform duration-500 group-hover:scale-105 select-none" 
       />
     </div>
 
-    <!-- Surrounding Add-on Nodes -->
-    <div class="absolute left-[17%] top-[20%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-xs hover:border-brand-primary/50 hover:scale-105 transition-all duration-300">
-      <DockerAstroComponent width={18} height={18}/>
-      <span class="text-[10px] font-bold text-text-main">Docker</span>
+    <!-- ── SURROUNDING ADD-ON CAPSULES ── -->
+    
+    <!-- 1. Docker (Left Top: X=16%, Y=20%) -->
+    <div class="absolute left-[16%] top-[20%] -translate-x-1/2 -translate-y-1/2 z-20 group/addon">
+      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-all duration-300">
+        <DockerAstroComponent width={17} height={17}/>
+        <span class="text-[10px] font-mono font-bold text-text-main">Docker</span>
+      </div>
     </div>
 
-    <div class="absolute left-[12%] top-[50%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-xs hover:border-brand-primary/50 hover:scale-105 transition-all duration-300">
-      <PlaywrightAstroComponent width={18} height={18}/>
-      <span class="text-[10px] font-bold text-text-main">Testing</span>
+    <!-- 2. Testing / Playwright (Left Mid: X=12%, Y=50%) -->
+    <div class="absolute left-[12%] top-[50%] -translate-x-1/2 -translate-y-1/2 z-20 group/addon">
+      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-all duration-300">
+        <PlaywrightAstroComponent width={17} height={17}/>
+        <span class="text-[10px] font-mono font-bold text-text-main">Testing</span>
+      </div>
     </div>
 
-    <div class="absolute left-[17%] top-[80%] -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-xs hover:border-brand-primary/50 hover:scale-105 transition-all duration-300">
-      <GitHubAstroComponent width={18} height={18}/>
-      <span class="text-[10px] font-bold text-text-main">CI/CD</span>
+    <!-- 3. CI/CD / GitHub (Left Bottom: X=16%, Y=80%) -->
+    <div class="absolute left-[16%] top-[80%] -translate-x-1/2 -translate-y-1/2 z-20 group/addon">
+      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-all duration-300">
+        <GitHubAstroComponent width={17} height={17}/>
+        <span class="text-[10px] font-mono font-bold text-text-main">CI/CD</span>
+      </div>
     </div>
 
-    <div class="absolute right-[17%] top-[20%] translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-xs hover:border-brand-primary/50 hover:scale-105 transition-all duration-300">
-      <BetterAuthAstroComponent width={18} height={18}/>
-      <span class="text-[10px] font-bold text-text-main">Auth</span>
+    <!-- 4. Auth / BetterAuth (Right Top: X=84%, Y=20%) -->
+    <div class="absolute right-[16%] top-[20%] translate-x-1/2 -translate-y-1/2 z-20 group/addon">
+      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-all duration-300">
+        <BetterAuthAstroComponent width={17} height={17}/>
+        <span class="text-[10px] font-mono font-bold text-text-main">Auth</span>
+      </div>
     </div>
 
-    <div class="absolute right-[12%] top-[50%] translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-xs hover:border-brand-primary/50 hover:scale-105 transition-all duration-300">
-      <PostgreSQLAstroComponent width={18} height={18}/>
-      <span class="text-[10px] font-bold text-text-main">DB</span>
+    <!-- 5. DB / PostgreSQL (Right Mid: X=88%, Y=50%) -->
+    <div class="absolute right-[12%] top-[50%] translate-x-1/2 -translate-y-1/2 z-20 group/addon">
+      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-all duration-300">
+        <PostgreSQLAstroComponent width={17} height={17}/>
+        <span class="text-[10px] font-mono font-bold text-text-main">DB</span>
+      </div>
     </div>
 
-    <div class="absolute right-[17%] top-[80%] translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 backdrop-blur-md shadow-xs hover:border-brand-primary/50 hover:scale-105 transition-all duration-300">
-      <PrettierAstroComponent width={18} height={18}/>
-      <span class="text-[10px] font-bold text-text-main">Linting</span>
+    <!-- 6. Linting / Prettier (Right Bottom: X=84%, Y=80%) -->
+    <div class="absolute right-[16%] top-[80%] translate-x-1/2 -translate-y-1/2 z-20 group/addon">
+      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-all duration-300">
+        <PrettierAstroComponent width={17} height={17}/>
+        <span class="text-[10px] font-mono font-bold text-text-main">Linting</span>
+      </div>
     </div>
   </div>
 
@@ -118,3 +200,56 @@ const { lang = 'es' } = Astro.props;
     </p>
   </div>
 </div>
+
+<style>
+  .circuit-trace {
+    stroke-dasharray: 180;
+    stroke-dashoffset: 180;
+    animation: draw-circuit 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transition: stroke-width 0.3s ease, stroke 0.3s ease;
+  }
+
+  @keyframes draw-circuit {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .orbit-ring-1 {
+    animation: orbit-rotate 25s linear infinite;
+    transform-origin: 170px 115px;
+  }
+  .orbit-ring-2 {
+    animation: orbit-rotate-reverse 35s linear infinite;
+    transform-origin: 170px 115px;
+  }
+  .orbit-ring-3 {
+    animation: orbit-rotate 45s linear infinite;
+    transform-origin: 170px 115px;
+  }
+
+  @keyframes orbit-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes orbit-rotate-reverse {
+    from { transform: rotate(360deg); }
+    to { transform: rotate(0deg); }
+  }
+
+  .addons-orbit-wrapper:hover .circuit-trace {
+    stroke-width: 1.8;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .circuit-trace,
+    .orbit-ring-1,
+    .orbit-ring-2,
+    .orbit-ring-3 {
+      animation: none !important;
+      stroke-dashoffset: 0 !important;
+    }
+  }
+</style>
+

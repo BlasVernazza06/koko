@@ -9,7 +9,7 @@
     Check, 
     ThumbsUp, 
     ThumbsDown, 
-    HelpCircle, 
+    CircleQuestionMark, 
     Terminal, 
     FileCode, 
     Cpu, 
@@ -21,7 +21,7 @@
     activeSection: DocSection;
     lang: 'es' | 'en';
   }
-  let { activeSection, lang } = $props<Props>();
+  let { activeSection, lang }: Props = $props();
 
   // State Runes
   let searchQuery = $state('');
@@ -31,8 +31,20 @@
   let feedbackStates = $state<Record<string, 'up' | 'down' | null>>({});
   let copiedId = $state<string | null>(null);
   let searchInputRef = $state<HTMLInputElement | null>(null);
+  let questionsHeaderRef = $state<HTMLElement | null>(null);
 
-  // Initialize feedback state from localStorage on mount
+  // Pagination State
+  const ITEMS_PER_PAGE = 6;
+  let currentPage = $state(1);
+
+  // Reset pagination when search query or category tag changes
+  $effect(() => {
+    // Track dependencies
+    const _ = searchQuery + selectedTag;
+    currentPage = 1;
+  });
+
+  // Initialize feedback state and event listeners on mount
   $effect(() => {
     const saved = localStorage.getItem('koko-faq-feedback');
     if (saved) {
@@ -50,8 +62,25 @@
         searchInputRef?.focus();
       }
     };
+
+    // Listen for custom tag selection event from RightSidebar
+    const handleTagFilter = (e: Event) => {
+      const customEvent = e as CustomEvent<{ tag: string }>;
+      if (customEvent.detail?.tag) {
+        selectedTag = customEvent.detail.tag;
+        searchQuery = '';
+        currentPage = 1;
+        questionsHeaderRef?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('koko:filter-faq-tag', handleTagFilter);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('koko:filter-faq-tag', handleTagFilter);
+    };
   });
 
   // Save feedback changes
@@ -62,7 +91,7 @@
 
   // Get icons based on tag or anchor
   function getIcon(tags?: string[]) {
-    if (!tags) return HelpCircle;
+    if (!tags) return CircleQuestionMark;
     if (tags.includes('cli') || tags.includes('go')) return Terminal;
     if (tags.includes('templates') || tags.includes('plantillas') || tags.includes('personalización') || tags.includes('customization')) return FileCode;
     if (tags.includes('architecture') || tags.includes('arquitectura') || tags.includes('módulos') || tags.includes('modules')) return Cpu;
@@ -72,9 +101,9 @@
   // Extract unique tags from data
   const allTags = $derived.by(() => {
     const tags = new Set<string>();
-    activeSection.content.forEach(block => {
+    activeSection.content.forEach((block: Block) => {
       if (block.tags) {
-        block.tags.forEach(t => tags.add(t));
+        block.tags.forEach((t: string) => tags.add(t));
       }
     });
     return Array.from(tags);
@@ -82,7 +111,7 @@
 
   // Filter content based on search and selected tag
   const filteredBlocks = $derived.by(() => {
-    return activeSection.content.filter(block => {
+    return activeSection.content.filter((block: Block) => {
       // Filter by tag
       if (selectedTag !== 'all' && (!block.tags || !block.tags.includes(selectedTag))) {
         return false;
@@ -91,13 +120,30 @@
       if (searchQuery.trim() !== '') {
         const query = searchQuery.toLowerCase();
         const inTitle = block.title.toLowerCase().includes(query);
-        const inBody = block.body.some(p => p.toLowerCase().includes(query));
-        const inTags = block.tags?.some(t => t.toLowerCase().includes(query)) || false;
+        const inBody = block.body.some((p: string) => p.toLowerCase().includes(query));
+        const inTags = block.tags?.some((t: string) => t.toLowerCase().includes(query)) || false;
         return inTitle || inBody || inTags;
       }
       return true;
     });
   });
+
+  // Pagination Calculations
+  const totalPages = $derived(Math.max(1, Math.ceil(filteredBlocks.length / ITEMS_PER_PAGE)));
+
+  const paginatedBlocks = $derived.by(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredBlocks.slice(start, start + ITEMS_PER_PAGE);
+  });
+
+  const startIndex = $derived((currentPage - 1) * ITEMS_PER_PAGE + 1);
+  const endIndex = $derived(Math.min(currentPage * ITEMS_PER_PAGE, filteredBlocks.length));
+
+  function goToPage(page: number) {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    currentPage = page;
+    questionsHeaderRef?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   // Featured/Popular questions for the carousel (take first 3)
   const featuredQuestions = $derived(activeSection.content.slice(0, 3));
@@ -107,18 +153,27 @@
     openStates = { ...openStates, [id]: !openStates[id] };
   }
 
-  // Focus and open question from carousel
+  // Focus and open question from carousel (supporting cross-page pagination)
   function openQuestion(id: string) {
-    openStates = { ...openStates, [id]: true };
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // Apply brief highlight effect
-      el.classList.add('ring-2', 'ring-brand-primary/50');
-      setTimeout(() => {
-        el.classList.remove('ring-2', 'ring-brand-primary/50');
-      }, 2000);
+    // Find index in filtered blocks
+    const index = filteredBlocks.findIndex((b: Block) => b.anchorId === id);
+    if (index !== -1) {
+      const targetPage = Math.floor(index / ITEMS_PER_PAGE) + 1;
+      currentPage = targetPage;
     }
+
+    openStates = { ...openStates, [id]: true };
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Apply brief highlight effect
+        el.classList.add('ring-2', 'ring-brand-primary/50');
+        setTimeout(() => {
+          el.classList.remove('ring-2', 'ring-brand-primary/50');
+        }, 2000);
+      }
+    }, 100);
   }
 
   // Copy anchor link to clipboard
@@ -268,21 +323,34 @@
   {/if}
 
   <!-- Bento Accordion Grid -->
-  <div class="space-y-4">
-    <h3 class="text-sm font-bold uppercase tracking-wider text-text-muted select-none">
-      {lang === 'es' ? 'Preguntas' : 'Questions'} ({filteredBlocks.length})
-    </h3>
+  <div class="space-y-5" bind:this={questionsHeaderRef}>
+    <div class="flex items-center justify-between flex-wrap gap-2 select-none border-b border-border-subtle/40 pb-3">
+      <div class="flex items-center gap-2">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-text-muted">
+          {lang === 'es' ? 'Preguntas' : 'Questions'}
+        </h3>
+        <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-bg-surface border border-border-subtle text-text-muted">
+          {filteredBlocks.length}
+        </span>
+      </div>
+
+      {#if totalPages > 1}
+        <span class="text-xs font-medium text-text-muted/80">
+          {lang === 'es' ? `Página ${currentPage} de ${totalPages}` : `Page ${currentPage} of ${totalPages}`}
+        </span>
+      {/if}
+    </div>
     
     {#if filteredBlocks.length === 0}
       <div class="text-center py-12 border border-dashed border-border-subtle rounded-3xl">
-        <HelpCircle class="mx-auto text-text-muted/40 mb-3" size={32} />
+        <CircleQuestionMark class="mx-auto text-text-muted/40 mb-3" size={32} />
         <p class="text-sm text-text-muted font-medium font-sans">
           {lang === 'es' ? 'No encontramos preguntas que coincidan con tu búsqueda.' : 'No questions found matching your search.'}
         </p>
       </div>
     {:else}
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {#each filteredBlocks as item (item.anchorId)}
+        {#each paginatedBlocks as item (item.anchorId)}
           {@const Icon = getIcon(item.tags)}
           <div 
             id={item.anchorId}
@@ -387,6 +455,61 @@
           </div>
         {/each}
       </div>
+
+      <!-- Interactive Pagination Bar -->
+      {#if totalPages > 1}
+        <div class="pt-6 border-t border-border-subtle/40 flex flex-col sm:flex-row items-center justify-between gap-4 select-none">
+          <p class="text-xs text-text-muted font-medium order-2 sm:order-1">
+            {lang === 'es' 
+              ? `Mostrando ${startIndex} - ${endIndex} de ${filteredBlocks.length} dudas frecuentes`
+              : `Showing ${startIndex} - ${endIndex} of ${filteredBlocks.length} questions`}
+          </p>
+
+          <div class="flex items-center gap-1.5 order-1 sm:order-2">
+            <!-- Prev Page Button -->
+            <button
+              onclick={() => goToPage(currentPage - 1)}
+              disabled={currentPage <= 1}
+              aria-label="Previous page"
+              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all duration-200 cursor-pointer disabled:opacity-40 disabled:pointer-events-none disabled:cursor-not-allowed
+                bg-bg-surface/50 border-border-subtle text-text-muted hover:text-text-main hover:border-brand-primary/30"
+            >
+              <ArrowLeft size={13} />
+              <span class="hidden xs:inline">{lang === 'es' ? 'Anterior' : 'Previous'}</span>
+            </button>
+
+            <!-- Page Number Pills -->
+            <div class="flex items-center gap-1">
+              {#each Array(totalPages) as _, i}
+                {@const pageNum = i + 1}
+                <button
+                  onclick={() => goToPage(pageNum)}
+                  aria-label={`Page ${pageNum}`}
+                  aria-current={currentPage === pageNum ? "page" : undefined}
+                  class="w-8 h-8 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center cursor-pointer border
+                    {currentPage === pageNum 
+                      ? 'bg-brand-primary text-bg-base border-brand-primary shadow-xs ring-2 ring-brand-primary/20 scale-105' 
+                      : 'bg-bg-surface/40 border-border-subtle text-text-muted hover:border-brand-primary/30 hover:text-text-main'}"
+                >
+                  {pageNum}
+                </button>
+              {/each}
+            </div>
+
+            <!-- Next Page Button -->
+            <button
+              onclick={() => goToPage(currentPage + 1)}
+              disabled={currentPage >= totalPages}
+              aria-label="Next page"
+              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all duration-200 cursor-pointer disabled:opacity-40 disabled:pointer-events-none disabled:cursor-not-allowed
+                bg-bg-surface/50 border-border-subtle text-text-muted hover:text-text-main hover:border-brand-primary/30"
+            >
+              <span class="hidden xs:inline">{lang === 'es' ? 'Siguiente' : 'Next'}</span>
+              <ArrowRight size={13} />
+            </button>
+          </div>
+        </div>
+      {/if}
     {/if}
   </div>
 </div>

@@ -7,7 +7,7 @@
     lang?: string;
   }
 
-  let { doc, lang = 'es' } = $props<Props>();
+  let { doc, lang = 'es' }: Props = $props();
 
   let activeStack = $state<'saas' | 'mobile' | 'minimal'>('saas');
 </script>

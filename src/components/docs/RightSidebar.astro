@@ -1,6 +1,6 @@
 ---
 import type { DocSection } from '@/lib/docsData';
-import { HelpCircle } from '@lucide/svelte';
+import { CircleQuestionMark, ArrowUpRight, Tag, MessageSquare } from '@lucide/svelte';
 
 interface Props {
   activeSection: DocSection;
@@ -8,9 +8,10 @@ interface Props {
 }
 
 const { activeSection, lang } = Astro.props;
+const isFaq = activeSection.id === 'faq';
 
-// Flatten anchors and headings to render timeline outlines
-const outlines = activeSection.content.flatMap((block) => {
+// Flatten anchors and headings to render timeline outlines for standard doc sections
+const outlines = isFaq ? [] : activeSection.content.flatMap((block) => {
   const list = [{ anchorId: block.anchorId, title: block.title, isNested: false }];
   if (block.nestedBlocks) {
     block.nestedBlocks.forEach((nested) => {
@@ -19,50 +20,175 @@ const outlines = activeSection.content.flatMap((block) => {
   }
   return list;
 });
+
+// FAQ Curated Topics for fast navigation
+const faqTopics = lang === 'es' ? [
+  { label: 'Todos los temas', tag: 'all', count: 18, icon: '🌟' },
+  { label: 'CLI & Rendimiento', tag: 'cli', count: 5, icon: '⚡' },
+  { label: 'Monorepo & Workspaces', tag: 'monorepo', count: 2, icon: '📦' },
+  { label: 'Bases de Datos & ORM', tag: 'bases de datos', count: 2, icon: '🗄️' },
+  { label: 'Autenticación & Auth', tag: 'seguridad', count: 2, icon: '🔒' },
+  { label: 'Docker & Despliegue', tag: 'infraestructura', count: 3, icon: '🐳' },
+  { label: 'Plantillas & Addons', tag: 'plantillas', count: 2, icon: '🛠️' },
+] : [
+  { label: 'All Topics', tag: 'all', count: 18, icon: '🌟' },
+  { label: 'CLI & Performance', tag: 'cli', count: 5, icon: '⚡' },
+  { label: 'Monorepo & Workspaces', tag: 'monorepo', count: 2, icon: '📦' },
+  { label: 'Databases & ORM', tag: 'databases', count: 2, icon: '🗄️' },
+  { label: 'Authentication & Auth', tag: 'security', count: 2, icon: '🔒' },
+  { label: 'Docker & Deployment', tag: 'infrastructure', count: 3, icon: '🐳' },
+  { label: 'Templates & Addons', tag: 'templates', count: 2, icon: '🛠️' },
+];
 ---
 
-<aside class="w-56 shrink-0 hidden xl:block sticky top-24 self-start max-h-[calc(100vh-8rem)] overflow-y-auto overflow-x-hidden select-none pl-5 text-xs scrollable-right-sidebar">
-  <h5 class="text-xs font-bold uppercase tracking-wider text-text-main mb-4 flex items-center gap-1.5">
-    <HelpCircle size={12} />
-    {lang === 'es' ? 'En esta página' : 'On this page'}
-  </h5>
+<aside class="w-60 shrink-0 hidden xl:flex flex-col sticky top-24 self-start h-[calc(100vh-8rem)] select-none pl-4 text-xs">
   
-  <ul class="relative border-l-2 border-border-subtle/60 space-y-4 pl-4 text-xs text-text-muted" id="toc-list">
-    {outlines.map((item, idx) => (
-      <li class={`relative ${item.isNested ? 'pl-3' : ''}`} data-anchor={item.anchorId}>
-        <!-- Bubble bullet timeline nodes -->
-        <div class={`toc-bullet absolute -left-[22px] top-1.5 w-2 h-2 rounded-full border bg-bg-base transition-all duration-300 ring-brand-primary/0
-          ${idx === 0 
-            ? 'border-brand-primary bg-brand-primary ring-4 ring-brand-primary/20' 
-            : 'border-transparent bg-border-subtle/60'}`}>
+  <!-- Scrollable Top Content Area (TOC or FAQ Topics) -->
+  <div class="flex-1 overflow-y-auto overflow-x-hidden pr-1 space-y-4 scrollable-sidebar-body">
+    {isFaq ? (
+      <div class="space-y-3">
+        <h5 class="text-xs font-bold uppercase tracking-wider text-text-main flex items-center gap-1.5">
+          <Tag size={13} class="text-brand-primary" />
+          {lang === 'es' ? 'Temas del FAQ' : 'FAQ Topics'}
+        </h5>
+        
+        <div class="space-y-1" id="faq-topics-container">
+          {faqTopics.map((topic) => (
+            <button
+              type="button"
+              data-faq-tag={topic.tag}
+              class="faq-topic-btn w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl border border-transparent hover:border-border-subtle hover:bg-bg-surface/50 text-text-muted hover:text-text-main transition-all duration-150 text-left cursor-pointer group"
+            >
+              <div class="flex items-center gap-2 truncate">
+                <span class="text-[12px] opacity-80 group-hover:scale-110 transition-transform">{topic.icon}</span>
+                <span class="text-[11px] font-medium truncate group-hover:text-brand-primary transition-colors">{topic.label}</span>
+              </div>
+              <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-bg-surface/80 border border-border-subtle/50 text-text-muted/80">
+                {topic.count}
+              </span>
+            </button>
+          ))}
         </div>
-        <a 
-          href={`#${item.anchorId}`} 
-          class={`toc-link hover:text-brand-primary block transition-all duration-200 truncate
-            ${idx === 0 
-              ? 'text-brand-primary font-bold translate-x-1' 
-              : 'text-text-muted font-medium'}`}
-        >
-          {item.title}
-        </a>
-      </li>
-    ))}
-  </ul>
+      </div>
+    ) : (
+      <div>
+        <h5 class="text-xs font-bold uppercase tracking-wider text-text-main mb-4 flex items-center gap-1.5">
+          <CircleQuestionMark size={12} />
+          {lang === 'es' ? 'En esta página' : 'On this page'}
+        </h5>
+        
+        <ul class="relative border-l-2 border-border-subtle/60 space-y-4 pl-4 text-xs text-text-muted" id="toc-list">
+          {outlines.map((item, idx) => (
+            <li class={`relative ${item.isNested ? 'pl-3' : ''}`} data-anchor={item.anchorId}>
+              <div class={`toc-bullet absolute -left-[22px] top-1.5 w-2 h-2 rounded-full border bg-bg-base transition-all duration-300 ring-brand-primary/0 ${
+                idx === 0 
+                  ? 'border-brand-primary bg-brand-primary ring-4 ring-brand-primary/20' 
+                  : 'border-transparent bg-border-subtle/60'
+              }`}>
+              </div>
+              <a 
+                href={`#${item.anchorId}`} 
+                class={`toc-link hover:text-brand-primary block transition-all duration-200 truncate ${
+                  idx === 0 
+                    ? 'text-brand-primary font-bold translate-x-1' 
+                    : 'text-text-muted font-medium'
+                }`}
+              >
+                {item.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+
+  <!-- Pinned Section-Agnostic Bottom Issue / Community CTA Card -->
+  <div class="pt-4 mt-auto shrink-0 select-none">
+    <div class="p-3.5 rounded-2xl border border-brand-primary/15 bg-gradient-to-br from-brand-primary/5 via-brand-secondary/2 to-bg-surface/50 relative overflow-hidden group">
+      <div class="absolute -top-6 -right-6 w-20 h-20 bg-brand-primary/10 rounded-full blur-xl pointer-events-none"></div>
+      
+      <div class="relative z-10 space-y-2">
+        <div class="flex items-center justify-between gap-1.5">
+          <div class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-primary">
+            <MessageSquare size={12} class="text-brand-primary" />
+            <span>{lang === 'es' ? '¿Tienes otra duda?' : 'Need more help?'}</span>
+          </div>
+          <span class="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse"></span>
+        </div>
+
+        <p class="text-[11px] text-text-muted leading-relaxed font-sans font-medium">
+          {lang === 'es' 
+            ? 'Si no encuentras respuesta, consulta con la comunidad o abre un issue oficial.' 
+            : 'If you can\'t find an answer, ask the community or open an official issue.'}
+        </p>
+
+        <div class="pt-1 space-y-1.5">
+          <a
+            href="https://github.com/BlasVernazza06/koko-cli/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-between w-full px-2.5 py-1.5 rounded-xl bg-bg-surface border border-border-subtle hover:border-brand-primary/40 text-[11px] font-bold text-text-main hover:text-brand-primary transition-all shadow-xs cursor-pointer group/link hover:translate-y-[-1px]"
+          >
+            <span>{lang === 'es' ? 'Abrir GitHub Issue' : 'Open GitHub Issue'}</span>
+            <ArrowUpRight size={13} class="text-text-muted group-hover/link:text-brand-primary transition-colors" />
+          </a>
+          <a
+            href="https://github.com/BlasVernazza06/koko-cli/discussions"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-between w-full px-2.5 py-1.5 rounded-xl bg-bg-surface/60 border border-border-subtle/70 hover:border-brand-primary/30 text-[11px] font-medium text-text-muted hover:text-text-main transition-colors cursor-pointer group/link"
+          >
+            <span>{lang === 'es' ? 'Discusiones Koko' : 'Koko Discussions'}</span>
+            <ArrowUpRight size={13} class="text-text-muted group-hover/link:text-brand-primary transition-colors" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </aside>
 
 <style>
-  .scrollable-right-sidebar {
+  .scrollable-sidebar-body {
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
-  .scrollable-right-sidebar::-webkit-scrollbar {
+  .scrollable-sidebar-body::-webkit-scrollbar {
     display: none;
   }
 </style>
 
 <script>
+  function initFaqTopicListeners() {
+    const topicButtons = document.querySelectorAll<HTMLButtonElement>('.faq-topic-btn');
+    if (!topicButtons.length) return () => {};
+
+    const clickHandlers: { btn: HTMLButtonElement; fn: () => void }[] = [];
+
+    topicButtons.forEach((btn) => {
+      const tag = btn.getAttribute('data-faq-tag') || 'all';
+      const fn = () => {
+        // Dispatch custom event to DocFaq.svelte
+        window.dispatchEvent(new CustomEvent('koko:filter-faq-tag', { detail: { tag } }));
+
+        // Update active styling
+        topicButtons.forEach(b => {
+          b.classList.remove('bg-brand-primary/10', '!text-brand-primary', '!border-brand-primary/30', 'font-bold');
+        });
+        btn.classList.add('bg-brand-primary/10', '!text-brand-primary', '!border-brand-primary/30', 'font-bold');
+      };
+
+      btn.addEventListener('click', fn);
+      clickHandlers.push({ btn, fn });
+    });
+
+    return () => {
+      clickHandlers.forEach(({ btn, fn }) => btn.removeEventListener('click', fn));
+    };
+  }
+
   function initTOCScrollSpy() {
-    const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.scrollable-right-sidebar a.toc-link'));
+    const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.scrollable-sidebar-body a.toc-link'));
     if (!tocLinks.length) return () => {};
 
     const items = tocLinks.map(link => {
@@ -148,12 +274,16 @@ const outlines = activeSection.content.flatMap((block) => {
   }
 
   let cleanupSpy: (() => void) | null = null;
-  const setupSpy = () => {
+  let cleanupTopics: (() => void) | null = null;
+
+  const setup = () => {
     if (cleanupSpy) cleanupSpy();
+    if (cleanupTopics) cleanupTopics();
     cleanupSpy = initTOCScrollSpy();
+    cleanupTopics = initFaqTopicListeners();
   };
 
-  setupSpy();
-  document.addEventListener('astro:after-swap', setupSpy);
+  setup();
+  document.addEventListener('astro:after-swap', setup);
 </script>
 

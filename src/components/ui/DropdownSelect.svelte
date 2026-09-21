@@ -27,15 +27,15 @@
     disabled = false,
     class: className = '',
     size = 'sm'
-  } = $props<Props>();
+  }: Props = $props();
 
   let isOpen = $state(false);
   let highlightedIndex = $state(-1);
   let containerRef: HTMLDivElement | null = $state(null);
 
   // Normalize options to SelectOption[]
-  const normalizedOptions = $derived<SelectOption[]>(() => {
-    return options.map((opt) => {
+  const normalizedOptions = $derived<SelectOption[]>(
+    options.map((opt: string | SelectOption) => {
       if (typeof opt === 'string') {
         return { value: opt, label: opt };
       }
@@ -43,22 +43,22 @@
         ...opt,
         label: opt.label || opt.value
       };
-    });
-  });
+    })
+  );
 
-  const selectedOption = $derived<SelectOption | undefined>(() => {
-    return normalizedOptions().find((opt) => opt.value === value);
-  });
+  const selectedOption = $derived<SelectOption | undefined>(
+    normalizedOptions.find((opt) => opt.value === value)
+  );
 
-  const selectedLabel = $derived<string>(() => {
-    return selectedOption()?.label || value || placeholder;
-  });
+  const selectedLabel = $derived<string>(
+    selectedOption?.label || value || placeholder
+  );
 
   function toggleOpen() {
     if (disabled) return;
     isOpen = !isOpen;
     if (isOpen) {
-      const idx = normalizedOptions().findIndex((opt) => opt.value === value);
+      const idx = normalizedOptions.findIndex((opt) => opt.value === value);
       highlightedIndex = idx >= 0 ? idx : 0;
     }
   }
@@ -77,7 +77,7 @@
   function handleKeyDown(e: KeyboardEvent) {
     if (disabled) return;
 
-    const opts = normalizedOptions();
+    const opts = normalizedOptions;
 
     if (!isOpen) {
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === ' ') {
@@ -133,19 +133,19 @@
 <div 
   bind:this={containerRef}
   class="relative w-full text-left {className}"
-  onkeydown={handleKeyDown}
-  role="group"
+  role="presentation"
 >
   {#if label}
-    <label class="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1.5 select-none">
+    <span class="text-[10px] font-bold text-text-muted uppercase tracking-wider block mb-1.5 select-none">
       {label}
-    </label>
+    </span>
   {/if}
 
   <!-- Trigger Button -->
   <button
     type="button"
     onclick={toggleOpen}
+    onkeydown={handleKeyDown}
     disabled={disabled}
     aria-haspopup="listbox"
     aria-expanded={isOpen}
@@ -156,7 +156,7 @@
     class:ring-opacity-30={isOpen}
   >
     <span class="truncate text-left flex items-center gap-2">
-      {selectedLabel()}
+      {selectedLabel}
     </span>
 
     <ChevronDown 
@@ -172,7 +172,7 @@
       tabindex="-1"
       class="dropdown-popover absolute left-0 right-0 top-[calc(100%+6px)] z-50 p-1 rounded-xl border border-border-subtle bg-bg-surface/95 dark:bg-[#14131e]/98 backdrop-blur-xl shadow-xl shadow-black/20 dark:shadow-black/60 max-h-56 overflow-y-auto outline-none"
     >
-      {#each normalizedOptions() as opt, idx}
+      {#each normalizedOptions as opt, idx}
         {@const isSelected = opt.value === value}
         {@const isHighlighted = idx === highlightedIndex}
         <button

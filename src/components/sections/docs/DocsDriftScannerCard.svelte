@@ -7,7 +7,7 @@
     lang?: string;
   }
 
-  let { doc, lang = 'es' } = $props<Props>();
+  let { doc, lang = 'es' }: Props = $props();
 
   let isScanning = $state(false);
   let scanState = $state<'idle' | 'scanning' | 'done'>('idle');

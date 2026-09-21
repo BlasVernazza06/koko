@@ -721,12 +721,123 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           tags: ['monorepo', 'arquitectura', 'turborepo']
         },
         {
+          anchorId: 'koko-doctor-drift',
+          title: '¿Cómo funciona "koko doctor" para detectar y solucionar el architecture drift?',
+          body: [
+            'koko doctor es la herramienta de introspección y diagnóstico de Koko. Analiza en menos de 20ms el árbol de tu proyecto, los paquetes instalados en package.json/go.mod/requirements.txt y la configuración de contenedores, comparándolos contra el manifiesto koko.config.json y el Catálogo Maestro.',
+            'Si detecta dependencias desactualizadas, puertos de Docker en conflicto o inconsistencias en los workspaces del monorepo, puedes ejecutar `koko doctor --fix` para aplicar correcciones automáticas de forma segura y transaccional.'
+          ],
+          tags: ['cli', 'doctor', 'arquitectura', 'rendimiento']
+        },
+        {
+          anchorId: 'quick-vs-manual',
+          title: '¿Cuál es la diferencia entre Quick Setup (Recetas) y Configuración Manual?',
+          body: [
+            'Quick Setup te permite inicializar stacks de producción completos y probados con un solo comando o selección (por ejemplo, SaaS Starter con Next.js + Drizzle + Better-Auth + Stripe, Enterprise NestJS, Java Spring Boot, o FastAPI + React).',
+            'La Configuración Manual te da control granular total sobre cada capa tecnológica: eliges frontend, backend, gestor de paquetes, base de datos, ORM, proveedores de auth y herramientas de DevOps con validación de compatibilidad en tiempo real.'
+          ],
+          tags: ['plantillas', 'personalización', 'cli', 'general']
+        },
+        {
+          anchorId: 'auth-providers',
+          title: '¿Qué proveedores de autenticación soporta Koko y cómo se configuran?',
+          body: [
+            'Koko soporta integración de primer nivel para Better-Auth, Clerk y NextAuth (Auth.js). Al seleccionar un proveedor, Koko genera las rutas de API (`/api/auth/[...all]`), las tablas o colecciones de usuarios y sesiones en tu ORM, los middlewares de protección de rutas y los hooks de cliente listos para usar.',
+            'Para proyectos que no requieren autenticación previa o que usan soluciones BaaS externas, puedes seleccionar "none" en el asistente o pasar el flag `--auth none`.'
+          ],
+          tags: ['módulos', 'seguridad', 'arquitectura']
+        },
+        {
+          anchorId: 'database-migrations',
+          title: '¿Cómo se gestionan las migraciones de base de datos con Drizzle o Prisma?',
+          body: [
+            'En proyectos monorepo, los esquemas de base de datos residen en el paquete compartido `packages/db`. Koko incluye scripts npm/pnpm preconfigurados para facilitar el flujo:',
+            '• Drizzle ORM: Ejecuta `pnpm --filter @repo/db db:generate` para crear archivos de migración SQL basados en tus esquemas TypeScript y `pnpm --filter @repo/db db:migrate` (o `db:push`) para aplicarlos a la base de datos.',
+            '• Prisma: Ejecuta `pnpm --filter @repo/db db:migrate` para correr migraciones automáticas o `pnpm --filter @repo/db db:studio` para abrir el explorador visual de datos.'
+          ],
+          tags: ['bases de datos', 'drizzle', 'prisma', 'arquitectura']
+        },
+        {
+          anchorId: 'polyglot-support',
+          title: '¿Cómo funciona la integración de frontends TypeScript con backends en Go o Python?',
+          body: [
+            'Koko organiza la estructura en un monorepo limpio con `apps/web` (Next.js o React Vite) y `apps/api` (Go Chi o Python FastAPI).',
+            'El backend incluye configuración CORS automática con variables de entorno para apuntar al puerto del frontend, esquemas de serialización JSON estrictos (vía Pydantic v2 en Python o structs tipados en Go) y scripts unificados en la raíz para levantar ambos servicios concurrentemente.'
+          ],
+          tags: ['go', 'python', 'fastapi', 'arquitectura']
+        },
+        {
+          anchorId: 'package-managers',
+          title: '¿Por qué se recomienda pnpm sobre npm o bun en arquitecturas monorepo?',
+          body: [
+            'pnpm utiliza un almacén de contenido direccionable (content-addressable store) mediante enlaces duros (hard links), lo que ahorra gigabytes de espacio en disco y elimina problemas de dependencias fantasma (phantom dependencies).',
+            'Sin embargo, Koko también soporta plenamente bun para instalaciones ultrarrápidas y npm tradicional para máxima compatibilidad con entornos empresariales heredados.'
+          ],
+          tags: ['cli', 'rendimiento', 'paquetes']
+        },
+        {
           anchorId: 'docker-compose-default',
           title: '¿Es obligatorio usar Docker con Koko?',
           body: [
             'No es obligatorio. Si prefieres utilizar una base de datos alojada en la nube (como Supabase, Neon o MongoDB Atlas), puedes seleccionar la opción de Docker como `false` en los flags o desactivar los addons en la configuración manual.'
           ],
-          tags: ['docker', 'bases de datos']
+          tags: ['docker', 'bases de datos', 'infraestructura']
+        },
+        {
+          anchorId: 'deployment-options',
+          title: '¿Cómo se despliegan a producción los proyectos generados por Koko?',
+          body: [
+            'Los proyectos generados siguen estándares abiertos sin dependencias propietarias o vendor lock-in. Puedes desplegar el frontend en plataformas como Vercel, Netlify o Cloudflare Pages simplemente conectando tu repositorio de Git.',
+            'Para backends y bases de datos, los proyectos incluyen Dockerfiles optimizados con compilación multi-etapa (multi-stage builds) listos para desplegar en Railway, Fly.io, Render, AWS ECS o cualquier VPS mediante Docker Compose.'
+          ],
+          tags: ['infraestructura', 'docker', 'ci/cd']
+        },
+        {
+          anchorId: 'ui-addons',
+          title: '¿Cómo se integran librerías de UI como shadcn/ui, Lucide y Motion?',
+          body: [
+            'Al seleccionar addons de UI en el CLI o en el Stack Builder, Koko configura Tailwind CSS v4, fuentes tipográficas optimizadas, utilidades de clases (clsx, tailwind-merge) y componentes base accesibles de shadcn/ui en `components/ui`.',
+            'También incluye la librería de iconos Lucide (@lucide/svelte o lucide-react) y animaciones fluidas con Motion listas para usar con tipado estricto.'
+          ],
+          tags: ['plantillas', 'personalización', 'frontend']
+        },
+        {
+          anchorId: 'api-layers',
+          title: '¿Qué ventajas ofrece tRPC u oRPC frente a una API REST tradicional?',
+          body: [
+            'tRPC y oRPC proporcionan tipado de extremo a extremo (end-to-end type safety) entre tu frontend y backend sin necesidad de compilar o generar esquemas OpenAPI intermedios.',
+            'Si modificas un procedimiento o tipo de datos en el servidor, TypeScript mostrará errores de compilación instantáneos en el cliente frontend antes de llegar a producción, eliminando desajustes de contratos de API.'
+          ],
+          tags: ['arquitectura', 'módulos', 'api']
+        },
+        {
+          anchorId: 'extend-after-creation',
+          title: '¿Puedo añadir nuevos módulos o cambiar de base de datos tras inicializar el proyecto?',
+          body: [
+            '¡Sí! La arquitectura generada por Koko es completamente modular y desacoplada. Puedes añadir nuevas aplicaciones a `apps/`, nuevos paquetes a `packages/`, o migrar de PostgreSQL a MongoDB cambiando el cliente en `packages/db`.',
+            'Tras realizar cambios, puedes ejecutar `koko doctor --fix` para que Koko actualice automáticamente el archivo `koko.config.json` y verifique la integridad de las nuevas dependencias.'
+          ],
+          tags: ['personalización', 'configuración', 'general']
+        },
+        {
+          anchorId: 'compatibility-safeguards',
+          title: '¿Por qué el CLI impide combinar ciertas tecnologías (ej. React SPA + ORM directo)?',
+          body: [
+            'Para garantizar la seguridad y viabilidad de tus proyectos. Una aplicación Single Page Application (SPA) ejecutada en el navegador no debe contener credenciales secretas de base de datos ni conectarse directamente a PostgreSQL o MongoDB.',
+            'El motor internal/compatibility de Koko previene estos errores arquitectónicos en tiempo de diseño y te sugiere alternativas como incorporar una API backend (Express, Hono, FastAPI, Go) o migrar a un framework fullstack (Next.js, Nuxt).'
+          ],
+          tags: ['arquitectura', 'seguridad', 'cli']
+        },
+        {
+          anchorId: 'ci-cd-workflows',
+          title: '¿Qué comprobaciones automáticas realiza el workflow de GitHub Actions generado?',
+          body: [
+            'El archivo `.github/workflows/ci.yml` generado por Koko ejecuta tres fases críticas en cada Pull Request y push a main:',
+            '• 1. Type-checking estricto con `tsc --noEmit` en todos los paquetes del monorepo.',
+            '• 2. Linting y formateo con Biome o ESLint + Prettier para garantizar consistencia de código.',
+            '• 3. Compilación de prueba (`turbo build` o `npm run build`) y ejecución de suites de tests unitarios.'
+          ],
+          tags: ['ci/cd', 'infraestructura', 'rendimiento']
         },
         {
           anchorId: 'is-free',
@@ -1437,12 +1548,123 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           tags: ['monorepo', 'architecture', 'turborepo']
         },
         {
+          anchorId: 'koko-doctor-drift',
+          title: 'How does "koko doctor" detect and repair architecture drift?',
+          body: [
+            'koko doctor is Koko\'s introspection and diagnostic engine. In under 20ms, it analyzes your project tree, dependencies declared in package.json/go.mod/requirements.txt, and container configurations, comparing them against the koko.config.json manifest and the Master Catalog.',
+            'If it detects outdated dependencies, Docker port collisions, or monorepo workspace inconsistencies, running `koko doctor --fix` automatically and safely reconciles the discrepancies.'
+          ],
+          tags: ['cli', 'doctor', 'architecture', 'performance']
+        },
+        {
+          anchorId: 'quick-vs-manual',
+          title: 'What is the difference between Quick Setup (Recipes) and Manual Configuration?',
+          body: [
+            'Quick Setup lets you initialize battle-tested, production-ready stacks in a single step (such as SaaS Starter with Next.js + Drizzle + Better-Auth + Stripe, Enterprise NestJS, Java Spring Boot, or FastAPI + React).',
+            'Manual Configuration gives you granular control over every technological layer: choose your frontend, backend, package manager, database, ORM, auth provider, and DevOps tooling with real-time compatibility validation.'
+          ],
+          tags: ['templates', 'customization', 'cli', 'general']
+        },
+        {
+          anchorId: 'auth-providers',
+          title: 'Which authentication providers does Koko support and how are they configured?',
+          body: [
+            'Koko provides first-class support for Better-Auth, Clerk, and NextAuth (Auth.js). When selecting a provider, Koko generates the API routes (`/api/auth/[...all]`), database user/session schemas in your ORM, route protection middlewares, and client-side hooks out of the box.',
+            'If your project does not require built-in authentication or relies on external BaaS solutions, you can select "none" in the wizard or pass the `--auth none` flag.'
+          ],
+          tags: ['modules', 'security', 'architecture']
+        },
+        {
+          anchorId: 'database-migrations',
+          title: 'How are database migrations handled with Drizzle or Prisma?',
+          body: [
+            'In monorepo setups, database schemas live in the shared `packages/db` package. Koko includes preconfigured scripts to streamline the workflow:',
+            '• Drizzle ORM: Run `pnpm --filter @repo/db db:generate` to generate SQL migration files from your TypeScript schemas, and `pnpm --filter @repo/db db:migrate` (or `db:push`) to apply them.',
+            '• Prisma: Run `pnpm --filter @repo/db db:migrate` to run migrations, or `pnpm --filter @repo/db db:studio` to open Prisma\'s visual data browser.'
+          ],
+          tags: ['databases', 'drizzle', 'prisma', 'architecture']
+        },
+        {
+          anchorId: 'polyglot-support',
+          title: 'How does TypeScript frontend integration work with Go or Python backends?',
+          body: [
+            'Koko scaffolds a clean monorepo layout with `apps/web` (Next.js or React Vite) and `apps/api` (Go Chi or Python FastAPI).',
+            'The backend includes preconfigured CORS settings targeting your frontend port, strict JSON serialization schemas (via Pydantic v2 in Python or typed structs in Go), and root orchestrator scripts to run both services concurrently.'
+          ],
+          tags: ['go', 'python', 'fastapi', 'architecture']
+        },
+        {
+          anchorId: 'package-managers',
+          title: 'Why is pnpm recommended over npm or bun for monorepo architectures?',
+          body: [
+            'pnpm uses a content-addressable store with hard links, saving gigabytes of disk space and preventing phantom dependencies across workspace packages.',
+            'Nevertheless, Koko fully supports bun for lightning-fast package installations and standard npm for broad compatibility in enterprise environments.'
+          ],
+          tags: ['cli', 'performance', 'packages']
+        },
+        {
           anchorId: 'docker-compose-default',
           title: 'Is Docker required to use Koko?',
           body: [
             'No, Docker is completely optional. If you prefer cloud-hosted database providers (such as Supabase, Neon, or MongoDB Atlas), you can set `--docker=false` or deselect Docker Compose during manual configuration.'
           ],
-          tags: ['docker', 'databases']
+          tags: ['docker', 'databases', 'infrastructure']
+        },
+        {
+          anchorId: 'deployment-options',
+          title: 'How do you deploy Koko-generated projects to production?',
+          body: [
+            'Scaffolded projects strictly adhere to open web standards with zero vendor lock-in. Frontends can be deployed instantly to Vercel, Netlify, or Cloudflare Pages by connecting your Git repository.',
+            'For backends and databases, Koko provides optimized multi-stage Dockerfiles ready for deployment on Railway, Fly.io, Render, AWS ECS, or any VPS via Docker Compose.'
+          ],
+          tags: ['infrastructure', 'docker', 'ci/cd']
+        },
+        {
+          anchorId: 'ui-addons',
+          title: 'How are UI libraries like shadcn/ui, Lucide, and Motion integrated?',
+          body: [
+            'When choosing UI addons via the CLI or Stack Builder, Koko preconfigures Tailwind CSS v4, optimized fonts, class utilities (clsx, tailwind-merge), and accessible shadcn/ui base components in `components/ui`.',
+            'It also includes Lucide icons (@lucide/svelte or lucide-react) and fluid animations with Motion, fully typed and ready to use.'
+          ],
+          tags: ['templates', 'customization', 'frontend']
+        },
+        {
+          anchorId: 'api-layers',
+          title: 'What are the benefits of using tRPC or oRPC over traditional REST APIs?',
+          body: [
+            'tRPC and oRPC deliver end-to-end type safety between your frontend and backend without requiring manual code generation or intermediate OpenAPI compilation.',
+            'If you change a server procedure or data model, TypeScript immediately flags compilation errors across your frontend client before hitting production, preventing contract mismatches.'
+          ],
+          tags: ['architecture', 'modules', 'api']
+        },
+        {
+          anchorId: 'extend-after-creation',
+          title: 'Can I add new modules or change databases after initial project creation?',
+          body: [
+            'Yes! Koko generates completely modular and decoupled architectures. You can add new applications under `apps/`, new shared libraries in `packages/`, or swap databases by updating `packages/db`.',
+            'After making changes, run `koko doctor --fix` so Koko automatically updates `koko.config.json` and verifies dependency integrity.'
+          ],
+          tags: ['customization', 'configuration', 'general']
+        },
+        {
+          anchorId: 'compatibility-safeguards',
+          title: 'Why does the CLI prevent certain tech combinations (e.g., React SPA + direct ORM)?',
+          body: [
+            'To safeguard your application\'s security and architectural integrity. A client-side Single Page Application (SPA) running in user browsers cannot safely hold secret database credentials or connect directly to PostgreSQL or MongoDB.',
+            'Koko\'s internal/compatibility engine intercepts these architectural pitfalls during configuration and suggests appropriate solutions like adding a backend API (Express, Hono, FastAPI, Go) or choosing a fullstack framework (Next.js, Nuxt).'
+          ],
+          tags: ['architecture', 'security', 'cli']
+        },
+        {
+          anchorId: 'ci-cd-workflows',
+          title: 'What automated checks does the generated GitHub Actions workflow perform?',
+          body: [
+            'The `.github/workflows/ci.yml` workflow generated by Koko runs three critical validation phases on every Pull Request and push to main:',
+            '• 1. Strict type-checking with `tsc --noEmit` across all workspace packages.',
+            '• 2. Linting and formatting checks with Biome or ESLint + Prettier to maintain code quality.',
+            '• 3. Production build verification (`turbo build` or `npm run build`) and automated unit test execution.'
+          ],
+          tags: ['ci/cd', 'infrastructure', 'performance']
         },
         {
           anchorId: 'is-free',

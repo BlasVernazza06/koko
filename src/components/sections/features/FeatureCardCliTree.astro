@@ -14,167 +14,302 @@ interface Props {
   lang?: string;
 }
 
-const { lang = 'es' } = Astro.props;
+const { lang: _lang = 'es' } = Astro.props;
 ---
 
-<div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-secondary/5 hover:border-brand-secondary/30">
-  <div class="absolute inset-0 bg-gradient-to-tr from-brand-secondary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+<div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-secondary/10 hover:border-brand-secondary/40">
+  <!-- Dynamic ambient card glow -->
+  <div class="absolute inset-0 bg-gradient-to-tr from-brand-secondary/8 via-brand-primary/4 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
   
-  <!-- Card Visual: Genealogy Tree -->
-  <div class="cli-tree relative w-full h-[250px] mb-6 flex items-center justify-center select-none overflow-visible">
+  <!-- Subtle circuit grid background -->
+  <div class="absolute inset-0 opacity-[0.025] dark:opacity-[0.04] pointer-events-none bg-[radial-gradient(var(--color-border-subtle)_1px,transparent_1px)] bg-[size:16px_16px]"></div>
 
-    <!-- SVG Branch Lines -->
-    <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Card Visual: Synchronized Genealogy Tree Graph -->
+  <div class="cli-tree-wrapper relative w-full aspect-[380/235] mb-6 flex items-center justify-center select-none overflow-visible">
+
+    <!-- Ambient Core Radiance -->
+    <div class="absolute top-[8%] left-1/2 -translate-x-1/2 w-48 h-20 bg-brand-primary/12 dark:bg-brand-primary/18 blur-2xl rounded-full pointer-events-none"></div>
+
+    <!-- SVG Circuit & Branch Lines (viewBox 0 0 380 235) -->
+    <svg 
+      class="absolute inset-0 w-full h-full pointer-events-none overflow-visible" 
+      viewBox="0 0 380 235" 
+      preserveAspectRatio="none"
+      fill="none" 
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <defs>
-        <linearGradient id="branchGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="var(--brand-secondary)" stop-opacity="0.6" />
-          <stop offset="100%" stop-color="var(--brand-primary)" stop-opacity="0.25" />
+        <!-- Gradients for connector lines -->
+        <linearGradient id="treeGradTier1" x1="190" y1="36" x2="190" y2="76" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="var(--brand-primary)" stop-opacity="0.8" />
+          <stop offset="100%" stop-color="var(--brand-secondary)" stop-opacity="0.65" />
         </linearGradient>
-        <radialGradient id="rootGlow" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0%" stop-color="var(--brand-secondary)" stop-opacity="0.15" />
-          <stop offset="100%" stop-color="var(--brand-secondary)" stop-opacity="0" />
-        </radialGradient>
+
+        <linearGradient id="treeGradTier2" x1="190" y1="104" x2="190" y2="150" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="var(--brand-secondary)" stop-opacity="0.75" />
+          <stop offset="100%" stop-color="var(--brand-primary)" stop-opacity="0.5" />
+        </linearGradient>
+
+        <!-- Glow filter for pulses -->
+        <filter id="pulseGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="0" stdDeviation="2.5" flood-color="var(--brand-secondary)" flood-opacity="0.9" />
+        </filter>
       </defs>
 
-      <!-- Root glow -->
-      <circle cx="200" cy="26" r="30" fill="url(#rootGlow)" />
+      <!-- ── TIER 1 BRANCHES: Root (190, 36) → 3 Categories (Y=76) ── -->
+      <!-- Root → Frontend (65, 76) -->
+      <path 
+        id="branch-tier1-left"
+        d="M 190 36 C 190 58, 65 54, 65 76" 
+        class="tree-branch branch-t1" 
+        stroke="url(#treeGradTier1)" 
+        stroke-width="1.6" 
+        stroke-linecap="round" 
+      />
+      <!-- Root → Fullstack (190, 76) -->
+      <path 
+        id="branch-tier1-mid"
+        d="M 190 36 L 190 76" 
+        class="tree-branch branch-t1" 
+        stroke="url(#treeGradTier1)" 
+        stroke-width="1.6" 
+        stroke-linecap="round" 
+      />
+      <!-- Root → API & Mobile (315, 76) -->
+      <path 
+        id="branch-tier1-right"
+        d="M 190 36 C 190 58, 315 54, 315 76" 
+        class="tree-branch branch-t1" 
+        stroke="url(#treeGradTier1)" 
+        stroke-width="1.6" 
+        stroke-linecap="round" 
+      />
 
-      <!-- ── TIER 1: Root → 3 categories ── -->
-      <path d="M 200 40 C 200 70, 60 65, 60 90" class="tree-branch branch-1" stroke="url(#branchGrad)" stroke-width="1.5" stroke-linecap="round" />
-      <path d="M 200 40 L 200 90" class="tree-branch branch-2" stroke="url(#branchGrad)" stroke-width="1.5" stroke-linecap="round" />
-      <path d="M 200 40 C 200 70, 340 65, 340 90" class="tree-branch branch-3" stroke="url(#branchGrad)" stroke-width="1.5" stroke-linecap="round" />
+      <!-- ── TIER 2 BRANCHES: Categories (Y=104) → 6 Squares (Y=150) ── -->
+      <!-- Frontend (65) → React (36, 150) -->
+      <path 
+        id="branch-react"
+        d="M 65 104 C 65 127, 36 127, 36 150" 
+        class="tree-branch branch-t2" 
+        stroke="url(#treeGradTier2)" 
+        stroke-width="1.4" 
+        stroke-linecap="round" 
+      />
+      <!-- Frontend (65) → Vue (94, 150) -->
+      <path 
+        id="branch-vue"
+        d="M 65 104 C 65 127, 94 127, 94 150" 
+        class="tree-branch branch-t2" 
+        stroke="url(#treeGradTier2)" 
+        stroke-width="1.4" 
+        stroke-linecap="round" 
+      />
 
-      <!-- ── TIER 2: Categories → Leaves ── -->
-      <!-- Frontend(60) → React(28) / Vue(92) -->
-      <path d="M 60 114 C 60 145, 28 140, 28 170" class="tree-branch branch-4" stroke="url(#branchGrad)" stroke-width="1.2" stroke-linecap="round" />
-      <path d="M 60 114 C 60 145, 92 140, 92 170" class="tree-branch branch-5" stroke="url(#branchGrad)" stroke-width="1.2" stroke-linecap="round" />
+      <!-- Fullstack (190) → Next.js (161, 150) -->
+      <path 
+        id="branch-next"
+        d="M 190 104 C 190 127, 161 127, 161 150" 
+        class="tree-branch branch-t2" 
+        stroke="url(#treeGradTier2)" 
+        stroke-width="1.4" 
+        stroke-linecap="round" 
+      />
+      <!-- Fullstack (190) → Nuxt (219, 150) -->
+      <path 
+        id="branch-nuxt"
+        d="M 190 104 C 190 127, 219 127, 219 150" 
+        class="tree-branch branch-t2" 
+        stroke="url(#treeGradTier2)" 
+        stroke-width="1.4" 
+        stroke-linecap="round" 
+      />
 
-      <!-- Fullstack(200) → Next(168) / Nuxt(232) -->
-      <path d="M 200 114 C 200 145, 168 140, 168 170" class="tree-branch branch-6" stroke="url(#branchGrad)" stroke-width="1.2" stroke-linecap="round" />
-      <path d="M 200 114 C 200 145, 232 140, 232 170" class="tree-branch branch-7" stroke="url(#branchGrad)" stroke-width="1.2" stroke-linecap="round" />
+      <!-- API & Mobile (315) → Hono (286, 150) -->
+      <path 
+        id="branch-hono"
+        d="M 315 104 C 315 127, 286 127, 286 150" 
+        class="tree-branch branch-t2" 
+        stroke="url(#treeGradTier2)" 
+        stroke-width="1.4" 
+        stroke-linecap="round" 
+      />
+      <!-- API & Mobile (315) → Mobile (344, 150) -->
+      <path 
+        id="branch-mobile"
+        d="M 315 104 C 315 127, 344 127, 344 150" 
+        class="tree-branch branch-t2" 
+        stroke="url(#treeGradTier2)" 
+        stroke-width="1.4" 
+        stroke-linecap="round" 
+      />
 
-      <!-- Backend(340) → Hono(308) / Flutter(372) -->
-      <path d="M 340 114 C 340 145, 308 140, 308 170" class="tree-branch branch-8" stroke="url(#branchGrad)" stroke-width="1.2" stroke-linecap="round" />
-      <path d="M 340 114 C 340 145, 372 140, 372 170" class="tree-branch branch-9" stroke="url(#branchGrad)" stroke-width="1.2" stroke-linecap="round" />
-
-      <!-- Animated pulse dots -->
-      <circle r="2" fill="var(--brand-secondary)" class="opacity-60">
-        <animateMotion dur="3s" repeatCount="indefinite" begin="0s">
-          <mpath href="#motionPath1" />
+      <!-- ── TRAVELLING ENERGY BEAMS (Cascading pulses) ── -->
+      <!-- Packet 1: Left track -->
+      <circle r="2.5" fill="var(--brand-secondary)" filter="url(#pulseGlow)" class="opacity-90">
+        <animateMotion dur="2.8s" repeatCount="indefinite" begin="0s">
+          <mpath href="#branch-tier1-left" />
         </animateMotion>
       </circle>
-      <circle r="2" fill="var(--brand-secondary)" class="opacity-60">
-        <animateMotion dur="3s" repeatCount="indefinite" begin="1s">
-          <mpath href="#motionPath2" />
-        </animateMotion>
-      </circle>
-      <circle r="2" fill="var(--brand-secondary)" class="opacity-60">
-        <animateMotion dur="3s" repeatCount="indefinite" begin="2s">
-          <mpath href="#motionPath3" />
+      <circle r="2" fill="var(--brand-primary)" filter="url(#pulseGlow)" class="opacity-90">
+        <animateMotion dur="2.8s" repeatCount="indefinite" begin="1.4s">
+          <mpath href="#branch-react" />
         </animateMotion>
       </circle>
 
-      <path id="motionPath1" d="M 200 40 C 200 70, 60 65, 60 90" fill="none" />
-      <path id="motionPath2" d="M 200 40 L 200 90" fill="none" />
-      <path id="motionPath3" d="M 200 40 C 200 70, 340 65, 340 90" fill="none" />
+      <!-- Packet 2: Mid track -->
+      <circle r="2.5" fill="var(--brand-secondary)" filter="url(#pulseGlow)" class="opacity-90">
+        <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.9s">
+          <mpath href="#branch-tier1-mid" />
+        </animateMotion>
+      </circle>
+      <circle r="2" fill="var(--brand-primary)" filter="url(#pulseGlow)" class="opacity-90">
+        <animateMotion dur="2.8s" repeatCount="indefinite" begin="2.3s">
+          <mpath href="#branch-next" />
+        </animateMotion>
+      </circle>
+
+      <!-- Packet 3: Right track -->
+      <circle r="2.5" fill="var(--brand-secondary)" filter="url(#pulseGlow)" class="opacity-90">
+        <animateMotion dur="2.8s" repeatCount="indefinite" begin="1.8s">
+          <mpath href="#branch-tier1-right" />
+        </animateMotion>
+      </circle>
+      <circle r="2" fill="var(--brand-primary)" filter="url(#pulseGlow)" class="opacity-90">
+        <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.5s">
+          <mpath href="#branch-mobile" />
+        </animateMotion>
+      </circle>
     </svg>
 
-    <!-- ── ROOT NODE: Koko CLI ── -->
-    <div class="absolute top-[12px] left-1/2 -translate-x-1/2 z-20">
-      <div class="tree-node root-node bg-zinc-950 dark:bg-zinc-800 border border-white/15 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-lg shadow-brand-secondary/10 group-hover:scale-105 transition-transform duration-500">
-        <span class="text-[11px] font-bold text-white tracking-wide whitespace-nowrap">Koko CLI</span>
-        <span class="root-pulse absolute inset-0 rounded-2xl border border-brand-secondary/40"></span>
+    <!-- ── ROOT NODE: Koko CLI (X: 50%, Y: ~3.5%) ── -->
+    <div class="absolute top-[3.5%] left-1/2 -translate-x-1/2 z-20">
+      <div class="tree-node root-node relative bg-zinc-950 dark:bg-zinc-900 border border-brand-primary/40 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg shadow-brand-primary/15 group-hover:scale-105 group-hover:border-brand-primary transition-all duration-300">
+        <div class="w-2.5 h-2.5 rounded-full bg-brand-primary/30 flex items-center justify-center">
+          <span class="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse"></span>
+        </div>
+        <span class="text-[11px] font-mono font-bold text-white tracking-wide whitespace-nowrap">koko</span>
+        <span class="text-[10px] font-mono font-medium text-brand-secondary/90 tracking-tight">cli</span>
+        
+        <!-- Output Port Dot -->
+        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-brand-primary border-2 border-bg-base dark:border-zinc-900 shadow-xs"></span>
       </div>
     </div>
 
-    <!-- ── TIER 1 CATEGORY NODES ── -->
-    <!-- Frontend -->
-    <div class="absolute top-[90px] left-[15%] -translate-x-1/2 z-10">
-      <div class="tree-node cat-node cat-1 bg-bg-surface/90 dark:bg-bg-surface/80 border border-brand-secondary/25 px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm backdrop-blur-sm">
-        <SvelteAstroComponent width={14} height={14} />
-        <span class="text-[9px] font-semibold text-text-main whitespace-nowrap">Frontend</span>
+    <!-- ── TIER 1 CATEGORY NODES (Y: ~32.3%) ── -->
+    <!-- Frontend (X: 17.1%) -->
+    <div class="absolute top-[32.3%] left-[17.1%] -translate-x-1/2 z-10">
+      <div class="tree-node cat-node cat-1 relative bg-bg-surface/90 dark:bg-bg-surface/90 border border-border-subtle hover:border-brand-secondary/60 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl flex items-center gap-1.5 shadow-xs backdrop-blur-md transition-all duration-200">
+        <!-- Input Port Dot -->
+        <span class="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-brand-secondary border border-bg-surface"></span>
+        <SvelteAstroComponent width={13} height={13} />
+        <span class="text-[9px] font-bold text-text-main whitespace-nowrap">Frontend</span>
+        <!-- Output Port Dot -->
+        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-brand-secondary border border-bg-surface"></span>
       </div>
     </div>
 
-    <!-- Fullstack -->
-    <div class="absolute top-[90px] left-1/2 -translate-x-1/2 z-10">
-      <div class="tree-node cat-node cat-2 bg-bg-surface/90 dark:bg-bg-surface/80 border border-brand-secondary/25 px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm backdrop-blur-sm">
-        <AstroAstroComponent width={14} height={14} />
-        <span class="text-[9px] font-semibold text-text-main whitespace-nowrap">Fullstack</span>
+    <!-- Fullstack (X: 50.0%) -->
+    <div class="absolute top-[32.3%] left-[50%] -translate-x-1/2 z-10">
+      <div class="tree-node cat-node cat-2 relative bg-bg-surface/90 dark:bg-bg-surface/90 border border-border-subtle hover:border-brand-secondary/60 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl flex items-center gap-1.5 shadow-xs backdrop-blur-md transition-all duration-200">
+        <!-- Input Port Dot -->
+        <span class="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-brand-secondary border border-bg-surface"></span>
+        <AstroAstroComponent width={13} height={13} />
+        <span class="text-[9px] font-bold text-text-main whitespace-nowrap">Fullstack</span>
+        <!-- Output Port Dot -->
+        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-brand-secondary border border-bg-surface"></span>
       </div>
     </div>
 
-    <!-- Backend & Mobile -->
-    <div class="absolute top-[90px] left-[85%] -translate-x-1/2 z-10">
-      <div class="tree-node cat-node cat-3 bg-bg-surface/90 dark:bg-bg-surface/80 border border-brand-secondary/25 px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm backdrop-blur-sm">
-        <HonoAstroComponent width={14} height={14} />
-        <span class="text-[9px] font-semibold text-text-main whitespace-nowrap">API & Mobile</span>
+    <!-- API & Mobile (X: 82.9%) -->
+    <div class="absolute top-[32.3%] left-[82.9%] -translate-x-1/2 z-10">
+      <div class="tree-node cat-node cat-3 relative bg-bg-surface/90 dark:bg-bg-surface/90 border border-border-subtle hover:border-brand-secondary/60 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl flex items-center gap-1.5 shadow-xs backdrop-blur-md transition-all duration-200">
+        <!-- Input Port Dot -->
+        <span class="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-brand-secondary border border-bg-surface"></span>
+        <HonoAstroComponent width={13} height={13} />
+        <span class="text-[9px] font-bold text-text-main whitespace-nowrap">API & App</span>
+        <!-- Output Port Dot -->
+        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-brand-secondary border border-bg-surface"></span>
       </div>
     </div>
 
-    <!-- ── TIER 2 LEAF NODES ── -->
-    <!-- React -->
-    <div class="absolute top-[170px] left-[7%] -translate-x-1/2 z-10">
+    <!-- ── TIER 2 LEAF SQUARES (Y: 63.8%, matching SVG Y=150) ── -->
+    <!-- 1. React (X: 9.47%) -->
+    <div class="absolute top-[63.8%] left-[9.47%] -translate-x-1/2 z-10 group/leaf">
       <div class="tree-node leaf-node leaf-1 flex flex-col items-center gap-1">
-        <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
-          <ReactAstroComponent width={18} height={18} />
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 dark:bg-bg-surface/90 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-all duration-300">
+          <!-- Docking Port on Top Edge (terminating line cleanly) -->
+          <span class="absolute -top-[3px] left-1/2 -translate-x-1/2 w-2 h-1 rounded-full bg-brand-secondary border border-bg-surface"></span>
+          <ReactAstroComponent width={17} height={17} />
         </div>
-        <span class="text-[8px] font-medium text-text-muted">React</span>
+        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main transition-colors">React</span>
       </div>
     </div>
 
-    <!-- Vue -->
-    <div class="absolute top-[170px] left-[23%] -translate-x-1/2 z-10">
+    <!-- 2. Vue (X: 24.74%) -->
+    <div class="absolute top-[63.8%] left-[24.74%] -translate-x-1/2 z-10 group/leaf">
       <div class="tree-node leaf-node leaf-2 flex flex-col items-center gap-1">
-        <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
-          <VueAstroComponent width={18} height={18} />
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 dark:bg-bg-surface/90 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-all duration-300">
+          <!-- Docking Port on Top Edge -->
+          <span class="absolute -top-[3px] left-1/2 -translate-x-1/2 w-2 h-1 rounded-full bg-brand-secondary border border-bg-surface"></span>
+          <VueAstroComponent width={17} height={17} />
         </div>
-        <span class="text-[8px] font-medium text-text-muted">Vue</span>
+        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main transition-colors">Vue</span>
       </div>
     </div>
 
-    <!-- Nextjs -->
-    <div class="absolute top-[170px] left-[42%] -translate-x-1/2 z-10">
+    <!-- 3. Next.js (X: 42.37%) -->
+    <div class="absolute top-[63.8%] left-[42.37%] -translate-x-1/2 z-10 group/leaf">
       <div class="tree-node leaf-node leaf-3 flex flex-col items-center gap-1">
-        <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
-          <NextjsAstroComponent width={18} height={18} />
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 dark:bg-bg-surface/90 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-all duration-300">
+          <!-- Docking Port on Top Edge -->
+          <span class="absolute -top-[3px] left-1/2 -translate-x-1/2 w-2 h-1 rounded-full bg-brand-secondary border border-bg-surface"></span>
+          <NextjsAstroComponent width={17} height={17} />
         </div>
-        <span class="text-[8px] font-medium text-text-muted">Next.js</span>
+        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main transition-colors">Next.js</span>
       </div>
     </div>
 
-    <!-- Nuxt -->
-    <div class="absolute top-[170px] left-[58%] -translate-x-1/2 z-10">
+    <!-- 4. Nuxt (X: 57.63%) -->
+    <div class="absolute top-[63.8%] left-[57.63%] -translate-x-1/2 z-10 group/leaf">
       <div class="tree-node leaf-node leaf-4 flex flex-col items-center gap-1">
-        <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
-          <NuxtAstroComponent width={18} height={18} />
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 dark:bg-bg-surface/90 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-all duration-300">
+          <!-- Docking Port on Top Edge -->
+          <span class="absolute -top-[3px] left-1/2 -translate-x-1/2 w-2 h-1 rounded-full bg-brand-secondary border border-bg-surface"></span>
+          <NuxtAstroComponent width={17} height={17} />
         </div>
-        <span class="text-[8px] font-medium text-text-muted">Nuxt</span>
+        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main transition-colors">Nuxt</span>
       </div>
     </div>
 
-    <!-- Hono API -->
-    <div class="absolute top-[170px] left-[77%] -translate-x-1/2 z-10">
+    <!-- 5. Hono (X: 75.26%) -->
+    <div class="absolute top-[63.8%] left-[75.26%] -translate-x-1/2 z-10 group/leaf">
       <div class="tree-node leaf-node leaf-5 flex flex-col items-center gap-1">
-        <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
-          <HonoAstroComponent width={18} height={18} />
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 dark:bg-bg-surface/90 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-all duration-300">
+          <!-- Docking Port on Top Edge -->
+          <span class="absolute -top-[3px] left-1/2 -translate-x-1/2 w-2 h-1 rounded-full bg-brand-secondary border border-bg-surface"></span>
+          <HonoAstroComponent width={17} height={17} />
         </div>
-        <span class="text-[8px] font-medium text-text-muted">API</span>
+        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main transition-colors">Hono</span>
       </div>
     </div>
 
-    <!-- Flutter -->
-    <div class="absolute top-[170px] left-[93%] -translate-x-1/2 z-10">
+    <!-- 6. Mobile / Flutter (X: 90.53%) -->
+    <div class="absolute top-[63.8%] left-[90.53%] -translate-x-1/2 z-10 group/leaf">
       <div class="tree-node leaf-node leaf-6 flex flex-col items-center gap-1">
-        <div class="leaf-icon-box w-9 h-9 rounded-xl bg-bg-surface/80 border border-border-subtle/60 flex items-center justify-center shadow-sm backdrop-blur-sm hover:border-brand-secondary/40 transition-colors duration-300">
-          <FlutterAstroComponent width={18} height={18} />
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 dark:bg-bg-surface/90 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-all duration-300">
+          <!-- Docking Port on Top Edge -->
+          <span class="absolute -top-[3px] left-1/2 -translate-x-1/2 w-2 h-1 rounded-full bg-brand-secondary border border-bg-surface"></span>
+          <FlutterAstroComponent width={17} height={17} />
         </div>
-        <span class="text-[8px] font-medium text-text-muted">Mobile</span>
+        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main transition-colors">Mobile</span>
       </div>
     </div>
 
-    <div class="absolute bottom-[4px] left-1/2 -translate-x-1/2 z-10">
-      <span class="text-[9px] text-text-muted/50 font-medium tracking-widest">· · ·</span>
+    <!-- Bottom Expansion Indicator -->
+    <div class="absolute bottom-[2%] left-1/2 -translate-x-1/2 z-10 flex items-center gap-1">
+      <span class="w-1 h-1 rounded-full bg-text-muted/30"></span>
+      <span class="w-1 h-1 rounded-full bg-text-muted/40"></span>
+      <span class="w-1 h-1 rounded-full bg-text-muted/30"></span>
     </div>
 
   </div>
@@ -196,21 +331,21 @@ const { lang = 'es' } = Astro.props;
 </div>
 
 <style>
+  /* Staggered Branch Draw Animation */
   .tree-branch {
-    stroke-dasharray: 200;
-    stroke-dashoffset: 200;
-    animation: draw-branch 1.2s ease-out forwards;
+    stroke-dasharray: 160;
+    stroke-dashoffset: 160;
+    animation: draw-branch 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transition: stroke-width 0.3s ease, stroke 0.3s ease;
   }
 
-  .branch-1 { animation-delay: 0.1s; }
-  .branch-2 { animation-delay: 0.2s; }
-  .branch-3 { animation-delay: 0.3s; }
-  .branch-4 { animation-delay: 0.6s; }
-  .branch-5 { animation-delay: 0.7s; }
-  .branch-6 { animation-delay: 0.8s; }
-  .branch-7 { animation-delay: 0.9s; }
-  .branch-8 { animation-delay: 1.0s; }
-  .branch-9 { animation-delay: 1.1s; }
+  .branch-t1 {
+    animation-delay: 0.15s;
+  }
+
+  .branch-t2 {
+    animation-delay: 0.5s;
+  }
 
   @keyframes draw-branch {
     to {
@@ -218,69 +353,43 @@ const { lang = 'es' } = Astro.props;
     }
   }
 
+  /* Node Entrance Animation */
   .tree-node {
     opacity: 0;
-    animation: node-appear 0.5s ease-out forwards;
+    transform: translateY(6px) scale(0.92);
+    animation: node-appear 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
-  .root-node { animation-delay: 0s; }
+  .root-node { animation-delay: 0.05s; }
   .cat-1 { animation-delay: 0.35s; }
   .cat-2 { animation-delay: 0.45s; }
   .cat-3 { animation-delay: 0.55s; }
-  .leaf-1 { animation-delay: 0.85s; }
-  .leaf-2 { animation-delay: 0.95s; }
-  .leaf-3 { animation-delay: 1.05s; }
-  .leaf-4 { animation-delay: 1.15s; }
-  .leaf-5 { animation-delay: 1.25s; }
-  .leaf-6 { animation-delay: 1.35s; }
+  .leaf-1 { animation-delay: 0.75s; }
+  .leaf-2 { animation-delay: 0.82s; }
+  .leaf-3 { animation-delay: 0.89s; }
+  .leaf-4 { animation-delay: 0.96s; }
+  .leaf-5 { animation-delay: 1.03s; }
+  .leaf-6 { animation-delay: 1.10s; }
 
   @keyframes node-appear {
-    from {
-      opacity: 0;
-      transform: scale(0.85);
-    }
     to {
       opacity: 1;
-      transform: scale(1);
+      transform: translateY(0) scale(1);
     }
   }
 
-  .root-pulse {
-    animation: pulse-ring 3s ease-in-out infinite;
+  /* Hover Enhancement on Card */
+  .cli-tree-wrapper:hover .tree-branch {
+    stroke-width: 1.8;
   }
 
-  @keyframes pulse-ring {
-    0%, 100% {
-      opacity: 0;
-      transform: scale(1);
+  @media (prefers-reduced-motion: reduce) {
+    .tree-branch,
+    .tree-node {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      stroke-dashoffset: 0 !important;
     }
-    50% {
-      opacity: 0.6;
-      transform: scale(1.12);
-    }
-  }
-
-  .cli-tree:hover .leaf-1 .leaf-icon-box {
-    animation: leaf-float 3s ease-in-out infinite 0s;
-  }
-  .cli-tree:hover .leaf-2 .leaf-icon-box {
-    animation: leaf-float 3s ease-in-out infinite 0.3s;
-  }
-  .cli-tree:hover .leaf-3 .leaf-icon-box {
-    animation: leaf-float 3s ease-in-out infinite 0.6s;
-  }
-  .cli-tree:hover .leaf-4 .leaf-icon-box {
-    animation: leaf-float 3s ease-in-out infinite 0.15s;
-  }
-  .cli-tree:hover .leaf-5 .leaf-icon-box {
-    animation: leaf-float 3s ease-in-out infinite 0.45s;
-  }
-  .cli-tree:hover .leaf-6 .leaf-icon-box {
-    animation: leaf-float 3s ease-in-out infinite 0.75s;
-  }
-
-  @keyframes leaf-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
   }
 </style>

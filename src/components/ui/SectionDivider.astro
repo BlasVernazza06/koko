@@ -11,11 +11,12 @@ const { class: className = '', withGlow = true } = Astro.props;
   <!-- Tapered background line -->
   <div class="w-full h-px bg-gradient-to-r from-transparent via-border-subtle to-transparent"></div>
 
+  <!-- Center glowing diamond/dot accent (perfectly stacked & centered) -->
   {withGlow && (
-    <!-- Center glowing pill/diamond accent -->
-    <div class="absolute flex items-center justify-center pointer-events-none">
-      <div class="w-12 h-4 bg-brand-primary/15 blur-md rounded-full"></div>
-      <div class="w-1.5 h-1.5 rounded-full bg-brand-primary/60 border border-brand-primary/40 shadow-xs"></div>
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
+      <div class="absolute w-12 h-4 bg-brand-primary/25 dark:bg-brand-primary/35 blur-md rounded-full pointer-events-none"></div>
+      <div class="relative w-1.5 h-1.5 rounded-full bg-brand-primary border border-brand-primary/60 shadow-xs"></div>
     </div>
   )}
 </div>
+

@@ -8,7 +8,7 @@
     lang?: string;
   }
 
-  let { doc, lang = 'es' } = $props<Props>();
+  let { doc, lang = 'es' }: Props = $props();
 
   let selectedFramework = $state('Next.js');
   let selectedBackend = $state('Hono');
