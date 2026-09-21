@@ -58,9 +58,9 @@
     const indicator = document.getElementById('theme-toggle-indicator');
     if (!themeToggle || !indicator) return;
 
-    const getTheme = () => {
+    const getTheme = (): string => {
       if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-        return localStorage.getItem('theme');
+        return localStorage.getItem('theme') || 'dark';
       }
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     };
@@ -96,7 +96,7 @@
 
       if (css) {
         // Force synchronous style calculation
-        const _ = window.getComputedStyle(css).opacity;
+        void window.getComputedStyle(css).opacity;
         
         // Re-enable interactive transitions on subsequent frame
         requestAnimationFrame(() => {
@@ -132,7 +132,7 @@
     };
   }
 
-  let cleanupTheme: (() => void) | null = null;
+  let cleanupTheme: (() => void) | null | undefined = null;
   const setupTheme = () => {
     if (cleanupTheme) cleanupTheme();
     cleanupTheme = initTheme();

@@ -82,8 +82,7 @@ const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
     };
   }
 
-  // Manage listeners across View Transition navigation events
-  let cleanupScroll: (() => void) | null = null;
+  let cleanupScroll: (() => void) | null | undefined = null;
   
   const setupScroll = () => {
     if (cleanupScroll) cleanupScroll();

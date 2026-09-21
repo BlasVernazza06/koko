@@ -21,9 +21,9 @@ const enUrl = pathname.startsWith('/en')
   >
     <img 
       id="current-lang-flag" 
-      src={currentLang === 'es' ? "/icons-españa.png" : "/icons-ingles.png"} 
+      src={currentLang === 'es' ? "/flag-es.svg" : "/flag-en.svg"} 
       alt="Language" 
-      class="w-4.5 h-3 object-cover rounded-xs shadow-[0_1px_2px_rgba(0,0,0,0.15)] ring-1 ring-black/5 transition-transform duration-300 group-hover/btn:scale-110" 
+      class="w-4 h-3 rounded-[2px] object-cover shrink-0 transition-transform duration-300 group-hover/btn:scale-105" 
     />
     <span id="current-lang-text" class="uppercase font-extrabold tracking-wider">{currentLang}</span>
     <svg id="lang-chevron" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-text-muted transition-transform duration-300 group-hover/btn:translate-y-0.5"><path d="m6 9 6 6 6-6"/></svg>
@@ -47,7 +47,7 @@ const enUrl = pathname.startsWith('/en')
       role="menuitem"
     >
       <div class="flex items-center gap-2">
-        <img src="/icons-españa.png" alt="Español" class="w-4.5 h-3 object-cover rounded-xs shadow-sm ring-1 ring-black/5 group-hover/item:scale-105 transition-transform" />
+        <img src="/flag-es.svg" alt="Español" class="w-4 h-3 rounded-[2px] object-cover shrink-0 group-hover/item:scale-105 transition-transform" />
         <span>Español</span>
       </div>
       <span class={`active-indicator w-1.5 h-1.5 rounded-full bg-brand-primary shadow-[0_0_8px_var(--brand-primary)] ${currentLang === 'es' ? '' : 'hidden'}`}></span>
@@ -64,7 +64,7 @@ const enUrl = pathname.startsWith('/en')
       role="menuitem"
     >
       <div class="flex items-center gap-2">
-        <img src="/icons-ingles.png" alt="English" class="w-4.5 h-3 object-cover rounded-xs shadow-sm ring-1 ring-black/5 group-hover/item:scale-105 transition-transform" />
+        <img src="/flag-en.svg" alt="English" class="w-4 h-3 rounded-[2px] object-cover shrink-0 group-hover/item:scale-105 transition-transform" />
         <span>English</span>
       </div>
       <span class={`active-indicator w-1.5 h-1.5 rounded-full bg-brand-primary shadow-[0_0_8px_var(--brand-primary)] ${currentLang === 'en' ? '' : 'hidden'}`}></span>
@@ -87,6 +87,10 @@ const enUrl = pathname.startsWith('/en')
 
     if (!btn || !dropdown || !chevron) return;
 
+    const elBtn = btn;
+    const elDropdown = dropdown;
+    const elChevron = chevron;
+
     let isOpen = false;
     let activeAnimation: any = null;
 
@@ -98,40 +102,40 @@ const enUrl = pathname.startsWith('/en')
       }
 
       if (isOpen) {
-        dropdown.classList.remove('hidden');
-        chevron.classList.add('rotate-180');
-        btn.setAttribute('aria-expanded', 'true');
+        elDropdown.classList.remove('hidden');
+        elChevron.classList.add('rotate-180');
+        elBtn.setAttribute('aria-expanded', 'true');
 
         activeAnimation = animate(
-          dropdown,
+          elDropdown,
           { 
-            opacity: [0, 1], 
+            opacity: [0, 1],
             transform: ["translateY(-8px) scale(0.95)", "translateY(0) scale(1)"] 
           },
           { 
             duration: 0.18, 
-            easing: [0.16, 1, 0.3, 1] 
+            ease: [0.16, 1, 0.3, 1] 
           }
         );
       } else {
-        chevron.classList.remove('rotate-180');
-        btn.setAttribute('aria-expanded', 'false');
+        elChevron.classList.remove('rotate-180');
+        elBtn.setAttribute('aria-expanded', 'false');
 
         activeAnimation = animate(
-          dropdown,
+          elDropdown,
           { 
             opacity: [1, 0], 
             transform: ["translateY(0) scale(1)", "translateY(-8px) scale(0.95)"] 
           },
           { 
             duration: 0.15, 
-            easing: [0.16, 1, 0.3, 1] 
+            ease: [0.16, 1, 0.3, 1] 
           }
         );
 
         activeAnimation.finished.then(() => {
           if (!isOpen) {
-            dropdown.classList.add('hidden');
+            elDropdown.classList.add('hidden');
           }
         });
       }
@@ -148,16 +152,16 @@ const enUrl = pathname.startsWith('/en')
       }
     };
 
-    btn.addEventListener('click', onBtnClick);
+    elBtn.addEventListener('click', onBtnClick);
     document.addEventListener('click', onDocumentClick);
 
     return () => {
-      btn.removeEventListener('click', onBtnClick);
+      elBtn.removeEventListener('click', onBtnClick);
       document.removeEventListener('click', onDocumentClick);
     };
   }
 
-  let cleanupLang: (() => void) | null = null;
+  let cleanupLang: (() => void) | null | undefined = null;
   const setupLang = () => {
     if (cleanupLang) cleanupLang();
     cleanupLang = initLangToggle();

@@ -14,7 +14,7 @@
     lang?: string;
   }
 
-  let { lang = 'es' } = $props<Props>();
+  let { lang = 'es' }: Props = $props();
 
   let isOpen = $state(false);
   let query = $state('');
