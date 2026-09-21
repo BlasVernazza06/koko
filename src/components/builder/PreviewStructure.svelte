@@ -73,7 +73,7 @@
     return true;
   }
 
-  const t = $derived({
+  const translations = {
     es: {
       structureTitle: 'Estructura de Directorios Generada',
       scrollMore: 'Desplaza para ver más archivos'
@@ -82,10 +82,9 @@
       structureTitle: 'Generated Directory Structure',
       scrollMore: 'Scroll to explore more files'
     }
-  }[lang] || {
-    structureTitle: 'Estructura de Directorios Generada',
-    scrollMore: 'Desplaza para ver más archivos'
-  });
+  };
+
+  const t = $derived(lang === 'en' ? translations.en : translations.es);
 </script>
 
 <style>

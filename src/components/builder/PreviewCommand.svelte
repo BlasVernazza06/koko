@@ -15,7 +15,7 @@
 
   let isCopied = $state(false);
 
-  const t = $derived({
+  const translations = {
     es: {
       commandLabel: 'CLI COMMAND',
       copiedBtn: 'Copiado',
@@ -26,11 +26,9 @@
       copiedBtn: 'Copied',
       copyBtn: 'Copy'
     }
-  }[lang] || {
-    commandLabel: 'CLI COMMAND',
-    copiedBtn: 'Copiado',
-    copyBtn: 'Copiar'
-  });
+  };
+
+  const t = $derived(lang === 'en' ? translations.en : translations.es);
 
   // Parse command into base command and individual flags
   const parsedCommand = $derived.by(() => {

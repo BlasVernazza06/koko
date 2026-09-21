@@ -10,6 +10,8 @@
     isDisabled = false,
     disabledReason = '',
     layerKey = '',
+    hoverColor = '',
+    activeColor = '',
     onclick = () => {}
   } = $props<{
     name: string;
@@ -20,6 +22,8 @@
     isDisabled?: boolean;
     disabledReason?: string;
     layerKey: string;
+    hoverColor?: string;
+    activeColor?: string;
     onclick: () => void;
   }>();
 </script>

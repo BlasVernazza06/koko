@@ -53,8 +53,8 @@
     return badges.slice(0, 5); // Max 5 badges to avoid overflow
   }
 
-  // Keep translations inline (standby on translations.ts)
-  const t = $derived({
+  // Keep translations inline
+  const translations = {
     es: {
       templatesLabel: 'Recetas Recomendadas',
       templatesSubtitle: 'Selecciona una configuración inicial y acelera tu flujo de desarrollo.',
@@ -65,11 +65,9 @@
       templatesSubtitle: 'Select a bootstrap configuration to accelerate your setup workflow.',
       useRecipe: 'Use Recipe'
     }
-  }[lang] || {
-    templatesLabel: 'Recetas Recomendadas',
-    templatesSubtitle: 'Selecciona una configuración inicial y acelera tu flujo de desarrollo.',
-    useRecipe: 'Usar Receta'
-  });
+  };
+
+  const t = $derived(lang === 'en' ? translations.en : translations.es);
 </script>
 
 <div class="space-y-6">

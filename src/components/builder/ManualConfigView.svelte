@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { fade } from 'svelte/transition';
   import { 
     Settings, 
     FolderCode, 
@@ -73,7 +74,7 @@
     }
     const tools = selectedTools === 'none' || !selectedTools ? [] : selectedTools.split(',').filter(Boolean);
     if (tools.includes(optionId)) {
-      const remaining = tools.filter(t => t !== optionId);
+      const remaining = tools.filter((t: string) => t !== optionId);
       selectedTools = remaining.length > 0 ? remaining.join(',') : 'none';
     } else {
       selectedTools = [...tools, optionId].join(',');
@@ -328,7 +329,7 @@
   let viewMode = $state<'stepper' | 'expanded'>('stepper');
   let activeStep = $state(0);
 
-  const steps = [
+  const steps = $derived([
     {
       id: 'project',
       title: lang === 'es' ? 'Proyecto' : 'Project',
@@ -365,7 +366,7 @@
       desc: lang === 'es' ? 'Contenedores y CI' : 'Containers, testing & linting',
       icon: Rocket
     }
-  ];
+  ]);
 
   // Derived reactive layer lookups for maximum reactivity & zero redundant array allocations
   const currentLayers = $derived(getLayers(lang));
@@ -385,7 +386,7 @@
   const emailLayer = $derived(layersMap.get('email'));
   const turboOpt = $derived(currentInfraOptions.find(o => o.id === 'turborepo'));
 
-  const t = $derived({
+  const translations = {
     es: {
       projectNameLabel: 'Nombre del Proyecto',
       extrasLabel: 'Infraestructura y Calidad de Código',
@@ -396,11 +397,9 @@
       extrasLabel: 'Infrastructure & Code Quality',
       none: 'None'
     }
-  }[lang] || {
-    projectNameLabel: 'Nombre del Proyecto',
-    extrasLabel: 'Infraestructura y Calidad de Código',
-    none: 'Ninguno'
-  });
+  };
+
+  const t = $derived(lang === 'en' ? translations.en : translations.es);
 </script>
 
 <div class="space-y-6">
@@ -889,7 +888,7 @@
         <div class="rounded-2xl border border-border-subtle bg-bg-surface/30 p-6 shadow-sm space-y-6">
           <div class="flex items-center justify-between pb-3 border-b border-border-subtle/50 select-none">
             <div class="flex items-center gap-2.5">
-              <LayerIcon size={18} class="{layer.colorClass}" aria-hidden="true" />
+              <LayerIcon size={18} class={layer.colorClass} aria-hidden="true" />
               <span class="text-sm font-bold uppercase tracking-widest text-text-main">{layer.label}</span>
             </div>
             <span class="text-xs {layer.colorClass} font-bold font-mono">{layer.step}</span>

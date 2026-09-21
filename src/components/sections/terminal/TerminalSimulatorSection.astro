@@ -1,7 +1,7 @@
 ---
 import TerminalSimulator from './TerminalSimulator.svelte';
 import SectionDivider from '@/components/ui/SectionDivider.astro';
-import { Sparkles, ShieldCheck, HelpCircle } from '@lucide/svelte';
+import { Sparkles, ShieldCheck, CircleQuestionMark } from '@lucide/svelte';
 
 interface Props {
   lang?: string;
@@ -13,7 +13,7 @@ const { lang = 'es', class: className = '' } = Astro.props;
 const quickCommands = [
   { cmd: 'koko init', labelEs: 'Scaffold interactivo', labelEn: 'Interactive scaffold', icon: Sparkles },
   { cmd: 'koko doctor', labelEs: 'Diagnóstico e integridad', labelEn: 'Diagnostics & integrity', icon: ShieldCheck },
-  { cmd: 'koko --help', labelEs: 'Referencia de comandos', labelEn: 'CLI reference', icon: HelpCircle },
+  { cmd: 'koko --help', labelEs: 'Referencia de comandos', labelEn: 'CLI reference', icon: CircleQuestionMark },
 ];
 ---
 

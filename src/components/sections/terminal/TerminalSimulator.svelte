@@ -19,12 +19,12 @@
     lang?: string;
   }
 
-  let { lang = 'es' } = $props<Props>();
+  let { lang = 'es' }: Props = $props();
 
   // State machine for the simulation loop
   // 'initial' -> 'typing-command' -> 'input-name' -> 'mode-select' -> 'manual-step' -> 'running' -> 'done' -> 'sidebar-building' -> 'complete'
   let phase = $state('initial');
-  let currentLang = $state(lang);
+  let currentLang = $state('es');
 
   // Interactive/Visual zoom control variables
   let zoomClass = $state('scale-100 translate-x-0 translate-y-0');

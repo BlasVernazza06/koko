@@ -1,16 +1,12 @@
-import { Monitor, Smartphone, Server, Database, Network, Package, KeyRound, Wrench, CreditCard, GitBranch, Sparkles, TestTube, Mail } from '@lucide/svelte';
-import type { TechOption, Layer, InfraOption } from '@/types/builder.types';
+import { Monitor, Smartphone, Server, Database, Network, Package, KeyRound, Wrench, CreditCard, Mail } from '@lucide/svelte';
+import type { Layer, InfraOption } from '@/types/builder.types';
 
 const SvglNextjsLogo = '/logos/nextjs.svg';
 const SvglReactLogo = '/logos/react.svg';
 const SvglSvelteLogo = '/logos/svelte.svg';
-const SvglAstroLogo = '/logos/astro.svg';
-const SvglVueLogo = '/logos/vue.svg';
 const SvglAngularLogo = '/logos/angular.svg';
 const SvglNuxtLogo = '/logos/nuxt.svg';
 const SvglGoLogo = '/logos/go.svg';
-const SvglNodejsLogo = '/logos/nodejs.svg';
-const SvglRustLogo = '/logos/rust.svg';
 const SvglBunLogo = '/logos/bun.svg';
 const SvglPythonLogo = '/logos/python.svg';
 const SvglPostgreSQLLogo = '/logos/postgresql.svg';
@@ -19,14 +15,11 @@ const SvglMongoDBLogo = '/logos/mongodb.svg';
 const SvglBetterAuthLogo = '/logos/better-auth_light.svg';
 const SvglAuthjsLogo = '/logos/authjs.svg';
 const SvglClerkLogo = '/logos/clerk.svg';
-const SvglSupabaseLogo = '/logos/supabase.svg';
 const SvglDockerLogo = '/logos/docker.svg';
 const SvglTurborepoLogo = '/logos/turborepo.svg';
 const SvglNestJSLogo = '/logos/nestjs.svg';
 const SvglValibotLogo = '/logos/valibot.svg';
 const SvglStripeLogo = '/logos/stripe.svg';
-const SvglLemonSqueezyLogo = '/logos/lemonsqueezy.svg';
-const SvglMercadoPagoLogo = '/logos/mercado-pago.svg';
 const SvglResendLogo = '/logos/resend.svg';
 const SvglBrevoLogo = '/logos/brevo.svg';
 const SvglNPMLogo = '/logos/npm.svg';
@@ -36,21 +29,16 @@ const SvglFastifyLogo = '/logos/fastify.svg';
 const SvglPolarLogo = '/logos/polar-sh_light.svg';
 const SvglHonoLogo = '/logos/hono.svg';
 const SvglGithubLogo = '/logos/github.svg';
-const SvglBiomeLogo = '/logos/biome.svg';
 const SvglShadcnLogo = '/logos/shadcn.svg';
-const SvglJavaLogo = '/logos/java.svg';
 const SvglSpringLogo = '/logos/spring.svg';
 
 // Custom icons
 import AstroIcon from '@/components/icons/AstroIcon.svelte';
 import DrizzleIcon from '@/components/icons/DrizzleIcon.svelte';
 import ZodIcon from '@/components/icons/ZodIcon.svelte';
-import PythonIcon from '@/components/icons/PythonIcon.svelte';
-import NodejsIcon from '@/components/icons/NodejsIcon.svelte';
 import MotionIcon from '@/components/icons/MotionIcon.svelte';
 import LucideIcon from '@/components/icons/LucideIcon.svelte';
 import SvglIcon from '@/components/icons/SvglIcon.svelte';
-import SonnerIcon from '@/components/icons/SonnerIcon.svelte';
 import ExpoIcon from '@/components/icons/ExpoIcon.svelte';
 
 export const getLayers = (lang: string): Layer[] => {

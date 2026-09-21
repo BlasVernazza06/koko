@@ -33,9 +33,9 @@
   let selectedApi = $state(getDefault('api', 'trpc'));
   let selectedDb = $state(getDefault('db', 'postgres'));
   let selectedAuth = $state(getDefault('auth', 'better-auth'));
-  const hasValidator = $derived(selectedTools.split(',').includes('zod') || selectedTools.split(',').includes('valibot'));
   let selectedPackageManager = $state(getDefault('package_manager', 'pnpm'));
   let selectedTools = $state(getDefault('tools', 'zod'));
+  const hasValidator = $derived(selectedTools.split(',').includes('zod') || selectedTools.split(',').includes('valibot'));
   let selectedPayments = $state(getDefault('payments', 'none'));
   let selectedEmail = $state(getDefault('email', 'none'));
   let withDocker = $state(isInfraDefault('docker', true));
@@ -268,7 +268,7 @@
   let isCopied = $state(false);
 
   // Translations
-  const t = $derived({
+  const translations = {
     es: {
       title: 'Constructor Visual de Stack',
       subtitle: 'Personaliza cada capa de tu aplicación y genera la receta exacta para inicializar tu repositorio con un solo comando de terminal.',
@@ -309,7 +309,9 @@
       none: 'None',
       selected: 'Selected'
     }
-  }[lang] || t.es);
+  };
+
+  const t = $derived(lang === 'en' ? translations.en : translations.es);
 
   // Computes the dynamic command based on state (Strictly aligned with Koko-CLI flags)
   const generatedCommand = $derived.by(() => {
