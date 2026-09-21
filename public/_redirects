@@ -1,0 +1,5 @@
+# Cloudflare Pages Edge Redirects
+/docs /docs/quick-start 302
+/docs/ /docs/quick-start 302
+/en/docs /en/docs/quick-start 302
+/en/docs/ /en/docs/quick-start 302
