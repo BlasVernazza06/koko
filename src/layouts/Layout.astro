@@ -45,6 +45,7 @@ const enAlternateURL = new URL(cleanPath === '/' ? '/en' : `/en${cleanPath}`, si
 		<meta property="og:title" content={metaTitle} />
 		<meta property="og:description" content={metaDesc} />
 		<meta property="og:image" content="/logo.png" />
+		
 
 		<!-- Twitter -->
 		<meta property="twitter:card" content="summary_large_image" />
@@ -67,6 +68,9 @@ const enAlternateURL = new URL(cleanPath === '/' ? '/en' : `/en${cleanPath}`, si
 				document.documentElement.classList.add('dark');
 				document.documentElement.setAttribute('data-theme', 'dark');
 			}
+		</script>
+		<script>
+			import '../../sentry.client.config.js';
 		</script>
 	</head>
 	<body class="font-sans antialiased">

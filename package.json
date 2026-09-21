@@ -23,6 +23,7 @@
     "@lucide/astro": "^1.21.0",
     "@lucide/svelte": "^1.17.0",
     "@selemondev/svgl-svelte": "^2.16.0",
+    "@sentry/astro": "^10.75.0",
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.4.6",
     "clsx": "^2.1.1",
@@ -31,5 +32,9 @@
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^26.6.2"
   }
 }
