@@ -1,0 +1,30 @@
+name: 🚀 Feature Request / Propuesta de Mejora
+description: Propón una nueva funcionalidad, comando o mejora para Koko
+title: "[FEAT]: "
+labels: ["enhancement", "proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ¡Nos encanta escuchar nuevas ideas para mejorar la experiencia de desarrollo en Koko!
+  - type: textarea
+    id: problem
+    attributes:
+      label: ¿Qué problema o necesidad resuelve esta funcionalidad?
+      description: Explica el caso de uso y por qué es importante.
+      placeholder: "Actualmente cuando intento..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solución propuesta
+      description: Describe cómo te gustaría que funcione o qué comando/interfaz debería existir.
+      placeholder: "Me gustaría que koko soporte..."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+      description: ¿Has considerado otras soluciones o herramientas similares?

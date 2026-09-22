@@ -1,0 +1,47 @@
+name: 📦 Nueva Receta o Stack Preset
+description: Propón una nueva receta de producción o blueprint para el motor de scaffolding
+title: "[RECIPE]: "
+labels: ["recipe", "blueprints"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Propón una nueva arquitectura o receta de producción oficial para Koko.
+  - type: input
+    id: recipe_name
+    attributes:
+      label: Nombre de la receta / Stack
+      placeholder: "ej. Next.js 15 + Prisma + PostgreSQL + NextAuth"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Categoría del Stack
+      options:
+        - "Fullstack Web (TypeScript)"
+        - "Backend API (Go / Python / Node / Rust)"
+        - "Mobile / Multiplatform (Expo / React Native / Tauri)"
+        - "Microservicios / Monorepo"
+    validations:
+      required: true
+  - type: textarea
+    id: tech_stack
+    attributes:
+      label: Tecnologías y Librerías clave
+      description: Lista los paquetes, ORMs, linters y herramientas que debería incluir la plantilla.
+      value: |
+        - Framework: 
+        - Base de Datos: 
+        - ORM / Query Builder: 
+        - Autenticación: 
+        - Testing: 
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Justificación y valor para la comunidad
+      description: ¿Por qué esta combinación es estándar o de alta demanda en producción?
+    validations:
+      required: true
