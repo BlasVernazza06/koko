@@ -18,6 +18,36 @@ const siteOrigin = Astro.site || Astro.url.origin;
 const cleanPath = pathname.replace(/^\/en/, '').replace(/\/$/, '') || '/';
 const esAlternateURL = new URL(cleanPath, siteOrigin);
 const enAlternateURL = new URL(cleanPath === '/' ? '/en' : `/en${cleanPath}`, siteOrigin);
+const ogImageURL = new URL('/logo.png', siteOrigin).href;
+
+const schemaData = {
+	"@context": "https://schema.org",
+	"@graph": [
+		{
+			"@type": "WebSite",
+			"@id": `${siteOrigin}/#website`,
+			"url": siteOrigin.toString(),
+			"name": "Koko CLI",
+			"description": defaultDesc,
+			"inLanguage": [lang, lang === 'es' ? 'en' : 'es']
+		},
+		{
+			"@type": "SoftwareApplication",
+			"@id": `${siteOrigin}/#software`,
+			"name": "Koko",
+			"applicationCategory": "DeveloperApplication",
+			"operatingSystem": "Linux, macOS, Windows",
+			"description": metaDesc,
+			"url": siteOrigin.toString(),
+			"image": ogImageURL,
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			}
+		}
+	]
+};
 ---
 <!doctype html>
 <html lang={lang} data-lang={lang}>
@@ -45,15 +75,17 @@ const enAlternateURL = new URL(cleanPath === '/' ? '/en' : `/en${cleanPath}`, si
 		<meta property="og:url" content={canonicalURL} />
 		<meta property="og:title" content={metaTitle} />
 		<meta property="og:description" content={metaDesc} />
-		<meta property="og:image" content="/logo.png" />
-		
+		<meta property="og:image" content={ogImageURL} />
 
 		<!-- Twitter -->
 		<meta property="twitter:card" content="summary_large_image" />
 		<meta property="twitter:url" content={canonicalURL} />
 		<meta property="twitter:title" content={metaTitle} />
 		<meta property="twitter:description" content={metaDesc} />
-		<meta property="twitter:image" content="/logo.png" />
+		<meta property="twitter:image" content={ogImageURL} />
+
+		<!-- Structured Data (JSON-LD) for Search Engines -->
+		<script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
 		<script is:inline>
 			document.documentElement.classList.add('js');
 			const theme = (() => {
