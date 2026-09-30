@@ -19,6 +19,17 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+Thumbs.db
 
-# jetbrains setting folder
+# IDE & Editor configs
 .idea/
+.vscode/
+
+# AI Agents & Local Prompt Artifacts (kept locally, excluded from GitHub)
+.agents/
+.cursor/
+*.prompt.md
+master_context_prompt.md
+skills-lock.json
+AGENTS.md
+walkthrough.md
