@@ -1,8 +1,8 @@
-name: CI Pipeline - Quality & Automated Testing
+name: CI Pipeline - Quality, Testing & Build Integrity Gate
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, 'feature/**', 'fix/**']
   pull_request:
     branches: [main]
 
@@ -11,31 +11,36 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  validate-and-test:
-    name: Lint, Types, Tests & Build
+  quality-and-build-gate:
+    name: Typecheck, Unit Tests & Production Build
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js 22 with pnpm cache
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
+          cache: 'pnpm'
 
-      - name: Install dependencies (Strict Lockfile)
-        run: npm ci
+      - name: Install dependencies (Strict Frozen Lockfile)
+        run: pnpm install --frozen-lockfile
 
       - name: Static Type Check (Astro & TypeScript)
-        run: npm run typecheck
+        run: pnpm run typecheck
 
-      - name: Run Unit Tests (Vitest)
-        run: npm run test
+      - name: Run Full Test Suite (Vitest & Integrity Gates)
+        run: pnpm run test
 
-      - name: Verify Production Build
-        run: npm run build
+      - name: Verify Production Build & Sitemap Generation
+        run: pnpm run build
         env:
           PUBLIC_SENTRY_DSN: ${{ secrets.PUBLIC_SENTRY_DSN }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
