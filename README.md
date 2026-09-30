@@ -1,9 +1,12 @@
 # 🚀 Koko — Go-Native Project Scaffolding Engine & Web Suite
 
+[![Website](https://img.shields.io/badge/Website-koko--cli.pages.dev-059669?style=flat-square&logo=cloudflare)](https://koko-cli.pages.dev/)
 [![Astro](https://img.shields.io/badge/Astro-v6-orange?style=flat-square&logo=astro)](https://astro.build/)
 [![Svelte 5](https://img.shields.io/badge/Svelte-v5-ff3e00?style=flat-square&logo=svelte)](https://svelte.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+
+> 🌐 **Sitio Web Oficial & Documentación en Vivo:** [https://koko-cli.pages.dev](https://koko-cli.pages.dev)
 
 Este repositorio contiene el código de la plataforma web e interfaz interactiva para **Koko**, un potente motor de inicialización y control de arquitectura diseñado para desarrolladores exigentes.
 
