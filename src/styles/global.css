@@ -65,6 +65,9 @@
   --color-text-main: var(--text-main);
   --color-text-muted: var(--text-muted);
   --color-border-subtle: var(--border-subtle);
+  --color-badge-border: var(--badge-border);
+  --color-badge-border-hover: var(--badge-border-hover);
+  --color-badge-bg: var(--badge-bg);
 
   /* Standard shadcn semantic tokens */
   --color-border: var(--border);
@@ -103,6 +106,9 @@
   --text-main: #110f1d;          /* Deep crisp text */
   --text-muted: #605c75;         /* Muted slate-purple gray */
   --border-subtle: #e2e4e9;      /* Crisp, defined light border */
+  --badge-border: #e2e4e9;       /* Modifiable gray border for badges in light mode */
+  --badge-border-hover: #d1d5db; /* Hover state for badge border */
+  --badge-bg: rgba(255, 255, 255, 0.65); /* Translucent light badge background */
 
   /* Shadcn aliases */
   --border: #e2e4e9;
@@ -134,6 +140,9 @@ html[data-theme="dark"] {
   --text-main: #f1edf8;        /* Soft ash wisteria-white */
   --text-muted: #88839d;       /* Muted slate-purple gray */
   --border-subtle: #242236;    /* Deep wisteria-slate border with crisp edge definition */
+  --badge-border: rgba(255, 255, 255, 0.12); /* Modifiable dark mode badge border (configurable) */
+  --badge-border-hover: rgba(255, 255, 255, 0.22); /* Hover state in dark mode */
+  --badge-bg: rgba(20, 19, 30, 0.65); /* Dark translucent badge background */
 
   /* Shadcn aliases */
   --border: #242236;
@@ -161,6 +170,9 @@ html[data-theme="dark"] {
     --text-main: #f1edf8;
     --text-muted: #88839d;
     --border-subtle: #242236;
+    --badge-border: rgba(255, 255, 255, 0.12);
+    --badge-border-hover: rgba(255, 255, 255, 0.22);
+    --badge-bg: rgba(20, 19, 30, 0.65);
 
     --border: #242236;
     --input: #242236;
@@ -177,6 +189,15 @@ html[data-theme="dark"] {
     --card-foreground: #f1edf8;
     color-scheme: dark;
   }
+}
+
+
+/* Instant theme toggle transition suppression (zero DOM injection overhead) */
+html.disable-transitions,
+html.disable-transitions *,
+html.disable-transitions *::before,
+html.disable-transitions *::after {
+  transition: none !important;
 }
 
 /* Base Styles */

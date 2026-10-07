@@ -62,6 +62,8 @@ const schemaData = {
 <!doctype html>
 <html lang={lang} data-lang={lang}>
 	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!-- Preconnect and Load Google Sans Fonts (SpaceFS Typography) -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
@@ -119,7 +121,7 @@ const schemaData = {
 			import '../../sentry.client.config.js';
 		</script>
 	</head>
-	<body class="font-sans antialiased">
+	<body class="antialiased">
 		<Header revealOnScroll={revealHeaderOnScroll} />
 		<slot />
 	</body>
