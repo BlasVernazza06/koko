@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Copy, Check, Terminal } from '@lucide/svelte';
+  import { Copy, Check } from '@lucide/svelte';
   import { packageManagers } from '@/data/package-managers.data';
   import type { PackageManagerId } from '@/types/package-managers.types';
 
@@ -8,6 +8,11 @@
   // State
   let isCopied = $state(false);
   let selectedManager = $state<PackageManagerId>('bun');
+
+  // Sliding indicator state
+  let containerRef = $state<HTMLDivElement | null>(null);
+  let buttonRefs = $state<Record<string, HTMLButtonElement | null>>({});
+  let indicatorStyle = $state({ left: 0, top: 0, width: 0, height: 0, ready: false });
 
   const managers = packageManagers;
   const currentManager = $derived(managers.find(m => m.id === selectedManager) || managers[0]);
@@ -19,79 +24,103 @@
       isCopied = false;
     }, 2000);
   }
+
+  function updateIndicator() {
+    const activeBtn = buttonRefs[selectedManager];
+    if (activeBtn && containerRef) {
+      indicatorStyle = {
+        left: activeBtn.offsetLeft,
+        top: activeBtn.offsetTop,
+        width: activeBtn.offsetWidth,
+        height: activeBtn.offsetHeight,
+        ready: true
+      };
+    }
+  }
+
+  $effect(() => {
+    // React to selectedManager change
+    const _ = selectedManager;
+    updateIndicator();
+  });
+
+  $effect(() => {
+    if (typeof window === 'undefined') return;
+
+    // Initial calculation after render
+    const frameId = requestAnimationFrame(updateIndicator);
+
+    const handleResize = () => updateIndicator();
+    window.addEventListener('resize', handleResize);
+
+    let resizeObserver: ResizeObserver | null = null;
+    if (containerRef && typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => updateIndicator());
+      resizeObserver.observe(containerRef);
+    }
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener('resize', handleResize);
+      if (resizeObserver) resizeObserver.disconnect();
+    };
+  });
 </script>
 
-<div class="w-full h-full font-sans select-none flex flex-col justify-between">
-  <!-- Modern Linear-style dark card -->
-  <div class="group/box rounded-2xl border border-border-subtle bg-bg-surface/50 backdrop-blur-md p-6 shadow-lg hover:shadow-[0_20px_50px_rgba(90,79,196,0.14)] hover:-translate-y-0.5 hover:border-brand-primary/50 transition-all duration-200 ease-out flex flex-col justify-between flex-1 relative overflow-hidden">
-    <!-- Top-edge light reflection line -->
-    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"></div>
-    <!-- Subtle glow dot in corner -->
-    <div class="absolute -right-12 -top-12 w-24 h-24 bg-brand-primary/10 rounded-full blur-xl pointer-events-none transition-all duration-200 group-hover/box:bg-brand-primary/25"></div>
+<div class="w-full flex flex-col items-center gap-3 font-sans select-none">
+  <!-- Option 3: SpaceFS Pure Minimalist Runtime Pill with Sliding Indicator -->
+  <div 
+    bind:this={containerRef}
+    class="relative flex items-center h-[42px] sm:h-[44px] p-[3px] bg-[#f4f4f6]/90 dark:bg-[#141417]/90 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.08] rounded-full shadow-xs"
+  >
+    <!-- Sliding Pill Background Indicator -->
+    {#if indicatorStyle.ready}
+      <div
+        class="absolute rounded-full bg-white dark:bg-[#242429] shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.1] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+        style="left: {indicatorStyle.left}px; top: {indicatorStyle.top}px; width: {indicatorStyle.width}px; height: {indicatorStyle.height}px;"
+      ></div>
+    {/if}
 
-    <div class="flex flex-col gap-4">
-      <!-- Title & Header -->
-      <div class="flex items-center justify-between pb-3 border-b border-border-subtle/40">
-        <div class="flex items-center gap-2">
-          <Terminal size={15} class="text-brand-secondary" />
-          <span class="text-xs font-mono font-bold uppercase tracking-wider text-text-muted/80">{lang === 'es' ? 'Instalación Rápida' : 'Quick Install'}</span>
-        </div>
-        <span class="text-[11px] font-mono bg-bg-base/80 border border-border-subtle/50 px-2.5 py-0.5 rounded text-text-muted">v1.0.0</span>
-      </div>
+    {#each managers as mgr}
+      <button
+        type="button"
+        bind:this={buttonRefs[mgr.id]}
+        onclick={() => selectedManager = mgr.id}
+        class="relative z-10 flex items-center gap-2 h-full px-3.5 sm:px-4 rounded-full text-[13px] sm:text-sm font-sans transition-colors duration-200 cursor-pointer active:scale-95
+          {selectedManager === mgr.id 
+            ? 'text-neutral-900 dark:text-white font-medium sm:font-semibold' 
+            : 'text-neutral-500 dark:text-neutral-400 font-normal hover:text-neutral-900 dark:hover:text-white'}"
+      >
+        <img src={mgr.logo} class="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain shrink-0" alt="" />
+        <span>{mgr.name}</span>
+      </button>
+    {/each}
+  </div>
 
-      <!-- Segmented Select Row -->
-      <div class="flex flex-col gap-2">
-        <span class="text-[11px] font-extrabold uppercase tracking-widest text-text-muted/70">
-          {lang === 'es' ? 'Gestor de paquetes:' : 'Package manager:'}
-        </span>
-        <div class="flex items-center gap-1.5 p-1 bg-bg-base/70 border border-border-subtle/50 rounded-xl w-max">
-          {#each managers as mgr}
-            <button
-              type="button"
-              onclick={() => selectedManager = mgr.id}
-              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-transparent text-xs font-semibold font-mono transition-all duration-200 cursor-pointer active:scale-95
-                {selectedManager === mgr.id ? mgr.activeColor : 'text-text-muted bg-transparent hover:text-text-main'}"
-            >
-              <img src={mgr.logo} class="w-3.5 h-3.5 object-contain" alt="" />
-              <span>{mgr.name}</span>
-            </button>
-          {/each}
-        </div>
-      </div>
+  <!-- Minimal Terminal Console Pill -->
+  <div class="w-full max-w-md flex items-center justify-between gap-3 bg-bg-surface/80 dark:bg-[#141417]/80 backdrop-blur-xl border border-black/[0.08] dark:border-white/[0.08] rounded-full px-4 py-2 shadow-xs hover:border-brand-primary/40 transition-all duration-200 group/cmd">
+    <div class="flex items-center gap-2.5 min-w-0 flex-1 pl-1 font-mono">
+      <span class="text-brand-primary font-bold select-none text-xs sm:text-sm">$</span>
+      <code class="text-xs sm:text-[13px] text-text-main font-semibold tracking-tight select-all truncate">
+        {currentManager.command}
+      </code>
     </div>
 
-    <!-- Monospace Prompt Display -->
-    <div class="mt-6 flex flex-col gap-2.5">
-      <span class="text-[11px] font-extrabold uppercase tracking-widest text-text-muted/70">
-        {lang === 'es' ? 'Comando de terminal:' : 'Terminal command:'}
-      </span>
-      <div class="flex items-center justify-between gap-4 bg-bg-base/80 border border-border-subtle rounded-xl p-4 shadow-inner relative group/code">
-        <div class="flex items-center gap-2.5 min-w-0 flex-1">
-          <span class="text-brand-primary font-mono font-bold select-none text-xs sm:text-sm">$</span>
-          <code class="text-xs sm:text-[13px] font-mono text-text-main font-semibold tracking-wide select-all truncate">
-            {currentManager.command}
-          </code>
-        </div>
-
-        <button
-          type="button"
-          onclick={copyInstallCommand}
-          aria-label={lang === 'es' ? 'Copiar comando' : 'Copy command'}
-          class="flex items-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all duration-200 cursor-pointer active:scale-95 select-none shrink-0
-            {isCopied 
-              ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400 font-extrabold shadow-[0_0_15px_rgba(16,185,129,0.15)]' 
-              : 'bg-bg-surface hover:bg-bg-base border border-border-subtle hover:border-brand-primary/45 text-text-main'}"
-        >
-          {#if isCopied}
-            <Check size={13} class="text-emerald-400 animate-in zoom-in-75 duration-150" />
-            <span class="text-emerald-400">{lang === 'es' ? '¡COPIADO!' : 'COPIED!'}</span>
-          {:else}
-            <Copy size={12} class="text-text-muted group-hover/box:text-text-main transition-colors" />
-            <span>{lang === 'es' ? 'COPIAR' : 'COPY'}</span>
-          {/if}
-        </button>
-      </div>
-    </div>
-
+    <!-- Integrated sleek copy button -->
+    <button
+      type="button"
+      onclick={copyInstallCommand}
+      aria-label={lang === 'es' ? 'Copiar' : 'Copy'}
+      class="flex items-center gap-1.5 px-3 py-1 text-xs font-bold font-mono rounded-full border transition-all duration-150 cursor-pointer active:scale-95 select-none shrink-0
+        {isCopied 
+          ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.25)]' 
+          : 'bg-bg-base/80 hover:bg-bg-base dark:bg-white/[0.06] dark:hover:bg-white/[0.12] border-border-subtle dark:border-white/[0.1] text-text-main hover:border-brand-primary/40'}"
+    >
+      {#if isCopied}
+        <Check size={12} class="text-emerald-400" />
+      {:else}
+        <Copy size={12} class="text-text-muted group-hover/cmd:text-text-main transition-colors" />
+      {/if}
+    </button>
   </div>
 </div>

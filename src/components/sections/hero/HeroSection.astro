@@ -12,23 +12,20 @@ interface Props {
 const { lang = 'es', class: className = '' } = Astro.props;
 ---
 
-<section id="hero" class={`max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col items-center justify-center relative z-10 ${className}`}>
+<section id="hero" class={`w-full min-h-[85vh] sm:min-h-svh max-w-5xl mx-auto px-6 py-6 sm:py-8 md:py-10 flex flex-col items-center justify-center relative z-10 ${className}`}>
   <!-- Top Announcement Badge -->
   <HeroAnnouncementBadge />
 
   <!-- Main Headline & Subtitle -->
   <HeroHeadline />
 
-  <!-- Dual Cards Grid: Interactive Installation & Builder Launcher -->
-  <div class="max-w-4xl mx-auto my-12 w-full font-sans grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch animate-fade-in-up animation-delay-200">
-    <!-- Left Card: Package manager command copy island -->
-    <div class="w-full flex flex-col">
+  <!-- Dual Action Area: Interactive Installation & Visual Builder Launcher -->
+  <div class="max-w-4xl mx-auto mt-5 sm:mt-6 w-full font-sans flex flex-col md:flex-row items-center justify-center gap-5 sm:gap-8 animate-fade-in-up animation-delay-200">
+    <!-- Left: Centered Runtime + Console Pill -->
+    <div class="w-full md:w-auto flex-1 flex justify-center">
       <PackageCommandCard client:load lang={lang} />
     </div>
     
-    <!-- Right Card: Wizard Builder launcher (Pure static Astro) -->
-    <div class="w-full flex">
-      <BuilderCardLink lang={lang} />
-    </div>
+    
   </div>
 </section>

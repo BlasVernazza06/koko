@@ -1,5 +1,5 @@
 ---
-import { ArrowRight, Settings, Blocks, Cpu, Database } from '@lucide/svelte';
+import { ArrowUpRight, Wand2 } from '@lucide/svelte';
 
 interface Props {
   lang?: string;
@@ -9,72 +9,34 @@ interface Props {
 const { lang = 'es', class: className = '' } = Astro.props;
 ---
 
-<div class={`w-full h-full font-sans select-none flex flex-col justify-between ${className}`}>
-  <!-- Premium Redirect Card -->
+<div class={`w-full h-full flex flex-col items-center justify-center font-sans select-none ${className}`}>
+  <!-- Option 3: SpaceFS / Linear High-End CTA Pill -->
   <a
     href={lang === 'es' ? '/builder' : '/en/builder'}
-    class="group/box rounded-2xl border border-border-subtle bg-bg-surface/50 backdrop-blur-md p-6 shadow-lg hover:shadow-[0_20px_50px_rgba(90,79,196,0.14)] hover:-translate-y-0.5 hover:border-brand-secondary/50 transition-all duration-200 ease-out flex flex-col justify-between flex-1 relative overflow-hidden text-left cursor-pointer"
+    class="group/builder relative inline-flex items-center justify-center gap-3 px-6 py-3.5 sm:py-4 rounded-full bg-gradient-to-b from-brand-primary/15 via-brand-primary/5 to-transparent dark:from-white/[0.08] dark:to-white/[0.02] backdrop-blur-xl border border-border-subtle/80 dark:border-white/[0.12] hover:border-brand-primary/60 dark:hover:border-brand-primary/60 shadow-lg hover:shadow-[0_0_30px_rgba(90,79,196,0.25)] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 overflow-hidden text-center cursor-pointer"
   >
-    <!-- Top-edge light reflection line -->
-    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"></div>
-    <!-- Background Dot Grid Pattern -->
-    <div class="absolute inset-0 opacity-[0.06] bg-[radial-gradient(var(--brand-secondary)_1.5px,transparent_1.5px)] [background-size:16px_16px] pointer-events-none"></div>
-    <div class="absolute -right-12 -top-12 w-32 h-32 bg-brand-secondary/5 rounded-full blur-xl pointer-events-none transition-all duration-200 group-hover/box:bg-brand-secondary/20"></div>
+    <!-- Top-edge specular highlight -->
+    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"></div>
+    
+    <!-- Background shimmer glow -->
+    <div class="absolute inset-0 bg-gradient-to-r from-brand-primary/0 via-brand-primary/10 to-brand-primary/0 -translate-x-full group-hover/builder:translate-x-full transition-transform duration-1000 ease-out pointer-events-none"></div>
 
-    <div class="flex flex-col gap-4.5">
-      <!-- Title & Header -->
-      <div class="flex items-center justify-between pb-3 border-b border-border-subtle/40">
-        <div class="flex items-center gap-2">
-          <Settings size={15} class="text-brand-primary animate-spin-slow" />
-          <span class="text-xs font-mono font-bold uppercase tracking-wider text-text-muted/80">
-            <span class="lang-es">Constructor Visual</span>
-            <span class="lang-en">Visual Builder</span>
-          </span>
-        </div>
-        <span class="text-[11px] font-mono uppercase bg-brand-primary/15 text-brand-primary border border-brand-primary/20 px-2 py-0.5 rounded font-extrabold tracking-wider">
-          <span class="lang-es">Interactivo</span>
-          <span class="lang-en">Interactive</span>
-        </span>
-      </div>
-
-      <!-- Main Pitch Text -->
-      <div class="flex flex-col gap-1.5">
-        <h3 class="text-base sm:text-lg font-bold text-text-main tracking-tight leading-snug">
-          <span class="lang-es">Diseña tu Arquitectura en Pantalla</span>
-          <span class="lang-en">Design Your Architecture Visually</span>
-        </h3>
-        <p class="text-xs text-text-muted leading-relaxed">
-          <span class="lang-es">Configura visualmente cada capa de tu stack: frontend, servicios API, base de datos y herramientas de calidad de código.</span>
-          <span class="lang-en">Configure every layer of your stack visually: frontend, API services, database, and code quality tools.</span>
-        </p>
-      </div>
-
-      <!-- Layer mockup visualization (Non-interactive preview chips) -->
-      <div class="flex items-center gap-2 mt-1 pointer-events-none select-none">
-        <div class="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-border-subtle/40 bg-bg-base/40 group-hover/box:border-brand-primary/40 group-hover/box:bg-bg-base/70 transition-all duration-200">
-          <Blocks size={14} class="text-brand-primary shrink-0" />
-          <span class="text-xs font-medium text-text-muted group-hover/box:text-text-main transition-colors">Frontend</span>
-        </div>
-        <div class="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-border-subtle/40 bg-bg-base/40 group-hover/box:border-brand-secondary/40 group-hover/box:bg-bg-base/70 transition-all duration-200">
-          <Cpu size={14} class="text-brand-secondary shrink-0" />
-          <span class="text-xs font-medium text-text-muted group-hover/box:text-text-main transition-colors">Backend</span>
-        </div>
-        <div class="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-border-subtle/40 bg-bg-base/40 group-hover/box:border-emerald-500/30 group-hover/box:bg-bg-base/70 transition-all duration-200">
-          <Database size={14} class="text-emerald-500 shrink-0" />
-          <span class="text-xs font-medium text-text-muted group-hover/box:text-text-main transition-colors">Database</span>
-        </div>
-      </div>
+    <!-- Icon Badge -->
+    <div class="flex items-center justify-center w-7 h-7 rounded-full bg-brand-primary/20 text-brand-primary border border-brand-primary/30 group-hover/builder:rotate-12 group-hover/builder:scale-110 transition-transform duration-300">
+      <Wand2 size={14} class="fill-current/20" />
     </div>
 
-    <!-- CTA Launcher Link -->
-    <div class="mt-6 flex items-center justify-between border-t border-border-subtle/40 pt-4">
-      <span class="text-xs font-mono font-bold text-text-muted group-hover/box:text-text-main transition-colors">
-        <span class="lang-es">CONSTRUIR STACK</span>
-        <span class="lang-en">BUILD STACK</span>
+    <!-- CTA Text -->
+    <div class="flex flex-col text-left">
+      <span class="text-sm font-bold text-text-main tracking-tight group-hover/builder:text-brand-primary transition-colors flex items-center gap-1.5">
+        <span class="lang-es">Abrir Visual Wizard</span>
+        <span class="lang-en">Open Visual Builder</span>
+        <ArrowUpRight size={15} class="text-text-muted group-hover/builder:text-brand-primary group-hover/builder:translate-x-0.5 group-hover/builder:-translate-y-0.5 transition-all duration-200" />
       </span>
-      <div class="flex items-center justify-center w-8 h-8 rounded-xl bg-bg-surface border border-border-subtle text-text-muted group-hover/box:bg-gradient-to-r group-hover/box:from-brand-primary group-hover/box:to-brand-primary group-hover/box:border-transparent group-hover/box:text-white transition-all duration-200">
-        <ArrowRight size={14} class="group-hover/box:translate-x-0.5 transition-transform duration-200" />
-      </div>
+      <span class="text-[11px] font-mono text-text-muted">
+        <span class="lang-es">Configura tu stack en pantalla &#10022;</span>
+        <span class="lang-en">Design stack interactively &#10022;</span>
+      </span>
     </div>
   </a>
 </div>
