@@ -6,10 +6,22 @@ import ThemeToggle from '@/components/header/themeToggle.astro';
 import LanguageToggle from '@/components/header/languageToggle.astro';
 import SearchModal from '@/components/header/SearchModal.svelte';
 
+interface Props {
+  revealOnScroll?: boolean;
+}
+
+const { revealOnScroll = false } = Astro.props;
 const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
 ---
 
-<header id="main-header" class="w-full sticky top-0 z-50 border-b border-transparent bg-transparent backdrop-blur-none transition-[background-color,border-color,backdrop-filter,box-shadow] duration-300 ease-out">
+<header 
+  id="main-header" 
+  data-reveal-on-scroll={revealOnScroll ? "true" : "false"}
+  class={revealOnScroll 
+    ? "fixed top-0 inset-x-0 z-50 border-b border-transparent bg-transparent backdrop-blur-none -translate-y-full opacity-0 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+    : "sticky top-0 z-50 w-full border-b border-transparent bg-transparent backdrop-blur-none transition-[background-color,border-color,backdrop-filter,box-shadow] duration-300 ease-out"
+  }
+>
   <div id="header-inner" class="max-w-7xl mx-auto px-6 h-16 md:h-18 flex items-center justify-between">
     
     <!-- Left Section: Logo & Nav -->
@@ -49,30 +61,34 @@ const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
     const header = document.getElementById('main-header');
     if (!header) return;
 
-    let isScrolled = false;
+    const revealOnScroll = header.getAttribute('data-reveal-on-scroll') === 'true';
 
     const handleScroll = () => {
-      const scrolled = window.scrollY > 12;
-      if (scrolled === isScrolled) return;
-      isScrolled = scrolled;
+      const scrollY = window.scrollY;
 
-      if (isScrolled) {
-        // Scrolled down state: glassmorphism, shadow, border
-        header.classList.remove('border-transparent', 'bg-transparent', 'backdrop-blur-none');
-        header.classList.add('border-border-subtle/80', 'bg-bg-base/80', 'backdrop-blur-xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.02)]');
+      if (revealOnScroll) {
+        const isRevealed = scrollY > 20;
+        if (isRevealed) {
+          header.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none', 'border-transparent', 'bg-transparent', 'backdrop-blur-none');
+          header.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto', 'border-border-subtle/80', 'bg-bg-base/80', 'backdrop-blur-xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.03)]');
+        } else {
+          header.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto', 'border-border-subtle/80', 'bg-bg-base/80', 'backdrop-blur-xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.03)]');
+          header.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none', 'border-transparent', 'bg-transparent', 'backdrop-blur-none');
+        }
       } else {
-        // Scrolled to top state: fully transparent, zero border
-        header.classList.remove('border-border-subtle/80', 'bg-bg-base/80', 'backdrop-blur-xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.02)]');
-        header.classList.add('border-transparent', 'bg-transparent', 'backdrop-blur-none');
+        const isScrolled = scrollY > 12;
+        if (isScrolled) {
+          header.classList.remove('border-transparent', 'bg-transparent', 'backdrop-blur-none');
+          header.classList.add('border-border-subtle/80', 'bg-bg-base/80', 'backdrop-blur-xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.02)]');
+        } else {
+          header.classList.remove('border-border-subtle/80', 'bg-bg-base/80', 'backdrop-blur-xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.02)]');
+          header.classList.add('border-transparent', 'bg-transparent', 'backdrop-blur-none');
+        }
       }
     };
 
     // Run on init to capture initial scroll position
-    isScrolled = window.scrollY > 12;
-    if (isScrolled) {
-      header.classList.remove('border-transparent', 'bg-transparent', 'backdrop-blur-none');
-      header.classList.add('border-border-subtle/80', 'bg-bg-base/80', 'backdrop-blur-xl', 'shadow-[0_4px_30px_rgba(0,0,0,0.02)]');
-    }
+    handleScroll();
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     
@@ -89,6 +105,12 @@ const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
     cleanupScroll = initHeaderScroll();
   };
 
-  setupScroll();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupScroll);
+  } else {
+    setupScroll();
+  }
+
+  document.addEventListener('astro:page-load', setupScroll);
   document.addEventListener('astro:after-swap', setupScroll);
 </script>
