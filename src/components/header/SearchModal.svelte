@@ -289,20 +289,19 @@
   }
 </script>
 
-<!-- Searchbar Trigger Button -->
+<!-- Searchbar Trigger Button (SpaceFS Style) -->
 <button 
   type="button"
   onclick={toggleModal}
-  class="flex items-center justify-between gap-3 px-3 py-1.5 rounded-xl border border-border-subtle bg-bg-surface/50 hover:bg-bg-surface hover:border-brand-primary/40 text-text-muted hover:text-text-main text-xs transition-all duration-200 cursor-pointer select-none min-w-[140px] md:min-w-[180px] shadow-2xs group"
+  class="flex items-center justify-between gap-2 sm:gap-2.5 px-3 sm:px-3.5 py-2 rounded-full border border-border-subtle/80 dark:border-white/10 bg-bg-surface/70 dark:bg-[#141417]/80 hover:bg-bg-surface dark:hover:bg-white/10 hover:text-text-main transition-all duration-200 cursor-pointer select-none shadow-xs group shrink-0"
   aria-label="Search"
 >
-  <div class="flex items-center gap-2">
-    <Search size={14} class="opacity-70 group-hover:text-brand-primary group-hover:opacity-100 transition-all" />
-    <span>{lang === 'es' ? 'Buscar...' : 'Search...'}</span>
+  <div class="flex items-center gap-1.5 sm:gap-2">
+    <Search size={13} class="text-text-muted group-hover:text-text-main transition-colors shrink-0" />
+    <span class="font-semibold text-xs sm:text-sm">{lang === 'es' ? 'Buscar docs' : 'Search docs'}</span>
   </div>
-  <kbd class="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-mono border border-border-subtle bg-bg-base text-text-muted/80 shadow-2xs group-hover:border-brand-primary/30">
-    <span>Ctrl</span>
-    <span>K</span>
+  <kbd class="hidden xl:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] shadow-xs border border-border-subtle/70 dark:border-white/10 bg-bg-base/80 text-text-muted">
+    <span>Ctrl K</span>
   </kbd>
 </button>
 

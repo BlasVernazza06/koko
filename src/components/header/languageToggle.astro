@@ -15,7 +15,7 @@ const enUrl = pathname.startsWith('/en')
   <!-- Trigger Button with premium microinteractions -->
   <button
     id="lang-toggle-btn"
-    class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg-surface border border-border-subtle cursor-pointer hover:border-text-muted/40 transition-all duration-200 text-xs font-bold text-text-main hover:bg-bg-surface/80 group/btn"
+    class="flex items-center gap-2 px-3 py-2.5 rounded-full bg-bg-surface/70 dark:bg-[#141417]/80 border border-border-subtle/80 dark:border-white/10 cursor-pointer hover:border-text-muted/40 transition-all duration-200 text-xs font-bold text-text-main hover:bg-bg-surface dark:hover:bg-white/10 shadow-xs group/btn shrink-0"
     aria-expanded="false"
     aria-haspopup="true"
   >
@@ -32,7 +32,7 @@ const enUrl = pathname.startsWith('/en')
   <!-- Dropdown Menu -->
   <div
     id="lang-dropdown"
-    class="hidden absolute -right-7 mt-1.5 w-36 origin-top-right rounded-xl border border-border-subtle bg-bg-surface/95 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.25)] ring-1 ring-black/5 focus:outline-none z-50 p-1 flex flex-col gap-0.5"
+    class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-2xl border border-border-subtle/80 dark:border-white/10 bg-bg-surface/95 dark:bg-[#141417]/95 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.35)] ring-1 ring-black/5 dark:ring-white/5 focus:outline-none z-50 p-1 flex flex-col gap-0.5"
     role="menu"
     aria-orientation="vertical"
   >
