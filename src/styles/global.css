@@ -81,8 +81,9 @@
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   
-  --font-sans: "Plus Jakarta Sans", "Plus Jakarta Sans Variable", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", "JetBrains Mono Variable", monospace;
+  --font-sans: "Google Sans", "Plus Jakarta Sans", "Plus Jakarta Sans Variable", system-ui, -apple-system, sans-serif;
+  --font-display: "Google Sans", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "Google Sans Code", "JetBrains Mono", "JetBrains Mono Variable", monospace;
   --font-serif: "Instrument Serif", Georgia, serif;
 }
 

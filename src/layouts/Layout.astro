@@ -2,7 +2,14 @@
 import Header from '@/components/header/header.astro';
 import '@/styles/global.css';
 
-const { lang = 'es', title, description } = Astro.props;
+interface Props {
+  lang?: string;
+  title?: string;
+  description?: string;
+  revealHeaderOnScroll?: boolean;
+}
+
+const { lang = 'es', title, description, revealHeaderOnScroll = false } = Astro.props;
 
 const defaultTitle = lang === 'es' ? 'Koko — CLI de inicialización de proyectos ultra rápido' : 'Koko — Ultra fast project scaffolding CLI';
 const defaultDesc = lang === 'es' 
@@ -55,8 +62,11 @@ const schemaData = {
 <!doctype html>
 <html lang={lang} data-lang={lang}>
 	<head>
-		<meta charset="UTF-8" />
-		<link rel="icon" type="image/png" href="/logo.png" />
+		<!-- Preconnect and Load Google Sans Fonts (SpaceFS Typography) -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Google+Sans+Code:wght@400;500;600&display=swap" />
+
 		<!-- Preload critical local fonts for zero-latency rendering (No FOUT / No layout shift) -->
 		<link rel="preload" href="/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href="/fonts/jetbrains-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
@@ -110,7 +120,7 @@ const schemaData = {
 		</script>
 	</head>
 	<body class="font-sans antialiased">
-		<Header/>
+		<Header revealOnScroll={revealHeaderOnScroll} />
 		<slot />
 	</body>
 </html>
