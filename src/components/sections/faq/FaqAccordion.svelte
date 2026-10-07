@@ -61,10 +61,10 @@
           >
             <span>{faq.question}</span>
             <span class="text-text-muted relative w-4.5 h-4.5 flex items-center justify-center shrink-0">
-              <span class="absolute transition-all duration-250 {openFaqId === faq.id ? 'opacity-0 scale-70 rotate-90' : 'opacity-100 scale-100 rotate-0'}">
+              <span class="absolute rounded-full p-1.5 border border-muted shadow-md transition-all duration-300 {openFaqId === faq.id ? 'opacity-0 scale-70 rotate-90' : 'opacity-100 scale-100 rotate-0'}">
                 <Plus size={16} />
               </span>
-              <span class="absolute transition-all duration-250 {openFaqId === faq.id ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-70 -rotate-90'}">
+              <span class="absolute rounded-full p-1.5 border border-muted shadow-md transition-all duration-300 {openFaqId === faq.id ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-70 -rotate-90'}">
                 <Minus size={16} />
               </span>
             </span>
