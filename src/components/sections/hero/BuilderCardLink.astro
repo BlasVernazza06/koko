@@ -1,5 +1,5 @@
 ---
-import { ArrowUpRight, Wand2 } from '@lucide/svelte';
+import { ArrowUpRight, Sparkles } from '@lucide/svelte';
 
 interface Props {
   lang?: string;
@@ -9,34 +9,23 @@ interface Props {
 const { lang = 'es', class: className = '' } = Astro.props;
 ---
 
-<div class={`w-full h-full flex flex-col items-center justify-center font-sans select-none ${className}`}>
-  <!-- Option 3: SpaceFS / Linear High-End CTA Pill -->
+<div class={`w-full flex justify-center font-sans select-none ${className}`}>
+  <!-- SpaceFS / Linear High-End CTA Pill Under Console -->
   <a
     href={lang === 'es' ? '/builder' : '/en/builder'}
-    class="group/builder relative inline-flex items-center justify-center gap-3 px-6 py-3.5 sm:py-4 rounded-full bg-gradient-to-b from-brand-primary/15 via-brand-primary/5 to-transparent dark:from-white/[0.08] dark:to-white/[0.02] backdrop-blur-xl border border-border-subtle/80 dark:border-white/[0.12] hover:border-brand-primary/60 dark:hover:border-brand-primary/60 shadow-lg hover:shadow-[0_0_30px_rgba(90,79,196,0.25)] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 overflow-hidden text-center cursor-pointer"
+    class="group/builder relative inline-flex items-center justify-center gap-2 px-4.5 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-brand-primary/10 via-brand-secondary/10 to-brand-primary/10 hover:from-brand-primary/20 hover:via-brand-secondary/20 hover:to-brand-primary/20 dark:from-white/[0.04] dark:via-white/[0.07] dark:to-white/[0.04] dark:hover:from-white/[0.09] dark:hover:via-white/[0.12] dark:hover:to-white/[0.09] backdrop-blur-xl border border-border-subtle/80 dark:border-white/[0.08] hover:border-brand-primary/50 dark:hover:border-white/20 shadow-xs hover:shadow-[0_0_20px_rgba(90,79,196,0.2)] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 overflow-hidden text-center cursor-pointer"
   >
     <!-- Top-edge specular highlight -->
-    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"></div>
-    
-    <!-- Background shimmer glow -->
-    <div class="absolute inset-0 bg-gradient-to-r from-brand-primary/0 via-brand-primary/10 to-brand-primary/0 -translate-x-full group-hover/builder:translate-x-full transition-transform duration-1000 ease-out pointer-events-none"></div>
+    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none"></div>
 
-    <!-- Icon Badge -->
-    <div class="flex items-center justify-center w-7 h-7 rounded-full bg-brand-primary/20 text-brand-primary border border-brand-primary/30 group-hover/builder:rotate-12 group-hover/builder:scale-110 transition-transform duration-300">
-      <Wand2 size={14} class="fill-current/20" />
-    </div>
+    <!-- Micro-icon Sparkles -->
+    <Sparkles size={13} class="text-brand-primary dark:text-brand-secondary animate-pulse shrink-0" />
 
     <!-- CTA Text -->
-    <div class="flex flex-col text-left">
-      <span class="text-sm font-bold text-text-main tracking-tight group-hover/builder:text-brand-primary transition-colors flex items-center gap-1.5">
-        <span class="lang-es">Abrir Visual Wizard</span>
-        <span class="lang-en">Open Visual Builder</span>
-        <ArrowUpRight size={15} class="text-text-muted group-hover/builder:text-brand-primary group-hover/builder:translate-x-0.5 group-hover/builder:-translate-y-0.5 transition-all duration-200" />
-      </span>
-      <span class="text-[11px] font-mono text-text-muted">
-        <span class="lang-es">Configura tu stack en pantalla &#10022;</span>
-        <span class="lang-en">Design stack interactively &#10022;</span>
-      </span>
-    </div>
+    <span class="text-xs sm:text-[12.5px] font-medium text-text-main group-hover/builder:text-brand-primary dark:group-hover/builder:text-white transition-colors flex items-center gap-1.5">
+      <span class="lang-es">Diseñar arquitectura en el Visual Builder</span>
+      <span class="lang-en">Design your architecture visually</span>
+      <ArrowUpRight size={13} class="text-text-muted group-hover/builder:text-brand-primary dark:group-hover/builder:text-white group-hover/builder:translate-x-0.5 group-hover/builder:-translate-y-0.5 transition-all duration-200 shrink-0" />
+    </span>
   </a>
 </div>

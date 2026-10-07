@@ -2,7 +2,6 @@
 import HeroAnnouncementBadge from './HeroAnnouncementBadge.astro';
 import HeroHeadline from './HeroHeadline.astro';
 import PackageCommandCard from './PackageCommandCard.svelte';
-import BuilderCardLink from './BuilderCardLink.astro';
 
 interface Props {
   lang?: string;
@@ -12,20 +11,16 @@ interface Props {
 const { lang = 'es', class: className = '' } = Astro.props;
 ---
 
-<section id="hero" class={`w-full min-h-[85vh] sm:min-h-svh max-w-5xl mx-auto px-6 py-6 sm:py-8 md:py-10 flex flex-col items-center justify-center relative z-10 ${className}`}>
+<section id="hero" class={`w-full min-h-[calc(100svh-4.5rem)] max-w-5xl mx-auto px-6 pt-2 pb-14 sm:pb-24 flex flex-col items-center justify-center -mt-6 sm:-mt-10 relative z-10 ${className}`}>
   <!-- Top Announcement Badge -->
   <HeroAnnouncementBadge />
 
   <!-- Main Headline & Subtitle -->
   <HeroHeadline />
 
-  <!-- Dual Action Area: Interactive Installation & Visual Builder Launcher -->
-  <div class="max-w-4xl mx-auto mt-5 sm:mt-6 w-full font-sans flex flex-col md:flex-row items-center justify-center gap-5 sm:gap-8 animate-fade-in-up animation-delay-200">
-    <!-- Left: Centered Runtime + Console Pill -->
-    <div class="w-full md:w-auto flex-1 flex justify-center">
-      <PackageCommandCard client:load lang={lang} />
-    </div>
-    
-    
+  <!-- Centered Interactive Command Console Flow -->
+  <div class="max-w-xl mx-auto mt-2 sm:mt-3 w-full font-sans flex flex-col items-center justify-center animate-fade-in-up animation-delay-200">
+    <!-- Centered Runtime + Console Pill -->
+    <PackageCommandCard client:load lang={lang} />
   </div>
 </section>
