@@ -123,9 +123,6 @@
 </script>
 
 <style>
-  .tab-btn {
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  }
   .tab-btn.active {
     background: var(--brand-primary);
     color: white;
@@ -145,7 +142,7 @@
             : 'text-text-muted hover:text-text-main hover:bg-bg-surface/50'}"
         onclick={() => activeTab = 'manual'}
       >
-        <img src="/icons-ajustes.svg" alt="config-manual-builder" class="size-4 transition-all duration-300 {activeTab === 'manual' ? 'opacity-100' : 'opacity-70'}">
+        <img src="/icons-ajustes.svg" alt="config-manual-builder" class="size-4 transition-opacity duration-200 {activeTab === 'manual' ? 'opacity-100' : 'opacity-70'}">
         <span>{lang === 'es' ? 'Configuración Manual' : 'Manual Config'}</span>
       </button>
       <button
@@ -156,7 +153,7 @@
             : 'text-text-muted hover:text-text-main hover:bg-bg-surface/50'}"
         onclick={() => activeTab = 'presets'}
       >
-        <Sparkles class="size-4 transition-all duration-300 {activeTab === 'presets' ? 'opacity-100' : 'opacity-70'}" />
+        <Sparkles class="size-4 transition-opacity duration-200 {activeTab === 'presets' ? 'opacity-100' : 'opacity-70'}" />
         <span>{lang === 'es' ? 'Recetas (Presets)' : 'Presets (Recipes)'}</span>
       </button>
     </div>
@@ -165,7 +162,7 @@
     <button
       type="button"
       onclick={resetToDefaults}
-      class="group flex items-center gap-2 px-4 py-2.5 rounded-2xl border border-border-subtle bg-bg-base text-text-muted hover:text-text-main text-xs font-bold uppercase tracking-wider transition-all duration-300 active:scale-[0.97] cursor-pointer shadow-xs select-none"
+      class="group flex items-center gap-2 px-4 py-2.5 rounded-2xl border border-border-subtle bg-bg-base text-text-muted hover:text-text-main text-xs font-bold uppercase tracking-wider active:scale-[0.97] cursor-pointer shadow-xs select-none"
       title={lang === 'es' ? 'Reestablecer todas las tecnologías a los valores por defecto' : 'Reset all stack choices to default values'}
     >
       {#if isResetting}
@@ -173,7 +170,7 @@
         <span class="text-emerald-500 font-bold">{lang === 'es' ? '¡Reestablecido!' : 'Reset!'}</span>
       {:else}
         <RotateCcw size={14} class="transition-transform duration-500 group-hover:-rotate-180 group-hover:text-brand-primary" />
-        <span class="group-hover:text-brand-primary transition-colors">{lang === 'es' ? 'Reestablecer Defaults' : 'Reset Defaults'}</span>
+        <span class="group-hover:text-brand-primary">{lang === 'es' ? 'Reestablecer Defaults' : 'Reset Defaults'}</span>
       {/if}
     </button>
   </div>

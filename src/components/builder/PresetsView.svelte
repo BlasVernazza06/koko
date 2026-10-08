@@ -83,13 +83,13 @@
         onclick={() => {
           onapply(template.config, template);
         }}
-        class="flex flex-col justify-between items-start gap-5 p-6 rounded-2xl border border-border-subtle bg-bg-base text-left hover:border-brand-primary/45 hover:shadow-[0_12px_35px_-15px_rgba(90,79,196,0.12)] hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.99] cursor-pointer w-full group"
+        class="flex flex-col justify-between items-start gap-5 p-6 rounded-2xl border border-border-subtle bg-bg-base text-left hover:border-brand-primary/45 hover:shadow-[0_12px_35px_-15px_rgba(90,79,196,0.12)] hover:-translate-y-0.5 transition-transform duration-200 active:scale-[0.99] cursor-pointer w-full group"
       >
         <div class="space-y-4 w-full">
           <!-- Recipe Header: Icon + Name -->
           <div class="flex items-center gap-3.5">
             {#if template.icon}
-              <div class="w-11 h-11 flex items-center justify-center rounded-xl bg-bg-base border border-border-subtle/50 shrink-0 p-1.5 shadow-2xs group-hover:border-brand-primary/20 transition-all duration-300">
+              <div class="w-11 h-11 flex items-center justify-center rounded-xl bg-bg-base border border-border-subtle/50 shrink-0 p-1.5 shadow-2xs group-hover:border-brand-primary/20">
                 {#if typeof template.icon === 'string'}
                   <img src={template.icon} class="w-full h-full object-contain" alt="" />
                 {:else}
@@ -99,7 +99,7 @@
               </div>
             {/if}
             <div class="space-y-0.5">
-              <span class="block text-sm font-extrabold text-text-main group-hover:text-brand-primary transition-colors font-sans tracking-tight">
+              <span class="block text-sm font-extrabold text-text-main group-hover:text-brand-primary font-sans tracking-tight">
                 {lang === 'es' ? template.nameEs : template.nameEn}
               </span>
               <span class="inline-flex items-center text-[10px] font-bold text-brand-secondary font-mono tracking-wider uppercase bg-brand-secondary/5 px-2 py-0.5 rounded-md border border-brand-secondary/10">
@@ -116,7 +116,7 @@
           <!-- Tech Pill Badges -->
           <div class="flex flex-wrap gap-1.5 pt-2 border-t border-border-subtle/40">
             {#each getTemplateBadges(template.config) as badge}
-              <span class="text-[9px] sm:text-[10px] font-extrabold font-sans text-text-muted bg-bg-base dark:bg-bg-base/70 border border-border-subtle/50 px-2 py-0.5 rounded-lg select-none transition-colors group-hover:border-brand-primary/15 group-hover:bg-bg-base">
+              <span class="text-[9px] sm:text-[10px] font-extrabold font-sans text-text-muted bg-bg-base dark:bg-bg-base/70 border border-border-subtle/50 px-2 py-0.5 rounded-lg select-none group-hover:border-brand-primary/15 group-hover:bg-bg-base">
                 {badge}
               </span>
             {/each}
@@ -124,9 +124,9 @@
         </div>
 
         <!-- Action Button inside card -->
-        <div class="flex items-center justify-center gap-1 w-full mt-2 py-2 px-4 border border-brand-primary/10 bg-brand-primary/[0.06] text-brand-primary group-hover:bg-brand-primary group-hover:border-brand-primary group-hover:text-white rounded-xl text-xs font-extrabold transition-all duration-300 select-none">
+        <div class="flex items-center justify-center gap-1 w-full mt-2 py-2 px-4 border border-brand-primary/10 bg-brand-primary/[0.06] text-brand-primary group-hover:bg-brand-primary group-hover:border-brand-primary group-hover:text-white rounded-xl text-xs font-extrabold select-none">
           <span>{t.useRecipe}</span>
-          <ArrowRight size={13} class="transition-transform duration-300 group-hover:translate-x-1" />
+          <ArrowRight size={13} class="transition-transform duration-200 group-hover:translate-x-1" />
         </div>
       </button>
     {/each}

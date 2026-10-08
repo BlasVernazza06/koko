@@ -57,11 +57,11 @@ const faqTopics = lang === 'es' ? [
             <button
               type="button"
               data-faq-tag={topic.tag}
-              class="faq-topic-btn w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl border border-transparent hover:border-border-subtle hover:bg-bg-surface/50 text-text-muted hover:text-text-main transition-all duration-150 text-left cursor-pointer group"
+              class="faq-topic-btn w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl border border-transparent hover:border-border-subtle hover:bg-bg-surface/50 text-text-muted hover:text-text-main text-left cursor-pointer group"
             >
               <div class="flex items-center gap-2 truncate">
                 <span class="text-[12px] opacity-80 group-hover:scale-110 transition-transform">{topic.icon}</span>
-                <span class="text-[11px] font-medium truncate group-hover:text-brand-primary transition-colors">{topic.label}</span>
+                <span class="text-[11px] font-medium truncate group-hover:text-brand-primary">{topic.label}</span>
               </div>
               <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-bg-surface/80 border border-border-subtle/50 text-text-muted/80">
                 {topic.count}
@@ -80,7 +80,7 @@ const faqTopics = lang === 'es' ? [
         <ul class="relative border-l-2 border-border-subtle/60 space-y-4 pl-4 text-xs text-text-muted" id="toc-list">
           {outlines.map((item, idx) => (
             <li class={`relative ${item.isNested ? 'pl-3' : ''}`} data-anchor={item.anchorId}>
-              <div class={`toc-bullet absolute -left-[22px] top-1.5 w-2 h-2 rounded-full border bg-bg-base transition-all duration-300 ring-brand-primary/0 ${
+              <div class={`toc-bullet absolute -left-[22px] top-1.5 w-2 h-2 rounded-full border bg-bg-base ring-brand-primary/0 ${
                 idx === 0 
                   ? 'border-brand-primary bg-brand-primary ring-4 ring-brand-primary/20' 
                   : 'border-transparent bg-border-subtle/60'
@@ -88,7 +88,7 @@ const faqTopics = lang === 'es' ? [
               </div>
               <a 
                 href={`#${item.anchorId}`} 
-                class={`toc-link hover:text-brand-primary block transition-all duration-200 truncate ${
+                class={`toc-link hover:text-brand-primary block transition-transform duration-150 truncate ${
                   idx === 0 
                     ? 'text-brand-primary font-bold translate-x-1' 
                     : 'text-text-muted font-medium'
@@ -128,19 +128,19 @@ const faqTopics = lang === 'es' ? [
             href="https://github.com/BlasVernazza06/koko-cli/issues"
             target="_blank"
             rel="noopener noreferrer"
-            class="flex items-center justify-between w-full px-2.5 py-1.5 rounded-xl bg-bg-surface border border-border-subtle hover:border-brand-primary/40 text-[11px] font-bold text-text-main hover:text-brand-primary transition-all shadow-xs cursor-pointer group/link hover:translate-y-[-1px]"
+            class="flex items-center justify-between w-full px-2.5 py-1.5 rounded-xl bg-bg-surface border border-border-subtle hover:border-brand-primary/40 text-[11px] font-bold text-text-main hover:text-brand-primary transition-transform duration-150 shadow-xs cursor-pointer group/link hover:translate-y-[-1px]"
           >
             <span>{lang === 'es' ? 'Abrir GitHub Issue' : 'Open GitHub Issue'}</span>
-            <ArrowUpRight size={13} class="text-text-muted group-hover/link:text-brand-primary transition-colors" />
+            <ArrowUpRight size={13} class="text-text-muted group-hover/link:text-brand-primary" />
           </a>
           <a
             href="https://github.com/BlasVernazza06/koko-cli/discussions"
             target="_blank"
             rel="noopener noreferrer"
-            class="flex items-center justify-between w-full px-2.5 py-1.5 rounded-xl bg-bg-surface/60 border border-border-subtle/70 hover:border-brand-primary/30 text-[11px] font-medium text-text-muted hover:text-text-main transition-colors cursor-pointer group/link"
+            class="flex items-center justify-between w-full px-2.5 py-1.5 rounded-xl bg-bg-surface/60 border border-border-subtle/70 hover:border-brand-primary/30 text-[11px] font-medium text-text-muted hover:text-text-main cursor-pointer group/link"
           >
             <span>{lang === 'es' ? 'Discusiones Koko' : 'Koko Discussions'}</span>
-            <ArrowUpRight size={13} class="text-text-muted group-hover/link:text-brand-primary transition-colors" />
+            <ArrowUpRight size={13} class="text-text-muted group-hover/link:text-brand-primary" />
           </a>
         </div>
       </div>

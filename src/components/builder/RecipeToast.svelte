@@ -1,4 +1,4 @@
-﻿<script lang="ts">
+<script lang="ts">
   import { Check, X, Sparkles } from '@lucide/svelte';
   import { onMount } from 'svelte';
 
@@ -106,7 +106,7 @@
       <button
         type="button"
         onclick={onclose}
-        class="text-text-muted hover:text-text-main p-1.5 rounded-lg hover:bg-bg-base transition-colors shrink-0 cursor-pointer"
+        class="text-text-muted hover:text-text-main p-1.5 rounded-lg hover:bg-bg-base shrink-0 cursor-pointer"
         aria-label="Cerrar notificación"
       >
         <X size={14} />

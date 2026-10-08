@@ -408,11 +408,11 @@
     <span class="text-xs font-bold uppercase tracking-widest text-text-muted">
       {lang === 'es' ? 'Modo de Configuración' : 'Configuration Mode'}
     </span>
-    <div class="inline-flex items-center gap-1.5 bg-bg-base border border-border-subtle p-1 rounded-xl text-xs shadow-xs">
+    <div class="inline-flex items-center gap-1.5 bg-bg-base border border-border-subtle p-1 rounded-xl text-xs shadow-2xs">
       <button
         type="button"
         onclick={() => viewMode = 'stepper'}
-        class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95
+        class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-bold uppercase tracking-wider cursor-pointer active:scale-95
           {viewMode === 'stepper' 
             ? 'bg-brand-primary text-white shadow-sm' 
             : 'text-text-muted hover:text-text-main hover:bg-bg-surface/50'}"
@@ -423,7 +423,7 @@
       <button
         type="button"
         onclick={() => viewMode = 'expanded'}
-        class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95
+        class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-bold uppercase tracking-wider cursor-pointer active:scale-95
           {viewMode === 'expanded' 
             ? 'bg-brand-primary text-white shadow-sm' 
             : 'text-text-muted hover:text-text-main hover:bg-bg-surface/50'}"
@@ -446,14 +446,14 @@
           <button
             type="button"
             onclick={() => changeStep(idx)}
-            class="flex items-center gap-3.5 p-3 rounded-2xl text-left hover:bg-bg-base transition-all duration-300 cursor-pointer shrink-0 group w-auto md:w-full relative select-none
+            class="flex items-center gap-3.5 p-3 rounded-2xl text-left hover:bg-bg-base cursor-pointer shrink-0 group w-auto md:w-full relative select-none
               {isActive 
                 ? 'bg-brand-primary/[0.08] text-brand-primary font-bold shadow-xs' 
                 : isCompleted
                   ? 'text-brand-primary/80 hover:bg-bg-surface/30'
                   : 'text-text-muted hover:text-text-main hover:bg-bg-surface/40'}"
           >
-            <div class="w-9 h-9 flex items-center justify-center transition-all duration-350 shrink-0 relative
+            <div class="w-9 h-9 flex items-center justify-center transition-transform duration-200 shrink-0 relative
               {isActive 
                 ? 'text-brand-primary scale-110 drop-shadow-[0_0_8px_rgba(90,79,196,0.3)]' 
                 : isCompleted
@@ -464,7 +464,7 @@
             </div>
             
             <div class="hidden sm:flex flex-col gap-0.5">
-              <span class="text-[10px] md:text-xs uppercase tracking-widest font-extrabold leading-none transition-colors duration-300
+              <span class="text-[10px] md:text-xs uppercase tracking-widest font-extrabold leading-none
                 {isActive ? 'text-brand-primary' : 'text-text-main/80'}">
                 {step.title}
               </span>
@@ -503,7 +503,7 @@
                     <label for="pname" class="block text-xs font-extrabold uppercase tracking-widest text-text-muted border-l-3 border-brand-primary pl-3 select-none">
                       {t.projectNameLabel}
                     </label>
-                    <div class="relative flex items-center bg-bg-base border border-border-subtle rounded-xl px-4 py-3 hover:border-brand-primary/40 focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10 transition-all duration-300 shadow-2xs">
+                    <div class="relative flex items-center bg-bg-base border border-border-subtle rounded-xl px-4 py-3 hover:border-brand-primary/40 focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10 shadow-2xs">
                       <Settings size={16} class="text-brand-primary/70 mr-3 animate-pulse" aria-hidden="true" />
                       <input
                         id="pname"
@@ -833,7 +833,7 @@
             type="button"
             onclick={() => changeStep(Math.max(0, activeStep - 1))}
             disabled={activeStep === 0}
-            class="px-4 py-2 border border-border-subtle rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-bg-surface hover:text-text-main text-text-muted flex items-center gap-1.5"
+            class="px-4 py-2 border border-border-subtle rounded-xl text-xs font-bold uppercase tracking-wider cursor-pointer active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-bg-surface hover:text-text-main text-text-muted flex items-center gap-1.5"
           >
             <ArrowLeft size={12} />
             <span>{lang === 'es' ? 'Atrás' : 'Back'}</span>
@@ -844,7 +844,7 @@
               <button
                 type="button"
                 onclick={() => changeStep(idx)}
-                class="w-1.5 h-1.5 rounded-full transition-all duration-300 {activeStep === idx ? 'bg-brand-primary w-5' : 'bg-border-subtle hover:bg-text-muted/40'}" 
+                class="h-1.5 rounded-full transition-[width] duration-200 {activeStep === idx ? 'bg-brand-primary w-5' : 'bg-border-subtle hover:bg-text-muted/40 w-1.5'}" 
                 aria-label="Ir al paso {idx + 1}"
               ></button>
             {/each}
@@ -854,7 +854,7 @@
             type="button"
             onclick={() => changeStep(Math.min(steps.length - 1, activeStep + 1))}
             disabled={activeStep === steps.length - 1}
-            class="px-4 py-2 bg-brand-primary text-white border border-transparent rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-brand-primary/95 flex items-center gap-1.5"
+            class="px-4 py-2 bg-brand-primary text-white border border-transparent rounded-xl text-xs font-bold uppercase tracking-wider cursor-pointer active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-brand-primary/95 flex items-center gap-1.5"
           >
             <span>{lang === 'es' ? 'Siguiente' : 'Next'}</span>
             <ArrowRight size={12} />
@@ -866,11 +866,11 @@
     <!-- EXPANDED/SCROLL LAYOUT -->
     <div in:fade={{ duration: 120 }} class="space-y-8">
       <!-- Project Name Input -->
-      <div class="rounded-3xl border border-border-subtle bg-bg-surface/30 p-6 shadow-xs hover:border-brand-primary/25 transition-all duration-300">
+      <div class="rounded-3xl border border-border-subtle bg-bg-surface/30 p-6 shadow-xs hover:border-brand-primary/25">
         <label for="pname-exp" class="block text-xs font-extrabold uppercase tracking-widest text-text-muted mb-3.5 select-none border-l-3 border-brand-primary pl-3">
           {t.projectNameLabel}
         </label>
-        <div class="relative flex items-center bg-bg-base border border-border-subtle rounded-xl px-4 py-3.5 hover:border-brand-primary/40 focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10 transition-all duration-300">
+        <div class="relative flex items-center bg-bg-base border border-border-subtle rounded-xl px-4 py-3.5 hover:border-brand-primary/40 focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10">
           <Settings size={18} class="text-brand-primary/70 mr-3 animate-pulse" aria-hidden="true" />
           <input
             id="pname-exp"

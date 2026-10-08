@@ -89,7 +89,7 @@
   }
 </script>
 
-<div class="lg:col-span-7 md:col-span-2 flex flex-col justify-between p-6 rounded-3xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/60 transition-all duration-300 relative overflow-visible group">
+<div class="lg:col-span-7 md:col-span-2 flex flex-col justify-between p-6 rounded-3xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/60 relative overflow-visible group">
   <!-- Subtle inner background gradient -->
   <div class="absolute inset-0 rounded-3xl bg-radial-[circle_at_70%_120%] from-brand-primary/8 to-transparent opacity-60 pointer-events-none overflow-hidden"></div>
   
@@ -98,7 +98,7 @@
     <img 
       src="/koko-libro.png" 
       alt="Koko leyendo documentación" 
-      class="w-22 h-22 sm:w-28 sm:h-28 object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.14)] dark:drop-shadow-[0_8px_20px_rgba(0,0,0,0.45)] transition-transform duration-500 ease-out group-hover:scale-105 group-hover:-translate-y-1"
+      class="w-22 h-22 sm:w-28 sm:h-28 object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.14)] dark:drop-shadow-[0_8px_20px_rgba(0,0,0,0.45)] transition-transform duration-500 ease-out group-hover:scale-105 group-hover:-translate-y-1" 
     />
   </div>
   
@@ -170,7 +170,7 @@
 
       {#if isBuilding}
         <div class="w-full bg-border-subtle/20 h-1 rounded-full overflow-hidden mt-3">
-          <div class="bg-gradient-to-r from-brand-primary to-brand-secondary h-full rounded-full transition-all duration-75" style="width: {buildProgress}%"></div>
+          <div class="bg-gradient-to-r from-brand-primary to-brand-secondary h-full rounded-full transition-[width] duration-75" style="width: {buildProgress}%"></div>
         </div>
       {/if}
     </div>
@@ -181,7 +181,7 @@
       type="button"
       onclick={startCliBuild}
       disabled={isBuilding}
-      class="px-4 py-2 rounded-xl bg-brand-primary text-white text-xs font-bold hover:bg-brand-primary/95 transition-all shadow-md shadow-brand-primary/10 disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+      class="px-4 py-2 rounded-xl bg-brand-primary text-white text-xs font-bold hover:bg-brand-primary/95 shadow-md shadow-brand-primary/10 disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
     >
       <span>{lang === 'es' ? 'Iniciar Scaffolding' : 'Start Scaffolding'}</span>
       <ArrowRight size={13} />

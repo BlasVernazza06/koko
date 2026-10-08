@@ -6,7 +6,7 @@ interface Props {
 const { lang = 'es' } = Astro.props;
 ---
 
-<div class="md:col-span-3 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-primary/10 hover:border-brand-primary/40">
+<div class="md:col-span-3 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-[box-shadow] duration-300 hover:shadow-xl hover:shadow-brand-primary/10 hover:border-brand-primary/40">
   <!-- Interactive backdrop glow -->
   <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/8 via-transparent to-brand-secondary/6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
@@ -40,12 +40,12 @@ const { lang = 'es' } = Astro.props;
 
       <!-- Vertical Progress Connector Line (Track & Active Beam) -->
       <div class="absolute left-[29px] top-[24px] bottom-[24px] w-[2px] bg-border-subtle/60 pointer-events-none z-0">
-        <div class="pipeline-progress-bar w-full h-0 bg-gradient-to-b from-brand-primary via-brand-secondary to-emerald-400 transition-all duration-500 rounded-full"></div>
+        <div class="pipeline-progress-bar w-full h-0 bg-gradient-to-b from-brand-primary via-brand-secondary to-emerald-400 transition-[height] duration-500 rounded-full"></div>
       </div>
 
       <!-- Step 1: Initializing -->
-      <div class="pipeline-step step-1 relative flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300">
-        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border transition-all duration-500">
+      <div class="pipeline-step step-1 relative flex items-center gap-3 px-3 py-2 rounded-xl">
+        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border">
           <svg class="step-spinner absolute w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="2" x2="12" y2="6"></line>
             <line x1="12" y1="18" x2="12" y2="22"></line>
@@ -61,7 +61,7 @@ const { lang = 'es' } = Astro.props;
           </svg>
         </div>
         <div class="flex flex-col justify-center">
-          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none transition-colors duration-500">
+          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none">
             {lang === 'es' ? 'Inicializando proyecto' : 'Initializing project'}
           </span>
           <span class="step-detail text-text-muted/70 text-[11px] font-mono mt-1 opacity-0 transition-opacity duration-300">
@@ -72,8 +72,8 @@ const { lang = 'es' } = Astro.props;
       </div>
 
       <!-- Step 2: Installing -->
-      <div class="pipeline-step step-2 relative flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300">
-        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border transition-all duration-500">
+      <div class="pipeline-step step-2 relative flex items-center gap-3 px-3 py-2 rounded-xl">
+        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border">
           <svg class="step-spinner absolute w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="2" x2="12" y2="6"></line>
             <line x1="12" y1="18" x2="12" y2="22"></line>
@@ -89,7 +89,7 @@ const { lang = 'es' } = Astro.props;
           </svg>
         </div>
         <div class="flex flex-col justify-center">
-          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none transition-colors duration-500">
+          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none">
             {lang === 'es' ? 'Instalando dependencias' : 'Installing dependencies'}
           </span>
           <span class="step-detail text-text-muted/70 text-[11px] font-mono mt-1 opacity-0 transition-opacity duration-300">
@@ -100,8 +100,8 @@ const { lang = 'es' } = Astro.props;
       </div>
 
       <!-- Step 3: Configuring -->
-      <div class="pipeline-step step-3 relative flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300">
-        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border transition-all duration-500">
+      <div class="pipeline-step step-3 relative flex items-center gap-3 px-3 py-2 rounded-xl">
+        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border">
           <svg class="step-spinner absolute w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="2" x2="12" y2="6"></line>
             <line x1="12" y1="18" x2="12" y2="22"></line>
@@ -117,7 +117,7 @@ const { lang = 'es' } = Astro.props;
           </svg>
         </div>
         <div class="flex flex-col justify-center">
-          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none transition-colors duration-500">
+          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none">
             {lang === 'es' ? 'Configurando stack' : 'Configuring stack'}
           </span>
           <span class="step-detail text-text-muted/70 text-[11px] font-mono mt-1 opacity-0 transition-opacity duration-300">
@@ -128,8 +128,8 @@ const { lang = 'es' } = Astro.props;
       </div>
 
       <!-- Step 4: Ready -->
-      <div class="pipeline-step step-4 relative flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300">
-        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border transition-all duration-500">
+      <div class="pipeline-step step-4 relative flex items-center gap-3 px-3 py-2 rounded-xl">
+        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border">
           <svg class="step-spinner absolute w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="2" x2="12" y2="6"></line>
             <line x1="12" y1="18" x2="12" y2="22"></line>
@@ -145,7 +145,7 @@ const { lang = 'es' } = Astro.props;
           </svg>
         </div>
         <div class="flex flex-col justify-center">
-          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none transition-colors duration-500">
+          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none">
             {lang === 'es' ? 'Proyecto listo 🎉' : 'Project ready 🎉'}
           </span>
           <span class="step-detail text-text-muted/70 text-[11px] font-mono mt-1 opacity-0 transition-opacity duration-300">
@@ -317,13 +317,35 @@ const { lang = 'es' } = Astro.props;
       });
     }
 
+    let observer: IntersectionObserver | null = null;
+
     function init() {
       clearTimers();
-      document.querySelectorAll('.pipeline-wrapper').forEach((wrapper) => {
-        runCycle(wrapper);
-        const iv = window.setInterval(() => runCycle(wrapper), CYCLE);
-        activeIntervals.push(iv);
-      });
+      const wrappers = document.querySelectorAll('.pipeline-wrapper');
+      if (wrappers.length === 0) return;
+
+      if (typeof IntersectionObserver === 'undefined') {
+        wrappers.forEach((wrapper) => {
+          runCycle(wrapper);
+          const iv = window.setInterval(() => runCycle(wrapper), CYCLE);
+          activeIntervals.push(iv);
+        });
+        return;
+      }
+
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            runCycle(entry.target);
+            const iv = window.setInterval(() => runCycle(entry.target), CYCLE);
+            activeIntervals.push(iv);
+          } else {
+            clearTimers();
+          }
+        });
+      }, { threshold: 0.1 });
+
+      wrappers.forEach((w) => observer?.observe(w));
     }
 
     if (document.readyState === 'loading') {

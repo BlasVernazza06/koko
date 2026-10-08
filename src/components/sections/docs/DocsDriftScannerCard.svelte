@@ -31,7 +31,7 @@
   }
 </script>
 
-<div class="lg:col-span-7 md:col-span-2 flex flex-col justify-between p-6 rounded-3xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/60 transition-all duration-300 relative overflow-visible group">
+<div class="lg:col-span-7 md:col-span-2 flex flex-col justify-between p-6 rounded-3xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/60 relative overflow-visible group">
   <!-- Inner background gradient -->
   <div class="absolute inset-0 rounded-3xl bg-radial-[circle_at_-20%_-20%] from-brand-primary/8 to-transparent opacity-60 pointer-events-none overflow-hidden"></div>
 
@@ -163,7 +163,7 @@
         type="button"
         onclick={runDoctor}
         disabled={isScanning}
-        class="px-4 py-2 rounded-xl bg-bg-surface hover:bg-bg-base border border-border-subtle hover:border-brand-primary/40 text-text-main text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+        class="px-4 py-2 rounded-xl bg-bg-surface hover:bg-bg-base border border-border-subtle hover:border-brand-primary/40 text-text-main text-xs font-bold flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
       >
         <RefreshCw size={13} class={isScanning ? 'animate-spin text-brand-primary' : ''} />
         <span>{lang === 'es' ? 'Ejecutar koko doctor' : 'Run koko doctor'}</span>
@@ -173,7 +173,7 @@
       <button
         type="button"
         onclick={() => autoFix = !autoFix}
-        class="text-[11px] font-mono px-2.5 py-1.5 rounded-lg border transition-all flex items-center gap-1.5 cursor-pointer select-none {autoFix ? 'bg-brand-primary/10 border-brand-primary/30 text-brand-primary font-bold' : 'bg-bg-base/60 border-border-subtle text-text-muted hover:text-text-main'}"
+        class="text-[11px] font-mono px-2.5 py-1.5 rounded-lg border flex items-center gap-1.5 cursor-pointer select-none {autoFix ? 'bg-brand-primary/10 border-brand-primary/30 text-brand-primary font-bold' : 'bg-bg-base/60 border-border-subtle text-text-muted hover:text-text-main'}"
         title={lang === 'es' ? 'Alternar flag --fix' : 'Toggle --fix flag'}
       >
         <Wrench size={12} class={autoFix ? 'text-brand-primary' : 'text-text-muted'} />

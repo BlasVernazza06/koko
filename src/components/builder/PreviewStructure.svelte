@@ -98,7 +98,6 @@
   .tree-scroll::-webkit-scrollbar-thumb {
     background: rgba(150, 150, 170, 0.2);
     border-radius: 9999px;
-    transition: background 0.2s ease;
   }
   .tree-scroll::-webkit-scrollbar-thumb:hover {
     background: var(--brand-primary);
@@ -169,7 +168,7 @@
               <button 
                 type="button"
                 onclick={() => toggleCollapse(idx)}
-                class="flex items-center gap-1.5 cursor-pointer hover:text-text-main text-left w-full focus:outline-none py-1 transition-colors rounded-md hover:bg-bg-surface/60 px-1" 
+                class="flex items-center gap-1.5 cursor-pointer hover:text-text-main text-left w-full focus:outline-none py-1 rounded-md hover:bg-bg-surface/60 px-1" 
                 style="padding-left: {depth > 0 ? depth * 1.1 + 0.2 : 0}rem"
               >
                 {#if !collapsedIndices[idx]}
@@ -184,10 +183,10 @@
               </button>
             {:else}
               <div 
-                class="flex items-center gap-1.5 py-1 text-[13px] rounded-md hover:bg-bg-surface/40 px-1 transition-colors w-full" 
+                class="flex items-center gap-1.5 py-1 text-[13px] rounded-md hover:bg-bg-surface/40 px-1 w-full" 
                 style="padding-left: {depth > 0 ? depth * 1.1 + 0.8 : 0.6}rem"
               >
-                <FileCode size={13} class="{item.highlight || 'text-text-muted/80 group-hover/node:text-text-muted'} shrink-0 transition-colors" aria-hidden="true" />
+                <FileCode size={13} class="{item.highlight || 'text-text-muted/80 group-hover/node:text-text-muted'} shrink-0" aria-hidden="true" />
                 <span class="truncate">{item.name}</span>
               </div>
             {/if}

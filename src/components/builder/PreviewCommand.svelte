@@ -106,7 +106,7 @@
         <button
           type="button"
           onclick={() => selectedCommandType = 'wrapper'}
-          class="px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider rounded-lg border transition-all duration-200 cursor-pointer active:scale-95
+          class="px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider rounded-lg border cursor-pointer active:scale-95
             {selectedCommandType === 'wrapper'
               ? 'bg-brand-primary/10 border-brand-primary/20 text-brand-primary shadow-xs'
               : 'bg-transparent border-transparent text-text-muted hover:text-text-main'}"
@@ -116,7 +116,7 @@
         <button
           type="button"
           onclick={() => selectedCommandType = 'binary'}
-          class="px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider rounded-lg border transition-all duration-200 cursor-pointer active:scale-95
+          class="px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider rounded-lg border cursor-pointer active:scale-95
             {selectedCommandType === 'binary'
               ? 'bg-brand-primary/10 border-brand-primary/20 text-brand-primary shadow-xs'
               : 'bg-transparent border-transparent text-text-muted hover:text-text-main'}"
@@ -126,7 +126,7 @@
         <button
           type="button"
           onclick={() => selectedCommandType = 'go'}
-          class="px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider rounded-lg border transition-all duration-200 cursor-pointer active:scale-95
+          class="px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider rounded-lg border cursor-pointer active:scale-95
             {selectedCommandType === 'go'
               ? 'bg-brand-primary/10 border-brand-primary/20 text-brand-primary shadow-xs'
               : 'bg-transparent border-transparent text-text-muted hover:text-text-main'}"
@@ -165,7 +165,7 @@
       <button
         type="button"
         onclick={copyCommand}
-        class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[10.5px] font-mono font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer active:scale-95 shadow-md select-none shrink-0
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[10.5px] font-mono font-bold uppercase tracking-wider cursor-pointer active:scale-95 shadow-md select-none shrink-0
           {isCopied
             ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400 shadow-emerald-500/10'
             : 'bg-white/10 hover:bg-white/15 border-white/15 text-slate-200 hover:text-white hover:border-white/25'}"
@@ -187,7 +187,7 @@
       href="https://github.com/BlasVernazza06/koko-cli/releases"
       target="_blank"
       rel="noopener noreferrer"
-      class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-brand-primary/20 bg-bg-base hover:bg-brand-primary/5 text-brand-primary rounded-xl text-[10px] font-extrabold uppercase tracking-wider transition-all duration-300 shadow-2xs hover:shadow-sm select-none"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-brand-primary/20 bg-bg-base hover:bg-brand-primary/5 text-brand-primary rounded-xl text-[10px] font-extrabold uppercase tracking-wider shadow-2xs hover:shadow-sm select-none"
     >
       <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 fill-none stroke-current stroke-[2]" aria-hidden="true">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />

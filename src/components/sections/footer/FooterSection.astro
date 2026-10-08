@@ -37,7 +37,7 @@ const langPrefix = currentLang === 'en' ? '/en' : '';
             href="https://github.com/BlasVernazza06/koko-cli" 
             target="_blank" 
             rel="noopener noreferrer" 
-            class="group/social p-2.5 rounded-lg bg-bg-surface/50 border border-border-subtle/40 text-text-muted hover:text-text-main dark:text-white dark:hover:text-white hover:border-brand-primary/30 transition-all duration-300"
+            class="group/social p-2.5 rounded-lg bg-bg-surface/50 border border-border-subtle/40 text-text-muted hover:text-text-main dark:text-white dark:hover:text-white hover:border-brand-primary/30"
             aria-label="GitHub Repository"
           >
             <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current text-current dark:text-white group-hover/social:scale-110 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg">
@@ -57,22 +57,22 @@ const langPrefix = currentLang === 'en' ? '/en' : '';
           </h3>
           <ul class="flex flex-col gap-2.5">
             <li>
-              <a href={`${langPrefix}/docs/quick-start`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-all duration-300">
+              <a href={`${langPrefix}/docs/quick-start`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-transform duration-200">
                 {t.quickStart}
               </a>
             </li>
             <li>
-              <a href={`${langPrefix}/docs/cli-commands`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-all duration-300">
+              <a href={`${langPrefix}/docs/cli-commands`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-transform duration-200">
                 {t.commands}
               </a>
             </li>
             <li>
-              <a href={`${langPrefix}/docs/koko-config`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-all duration-300">
+              <a href={`${langPrefix}/docs/koko-config`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-transform duration-200">
                 {t.config}
               </a>
             </li>
             <li>
-              <a href={`${langPrefix}/docs/faq`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-all duration-300">
+              <a href={`${langPrefix}/docs/faq`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-transform duration-200">
                 {t.faq}
               </a>
             </li>
@@ -86,12 +86,12 @@ const langPrefix = currentLang === 'en' ? '/en' : '';
           </h3>
           <ul class="flex flex-col gap-2.5">
             <li>
-              <a href={`${langPrefix}/builder`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-all duration-300">
+              <a href={`${langPrefix}/builder`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-transform duration-200">
                 {t.builder}
               </a>
             </li>
             <li>
-              <a href={`${langPrefix}/#showcase`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-all duration-300">
+              <a href={`${langPrefix}/#showcase`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-transform duration-200">
                 {t.recipes}
               </a>
             </li>
@@ -105,12 +105,12 @@ const langPrefix = currentLang === 'en' ? '/en' : '';
           </h3>
           <ul class="flex flex-col gap-2.5">
             <li>
-              <a href="https://github.com/BlasVernazza06/koko-cli" target="_blank" rel="noopener noreferrer" class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-all duration-300">
+              <a href="https://github.com/BlasVernazza06/koko-cli" target="_blank" rel="noopener noreferrer" class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-transform duration-200">
                 {t.github}
               </a>
             </li>
             <li>
-              <a href={`${langPrefix}/docs/contributing`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-all duration-300">
+              <a href={`${langPrefix}/docs/contributing`} class="text-[13px] text-text-muted hover:text-brand-primary hover:translate-x-1 inline-flex items-center gap-1 transition-transform duration-200">
                 {t.contributing}
               </a>
             </li>
@@ -134,8 +134,8 @@ const langPrefix = currentLang === 'en' ? '/en' : '';
           {t.crafted} <img src="/koko-clebrando.png" alt="Koko" class="w-4.5 h-4.5 object-contain inline-block transition-transform duration-300 hover:scale-125 hover:rotate-12" /> by Koko Team
         </span>
         <div class="h-3 w-px bg-border-subtle/40 hidden sm:block"></div>
-        <a href="#" class="hover:text-text-main transition-colors">{t.privacy}</a>
-        <a href="#" class="hover:text-text-main transition-colors">{t.terms}</a>
+        <a href="#" class="hover:text-text-main">{t.privacy}</a>
+        <a href="#" class="hover:text-text-main">{t.terms}</a>
       </div>
 
     </div>

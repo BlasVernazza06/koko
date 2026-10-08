@@ -40,7 +40,7 @@
         <button 
           type="button"
           onclick={() => setCategory(cat.id)}
-          class="flex items-center w-full px-4 py-2.5 rounded-xl text-left text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer select-none {activeCategory === cat.id ? 'bg-bg-surface/80 text-text-main border border-border-subtle/50 shadow-xs' : 'text-text-muted hover:text-text-main hover:bg-bg-surface/40 border border-transparent'}"
+          class="flex items-center w-full px-4 py-2.5 rounded-xl text-left text-xs sm:text-sm font-bold cursor-pointer select-none {activeCategory === cat.id ? 'bg-bg-surface/80 text-text-main border border-border-subtle/50 shadow-xs' : 'text-text-muted hover:text-text-main hover:bg-bg-surface/40 border border-transparent'}"
         >
           {cat.label}
         </button>
@@ -52,19 +52,19 @@
   <div class="md:col-span-9 space-y-6">
     <div class="border-t border-border-subtle/50 divide-y divide-border-subtle/50 select-text">
       {#each filteredFaqs as faq (faq.id)}
-        <div class="py-4 transition-all duration-200">
+        <div class="py-4">
           <button 
             type="button"
             onclick={() => toggleFaq(faq.id)}
-            class="flex items-center justify-between w-full text-left font-bold text-sm sm:text-base text-text-main hover:text-brand-primary transition-colors duration-200 cursor-pointer py-2 gap-4 select-none"
+            class="flex items-center justify-between w-full text-left font-bold text-sm sm:text-base text-text-main hover:text-brand-primary cursor-pointer py-2 gap-4 select-none"
             aria-expanded={openFaqId === faq.id}
           >
             <span>{faq.question}</span>
             <span class="text-text-muted relative w-4.5 h-4.5 flex items-center justify-center shrink-0">
-              <span class="absolute rounded-full p-1.5 border border-muted shadow-md transition-all duration-300 {openFaqId === faq.id ? 'opacity-0 scale-70 rotate-90' : 'opacity-100 scale-100 rotate-0'}">
+              <span class="absolute rounded-full p-1.5 border border-muted shadow-md transition-[transform,opacity] duration-300 {openFaqId === faq.id ? 'opacity-0 scale-70 rotate-90' : 'opacity-100 scale-100 rotate-0'}">
                 <Plus size={16} />
               </span>
-              <span class="absolute rounded-full p-1.5 border border-muted shadow-md transition-all duration-300 {openFaqId === faq.id ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-70 -rotate-90'}">
+              <span class="absolute rounded-full p-1.5 border border-muted shadow-md transition-[transform,opacity] duration-300 {openFaqId === faq.id ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-70 -rotate-90'}">
                 <Minus size={16} />
               </span>
             </span>
@@ -106,7 +106,6 @@
     display: inline-block;
     vertical-align: baseline;
     white-space: nowrap;
-    transition: all 0.2s ease;
   }
 
   :global(.faq-answer-body a) {
@@ -115,7 +114,6 @@
     text-decoration-color: color-mix(in srgb, var(--brand-primary) 40%, transparent);
     text-underline-offset: 3px;
     font-weight: 600;
-    transition: all 0.2s ease;
   }
 
   :global(.faq-answer-body a:hover) {

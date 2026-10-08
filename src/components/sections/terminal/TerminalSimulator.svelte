@@ -190,12 +190,35 @@
     }
   });
 
-  // Run the loop sequence infinitely
+  let isVisible = $state(false);
+  let rootContainer = $state<HTMLDivElement | null>(null);
+
+  $effect(() => {
+    if (!rootContainer || typeof IntersectionObserver === 'undefined') {
+      isVisible = true;
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+    }, { threshold: 0.05 });
+
+    observer.observe(rootContainer);
+    return () => observer.disconnect();
+  });
+
+  // Run the loop sequence infinitely, pausing when offscreen
   $effect(() => {
     let active = true;
 
     async function runSequence() {
       while (active) {
+        // Pause if off-screen to conserve 100% of CPU and GPU resources
+        while (!isVisible && active) {
+          await delay(500);
+        }
+        if (!active) return;
+
         // --- 1. Initial State ---
         phase = 'initial';
         terminalInput = '';
@@ -433,7 +456,7 @@
 </script>
 
 <!-- Outer Grid Lines Wrapper -->
-<div class="relative w-full p-4 sm:p-6 md:p-10 pb-20 select-none overflow-visible font-sans pointer-events-none">
+<div bind:this={rootContainer} class="relative w-full p-4 sm:p-6 md:p-10 pb-20 select-none overflow-visible font-sans pointer-events-none">
   
   <!-- Grid Lines -->
   <div class="absolute top-0 bottom-0 left-12 w-px bg-slate-300/40 dark:bg-white/[0.08] pointer-events-none hidden md:block"></div>
@@ -442,7 +465,7 @@
   <div class="absolute bottom-12 left-0 right-0 h-px bg-slate-300/40 dark:bg-white/[0.08] pointer-events-none hidden md:block"></div>
 
   <!-- Liquid Glass Outer Panel with HUD Brackets -->
-  <div class="relative w-full rounded-3xl border border-border-subtle bg-bg-surface/30 dark:border-white/10 dark:bg-white/[0.02] backdrop-blur-2xl shadow-xl dark:shadow-[0_0_60px_5px_rgba(0,0,0,0.4)] p-2 sm:p-3 md:p-5 overflow-hidden">
+  <div class="relative w-full rounded-3xl border border-border-subtle bg-bg-surface/50 dark:border-white/10 dark:bg-[#141417]/70 backdrop-blur-md shadow-xl p-2 sm:p-3 md:p-5 overflow-hidden">
     <!-- Corner HUD crosshairs -->
     <div class="absolute top-2.5 left-2.5 w-2 h-2 border-t-2 border-l-2 border-brand-primary/40 pointer-events-none rounded-tl-sm"></div>
     <div class="absolute top-2.5 right-2.5 w-2 h-2 border-t-2 border-r-2 border-brand-primary/40 pointer-events-none rounded-tr-sm"></div>
@@ -450,7 +473,7 @@
     <div class="absolute bottom-2.5 right-2.5 w-2 h-2 border-b-2 border-r-2 border-brand-primary/40 pointer-events-none rounded-br-sm"></div>
     
     <!-- Smooth Zoomable Wrapper -->
-    <div class="transition-all duration-[900ms] ease-in-out origin-center transform {zoomClass}">
+    <div class="transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] origin-center will-change-transform transform {zoomClass}">
       
       <!-- VS Code IDE Window Mockup -->
       <div class="w-full max-w-full rounded-xl border border-white/[0.08] bg-[#1e1e1e] shadow-[0_0_40px_0px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col h-[580px] sm:h-[640px] pointer-events-none select-none">
@@ -466,14 +489,14 @@
             </div>
             <!-- Menu Options -->
             <div class="hidden md:flex items-center gap-3 text-[11px] font-light">
-              <span class="hover:text-white cursor-pointer transition-colors">File</span>
-              <span class="hover:text-white cursor-pointer transition-colors">Edit</span>
-              <span class="hover:text-white cursor-pointer transition-colors">Selection</span>
-              <span class="hover:text-white cursor-pointer transition-colors">View</span>
-              <span class="hover:text-white cursor-pointer transition-colors">Go</span>
-              <span class="hover:text-white cursor-pointer transition-colors">Run</span>
-              <span class="hover:text-white cursor-pointer transition-colors">Terminal</span>
-              <span class="hover:text-white cursor-pointer transition-colors">Help</span>
+              <span class="hover:text-white cursor-pointer">File</span>
+              <span class="hover:text-white cursor-pointer">Edit</span>
+              <span class="hover:text-white cursor-pointer">Selection</span>
+              <span class="hover:text-white cursor-pointer">View</span>
+              <span class="hover:text-white cursor-pointer">Go</span>
+              <span class="hover:text-white cursor-pointer">Run</span>
+              <span class="hover:text-white cursor-pointer">Terminal</span>
+              <span class="hover:text-white cursor-pointer">Help</span>
             </div>
           </div>
 
@@ -504,21 +527,21 @@
               <div class="text-white border-l-2 border-brand-primary pl-[10px] pr-[12px] py-1 cursor-pointer">
                 <Files size={20} />
               </div>
-              <div class="hover:text-white cursor-pointer transition-colors">
+              <div class="hover:text-white cursor-pointer">
                 <Search size={20} />
               </div>
-              <div class="hover:text-white cursor-pointer transition-colors">
+              <div class="hover:text-white cursor-pointer">
                 <GitBranch size={20} />
               </div>
-              <div class="hover:text-white cursor-pointer transition-colors">
+              <div class="hover:text-white cursor-pointer">
                 <Play size={20} />
               </div>
-              <div class="hover:text-white cursor-pointer transition-colors">
+              <div class="hover:text-white cursor-pointer">
                 <Blocks size={20} />
               </div>
             </div>
             
-            <div class="hover:text-white cursor-pointer transition-colors">
+            <div class="hover:text-white cursor-pointer">
               <Settings size={20} />
             </div>
           </div>
@@ -540,7 +563,7 @@
             <div class="flex-1 py-1 font-mono text-[11px] overflow-y-auto space-y-[2px] no-scrollbar">
               {#each sidebarFiles as item}
                 {#if item.visible}
-                  <div class="group px-3 py-0.5 flex items-center gap-1 hover:bg-white/[0.03] cursor-pointer transition-all duration-300">
+                  <div class="group px-3 py-0.5 flex items-center gap-1 hover:bg-white/[0.03] cursor-pointer">
                     <div class="flex shrink-0" style="width: {(item.indent - 1) * 8}px"></div>
                     {#if item.type === 'dir'}
                       {#if item.isOpen}
@@ -572,7 +595,7 @@
                 <span>koko.config.json</span>
                 <span class="hover:text-red-400 ml-1.5 text-[9px]">✕</span>
               </div>
-              <div class="h-full px-4 flex items-center gap-2 hover:bg-white/[0.02] cursor-pointer transition-colors border-r border-white/[0.02]">
+              <div class="h-full px-4 flex items-center gap-2 hover:bg-white/[0.02] cursor-pointer border-r border-white/[0.02]">
                 <File size={13} class="text-slate-400" />
                 <span>README.md</span>
               </div>

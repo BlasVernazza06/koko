@@ -12,7 +12,7 @@
   let activeStack = $state<'saas' | 'mobile' | 'minimal'>('saas');
 </script>
 
-<div class="lg:col-span-5 md:col-span-1 flex flex-col justify-between p-6 rounded-3xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/60 transition-all duration-300 relative overflow-hidden group">
+<div class="lg:col-span-5 md:col-span-1 flex flex-col justify-between p-6 rounded-3xl border border-border-subtle bg-bg-surface/40 hover:bg-bg-surface/60 relative overflow-hidden group">
   <div class="absolute inset-0 bg-radial-[circle_at_20%_120%] from-brand-secondary/8 to-transparent opacity-60 pointer-events-none"></div>
 
   <div>
@@ -33,7 +33,7 @@
       <button 
         type="button"
         onclick={() => activeStack = 'saas'}
-        class="flex-1 text-[10px] sm:text-xs font-bold py-1.5 rounded-lg transition-all cursor-pointer
+        class="flex-1 text-[10px] sm:text-xs font-bold py-1.5 rounded-lg cursor-pointer
           {activeStack === 'saas' ? 'bg-bg-surface text-brand-primary shadow-sm border border-border-subtle/50' : 'text-text-muted hover:text-text-main'}"
       >
         SaaS Stack
@@ -41,7 +41,7 @@
       <button 
         type="button"
         onclick={() => activeStack = 'mobile'}
-        class="flex-1 text-[10px] sm:text-xs font-bold py-1.5 rounded-lg transition-all cursor-pointer
+        class="flex-1 text-[10px] sm:text-xs font-bold py-1.5 rounded-lg cursor-pointer
           {activeStack === 'mobile' ? 'bg-bg-surface text-brand-primary shadow-sm border border-border-subtle/50' : 'text-text-muted hover:text-text-main'}"
       >
         Mobile API
@@ -49,7 +49,7 @@
       <button 
         type="button"
         onclick={() => activeStack = 'minimal'}
-        class="flex-1 text-[10px] sm:text-xs font-bold py-1.5 rounded-lg transition-all cursor-pointer
+        class="flex-1 text-[10px] sm:text-xs font-bold py-1.5 rounded-lg cursor-pointer
           {activeStack === 'minimal' ? 'bg-bg-surface text-brand-primary shadow-sm border border-border-subtle/50' : 'text-text-muted hover:text-text-main'}"
       >
         Full Stack

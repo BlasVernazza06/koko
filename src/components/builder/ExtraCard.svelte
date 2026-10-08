@@ -20,7 +20,7 @@
 
 <style>
   .editorial-extra {
-    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease, border-color 0.15s ease;
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
   }
   .editorial-extra:hover:not(.locked) {
     transform: translateY(-2px);
@@ -39,7 +39,7 @@
   onclick={isLocked ? undefined : onclick}
   disabled={isLocked}
   aria-pressed={isLocked ? true : isActive}
-  class="editorial-extra group/btn flex items-center justify-between p-5 rounded-xl border border-border-subtle transition-all duration-300 text-left w-full select-none
+  class="editorial-extra group/btn flex items-center justify-between p-5 rounded-xl border border-border-subtle text-left w-full select-none
     {isLocked
       ? 'bg-bg-base border-brand-primary/60 shadow-xs font-semibold cursor-default opacity-90 locked'
       : isActive 
@@ -86,8 +86,8 @@
       </span>
     {/if}
     <!-- Sleek Switch slider -->
-    <div class="w-10 h-6 flex items-center rounded-full p-1 transition-all duration-300 shrink-0 relative {isLocked || isActive ? 'bg-brand-primary' : 'bg-border-subtle'}">
-      <span class="w-4 h-4 rounded-full bg-white shadow-sm transition-all duration-300 transform {isLocked || isActive ? 'translate-x-4' : 'translate-x-0'}"></span>
+    <div class="w-10 h-6 flex items-center rounded-full p-1 shrink-0 relative {isLocked || isActive ? 'bg-brand-primary' : 'bg-border-subtle'}">
+      <span class="w-4 h-4 rounded-full bg-white shadow-sm transition-transform duration-200 transform {isLocked || isActive ? 'translate-x-4' : 'translate-x-0'}"></span>
     </div>
   </div>
 </button>

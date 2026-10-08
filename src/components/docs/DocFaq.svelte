@@ -219,7 +219,7 @@
         type="text"
         bind:value={searchQuery}
         placeholder={lang === 'es' ? 'Buscar dudas... (Presiona \'/\' para enfocar)' : 'Search FAQs... (Press \'/\' to focus)'}
-        class="w-full pl-10 pr-12 py-3 bg-bg-surface/50 border border-border-subtle rounded-2xl text-sm text-text-main focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 transition-all duration-200 placeholder:text-text-muted/60"
+        class="w-full pl-10 pr-12 py-3 bg-bg-surface/50 border border-border-subtle rounded-2xl text-sm text-text-main focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 placeholder:text-text-muted/60"
       />
       {#if searchQuery}
         <button 
@@ -239,7 +239,7 @@
     <div class="flex flex-wrap gap-2 justify-center select-none">
       <button
         onclick={() => selectedTag = 'all'}
-        class="px-4 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200 cursor-pointer
+        class="px-4 py-1.5 rounded-full text-xs font-semibold border cursor-pointer
           {selectedTag === 'all' 
             ? 'bg-brand-primary/10 text-brand-primary border-brand-primary/30 shadow-xs' 
             : 'bg-bg-surface/40 text-text-muted border-border-subtle hover:border-brand-primary/20 hover:text-text-main'}"
@@ -249,7 +249,7 @@
       {#each allTags as tag}
         <button
           onclick={() => selectedTag = tag}
-          class="px-4 py-1.5 rounded-full text-xs font-semibold border capitalize transition-all duration-200 cursor-pointer
+          class="px-4 py-1.5 rounded-full text-xs font-semibold border capitalize cursor-pointer
             {selectedTag === tag 
               ? 'bg-brand-primary/10 text-brand-primary border-brand-primary/30 shadow-xs' 
               : 'bg-bg-surface/40 text-text-muted border-border-subtle hover:border-brand-primary/20 hover:text-text-main'}"
@@ -272,7 +272,7 @@
         <div class="absolute -top-12 -right-12 w-48 h-48 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none select-none"></div>
 
         <!-- Slide Content -->
-        <div class="flex flex-col justify-between min-h-[160px] relative z-10 transition-all duration-300">
+        <div class="flex flex-col justify-between min-h-[160px] relative z-10">
           <div>
             <div class="flex items-center gap-2 mb-3">
               <span class="px-2 py-0.5 rounded bg-brand-primary/20 text-brand-primary text-[10px] font-bold tracking-wide uppercase select-none font-mono">FAQ {activeCarouselIndex + 1}</span>
@@ -293,7 +293,7 @@
           <div class="flex items-center justify-between mt-6 pt-4 border-t border-border-subtle/45">
             <button
               onclick={() => openQuestion(featuredQuestions[activeCarouselIndex].anchorId)}
-              class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-primary hover:text-brand-primary/80 transition-colors cursor-pointer"
+              class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-primary hover:text-brand-primary/80 cursor-pointer"
             >
               {lang === 'es' ? 'Ver respuesta completa' : 'View full answer'}
               <ArrowRight size={14} />
@@ -304,14 +304,14 @@
               <button 
                 onclick={prevCarousel}
                 aria-label="Previous question"
-                class="p-1.5 rounded-lg bg-bg-base border border-border-subtle hover:border-brand-primary/30 text-text-muted hover:text-text-main transition-colors cursor-pointer"
+                class="p-1.5 rounded-lg bg-bg-base border border-border-subtle hover:border-brand-primary/30 text-text-muted hover:text-text-main cursor-pointer"
               >
                 <ArrowLeft size={14} />
               </button>
               <button 
                 onclick={nextCarousel}
                 aria-label="Next question"
-                class="p-1.5 rounded-lg bg-bg-base border border-border-subtle hover:border-brand-primary/30 text-text-muted hover:text-text-main transition-colors cursor-pointer"
+                class="p-1.5 rounded-lg bg-bg-base border border-border-subtle hover:border-brand-primary/30 text-text-muted hover:text-text-main cursor-pointer"
               >
                 <ArrowRight size={14} />
               </button>
@@ -354,7 +354,7 @@
           {@const Icon = getIcon(item.tags)}
           <div 
             id={item.anchorId}
-            class="faq-card border rounded-2xl overflow-hidden transition-all duration-300 relative group flex flex-col justify-between scroll-mt-28
+            class="faq-card border rounded-2xl overflow-hidden transition-transform duration-200 relative group flex flex-col justify-between scroll-mt-28
               {openStates[item.anchorId]
                 ? 'bg-bg-surface/50 border-brand-primary/30 shadow-xs shadow-brand-primary/2' 
                 : 'bg-bg-surface/20 border-border-subtle hover:border-brand-primary/20 hover:bg-bg-surface/40 hover:-translate-y-[2px]'}"
@@ -373,7 +373,7 @@
                     <Icon size={16} />
                   </div>
                   <div class="space-y-1">
-                    <h4 class="text-sm sm:text-base font-bold text-text-main leading-tight transition-colors duration-200 group-hover:text-brand-primary font-sans">
+                    <h4 class="text-sm sm:text-base font-bold text-text-main leading-tight group-hover:text-brand-primary font-sans">
                       {@html highlightText(item.title, searchQuery)}
                     </h4>
                     {#if item.tags}
@@ -394,7 +394,7 @@
 
               <!-- Answer content block -->
               <div 
-                class="transition-all duration-300 ease-in-out overflow-hidden"
+                class="transition-[max-height,opacity] duration-300 ease-in-out overflow-hidden"
                 style="max-height: {openStates[item.anchorId] ? '500px' : '0px'}; opacity: {openStates[item.anchorId] ? '1' : '0'};"
               >
                 <div class="px-5 pb-5 pt-2 border-t border-border-subtle/30 text-xs sm:text-sm text-text-muted leading-relaxed space-y-3 font-sans">
@@ -422,14 +422,14 @@
                     <button 
                       onclick={() => submitFeedback(item.anchorId, 'up')}
                       aria-label="Helpful"
-                      class="p-1 rounded hover:bg-bg-surface hover:text-brand-primary transition-colors cursor-pointer text-text-muted/70"
+                      class="p-1 rounded hover:bg-bg-surface hover:text-brand-primary cursor-pointer text-text-muted/70"
                     >
                       <ThumbsUp size={12} />
                     </button>
                     <button 
                       onclick={() => submitFeedback(item.anchorId, 'down')}
                       aria-label="Not helpful"
-                      class="p-1 rounded hover:bg-bg-surface hover:text-brand-primary transition-colors cursor-pointer text-text-muted/70"
+                      class="p-1 rounded hover:bg-bg-surface hover:text-brand-primary cursor-pointer text-text-muted/70"
                     >
                       <ThumbsDown size={12} />
                     </button>
@@ -439,7 +439,7 @@
                 <!-- Anchor link copy button -->
                 <button
                   onclick={() => copyLink(item.anchorId)}
-                  class="flex items-center gap-1 text-[10px] font-bold text-text-muted hover:text-brand-primary transition-colors cursor-pointer"
+                  class="flex items-center gap-1 text-[10px] font-bold text-text-muted hover:text-brand-primary cursor-pointer"
                   title={lang === 'es' ? 'Copiar enlace directo' : 'Copy direct link'}
                 >
                   {#if copiedId === item.anchorId}
@@ -471,7 +471,7 @@
               onclick={() => goToPage(currentPage - 1)}
               disabled={currentPage <= 1}
               aria-label="Previous page"
-              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all duration-200 cursor-pointer disabled:opacity-40 disabled:pointer-events-none disabled:cursor-not-allowed
+              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border text-xs font-semibold cursor-pointer disabled:opacity-40 disabled:pointer-events-none disabled:cursor-not-allowed
                 bg-bg-surface/50 border-border-subtle text-text-muted hover:text-text-main hover:border-brand-primary/30"
             >
               <ArrowLeft size={13} />
@@ -486,7 +486,7 @@
                   onclick={() => goToPage(pageNum)}
                   aria-label={`Page ${pageNum}`}
                   aria-current={currentPage === pageNum ? "page" : undefined}
-                  class="w-8 h-8 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center cursor-pointer border
+                  class="w-8 h-8 rounded-xl text-xs font-bold transition-transform duration-150 flex items-center justify-center cursor-pointer border
                     {currentPage === pageNum 
                       ? 'bg-brand-primary text-bg-base border-brand-primary shadow-xs ring-2 ring-brand-primary/20 scale-105' 
                       : 'bg-bg-surface/40 border-border-subtle text-text-muted hover:border-brand-primary/30 hover:text-text-main'}"
@@ -501,7 +501,7 @@
               onclick={() => goToPage(currentPage + 1)}
               disabled={currentPage >= totalPages}
               aria-label="Next page"
-              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all duration-200 cursor-pointer disabled:opacity-40 disabled:pointer-events-none disabled:cursor-not-allowed
+              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border text-xs font-semibold cursor-pointer disabled:opacity-40 disabled:pointer-events-none disabled:cursor-not-allowed
                 bg-bg-surface/50 border-border-subtle text-text-muted hover:text-text-main hover:border-brand-primary/30"
             >
               <span class="hidden xs:inline">{lang === 'es' ? 'Siguiente' : 'Next'}</span>

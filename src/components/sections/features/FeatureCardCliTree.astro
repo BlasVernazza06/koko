@@ -17,7 +17,7 @@ interface Props {
 const { lang: _lang = 'es' } = Astro.props;
 ---
 
-<div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-secondary/10 hover:border-brand-secondary/40">
+<div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-[box-shadow] duration-300 hover:shadow-xl hover:shadow-brand-secondary/10 hover:border-brand-secondary/40">
   <!-- Dynamic ambient card glow -->
   <div class="absolute inset-0 bg-gradient-to-tr from-brand-secondary/8 via-brand-primary/4 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
   
@@ -183,7 +183,7 @@ const { lang: _lang = 'es' } = Astro.props;
 
     <!-- ── ROOT NODE: Koko CLI (X: 50%, Y: ~3.5%) ── -->
     <div class="absolute top-[3.5%] left-1/2 -translate-x-1/2 z-20">
-      <div class="tree-node root-node relative bg-zinc-950 dark:bg-zinc-900 border border-brand-primary/40 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg shadow-brand-primary/15 group-hover:scale-105 group-hover:border-brand-primary transition-all duration-300">
+      <div class="tree-node root-node relative bg-zinc-950 dark:bg-zinc-900 border border-brand-primary/40 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg shadow-brand-primary/15 group-hover:scale-105 group-hover:border-brand-primary transition-transform duration-200">
         <div class="w-2.5 h-2.5 rounded-full bg-brand-primary/30 flex items-center justify-center">
           <span class="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse"></span>
         </div>
@@ -198,7 +198,7 @@ const { lang: _lang = 'es' } = Astro.props;
     <!-- ── TIER 1 CATEGORY NODES (Y: ~32.3%) ── -->
     <!-- Frontend (X: 17.1%) -->
     <div class="absolute top-[32.3%] left-[17.1%] -translate-x-1/2 z-10">
-      <div class="tree-node cat-node cat-1 relative bg-bg-surface/90 dark:bg-bg-surface/90 border border-border-subtle hover:border-brand-secondary/60 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl flex items-center gap-1.5 shadow-xs backdrop-blur-md transition-all duration-200">
+      <div class="tree-node cat-node cat-1 relative bg-bg-surface/90 border border-border-subtle hover:border-brand-secondary/60 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl flex items-center gap-1.5 shadow-xs backdrop-blur-md">
         <!-- Input Port Dot -->
         <span class="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-brand-secondary border border-bg-surface"></span>
         <SvelteAstroComponent width={13} height={13} />
@@ -210,7 +210,7 @@ const { lang: _lang = 'es' } = Astro.props;
 
     <!-- Fullstack (X: 50.0%) -->
     <div class="absolute top-[32.3%] left-[50%] -translate-x-1/2 z-10">
-      <div class="tree-node cat-node cat-2 relative bg-bg-surface/90 dark:bg-bg-surface/90 border border-border-subtle hover:border-brand-secondary/60 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl flex items-center gap-1.5 shadow-xs backdrop-blur-md transition-all duration-200">
+      <div class="tree-node cat-node cat-2 relative bg-bg-surface/90 border border-border-subtle hover:border-brand-secondary/60 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl flex items-center gap-1.5 shadow-xs backdrop-blur-md">
         <!-- Input Port Dot -->
         <span class="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-brand-secondary border border-bg-surface"></span>
         <AstroAstroComponent width={13} height={13} />
@@ -222,7 +222,7 @@ const { lang: _lang = 'es' } = Astro.props;
 
     <!-- API & Mobile (X: 82.9%) -->
     <div class="absolute top-[32.3%] left-[82.9%] -translate-x-1/2 z-10">
-      <div class="tree-node cat-node cat-3 relative bg-bg-surface/90 dark:bg-bg-surface/90 border border-border-subtle hover:border-brand-secondary/60 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl flex items-center gap-1.5 shadow-xs backdrop-blur-md transition-all duration-200">
+      <div class="tree-node cat-node cat-3 relative bg-bg-surface/90 border border-border-subtle hover:border-brand-secondary/60 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl flex items-center gap-1.5 shadow-xs backdrop-blur-md">
         <!-- Input Port Dot -->
         <span class="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-brand-secondary border border-bg-surface"></span>
         <HonoAstroComponent width={13} height={13} />
@@ -236,72 +236,72 @@ const { lang: _lang = 'es' } = Astro.props;
     <!-- 1. React (X: 9.47%) -->
     <div class="absolute top-[63.8%] left-[9.47%] -translate-x-1/2 z-10 group/leaf">
       <div class="tree-node leaf-node leaf-1 flex flex-col items-center gap-1">
-        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 dark:bg-bg-surface/90 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-all duration-300">
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-transform duration-200">
           <!-- Docking Port on Top Edge (terminating line cleanly) -->
           <span class="absolute -top-[3px] left-1/2 -translate-x-1/2 w-2 h-1 rounded-full bg-brand-secondary border border-bg-surface"></span>
           <ReactAstroComponent width={17} height={17} />
         </div>
-        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main transition-colors">React</span>
+        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main">React</span>
       </div>
     </div>
 
     <!-- 2. Vue (X: 24.74%) -->
     <div class="absolute top-[63.8%] left-[24.74%] -translate-x-1/2 z-10 group/leaf">
       <div class="tree-node leaf-node leaf-2 flex flex-col items-center gap-1">
-        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 dark:bg-bg-surface/90 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-all duration-300">
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-transform duration-200">
           <!-- Docking Port on Top Edge -->
           <span class="absolute -top-[3px] left-1/2 -translate-x-1/2 w-2 h-1 rounded-full bg-brand-secondary border border-bg-surface"></span>
           <VueAstroComponent width={17} height={17} />
         </div>
-        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main transition-colors">Vue</span>
+        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main">Vue</span>
       </div>
     </div>
 
     <!-- 3. Next.js (X: 42.37%) -->
     <div class="absolute top-[63.8%] left-[42.37%] -translate-x-1/2 z-10 group/leaf">
       <div class="tree-node leaf-node leaf-3 flex flex-col items-center gap-1">
-        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 dark:bg-bg-surface/90 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-all duration-300">
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-transform duration-200">
           <!-- Docking Port on Top Edge -->
           <span class="absolute -top-[3px] left-1/2 -translate-x-1/2 w-2 h-1 rounded-full bg-brand-secondary border border-bg-surface"></span>
           <NextjsAstroComponent width={17} height={17} />
         </div>
-        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main transition-colors">Next.js</span>
+        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main">Next.js</span>
       </div>
     </div>
 
     <!-- 4. Nuxt (X: 57.63%) -->
     <div class="absolute top-[63.8%] left-[57.63%] -translate-x-1/2 z-10 group/leaf">
       <div class="tree-node leaf-node leaf-4 flex flex-col items-center gap-1">
-        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 dark:bg-bg-surface/90 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-all duration-300">
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-transform duration-200">
           <!-- Docking Port on Top Edge -->
           <span class="absolute -top-[3px] left-1/2 -translate-x-1/2 w-2 h-1 rounded-full bg-brand-secondary border border-bg-surface"></span>
           <NuxtAstroComponent width={17} height={17} />
         </div>
-        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main transition-colors">Nuxt</span>
+        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main">Nuxt</span>
       </div>
     </div>
 
     <!-- 5. Hono (X: 75.26%) -->
     <div class="absolute top-[63.8%] left-[75.26%] -translate-x-1/2 z-10 group/leaf">
       <div class="tree-node leaf-node leaf-5 flex flex-col items-center gap-1">
-        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 dark:bg-bg-surface/90 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-all duration-300">
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-transform duration-200">
           <!-- Docking Port on Top Edge -->
           <span class="absolute -top-[3px] left-1/2 -translate-x-1/2 w-2 h-1 rounded-full bg-brand-secondary border border-bg-surface"></span>
           <HonoAstroComponent width={17} height={17} />
         </div>
-        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main transition-colors">Hono</span>
+        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main">Hono</span>
       </div>
     </div>
 
     <!-- 6. Mobile / Flutter (X: 90.53%) -->
     <div class="absolute top-[63.8%] left-[90.53%] -translate-x-1/2 z-10 group/leaf">
       <div class="tree-node leaf-node leaf-6 flex flex-col items-center gap-1">
-        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 dark:bg-bg-surface/90 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-all duration-300">
+        <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-bg-surface/95 border border-border-subtle flex items-center justify-center shadow-xs backdrop-blur-md group-hover/leaf:border-brand-secondary group-hover/leaf:scale-110 group-hover/leaf:shadow-md group-hover/leaf:shadow-brand-secondary/15 transition-transform duration-200">
           <!-- Docking Port on Top Edge -->
           <span class="absolute -top-[3px] left-1/2 -translate-x-1/2 w-2 h-1 rounded-full bg-brand-secondary border border-bg-surface"></span>
           <FlutterAstroComponent width={17} height={17} />
         </div>
-        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main transition-colors">Mobile</span>
+        <span class="text-[8px] sm:text-[9px] font-mono font-medium text-text-muted group-hover/leaf:text-text-main">Mobile</span>
       </div>
     </div>
 
@@ -336,7 +336,7 @@ const { lang: _lang = 'es' } = Astro.props;
     stroke-dasharray: 160;
     stroke-dashoffset: 160;
     animation: draw-branch 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    transition: stroke-width 0.3s ease, stroke 0.3s ease;
+    transition: stroke-width 0.3s ease;
   }
 
   .branch-t1 {

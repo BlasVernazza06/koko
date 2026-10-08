@@ -30,7 +30,7 @@
 
 <style>
   .editorial-card {
-    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease, border-color 0.15s ease;
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
   }
   .editorial-card:hover:not(.disabled) {
     transform: translateY(-2px);

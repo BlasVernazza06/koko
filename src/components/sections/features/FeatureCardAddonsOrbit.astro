@@ -15,7 +15,7 @@ interface Props {
 const { lang: _lang = 'es' } = Astro.props;
 ---
 
-<div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-primary/10 hover:border-brand-primary/40">
+<div class="md:col-span-2 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-[box-shadow] duration-300 hover:shadow-xl hover:shadow-brand-primary/10 hover:border-brand-primary/40">
   <!-- Ambient background glow -->
   <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/8 via-transparent to-brand-secondary/6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
@@ -138,7 +138,7 @@ const { lang: _lang = 'es' } = Astro.props;
     
     <!-- 1. Docker (Left Top: X=16%, Y=20%) -->
     <div class="absolute left-[16%] top-[20%] -translate-x-1/2 -translate-y-1/2 z-20 group/addon">
-      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-all duration-300">
+      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-transform duration-200">
         <DockerAstroComponent width={17} height={17}/>
         <span class="text-[10px] font-mono font-bold text-text-main">Docker</span>
       </div>
@@ -146,7 +146,7 @@ const { lang: _lang = 'es' } = Astro.props;
 
     <!-- 2. Testing / Playwright (Left Mid: X=12%, Y=50%) -->
     <div class="absolute left-[12%] top-[50%] -translate-x-1/2 -translate-y-1/2 z-20 group/addon">
-      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-all duration-300">
+      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-transform duration-200">
         <PlaywrightAstroComponent width={17} height={17}/>
         <span class="text-[10px] font-mono font-bold text-text-main">Testing</span>
       </div>
@@ -154,7 +154,7 @@ const { lang: _lang = 'es' } = Astro.props;
 
     <!-- 3. CI/CD / GitHub (Left Bottom: X=16%, Y=80%) -->
     <div class="absolute left-[16%] top-[80%] -translate-x-1/2 -translate-y-1/2 z-20 group/addon">
-      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-all duration-300">
+      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-transform duration-200">
         <GitHubAstroComponent width={17} height={17}/>
         <span class="text-[10px] font-mono font-bold text-text-main">CI/CD</span>
       </div>
@@ -162,7 +162,7 @@ const { lang: _lang = 'es' } = Astro.props;
 
     <!-- 4. Auth / BetterAuth (Right Top: X=84%, Y=20%) -->
     <div class="absolute right-[16%] top-[20%] translate-x-1/2 -translate-y-1/2 z-20 group/addon">
-      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-all duration-300">
+      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-transform duration-200">
         <BetterAuthAstroComponent width={17} height={17}/>
         <span class="text-[10px] font-mono font-bold text-text-main">Auth</span>
       </div>
@@ -170,7 +170,7 @@ const { lang: _lang = 'es' } = Astro.props;
 
     <!-- 5. DB / PostgreSQL (Right Mid: X=88%, Y=50%) -->
     <div class="absolute right-[12%] top-[50%] translate-x-1/2 -translate-y-1/2 z-20 group/addon">
-      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-all duration-300">
+      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-transform duration-200">
         <PostgreSQLAstroComponent width={17} height={17}/>
         <span class="text-[10px] font-mono font-bold text-text-main">DB</span>
       </div>
@@ -178,7 +178,7 @@ const { lang: _lang = 'es' } = Astro.props;
 
     <!-- 6. Linting / Prettier (Right Bottom: X=84%, Y=80%) -->
     <div class="absolute right-[16%] top-[80%] translate-x-1/2 -translate-y-1/2 z-20 group/addon">
-      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-all duration-300">
+      <div class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 backdrop-blur-md shadow-xs group-hover/addon:border-brand-primary/60 group-hover/addon:scale-105 group-hover/addon:shadow-md transition-transform duration-200">
         <PrettierAstroComponent width={17} height={17}/>
         <span class="text-[10px] font-mono font-bold text-text-main">Linting</span>
       </div>
@@ -206,7 +206,7 @@ const { lang: _lang = 'es' } = Astro.props;
     stroke-dasharray: 180;
     stroke-dashoffset: 180;
     animation: draw-circuit 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    transition: stroke-width 0.3s ease, stroke 0.3s ease;
+    transition: stroke-width 0.3s ease;
   }
 
   @keyframes draw-circuit {
@@ -218,14 +218,17 @@ const { lang: _lang = 'es' } = Astro.props;
   .orbit-ring-1 {
     animation: orbit-rotate 25s linear infinite;
     transform-origin: 170px 115px;
+    will-change: transform;
   }
   .orbit-ring-2 {
     animation: orbit-rotate-reverse 35s linear infinite;
     transform-origin: 170px 115px;
+    will-change: transform;
   }
   .orbit-ring-3 {
     animation: orbit-rotate 45s linear infinite;
     transform-origin: 170px 115px;
+    will-change: transform;
   }
 
   @keyframes orbit-rotate {

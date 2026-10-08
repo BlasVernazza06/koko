@@ -54,9 +54,6 @@
 </script>   
 
 <style>
-  .tab-btn {
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  }
   .tab-btn.active {
     background: var(--brand-primary);
     color: white;

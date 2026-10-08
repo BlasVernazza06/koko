@@ -17,7 +17,7 @@ const quickCommands = [
 ];
 ---
 
-<div class={`max-w-7xl mx-auto px-6 flex flex-col items-center justify-center relative z-10 ${className}`}>
+<div class={`max-w-7xl mx-auto px-6 pt-24 sm:pt-36 lg:pt-44 flex flex-col items-center justify-center relative z-10 ${className}`}>
   <!-- Live Terminal Header Pill Bar -->
   <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 select-none scroll-reveal">
     <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-bg-surface/80 border border-border-subtle backdrop-blur-md text-xs font-mono text-text-muted">
@@ -40,7 +40,7 @@ const quickCommands = [
   <!-- Quick Command Chips -->
   <div class="w-full max-w-4xl mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 select-none scroll-reveal-children">
     {quickCommands.map((item) => (
-      <div class="group flex items-center gap-2 px-3.5 py-2 rounded-xl bg-bg-surface/40 hover:bg-bg-surface/90 border border-border-subtle/60 hover:border-brand-primary/40 text-xs font-mono transition-all duration-200 shadow-sm backdrop-blur-sm">
+      <div class="group flex items-center gap-2 px-3.5 py-2 rounded-xl bg-bg-surface/40 hover:bg-bg-surface/90 border border-border-subtle/60 hover:border-brand-primary/40 text-xs font-mono shadow-sm backdrop-blur-sm">
         <item.icon size={13} class="text-brand-primary shrink-0 group-hover:scale-110 transition-transform duration-200" />
         <code class="font-bold text-text-main">{item.cmd}</code>
         <span class="text-text-muted/60 font-sans text-[11px] hidden md:inline">•</span>
