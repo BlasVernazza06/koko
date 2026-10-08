@@ -15,7 +15,7 @@ const enUrl = pathname.startsWith('/en')
   <!-- Trigger Button with premium microinteractions -->
   <button
     id="lang-toggle-btn"
-    class="flex items-center gap-2 px-3 py-2.5 rounded-full bg-bg-surface/70 dark:bg-[#141417]/80 border border-border-subtle/80 dark:border-white/10 cursor-pointer hover:border-text-muted/40 transition-all duration-200 text-xs font-bold text-text-main hover:bg-bg-surface dark:hover:bg-white/10 shadow-xs group/btn shrink-0"
+    class="flex items-center gap-2 px-3 py-2.5 rounded-full bg-bg-surface border border-border-subtle cursor-pointer hover:border-text-muted/40 text-xs font-bold text-text-main hover:bg-bg-base shadow-xs group/btn shrink-0"
     aria-expanded="false"
     aria-haspopup="true"
   >
@@ -23,26 +23,26 @@ const enUrl = pathname.startsWith('/en')
       id="current-lang-flag" 
       src={currentLang === 'es' ? "/flag-es.svg" : "/flag-en.svg"} 
       alt="Language" 
-      class="w-4 h-3 rounded-[2px] object-cover shrink-0 transition-transform duration-300 group-hover/btn:scale-105" 
+      class="w-4 h-3 rounded-[2px] object-cover shrink-0 transition-transform duration-200 group-hover/btn:scale-105" 
     />
     <span id="current-lang-text" class="uppercase font-extrabold tracking-wider">{currentLang}</span>
-    <svg id="lang-chevron" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-text-muted transition-transform duration-300 group-hover/btn:translate-y-0.5"><path d="m6 9 6 6 6-6"/></svg>
+    <svg id="lang-chevron" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-text-muted transition-transform duration-200 group-hover/btn:translate-y-0.5"><path d="m6 9 6 6 6-6"/></svg>
   </button>
 
   <!-- Dropdown Menu -->
   <div
     id="lang-dropdown"
-    class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-2xl border border-border-subtle/80 dark:border-white/10 bg-bg-surface/95 dark:bg-[#141417]/95 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.35)] ring-1 ring-black/5 dark:ring-white/5 focus:outline-none z-50 p-1 flex flex-col gap-0.5"
+    class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-2xl border border-border-subtle bg-bg-surface backdrop-blur-xl shadow-lg ring-1 ring-border-subtle/20 focus:outline-none z-50 p-1 flex flex-col gap-0.5"
     role="menu"
     aria-orientation="vertical"
   >
     <!-- Español Option -->
     <a
       href={esUrl}
-      class={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-left transition-all duration-200 cursor-pointer group/item ${
+      class={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-left cursor-pointer group/item ${
         currentLang === 'es' 
           ? 'bg-brand-primary/10 text-brand-primary font-extrabold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)]' 
-          : 'text-text-muted hover:bg-bg-base/70 hover:text-text-main hover:translate-x-0.5'
+          : 'text-text-muted hover:bg-bg-base/70 hover:text-text-main'
       }`}
       role="menuitem"
     >
@@ -56,10 +56,10 @@ const enUrl = pathname.startsWith('/en')
     <!-- English Option -->
     <a
       href={enUrl}
-      class={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-left transition-all duration-200 cursor-pointer group/item ${
+      class={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-left cursor-pointer group/item ${
         currentLang === 'en' 
           ? 'bg-brand-primary/10 text-brand-primary font-extrabold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)]' 
-          : 'text-text-muted hover:bg-bg-base/70 hover:text-text-main hover:translate-x-0.5'
+          : 'text-text-muted hover:bg-bg-base/70 hover:text-text-main'
       }`}
       role="menuitem"
     >

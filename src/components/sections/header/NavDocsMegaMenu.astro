@@ -10,7 +10,7 @@ const { currentLang = 'es' } = Astro.props;
 ---
 
 <div class="nav-dropdown pointer-events-none invisible opacity-0 absolute top-full left-0 pt-2 origin-top-left z-50">
-  <div class="bg-bg-surface border border-border-subtle rounded-2xl p-6 shadow-[0_12px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_50px_rgba(0,0,0,0.35)] w-[690px] flex gap-6">
+  <div class="bg-bg-surface border border-border-subtle rounded-2xl p-6 shadow-xl backdrop-blur-md w-[690px] flex gap-6">
     <!-- Left Column: Links (58%) -->
     <div class="w-[58%] flex flex-col justify-between">
       <div>
@@ -25,12 +25,12 @@ const { currentLang = 'es' } = Astro.props;
           {docsDropdownItems.slice(0, 8).map((doc) => (
             <a 
               href={currentLang === 'en' ? doc.hrefEn : doc.href} 
-              class="group/doc flex items-start gap-2.5 p-2 rounded-xl border border-transparent hover:border-border-subtle/50 hover:bg-bg-base/40 transition-all duration-200"
+              class="group/doc flex items-start gap-2.5 p-2 rounded-xl border border-transparent hover:border-border-subtle/50 hover:bg-bg-base"
             >
               <!-- Glow bullet on hover -->
-              <div class="w-1.5 h-1.5 rounded-full bg-text-muted/30 group-hover/doc:bg-brand-primary group-hover/doc:scale-125 transition-all mt-1.5 shrink-0"></div>
+              <div class="w-1.5 h-1.5 rounded-full bg-text-muted/30 group-hover/doc:bg-brand-primary mt-1.5 shrink-0"></div>
               <div class="flex flex-col gap-0.5">
-                <span class="text-xs font-bold text-text-main group-hover/doc:text-brand-primary transition-colors duration-200">
+                <span class="text-xs font-bold text-text-main group-hover/doc:text-brand-primary">
                   <span class="lang-es">{doc.titleEs}</span>
                   <span class="lang-en">{doc.titleEn}</span>
                 </span>
@@ -47,7 +47,7 @@ const { currentLang = 'es' } = Astro.props;
       <!-- Bottom View All Button -->
       <a 
         href={currentLang === 'en' ? docsDropdownItems[8].hrefEn : docsDropdownItems[8].href}
-        class="mt-4 flex items-center justify-between py-2 px-3.5 rounded-xl bg-bg-surface/85 hover:bg-bg-base border border-border-subtle text-xs font-extrabold text-brand-primary hover:text-brand-secondary/80 transition-all duration-200 shadow-sm"
+        class="mt-4 flex items-center justify-between py-2 px-3.5 rounded-xl bg-bg-surface hover:bg-bg-base border border-border-subtle text-xs font-extrabold text-brand-primary hover:text-brand-secondary/80 shadow-sm"
       >
         <span class="flex items-center gap-1.5">
           <span class="lang-es">Ver toda la documentación</span>

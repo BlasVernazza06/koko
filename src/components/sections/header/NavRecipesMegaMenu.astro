@@ -9,7 +9,7 @@ const { currentLang = 'es' } = Astro.props;
 ---
 
 <div class="nav-dropdown pointer-events-none invisible opacity-0 absolute top-full left-0 pt-2 origin-top-left z-50">
-  <div class="bg-bg-surface/95 border border-border-subtle rounded-2xl p-6 shadow-[0_12px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_50px_rgba(0,0,0,0.35)] backdrop-blur-xl w-[530px]">
+  <div class="bg-bg-surface border border-border-subtle rounded-2xl p-6 shadow-xl backdrop-blur-md w-[530px]">
     <div class="border-l-2 border-brand-primary pl-3 mb-4">
       <span class="block text-xs font-bold uppercase tracking-wider text-text-main">
         <span class="lang-es">Recetas Preconfiguradas</span>
@@ -25,13 +25,13 @@ const { currentLang = 'es' } = Astro.props;
       {recipesDropdownItems.map((recipe) => (
         <a 
           href={currentLang === 'en' ? `/en/builder?preset=${recipe.id}` : `/builder?preset=${recipe.id}`} 
-          class={`group/card flex items-center gap-3 p-3 rounded-xl border border-border-subtle bg-bg-base/30 backdrop-blur-sm transition-all duration-300 text-left cursor-pointer ${recipe.shadow}`}
+          class="group/card flex items-center gap-3 p-3 rounded-xl border border-border-subtle bg-bg-base hover:border-brand-primary/40 text-left cursor-pointer"
         >
-          <div class="w-9 h-9 rounded-lg bg-bg-base border border-border-subtle/80 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover/card:scale-110">
+          <div class="w-9 h-9 rounded-lg bg-bg-surface border border-border-subtle flex items-center justify-center shrink-0 transition-transform duration-200 group-hover/card:scale-105">
             <img src={recipe.icon} class="w-5.5 h-5.5 object-contain" alt="" />
           </div>
           <div class="flex flex-col gap-0.5">
-            <span class={`text-xs font-bold text-text-main transition-colors duration-200 ${recipe.color}`}>
+            <span class={`text-xs font-bold text-text-main ${recipe.color}`}>
               <span class="lang-es">{recipe.nameEs}</span>
               <span class="lang-en">{recipe.nameEn}</span>
             </span>

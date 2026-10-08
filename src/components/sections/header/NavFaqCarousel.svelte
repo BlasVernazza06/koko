@@ -4,7 +4,7 @@
   let { lang = 'es' } = $props<{ lang?: string }>();
 
   let currentIndex = $state(0);
-  let isPaused = $state(false);
+  let isHovered = $state(false);
 
   const slides = faqCarouselSlides;
 
@@ -20,10 +20,10 @@
     currentIndex = index;
   }
 
-  // Auto-play timer
+  // Auto-play timer: only runs when user is actively hovering the carousel
   $effect(() => {
-    if (isPaused) return;
-    const timer = setInterval(nextSlide, 5000);
+    if (!isHovered) return;
+    const timer = setInterval(nextSlide, 4500);
     return () => clearInterval(timer);
   });
 </script>
@@ -31,8 +31,8 @@
 <!-- Right Column: Interactive FAQ Carousel (42%) -->
 <div 
   class="w-[42%] flex flex-col justify-between"
-  onmouseenter={() => isPaused = true}
-  onmouseleave={() => isPaused = false}
+  onmouseenter={() => isHovered = true}
+  onmouseleave={() => isHovered = false}
   role="region"
   aria-label="FAQ Carousel"
 >
@@ -51,7 +51,7 @@
       <div class="relative w-full h-[84px] overflow-hidden">
         {#each slides as slide, index}
           <div 
-            class="transition-all duration-350 absolute inset-0 flex flex-col gap-1.5 {index === currentIndex ? 'opacity-100 translate-x-0' : 'opacity-0 pointer-events-none translate-x-4'}"
+            class="transition-[transform,opacity] duration-300 absolute inset-0 flex flex-col gap-1.5 {index === currentIndex ? 'opacity-100 translate-x-0' : 'opacity-0 pointer-events-none translate-x-4'}"
           >
             <h5 class="text-xs font-extrabold text-brand-primary leading-tight flex items-center gap-1">
               <span>{lang === 'es' ? slide.questionEs : slide.questionEn}</span>
@@ -71,7 +71,7 @@
             <button 
               type="button"
               onclick={() => goToSlide(index)}
-              class="transition-all duration-300 cursor-pointer {index === currentIndex ? 'bg-brand-primary w-3.5 h-2 rounded-full' : 'bg-text-muted/30 w-1.5 h-1.5 rounded-full'}"
+              class="transition-[width] duration-200 cursor-pointer {index === currentIndex ? 'bg-brand-primary w-3.5 h-2 rounded-full' : 'bg-text-muted/30 w-1.5 h-1.5 rounded-full'}"
               aria-label={`Go to slide ${index + 1}`}
             ></button>
           {/each}
@@ -81,7 +81,7 @@
           <button 
             type="button"
             onclick={prevSlide}
-            class="w-5 h-5 rounded-md border border-border-subtle bg-bg-surface/80 flex items-center justify-center text-text-muted hover:text-text-main hover:bg-bg-surface transition-all cursor-pointer" 
+            class="w-5 h-5 rounded-md border border-border-subtle bg-bg-surface/80 flex items-center justify-center text-text-muted hover:text-text-main hover:bg-bg-surface cursor-pointer" 
             aria-label="Previous question"
           >
             <svg class="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
@@ -91,7 +91,7 @@
           <button 
             type="button"
             onclick={nextSlide}
-            class="w-5 h-5 rounded-md border border-border-subtle bg-bg-surface/80 flex items-center justify-center text-text-muted hover:text-text-main hover:bg-bg-surface transition-all cursor-pointer" 
+            class="w-5 h-5 rounded-md border border-border-subtle bg-bg-surface/80 flex items-center justify-center text-text-muted hover:text-text-main hover:bg-bg-surface cursor-pointer" 
             aria-label="Next question"
           >
             <svg class="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
