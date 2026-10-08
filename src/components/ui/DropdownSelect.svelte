@@ -149,7 +149,7 @@
     disabled={disabled}
     aria-haspopup="listbox"
     aria-expanded={isOpen}
-    class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-border-subtle bg-bg-base/80 dark:bg-bg-surface/70 hover:bg-bg-surface/90 hover:border-brand-primary/40 focus:border-brand-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/30 transition-all duration-200 text-xs font-semibold text-text-main disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-xs select-none group"
+    class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-border-subtle bg-bg-base/80 dark:bg-bg-surface/70 hover:bg-bg-surface/90 hover:border-brand-primary/40 focus:border-brand-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/30 text-xs font-semibold text-text-main disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-xs select-none group"
     class:border-brand-primary={isOpen}
     class:ring-2={isOpen}
     class:ring-brand-primary={isOpen}
@@ -182,7 +182,7 @@
           disabled={opt.disabled}
           onclick={() => selectOption(opt)}
           onmouseenter={() => (highlightedIndex = idx)}
-          class="w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150 text-left cursor-pointer select-none {opt.disabled ? 'opacity-40 cursor-not-allowed' : ''} {isSelected ? 'bg-brand-primary/10 text-brand-primary font-semibold dark:bg-brand-primary/15' : isHighlighted ? 'bg-bg-base/80 text-text-main dark:bg-white/5' : 'text-text-muted hover:text-text-main'}"
+          class="w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-left cursor-pointer select-none {opt.disabled ? 'opacity-40 cursor-not-allowed' : ''} {isSelected ? 'bg-brand-primary/10 text-brand-primary font-semibold dark:bg-brand-primary/15' : isHighlighted ? 'bg-bg-base/80 text-text-main dark:bg-white/5' : 'text-text-muted hover:text-text-main'}"
         >
           <div class="flex items-center gap-2 truncate">
             <span class="truncate">{opt.label}</span>

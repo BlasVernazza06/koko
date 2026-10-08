@@ -86,7 +86,7 @@ const description = currentLang === 'es'
       children.forEach((child, idx) => {
         child.classList.add('scroll-reveal-child');
         if (!isReducedMotion) {
-          const delayMs = Math.min(idx * 55, 250);
+          const delayMs = Math.min(idx * 45, 220);
           child.style.transitionDelay = `${delayMs}ms`;
         }
         allTargets.push(child);
@@ -97,39 +97,65 @@ const description = currentLang === 'es'
 
     // Reduced motion: reveal all immediately
     if (isReducedMotion) {
-      allTargets.forEach((el) => el.classList.add('is-visible'));
+      allTargets.forEach((el) => {
+        el.classList.remove('is-exited-up', 'is-exited-down');
+        el.classList.add('is-visible');
+      });
       return;
     }
 
     const windowHeight = window.innerHeight;
 
-    // Reveal elements already above the fold immediately to avoid any initial jump
-    const elementsToObserve: HTMLElement[] = [];
+    // Initial check: if element is already within viewport on page load
     allTargets.forEach((el) => {
       const rect = el.getBoundingClientRect();
-      if (rect.top < windowHeight - 40) {
+      if (rect.top < windowHeight - 30 && rect.bottom > 30) {
+        el.classList.remove('is-exited-up', 'is-exited-down');
         el.classList.add('is-visible');
+      } else if (rect.top >= windowHeight - 30) {
+        el.classList.remove('is-visible', 'is-exited-up');
+        el.classList.add('is-exited-down');
       } else {
-        elementsToObserve.push(el);
+        el.classList.remove('is-visible', 'is-exited-down');
+        el.classList.add('is-exited-up');
       }
     });
 
-    if (elementsToObserve.length === 0) return;
-
+    // Continuous bidirectional IntersectionObserver for appearance & disappearance
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          const target = entry.target as HTMLElement;
+          const rect = entry.boundingClientRect;
+          const rootBounds = entry.rootBounds;
+          const viewHeight = rootBounds ? rootBounds.height : window.innerHeight;
+
           if (entry.isIntersecting) {
-            const target = entry.target as HTMLElement;
+            // Element enters viewport: reveal smoothly
+            target.classList.remove('is-exited-up', 'is-exited-down');
             target.classList.add('is-visible');
-            observer.unobserve(target);
+          } else {
+            // Element leaves viewport: harmoniously disappear based on scroll direction
+            target.classList.remove('is-visible');
+            if (rect.top <= 40) {
+              // Exited through the top
+              target.classList.remove('is-exited-down');
+              target.classList.add('is-exited-up');
+            } else if (rect.bottom >= viewHeight - 40) {
+              // Exited through the bottom
+              target.classList.remove('is-exited-up');
+              target.classList.add('is-exited-down');
+            }
           }
         });
       },
-      { rootMargin: '0px 0px -40px 0px', threshold: 0.08 }
+      {
+        rootMargin: '10px 0px -20px 0px',
+        threshold: [0, 0.08]
+      }
     );
 
-    elementsToObserve.forEach((el) => observer.observe(el));
+    allTargets.forEach((el) => observer.observe(el));
 
     scrollObserverCleanup = () => {
       observer.disconnect();

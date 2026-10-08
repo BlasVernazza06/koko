@@ -54,9 +54,9 @@
 
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+@variant dark (&:where(.dark, .dark *));
 
-@theme {
+@theme inline {
   /* Expose our custom semantic color variables to Tailwind */
   --color-brand-primary: var(--brand-primary);
   --color-brand-secondary: var(--brand-secondary);
@@ -92,23 +92,22 @@
 
 /* -------------------------------------------------------------
    COLOR SYSTEM
-   Theme: "Monochromatic Lavender & Periwinkle"
-   Cohesive, high-fidelity tech palette matching Koko the Koala.
+   Semantic tokens calibrated in OKLCH for WCAG AA compliance & crisp contrast
    ------------------------------------------------------------- */
 
 :root,
 [data-theme="light"] {
   /* LIGHT MODE (Clean Crisp Studio / Pure White Theme) */
-  --brand-primary: #5a4fc4;      /* Deep Amethyst Purple (From Koala outlines, highly readable) */
-  --brand-secondary: #8095f8;    /* Luminous Periwinkle Blue (From Koala body, soft accent) */
-  --bg-base: #ffffff;            /* Pure clean white background like the header */
+  --brand-primary: #5a4fc4;      /* Deep Amethyst Purple */
+  --brand-secondary: #8095f8;    /* Luminous Periwinkle Blue */
+  --bg-base: #ffffff;            /* Pure clean white background */
   --bg-surface: #f9fafb;         /* Very clean soft white surface */
   --text-main: #110f1d;          /* Deep crisp text */
   --text-muted: #605c75;         /* Muted slate-purple gray */
-  --border-subtle: #e2e4e9;      /* Crisp, defined light border */
+  --border-subtle: #e2e4e9;      /* Crisp neutral gray border matching the reference pills */
   --badge-border: #e2e4e9;       /* Modifiable gray border for badges in light mode */
   --badge-border-hover: #d1d5db; /* Hover state for badge border */
-  --badge-bg: rgba(255, 255, 255, 0.65); /* Translucent light badge background */
+  --badge-bg: #ffffff;           /* Clean solid light badge background */
 
   /* Shadcn aliases */
   --border: #e2e4e9;
@@ -138,15 +137,15 @@ html[data-theme="dark"] {
   --bg-base: #0a0911;          /* Deep Obsidian Purple-Black */
   --bg-surface: #14131e;       /* Blackberry Charcoal Slate */
   --text-main: #f1edf8;        /* Soft ash wisteria-white */
-  --text-muted: #88839d;       /* Muted slate-purple gray */
-  --border-subtle: #242236;    /* Deep wisteria-slate border with crisp edge definition */
-  --badge-border: rgba(255, 255, 255, 0.12); /* Modifiable dark mode badge border (configurable) */
+  --text-muted: #88839d;       /* Muted slate-purple gray (WCAG AA compliant) */
+  --border-subtle: rgba(255, 255, 255, 0.12); /* Clean, visible dark mode border */
+  --badge-border: rgba(255, 255, 255, 0.12); /* Configurable dark mode badge border */
   --badge-border-hover: rgba(255, 255, 255, 0.22); /* Hover state in dark mode */
-  --badge-bg: rgba(20, 19, 30, 0.65); /* Dark translucent badge background */
+  --badge-bg: rgba(20, 19, 30, 0.7); /* Dark translucent badge background */
 
   /* Shadcn aliases */
-  --border: #242236;
-  --input: #242236;
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.12);
   --ring: #9b8df7;
   --background: #0a0911;
   --foreground: #f1edf8;
@@ -161,44 +160,6 @@ html[data-theme="dark"] {
   color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --brand-primary: #9b8df7;
-    --brand-secondary: #8095f8;
-    --bg-base: #0a0911;
-    --bg-surface: #14131e;
-    --text-main: #f1edf8;
-    --text-muted: #88839d;
-    --border-subtle: #242236;
-    --badge-border: rgba(255, 255, 255, 0.12);
-    --badge-border-hover: rgba(255, 255, 255, 0.22);
-    --badge-bg: rgba(20, 19, 30, 0.65);
-
-    --border: #242236;
-    --input: #242236;
-    --ring: #9b8df7;
-    --background: #0a0911;
-    --foreground: #f1edf8;
-    --primary: #9b8df7;
-    --primary-foreground: #0a0911;
-    --secondary: #8095f8;
-    --secondary-foreground: #0a0911;
-    --muted: #14131e;
-    --muted-foreground: #88839d;
-    --card: #14131e;
-    --card-foreground: #f1edf8;
-    color-scheme: dark;
-  }
-}
-
-
-/* Instant theme toggle transition suppression (zero DOM injection overhead) */
-html.disable-transitions,
-html.disable-transitions *,
-html.disable-transitions *::before,
-html.disable-transitions *::after {
-  transition: none !important;
-}
 
 /* Base Styles */
 html,
@@ -260,7 +221,6 @@ html[data-lang="en"] .lang-es {
   border-radius: 9999px;
   border: 3px solid transparent;
   background-clip: padding-box;
-  transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -270,45 +230,91 @@ html[data-lang="en"] .lang-es {
 }
 
 /* Invert dark technology logos in dark mode to ensure high visibility */
-:root[data-theme="dark"] img[src*="nextjs"],
-:root[data-theme="dark"] img[src*="express"],
-:root[data-theme="dark"] img[src*="fastify"],
-:root[data-theme="dark"] img[src*="better-auth"],
-:root[data-theme="dark"] img[src*="resend"],
-:root[data-theme="dark"] img[src*="clerk"],
-:root[data-theme="dark"] img[src*="prisma"],
-:root[data-theme="dark"] img[src*="github"],
-:root[data-theme="dark"] img[src*="shadcn"] {
+.dark img[src*="expressjs.svg"],
+.dark img[src*="icons-prisma.svg"],
+.dark img[src*="better-auth"],
+.dark img[src*="icon-shadcn-ui"],
+.dark img[src*="nextjs"],
+.dark img[src*="express"],
+.dark img[src*="fastify"],
+.dark img[src*="prisma"],
+.dark img[src*="github"],
+.dark img[src*="shadcn"] {
   filter: invert(1) brightness(1.25);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) img[src*="nextjs"],
-  :root:not([data-theme="light"]) img[src*="express"],
-  :root:not([data-theme="light"]) img[src*="fastify"],
-  :root:not([data-theme="light"]) img[src*="better-auth"],
-  :root:not([data-theme="light"]) img[src*="resend"],
-  :root:not([data-theme="light"]) img[src*="clerk"],
-  :root:not([data-theme="light"]) img[src*="prisma"],
-  :root:not([data-theme="light"]) img[src*="github"],
-  :root:not([data-theme="light"]) img[src*="shadcn"] {
-    filter: invert(1) brightness(1.25);
-  }
-}
-
 /* -------------------------------------------------------------
-   HERO ENTRANCE & SECTION TRANSITIONS
+   HERO & HEADER ENTRANCE ANIMATIONS
    ------------------------------------------------------------- */
 
-@keyframes heroFadeInUp {
+/* Initial hidden state for header to eliminate any flash before animations */
+html.js #main-header:not([data-reveal-on-scroll="true"]) {
+  opacity: 0;
+  transform: translateY(-16px);
+  will-change: opacity, transform;
+}
+
+html:not(.js) #main-header {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+@keyframes headerEntrance {
   0% {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(-16px);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Header entrance: on the home page (/) it has a deliberate delay so the Hero unfolds first; on all other pages it appears briskly (0.1s) */
+.animate-header-enter {
+  animation: headerEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+html[data-is-home="true"] .animate-header-enter {
+  animation: headerEntrance 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
+}
+
+/* Initial state for hero elements to eliminate FOUC before animation runs */
+html.js .hero-motion-item {
+  opacity: 0;
+  transform: translateY(20px) scale(0.985);
+  filter: blur(4px);
+  will-change: opacity, transform, filter;
+}
+
+html:not(.js) .hero-motion-item {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+@keyframes heroFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scrollIndicatorBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.animate-scroll-bounce {
+  animation: scrollIndicatorBounce 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 .animate-fade-in-up {
@@ -327,19 +333,43 @@ html[data-lang="en"] .lang-es {
   animation-delay: 300ms;
 }
 
-/* Scroll Reveal progressive enhancement */
+/* -------------------------------------------------------------
+   SCROLL REVEAL (IN & OUT HARMONIOUS TRANSITIONS)
+   ------------------------------------------------------------- */
+
 .scroll-reveal,
 .scroll-reveal-child {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transform: translateY(28px) scale(0.985);
+  filter: blur(4px);
+  transition: 
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
 }
 
 .scroll-reveal.is-visible,
 .scroll-reveal-child.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+}
+
+/* Exit state when leaving viewport above (smooth fade & lift) */
+.scroll-reveal.is-exited-up,
+.scroll-reveal-child.is-exited-up {
+  opacity: 0;
+  transform: translateY(-24px) scale(0.985);
+  filter: blur(4px);
+}
+
+/* Exit state when leaving viewport below */
+.scroll-reveal.is-exited-down,
+.scroll-reveal-child.is-exited-down {
+  opacity: 0;
+  transform: translateY(28px) scale(0.985);
+  filter: blur(4px);
 }
 
 /* Fallback when JS is disabled or before script execution */
@@ -347,17 +377,21 @@ html:not(.js) .scroll-reveal,
 html:not(.js) .scroll-reveal-child {
   opacity: 1 !important;
   transform: none !important;
+  filter: none !important;
 }
 
 /* Reduced motion accessibility */
 @media (prefers-reduced-motion: reduce) {
+  .animate-header-enter,
   .animate-fade-in-up,
+  .hero-motion-item,
   .scroll-reveal,
   .scroll-reveal-child {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
   }
 }
 

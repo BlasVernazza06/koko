@@ -23,6 +23,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin)
 const pathname = Astro.url.pathname;
 const siteOrigin = Astro.site || Astro.url.origin;
 const cleanPath = pathname.replace(/^\/en/, '').replace(/\/$/, '') || '/';
+const isHome = cleanPath === '/';
 const esAlternateURL = new URL(cleanPath, siteOrigin);
 const enAlternateURL = new URL(cleanPath === '/' ? '/en' : `/en${cleanPath}`, siteOrigin);
 const ogImageURL = new URL('/logo.png', siteOrigin).href;
@@ -60,7 +61,7 @@ const schemaData = {
 };
 ---
 <!doctype html>
-<html lang={lang} data-lang={lang}>
+<html lang={lang} data-lang={lang} data-is-home={isHome ? "true" : "false"}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
