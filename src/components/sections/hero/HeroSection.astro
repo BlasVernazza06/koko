@@ -2,6 +2,7 @@
 import HeroAnnouncementBadge from './HeroAnnouncementBadge.astro';
 import HeroHeadline from './HeroHeadline.astro';
 import PackageCommandCard from './PackageCommandCard.svelte';
+import { ArrowDown } from '@lucide/svelte';
 
 interface Props {
   lang?: string;
@@ -19,8 +20,159 @@ const { lang = 'es', class: className = '' } = Astro.props;
   <HeroHeadline />
 
   <!-- Centered Interactive Command Console Flow -->
-  <div class="max-w-xl mx-auto mt-2 sm:mt-3 w-full font-sans flex flex-col items-center justify-center animate-fade-in-up animation-delay-200">
+  <div class="hero-motion-item max-w-xl mx-auto mt-2 sm:mt-3 w-full font-sans flex flex-col items-center justify-center">
     <!-- Centered Runtime + Console Pill -->
     <PackageCommandCard client:load lang={lang} />
   </div>
+
+  <!-- Bottom Scroll-Down Indicator Button (Anchored to the very bottom edge of viewport) -->
+  <div id="hero-scroll-indicator" class="hero-motion-item absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center transition-all duration-300 pointer-events-auto z-20">
+    <a
+      href="#terminal"
+      class="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg-surface/85 hover:bg-bg-surface border border-border-subtle hover:border-brand-primary/50 text-text-muted hover:text-text-main shadow-sm backdrop-blur-md transition-all duration-200 cursor-pointer text-xs font-mono select-none"
+      aria-label={lang === 'es' ? 'Desplazarse hacia abajo al simulador' : 'Scroll down to interactive simulator'}
+      title={lang === 'es' ? 'Explorar' : 'Explore'}
+    >
+      <span class="text-[11px] font-sans text-text-muted group-hover:text-text-main transition-colors">
+        <span class="lang-es">Explorar</span>
+        <span class="lang-en">Explore</span>
+      </span>
+      <div class="animate-scroll-bounce flex items-center justify-center text-brand-primary">
+        <ArrowDown size={13} class="group-hover:translate-y-0.5 transition-transform duration-200" />
+      </div>
+    </a>
+  </div>
 </section>
+
+<script>
+  import { animate, stagger } from 'motion';
+
+  function setupHeroMotion() {
+    const hero = document.getElementById('hero');
+    if (!hero) return;
+
+    const items = hero.querySelectorAll('.hero-motion-item');
+    if (!items || items.length === 0) return;
+
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReducedMotion) {
+      items.forEach((item) => {
+        (item as HTMLElement).style.opacity = '1';
+        (item as HTMLElement).style.transform = 'none';
+      });
+      return;
+    }
+
+    let isHeroInView = false;
+    let hasAnimatedOnce = false;
+
+    const triggerHeroEnterAnimation = () => {
+      animate(
+        items,
+        {
+          opacity: [0, 1],
+          y: [20, 0],
+          scale: [0.985, 1],
+          filter: ['blur(4px)', 'blur(0px)'],
+        },
+        {
+          delay: stagger(0.09, { start: 0.05 }),
+          duration: 0.65,
+          ease: [0.16, 1, 0.3, 1],
+        }
+      );
+    };
+
+    const triggerHeroExitAnimation = () => {
+      animate(
+        items,
+        {
+          opacity: [1, 0],
+          y: [0, -18],
+          scale: [1, 0.985],
+          filter: ['blur(0px)', 'blur(4px)'],
+        },
+        {
+          duration: 0.4,
+          ease: [0.16, 1, 0.3, 1],
+        }
+      );
+    };
+
+    // Animate on initial load
+    triggerHeroEnterAnimation();
+    hasAnimatedOnce = true;
+
+    // IntersectionObserver to detect leaving and re-entering the hero (scrolling down and back to top)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Re-entering hero after leaving it
+            if (!isHeroInView && hasAnimatedOnce) {
+              triggerHeroEnterAnimation();
+            }
+            isHeroInView = true;
+          } else {
+            // User scrolled away from hero
+            if (isHeroInView && hasAnimatedOnce) {
+              triggerHeroExitAnimation();
+            }
+            isHeroInView = false;
+          }
+        });
+      },
+      {
+        threshold: 0.15,
+      }
+    );
+
+    // Immediate hide/show for the scroll indicator as user scrolls
+    const scrollIndicator = hero.querySelector('#hero-scroll-indicator') as HTMLElement | null;
+    let isIndicatorDismissed = false;
+
+    const handleIndicatorScroll = () => {
+      if (!scrollIndicator) return;
+      const scrollY = window.scrollY;
+      if (scrollY > 25) {
+        if (!isIndicatorDismissed) {
+          isIndicatorDismissed = true;
+          scrollIndicator.style.opacity = '0';
+          scrollIndicator.style.transform = 'translateY(12px)';
+          scrollIndicator.style.pointerEvents = 'none';
+        }
+      } else {
+        if (isIndicatorDismissed) {
+          isIndicatorDismissed = false;
+          scrollIndicator.style.opacity = '1';
+          scrollIndicator.style.transform = 'translateY(0)';
+          scrollIndicator.style.pointerEvents = 'auto';
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleIndicatorScroll, { passive: true });
+    handleIndicatorScroll();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleIndicatorScroll);
+    };
+  }
+
+  let cleanupHeroMotion: (() => void) | null | undefined = null;
+
+  const init = () => {
+    if (cleanupHeroMotion) cleanupHeroMotion();
+    cleanupHeroMotion = setupHeroMotion();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:after-swap', init);
+</script>

@@ -6,9 +6,9 @@ interface Props {
 const { class: className = '' } = Astro.props;
 ---
 
-<div class={`text-center max-w-4xl mx-auto mb-3 sm:mb-4 animate-fade-in-up animation-delay-100 ${className}`}>
+<div class={`text-center max-w-4xl mx-auto mb-3 sm:mb-4 ${className}`}>
   <!-- SpaceFS High-Contrast Clamp Headline -->
-  <h1 class="text-[clamp(34px,5vw,64px)] leading-[1.04] tracking-[-0.035em] text-balance font-medium mb-3 sm:mb-3.5 font-sans">
+  <h1 class="hero-motion-item text-[clamp(34px,5vw,64px)] leading-[1.04] tracking-[-0.035em] text-balance font-medium mb-3 sm:mb-3.5 font-sans">
     <span class="lang-es">
       <span class="block text-text-main font-bold">Crea tu App...</span>
       <span class="block text-text-muted font-normal mt-1 sm:mt-1.5">
@@ -24,7 +24,7 @@ const { class: className = '' } = Astro.props;
   </h1>
 
   <!-- Koko Concise Subtitle -->
-  <p class="max-w-[24rem] sm:max-w-[28rem] text-base sm:text-[17px] text-text-muted leading-relaxed text-pretty mx-auto font-sans font-normal">
+  <p class="hero-motion-item max-w-[24rem] sm:max-w-[28rem] text-base sm:text-[17px] text-text-muted leading-relaxed text-pretty mx-auto font-sans font-normal">
     <span class="lang-es">Motor de scaffolding nativo en Go para crear, evolucionar y blindar proyectos modernos sin drift de estándares.</span>
     <span class="lang-en">Native Go scaffolding engine to build, evolve, and protect modern projects with zero standard drift.</span>
   </p>

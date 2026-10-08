@@ -13,7 +13,7 @@ const { lang = 'es', class: className = '' } = Astro.props;
   <!-- SpaceFS / Linear High-End CTA Pill Under Console -->
   <a
     href={lang === 'es' ? '/builder' : '/en/builder'}
-    class="group/builder relative inline-flex items-center justify-center gap-2 px-4.5 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-brand-primary/10 via-brand-secondary/10 to-brand-primary/10 hover:from-brand-primary/20 hover:via-brand-secondary/20 hover:to-brand-primary/20 dark:from-white/[0.04] dark:via-white/[0.07] dark:to-white/[0.04] dark:hover:from-white/[0.09] dark:hover:via-white/[0.12] dark:hover:to-white/[0.09] backdrop-blur-xl border border-border-subtle/80 dark:border-white/[0.08] hover:border-brand-primary/50 dark:hover:border-white/20 shadow-xs hover:shadow-[0_0_20px_rgba(90,79,196,0.2)] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 overflow-hidden text-center cursor-pointer"
+    class="group/builder relative inline-flex items-center justify-center gap-2 px-4.5 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-brand-primary/10 via-brand-secondary/10 to-brand-primary/10 hover:from-brand-primary/20 hover:via-brand-secondary/20 hover:to-brand-primary/20 dark:from-white/[0.04] dark:via-white/[0.07] dark:to-white/[0.04] dark:hover:from-white/[0.09] dark:hover:via-white/[0.12] dark:hover:to-white/[0.09] backdrop-blur-xl border border-border-subtle/80 dark:border-white/[0.08] hover:border-brand-primary/50 dark:hover:border-white/20 shadow-xs hover:shadow-[0_0_20px_rgba(90,79,196,0.2)] hover:-translate-y-0.5 active:scale-[0.98] transition-transform duration-200 overflow-hidden text-center cursor-pointer"
   >
     <!-- Top-edge specular highlight -->
     <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none"></div>
@@ -22,10 +22,10 @@ const { lang = 'es', class: className = '' } = Astro.props;
     <Sparkles size={13} class="text-brand-primary dark:text-brand-secondary animate-pulse shrink-0" />
 
     <!-- CTA Text -->
-    <span class="text-xs sm:text-[12.5px] font-medium text-text-main group-hover/builder:text-brand-primary dark:group-hover/builder:text-white transition-colors flex items-center gap-1.5">
+    <span class="text-xs sm:text-[12.5px] font-medium text-text-main group-hover/builder:text-brand-primary dark:group-hover/builder:text-white flex items-center gap-1.5">
       <span class="lang-es">Diseñar arquitectura en el Visual Builder</span>
       <span class="lang-en">Design your architecture visually</span>
-      <ArrowUpRight size={13} class="text-text-muted group-hover/builder:text-brand-primary dark:group-hover/builder:text-white group-hover/builder:translate-x-0.5 group-hover/builder:-translate-y-0.5 transition-all duration-200 shrink-0" />
+      <ArrowUpRight size={13} class="text-text-muted group-hover/builder:text-brand-primary dark:group-hover/builder:text-white group-hover/builder:translate-x-0.5 group-hover/builder:-translate-y-0.5 transition-transform duration-200 shrink-0" />
     </span>
   </a>
 </div>
