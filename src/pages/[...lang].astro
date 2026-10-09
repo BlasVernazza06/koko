@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import AmbientGlow from '@/components/ui/AmbientGlow.astro';
+import DustDriftCanvas from '@/components/ui/DustDriftCanvas.astro';
 import HeroSection from '@/components/sections/hero/HeroSection.astro';
 import TerminalSimulatorSection from '@/components/sections/terminal/TerminalSimulatorSection.astro';
 import FeaturesSection from '@/components/sections/features/FeaturesSection.astro';
@@ -32,6 +33,9 @@ const description = currentLang === 'es'
     
     <!-- Ambient brand background glows (Full Page Aura) -->
     <AmbientGlow />
+
+    <!-- Full-page subtle stardust & aurora drift (non-invasive, accompanies scroll) -->
+    <DustDriftCanvas />
 
     <!-- Hero Section -->
     <HeroSection lang={currentLang} />

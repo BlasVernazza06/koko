@@ -1,0 +1,238 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div 
+  class={`fixed inset-0 pointer-events-none select-none z-0 overflow-hidden ${className}`} 
+  aria-hidden="true"
+>
+  <canvas 
+    id="flow-field-canvas" 
+    class="w-full h-full block"
+  ></canvas>
+</div>
+
+<script>
+  function initFlowField() {
+    const canvas = document.getElementById('flow-field-canvas') as HTMLCanvasElement | null;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    let animId: number;
+    let width = 0;
+    let height = 0;
+    let time = 0;
+    let scrollY = window.scrollY || 0;
+    let targetScrollY = scrollY;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function resize() {
+      if (!canvas) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.resetTransform?.();
+      ctx.scale(dpr, dpr);
+    }
+
+    function onScroll() {
+      targetScrollY = window.scrollY || 0;
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Dark/Light aware colors
+    function getPalette() {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        return {
+          c1: { r: 96, g: 130, b: 245 },   // Cobalt
+          c2: { r: 147, g: 112, b: 249 },  // Violet / Amethyst
+          c3: { r: 245, g: 140, b: 70 },   // Warm Copper
+          bgAlpha: 0.16,
+          lineAlpha: 0.28
+        };
+      } else {
+        return {
+          c1: { r: 70, g: 105, b: 210 },   // Clean Blue
+          c2: { r: 115, g: 90, b: 200 },   // Deep Amethyst
+          c3: { r: 205, g: 120, b: 65 },   // Warm Terracotta / Copper
+          bgAlpha: 0.12,
+          lineAlpha: 0.22
+        };
+      }
+    }
+
+    // Number of flowing stream lines across screen
+    const NUM_STREAMS = 28;
+    const streams: {
+      seed: number;
+      speed: number;
+      baseYRatio: number;
+      width: number;
+      amplitude: number;
+      freq: number;
+      colorT: number;
+    }[] = [];
+
+    for (let i = 0; i < NUM_STREAMS; i++) {
+      const ratio = i / (NUM_STREAMS - 1);
+      streams.push({
+        seed: Math.random() * 100,
+        speed: (Math.random() * 0.0006 + 0.0003) * (prefersReducedMotion ? 0 : 1),
+        baseYRatio: 0.15 + ratio * 0.75, // spread across viewport
+        width: Math.random() * 1.5 + 0.8,
+        amplitude: 35 + Math.random() * 45,
+        freq: 0.0012 + Math.random() * 0.001,
+        colorT: ratio // 0 to 1 mapping from blue -> violet -> copper
+      });
+    }
+
+    // Floating constellation / dust nodes that drift with scroll
+    const NUM_NODES = 55;
+    const nodes: {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      radius: number;
+      alpha: number;
+      depth: number; // parallax factor with scroll
+    }[] = [];
+
+    for (let i = 0; i < NUM_NODES; i++) {
+      nodes.push({
+        x: Math.random(),
+        y: Math.random(),
+        vx: (Math.random() - 0.5) * 0.00015,
+        vy: (Math.random() - 0.5) * 0.00015,
+        radius: Math.random() * 1.6 + 0.6,
+        alpha: Math.random() * 0.45 + 0.15,
+        depth: Math.random() * 0.4 + 0.1
+      });
+    }
+
+    function draw() {
+      // Smooth scroll interpolation
+      scrollY += (targetScrollY - scrollY) * 0.08;
+
+      ctx.clearRect(0, 0, width, height);
+      const pal = getPalette();
+
+      // 1. Draw flowing waves (Stream ribbons)
+      const scrollOffset = scrollY * 0.15;
+
+      for (let s = 0; s < streams.length; s++) {
+        const stream = streams[s];
+        
+        // Color interpolation based on colorT
+        let r: number, g: number, b: number;
+        if (stream.colorT < 0.5) {
+          const f = stream.colorT / 0.5;
+          r = pal.c1.r + (pal.c2.r - pal.c1.r) * f;
+          g = pal.c1.g + (pal.c2.g - pal.c1.g) * f;
+          b = pal.c1.b + (pal.c2.b - pal.c1.b) * f;
+        } else {
+          const f = (stream.colorT - 0.5) / 0.5;
+          r = pal.c2.r + (pal.c3.r - pal.c2.r) * f;
+          g = pal.c2.g + (pal.c3.g - pal.c2.g) * f;
+          b = pal.c2.b + (pal.c3.b - pal.c2.b) * f;
+        }
+
+        ctx.beginPath();
+        const baseCenterY = height * stream.baseYRatio;
+        // Scroll pushes waves gently up with parallax
+        const effectiveY = (baseCenterY - (scrollOffset * (0.4 + stream.colorT * 0.6)) % (height * 1.4) + height * 1.4) % (height * 1.4) - height * 0.2;
+
+        const step = 20;
+        let first = true;
+
+        for (let x = -20; x <= width + 20; x += step) {
+          // Compound sinusoidal waves simulating a flow field
+          const wave1 = Math.sin(x * stream.freq + time * 1.4 + stream.seed) * stream.amplitude;
+          const wave2 = Math.cos(x * 0.0025 - time * 0.8 + stream.seed * 0.5) * (stream.amplitude * 0.4);
+          const y = effectiveY + wave1 + wave2;
+
+          if (first) {
+            ctx.moveTo(x, y);
+            first = false;
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+
+        ctx.strokeStyle = `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, ${pal.lineAlpha})`;
+        ctx.lineWidth = stream.width;
+        ctx.stroke();
+      }
+
+      // 2. Draw floating ambient dust / constellation particles connected to scroll
+      for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
+        
+        node.x += node.vx;
+        node.y += node.vy;
+        if (node.x < 0) node.x += 1;
+        if (node.x > 1) node.x -= 1;
+        if (node.y < 0) node.y += 1;
+        if (node.y > 1) node.y -= 1;
+
+        const px = node.x * width;
+        // Parallax position with scroll
+        const py = ((node.y * height - scrollY * node.depth) % height + height) % height;
+
+        // Color based on x position (blue on left, copper on right like SpaceFS)
+        const t = px / width;
+        let nr: number, ng: number, nb: number;
+        if (t < 0.5) {
+          const f = t / 0.5;
+          nr = pal.c1.r + (pal.c2.r - pal.c1.r) * f;
+          ng = pal.c1.g + (pal.c2.g - pal.c1.g) * f;
+          nb = pal.c1.b + (pal.c2.b - pal.c1.b) * f;
+        } else {
+          const f = (t - 0.5) / 0.5;
+          nr = pal.c2.r + (pal.c3.r - pal.c2.r) * f;
+          ng = pal.c2.g + (pal.c3.g - pal.c2.g) * f;
+          nb = pal.c2.b + (pal.c3.b - pal.c2.b) * f;
+        }
+
+        ctx.beginPath();
+        ctx.arc(px, py, node.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${Math.round(nr)}, ${Math.round(ng)}, ${Math.round(nb)}, ${node.alpha})`;
+        ctx.fill();
+      }
+
+      time += 0.007;
+      animId = requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', resize);
+    };
+  }
+
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('astro:page-load', () => {
+    cleanup?.();
+    cleanup = initFlowField();
+  });
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    cleanup = initFlowField();
+  }
+</script>

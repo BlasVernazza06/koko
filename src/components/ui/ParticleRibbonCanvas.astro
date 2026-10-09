@@ -1,0 +1,214 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class={`particle-ribbon-wrapper absolute inset-0 pointer-events-none select-none overflow-hidden z-0 ${className}`} aria-hidden="true">
+  <canvas id="particle-ribbon-canvas" class="w-full h-full block opacity-85"></canvas>
+</div>
+
+<script>
+  function initParticleRibbon() {
+    const canvas = document.getElementById('particle-ribbon-canvas') as HTMLCanvasElement | null;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    let animationFrameId: number;
+    let width = 0;
+    let height = 0;
+    let time = 0;
+
+    // Check prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Resize handler with devicePixelRatio support for crisp particles
+    function resize() {
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = rect.width;
+      height = rect.height;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.resetTransform?.();
+      ctx.scale(dpr, dpr);
+    }
+
+    // Colors matching SpaceFS palette: Deep Indigo/Blue transitioning to Warm Copper/Amber
+    // Dynamically aware of Dark Mode / Light Mode
+    function getColors() {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        return {
+          blue: { r: 90, g: 130, b: 235 },      // Luminous cobalt
+          purple: { r: 130, g: 110, b: 245 },   // Electric purple
+          amber: { r: 235, g: 145, b: 75 },     // Bright copper/amber
+          alphaMultiplier: 0.65
+        };
+      } else {
+        return {
+          blue: { r: 55, g: 90, b: 175 },       // SpaceFS slate blue
+          purple: { r: 100, g: 80, b: 190 },    // Muted amethyst
+          amber: { r: 195, g: 115, b: 60 },     // SpaceFS warm copper
+          alphaMultiplier: 0.55
+        };
+      }
+    }
+
+    // Particle distribution parameters
+    const PARTICLE_COUNT = 3200;
+    const particles: {
+      t: number;        // position along curve [0, 1]
+      offsetY: number;  // dispersion across ribbon thickness
+      size: number;     // radius
+      baseAlpha: number;
+      speed: number;
+      jitter: number;
+    }[] = [];
+
+    // Pre-populate particles with Gaussian-like spread
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      // Gaussian approximation using Irwin-Hall
+      const u1 = Math.random();
+      const u2 = Math.random();
+      const normSpread = (u1 + u2 - 1) * 2; // ~ [-1, 1] concentrated at 0
+      
+      particles.push({
+        t: Math.random(),
+        offsetY: normSpread,
+        size: Math.random() * 1.35 + 0.55,
+        baseAlpha: Math.random() * 0.75 + 0.25,
+        speed: (Math.random() * 0.0003 + 0.00015) * (prefersReducedMotion ? 0 : 1),
+        jitter: (Math.random() - 0.5) * 8
+      });
+    }
+
+    // Cubic Bézier curve evaluator for the ribbon's central spine
+    function getSpinePoint(u: number, tOffset: number) {
+      // SpaceFS ribbon starts bottom-left, swoops gently up through center, then rises towards top-right
+      const startX = -width * 0.1;
+      const startY = height * 0.76 + Math.sin(tOffset * 0.4) * 25;
+
+      const cp1X = width * 0.25;
+      const cp1Y = height * 0.72 + Math.sin(tOffset * 0.6 + 1.2) * 35;
+
+      const cp2X = width * 0.60;
+      const cp2Y = height * 0.32 + Math.cos(tOffset * 0.5) * 30;
+
+      const endX = width * 1.15;
+      const endY = height * 0.22 + Math.sin(tOffset * 0.45 + 2.5) * 25;
+
+      // De Casteljau / Bernstein cubic bezier
+      const oneMinusU = 1 - u;
+      const x =
+        oneMinusU * oneMinusU * oneMinusU * startX +
+        3 * oneMinusU * oneMinusU * u * cp1X +
+        3 * oneMinusU * u * u * cp2X +
+        u * u * u * endX;
+
+      const y =
+        oneMinusU * oneMinusU * oneMinusU * startY +
+        3 * oneMinusU * oneMinusU * u * cp1Y +
+        3 * oneMinusU * u * u * cp2Y +
+        u * u * u * endY;
+
+      // Tangent vector for perpendicular thickness offset
+      const dx =
+        3 * oneMinusU * oneMinusU * (cp1X - startX) +
+        6 * oneMinusU * u * (cp2X - cp1X) +
+        3 * u * u * (endX - cp2X);
+
+      const dy =
+        3 * oneMinusU * oneMinusU * (cp1Y - startY) +
+        6 * oneMinusU * u * (cp2Y - cp1Y) +
+        3 * u * u * (endY - cp2Y);
+
+      const len = Math.hypot(dx, dy) || 1;
+      const normalX = -dy / len;
+      const normalY = dx / len;
+
+      return { x, y, normalX, normalY };
+    }
+
+    // Draw frame
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+
+      const colors = getColors();
+      const currentSimTime = time;
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const p = particles[i];
+
+        // Advance particle position along curve
+        p.t += p.speed;
+        if (p.t > 1) p.t -= 1;
+
+        const spine = getSpinePoint(p.t, currentSimTime);
+
+        // Ribbon thickness envelope (tapered at ends, generous in center/body)
+        const envelope = Math.sin(p.t * Math.PI);
+        const maxThickness = (height * 0.26) * (0.45 + 0.75 * envelope);
+
+        // Secondary wave undulation for organic sand/dust trail effect
+        const waveUndulation = Math.sin(p.t * 12 + currentSimTime * 1.2) * 12;
+
+        const px = spine.x + spine.normalX * (p.offsetY * maxThickness + waveUndulation);
+        const py = spine.y + spine.normalY * (p.offsetY * maxThickness + waveUndulation) + p.jitter;
+
+        // SpaceFS color interpolation: Blue (p.t < 0.4) -> Purple (0.4 ~ 0.55) -> Amber/Copper (> 0.55)
+        let r: number, g: number, b: number;
+        if (p.t < 0.45) {
+          const factor = p.t / 0.45;
+          r = colors.blue.r + (colors.purple.r - colors.blue.r) * factor;
+          g = colors.blue.g + (colors.purple.g - colors.blue.g) * factor;
+          b = colors.blue.b + (colors.purple.b - colors.blue.b) * factor;
+        } else {
+          const factor = Math.min((p.t - 0.45) / 0.45, 1);
+          r = colors.purple.r + (colors.amber.r - colors.purple.r) * factor;
+          g = colors.purple.g + (colors.amber.g - colors.purple.g) * factor;
+          b = colors.purple.b + (colors.amber.b - colors.purple.b) * factor;
+        }
+
+        // Density fade towards top/bottom borders of ribbon
+        const edgeFade = 1 - Math.abs(p.offsetY);
+        const alpha = p.baseAlpha * edgeFade * envelope * colors.alphaMultiplier;
+
+        if (alpha > 0.01 && px >= -10 && px <= width + 10 && py >= -10 && py <= height + 10) {
+          ctx.fillStyle = `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, ${alpha.toFixed(3)})`;
+          ctx.beginPath();
+          ctx.arc(px, py, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      time += 0.008;
+      animationFrameId = requestAnimationFrame(draw);
+    }
+
+    // Observe size changes
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', resize);
+    };
+  }
+
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('astro:page-load', () => {
+    cleanup?.();
+    cleanup = initParticleRibbon();
+  });
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    cleanup = initParticleRibbon();
+  }
+</script>
