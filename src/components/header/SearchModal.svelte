@@ -359,7 +359,7 @@
 >
   <div class="flex items-center gap-1.5 sm:gap-2">
     <Search size={13} class="text-text-muted group-hover:text-text-main shrink-0" />
-    <span class="font-semibold text-xs sm:text-sm text-text-muted group-hover:text-text-main">{lang === 'es' ? 'Buscar docs' : 'Search docs'}</span>
+    <span class="font-semibold text-xs sm:text-sm text-text-main group-hover:text-text-main">{lang === 'es' ? 'Buscar docs' : 'Search docs'}</span>
   </div>
   <kbd class="hidden xl:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] shadow-xs border border-border-subtle bg-bg-base text-text-muted">
     <span>Ctrl K</span>

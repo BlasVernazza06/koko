@@ -11,9 +11,9 @@ const { lang } = Astro.props;
 const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es');
 ---
 
-<nav class="flex items-center gap-5 sm:gap-6 px-4 py-1.5 rounded-full bg-badge-bg border border-border-subtle backdrop-blur-md shadow-xs select-none font-sans relative">
+<nav class="header-nav-container flex items-center gap-5 sm:gap-6 px-4 py-1.5 rounded-full bg-badge-bg border border-border-subtle backdrop-blur-md shadow-xs select-none font-sans relative transition-[border-radius,border-color,background-color] duration-200">
   <!-- Docs with Mega Dropdown -->
-  <div class="relative group py-1">
+  <div class="relative group py-1 has-dropdown">
     <a 
       href={currentLang === 'es' ? '/docs' : '/en/docs'}
       class="text-[13px] font-medium text-text-muted hover:text-text-main flex items-center gap-1.5 cursor-pointer relative py-0.5"
@@ -40,7 +40,7 @@ const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es')
   </div>
 
   <!-- Recetas with Mega Dropdown -->
-  <div class="relative group py-1">
+  <div class="relative group py-1 has-dropdown">
     <a 
       href={currentLang === 'es' ? '/#showcase' : '/en/#showcase'}
       class="text-[13px] font-medium text-text-muted hover:text-text-main flex items-center gap-1.5 cursor-pointer relative py-0.5"
@@ -57,16 +57,18 @@ const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es')
 </nav>
 
 <style>
+  /* Morphing transition and seamless union for nav-dropdown */
   :global(.nav-dropdown) {
     pointer-events: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
-    transform: translateY(4px) translateZ(0);
-    transition: opacity 0.15s ease-out,
-                transform 0.15s ease-out,
-                visibility 0.15s ease-out;
+    transform: translateY(6px) scale(0.99);
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.2s ease-out;
     will-change: opacity, transform;
     contain: layout style;
+    transform-origin: top center;
   }
 
   :global(.group:hover > .nav-dropdown),
@@ -74,6 +76,31 @@ const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es')
     pointer-events: auto !important;
     visibility: visible !important;
     opacity: 1 !important;
-    transform: translateY(0) translateZ(0);
+    transform: translateY(0) scale(1);
+  }
+
+  /* Seamless visual morph bridge: bridge element fusing nav item with modal */
+  .has-dropdown::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: -4px;
+    right: -4px;
+    height: 12px;
+    background: transparent;
+    z-index: 55;
+  }
+
+  /* When hovering an item with dropdown, seamlessly mask the seam between nav bar and dropdown */
+  .has-dropdown:hover::before,
+  .has-dropdown:focus-within::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: -8px;
+    right: -8px;
+    height: 14px;
+    background-color: var(--bg-surface);
+    z-index: 52;
   }
 </style>
