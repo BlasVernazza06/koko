@@ -1,6 +1,7 @@
 ---
 import Header from '@/components/header/header.astro';
 import '@/styles/global.css';
+import 'lenis/dist/lenis.css';
 
 interface Props {
   lang?: string;
@@ -61,7 +62,7 @@ const schemaData = {
 };
 ---
 <!doctype html>
-<html lang={lang} data-lang={lang} data-is-home={isHome ? "true" : "false"}>
+<html lang={lang} data-lang={lang} data-is-home={isHome ? "true" : "false"} class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -120,9 +121,65 @@ const schemaData = {
 		</script>
 		<script>
 			import '../../sentry.client.config.js';
+			import Lenis from 'lenis';
+
+			let lenisInstance: Lenis | null = null;
+
+			function setupSmoothScroll() {
+				if (typeof window === 'undefined') return;
+
+				// Respect user preference for reduced motion
+				if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+					return;
+				}
+
+				if (lenisInstance) {
+					lenisInstance.destroy();
+				}
+
+				lenisInstance = new Lenis({
+					autoRaf: true,
+					duration: 1.2,
+					smoothWheel: true,
+					touchMultiplier: 1.2,
+					easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+				});
+
+				(window as any).__lenis = lenisInstance;
+
+				// Smooth scrolling for internal anchor links (#features, #docs, etc.)
+				document.querySelectorAll('a[href*="#"]').forEach((anchor) => {
+					anchor.addEventListener('click', (e) => {
+						const href = anchor.getAttribute('href');
+						if (!href) return;
+						const hashIndex = href.indexOf('#');
+						if (hashIndex === -1) return;
+						const hash = href.slice(hashIndex);
+						if (hash.length > 1) {
+							const target = document.querySelector(hash);
+							if (target) {
+								e.preventDefault();
+								lenisInstance?.scrollTo(target as HTMLElement, { offset: -70, duration: 1.2 });
+							}
+						}
+					});
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', setupSmoothScroll);
+			} else {
+				setupSmoothScroll();
+			}
+
+			document.addEventListener('astro:before-swap', () => {
+				lenisInstance?.destroy();
+				lenisInstance = null;
+			});
+			document.addEventListener('astro:after-swap', setupSmoothScroll);
 		</script>
 	</head>
-	<body class="antialiased">
+	<body class="antialiased scroll-smooth">
 		<Header revealOnScroll={revealHeaderOnScroll} />
 		<slot />
 	</body>

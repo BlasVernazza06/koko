@@ -24,11 +24,15 @@ export default defineConfig({
         }
       }
     }),
-    sentry({
-      project: "koko-web",
-      org: "obsidianui",
-      authToken: process.env.SENTRY_AUTH_TOKEN
-    })
+    // Activar Sentry únicamente en entornos de producción con token de autenticación
+    ...(process.env.NODE_ENV === 'production' && process.env.SENTRY_AUTH_TOKEN ? [
+      sentry({
+        project: "koko-web",
+        org: "obsidianui",
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        telemetry: false
+      })
+    ] : [])
   ],
 
   vite: {
