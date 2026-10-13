@@ -113,7 +113,7 @@
       aria-label={lang === 'es' ? 'Copiar' : 'Copy'}
       class="flex items-center gap-1.5 px-3 py-1 text-xs font-bold font-mono rounded-full border transition-transform duration-150 cursor-pointer active:scale-95 select-none shrink-0
         {isCopied 
-          ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.25)]' 
+          ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' 
           : 'bg-bg-base hover:bg-bg-surface border-border-subtle text-text-main hover:border-brand-primary/40'}"
     >
       {#if isCopied}

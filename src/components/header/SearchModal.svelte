@@ -354,16 +354,16 @@
 <button 
   type="button"
   onclick={toggleModal}
-  class="flex items-center justify-between gap-2 sm:gap-2.5 px-3 sm:px-3.5 py-2 rounded-full border border-border-subtle bg-bg-surface hover:bg-bg-base text-text-muted hover:text-text-main cursor-pointer select-none shadow-xs group shrink-0"
+  class="flex items-center justify-between gap-2 sm:gap-2.5 px-3 sm:px-3.5 py-2 rounded-full border border-border-subtle bg-badge-bg hover:bg-bg-base/70 text-text-muted hover:text-text-main cursor-pointer select-none shadow-xs group shrink-0"
   aria-label="Search"
 >
   <div class="flex items-center gap-1.5 sm:gap-2">
     <Search size={13} class="text-text-muted group-hover:text-text-main shrink-0" />
     <span class="font-semibold text-xs sm:text-sm text-text-main group-hover:text-text-main">{lang === 'es' ? 'Buscar docs' : 'Search docs'}</span>
   </div>
-  <kbd class="hidden xl:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] shadow-xs border border-border-subtle bg-bg-base text-text-muted">
-    <span>Ctrl K</span>
-  </kbd>
+  <span class="hidden xl:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full font-semibold text-[11px] shadow-xs border border-border-subtle bg-badge-bg text-text-muted">
+    Ctrl K
+  </span>
 </button>
 
 {#if isOpen}
@@ -395,7 +395,7 @@
           <button 
             type="button"
             onclick={toggleModal}
-            class="px-2.5 py-0.5 rounded-full text-[11px] font-mono border border-border-subtle/80 bg-bg-base/70 text-text-muted hover:text-text-main cursor-pointer"
+            class="px-2.5 py-0.5 rounded-full text-[11px]  border border-border-subtle/80 bg-bg-base/70 text-text-muted hover:text-text-main cursor-pointer"
           >
             esc
           </button>
@@ -478,7 +478,7 @@
       <div class="h-px bg-border-subtle/70 mx-4 sm:mx-5"></div>
 
       <!-- Jump To Label -->
-      <div class="px-5 sm:px-6 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-text-muted/70 font-mono">
+      <div class="px-5 sm:px-6 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-text-muted/70 ">
         {lang === 'es' ? 'IR A' : 'JUMP TO'}
       </div>
 
@@ -487,7 +487,7 @@
         {#if results.length === 0}
           <!-- No results found -->
           <div class="p-8 text-center text-text-muted text-xs flex flex-col items-center justify-center gap-3">
-            <div class="w-20 h-20 rounded-2xl p-2 flex items-center justify-center opacity-80">
+            <div class="w-30 h-30 rounded-2xl p-2 flex items-center justify-center opacity-80">
               <img src="/koko-binoculares.png" alt="Koko buscando" class="w-full h-full object-contain filter drop-shadow-md" />
             </div>
             <p class="text-sm font-semibold text-text-main">
@@ -511,7 +511,7 @@
               <!-- Icon Container Pill -->
               <div class="w-8 h-8 rounded-full flex items-center justify-center bg-bg-base border border-border-subtle text-text-muted group-hover/item:text-brand-primary shrink-0 shadow-2xs">
                 {#if result.section.toLowerCase().includes('cli') || result.section.toLowerCase().includes('terminal')}
-                  <span class="text-xs font-mono font-bold">&gt;_</span>
+                  <span class="text-xs  font-bold">&gt;_</span>
                 {:else if result.section.toLowerCase().includes('intro') || result.title.toLowerCase().includes('inicio')}
                   <span class="text-xs">⚐</span>
                 {:else if result.section.toLowerCase().includes('avanzad') || result.title.toLowerCase().includes('receta')}
@@ -564,21 +564,21 @@
       <div class="px-5 py-2.5 border-t border-border-subtle/80 bg-bg-surface/50 flex items-center justify-between text-[11px] text-text-muted">
         <div class="flex items-center gap-2 sm:gap-3">
           <div class="flex items-center gap-1">
-            <kbd class="px-1.5 py-0.5 rounded-md border border-border-subtle bg-bg-base text-[10px] font-mono">↑</kbd>
-            <kbd class="px-1.5 py-0.5 rounded-md border border-border-subtle bg-bg-base text-[10px] font-mono">↓</kbd>
+            <kbd class="px-1.5 py-0.5 rounded-md border border-border-subtle bg-bg-base text-[10px] ">↑</kbd>
+            <kbd class="px-1.5 py-0.5 rounded-md border border-border-subtle bg-bg-base text-[10px] ">↓</kbd>
             <span class="ml-0.5">{lang === 'es' ? 'Navegar' : 'Navigate'}</span>
           </div>
           <div class="hidden sm:flex items-center gap-1">
-            <kbd class="px-1.5 py-0.5 rounded-md border border-border-subtle bg-bg-base text-[10px] font-mono">↵</kbd>
+            <kbd class="px-1.5 py-0.5 rounded-md border border-border-subtle bg-bg-base text-[10px] ">↵</kbd>
             <span class="ml-0.5">{lang === 'es' ? 'Abrir' : 'Open'}</span>
           </div>
           <div class="hidden sm:flex items-center gap-1">
-            <kbd class="px-1.5 py-0.5 rounded-md border border-border-subtle bg-bg-base text-[10px] font-mono">tab</kbd>
+            <kbd class="px-1.5 py-0.5 rounded-md border border-border-subtle bg-bg-base text-[10px] ">tab</kbd>
             <span class="ml-0.5">{lang === 'es' ? 'Filtro' : 'Filter'}</span>
           </div>
         </div>
         <div class="flex items-center gap-1">
-          <kbd class="px-1.5 py-0.5 rounded-md border border-border-subtle bg-bg-base text-[10px] font-mono">esc</kbd>
+          <kbd class="px-1.5 py-0.5 rounded-md border border-border-subtle bg-bg-base text-[10px] ">esc</kbd>
           <span class="ml-0.5">{lang === 'es' ? 'Cerrar' : 'Close'}</span>
         </div>
       </div>
