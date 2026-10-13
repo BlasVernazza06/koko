@@ -283,14 +283,12 @@ html[data-is-home="true"] .animate-header-enter {
 html.js .hero-motion-item {
   opacity: 0;
   transform: translateY(20px) scale(0.985);
-  filter: blur(4px);
-  will-change: opacity, transform, filter;
+  will-change: opacity, transform;
 }
 
 html:not(.js) .hero-motion-item {
   opacity: 1 !important;
   transform: none !important;
-  filter: none !important;
 }
 
 @keyframes heroFadeInUp {
@@ -334,26 +332,23 @@ html:not(.js) .hero-motion-item {
 }
 
 /* -------------------------------------------------------------
-   SCROLL REVEAL (IN & OUT HARMONIOUS TRANSITIONS)
+   SCROLL REVEAL (IN & OUT HARMONIOUS TRANSITIONS - ZERO TEXT BLUR)
    ------------------------------------------------------------- */
 
 .scroll-reveal,
 .scroll-reveal-child {
   opacity: 0;
   transform: translateY(28px) scale(0.985);
-  filter: blur(4px);
   transition: 
     opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform, filter;
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
 
 .scroll-reveal.is-visible,
 .scroll-reveal-child.is-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
-  filter: blur(0px);
 }
 
 /* Exit state when leaving viewport above (smooth fade & lift) */
@@ -361,7 +356,6 @@ html:not(.js) .hero-motion-item {
 .scroll-reveal-child.is-exited-up {
   opacity: 0;
   transform: translateY(-24px) scale(0.985);
-  filter: blur(4px);
 }
 
 /* Exit state when leaving viewport below */
@@ -369,7 +363,6 @@ html:not(.js) .hero-motion-item {
 .scroll-reveal-child.is-exited-down {
   opacity: 0;
   transform: translateY(28px) scale(0.985);
-  filter: blur(4px);
 }
 
 /* Fallback when JS is disabled or before script execution */
@@ -377,7 +370,6 @@ html:not(.js) .scroll-reveal,
 html:not(.js) .scroll-reveal-child {
   opacity: 1 !important;
   transform: none !important;
-  filter: none !important;
 }
 
 /* Reduced motion accessibility */

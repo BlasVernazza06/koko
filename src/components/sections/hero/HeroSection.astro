@@ -20,7 +20,7 @@ const { lang = 'es', class: className = '' } = Astro.props;
   <HeroHeadline />
 
   <!-- Centered Interactive Command Console Flow -->
-  <div class="hero-motion-item max-w-xl mx-auto mt-2 sm:mt-3 w-full font-sans flex flex-col items-center justify-center">
+  <div class="hero-motion-item max-w-xl mx-auto mt-2 sm:mt-3 w-full flex flex-col items-center justify-center">
     <!-- Centered Runtime + Console Pill -->
     <PackageCommandCard client:load lang={lang} />
   </div>
@@ -73,7 +73,6 @@ const { lang = 'es', class: className = '' } = Astro.props;
           opacity: [0, 1],
           y: [20, 0],
           scale: [0.985, 1],
-          filter: ['blur(4px)', 'blur(0px)'],
         },
         {
           delay: stagger(0.09, { start: 0.05 }),
@@ -90,7 +89,6 @@ const { lang = 'es', class: className = '' } = Astro.props;
           opacity: [1, 0],
           y: [0, -18],
           scale: [1, 0.985],
-          filter: ['blur(0px)', 'blur(4px)'],
         },
         {
           duration: 0.4,
