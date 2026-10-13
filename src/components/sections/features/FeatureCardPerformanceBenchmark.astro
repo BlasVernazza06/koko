@@ -6,28 +6,71 @@ interface Props {
 }
 
 const { lang = 'es' } = Astro.props;
+
+// Technologies comparison data with stacked pill proportions (Mint: Scaffolding & I/O, Blue: Runtime Boot)
+const techComparison = [
+  {
+    id: 'node',
+    name: 'Node.js',
+    fullName: 'Node.js CLI',
+    logo: '/logos/nodejs.svg',
+    time: '120ms',
+    heightPx: 112, // Visual height in px (out of 145px)
+    mintPercent: 66, // Scaffolding & I/O: 80ms
+    bluePercent: 34, // Runtime Boot: 40ms
+    runtime: '40ms',
+    scaffolding: '80ms',
+    memory: '~35MB',
+    isWinner: false,
+    delay: '0ms',
+    hoverColor: 'group-hover/bar:text-[#42b883]',
+  },
+  {
+    id: 'go',
+    name: 'Go (Koko)',
+    fullName: 'Go Engine (Koko)',
+    logo: '/logos/go.svg',
+    time: '1.2ms',
+    heightPx: 26, // Ultra-fast compact pill
+    mintPercent: 62, // Scaffolding: 0.8ms
+    bluePercent: 38, // Runtime: 0.4ms
+    runtime: '0.4ms',
+    scaffolding: '0.8ms',
+    memory: '~1.5MB',
+    isWinner: true,
+    delay: '120ms',
+    hoverColor: 'text-[#00ADD8]',
+  },
+  {
+    id: 'rust',
+    name: 'Rust',
+    fullName: 'Rust CLI',
+    logo: '/logos/rust.svg',
+    time: '2.1ms',
+    heightPx: 38, // Fast pill
+    mintPercent: 60, // Scaffolding: 1.3ms
+    bluePercent: 40, // Runtime: 0.8ms
+    runtime: '0.8ms',
+    scaffolding: '1.3ms',
+    memory: '~2.4MB',
+    isWinner: false,
+    delay: '240ms',
+    hoverColor: 'group-hover/bar:text-[#e05d44]',
+  },
+];
 ---
 
-<div class="md:col-span-3 group relative flex flex-col justify-between overflow-visible rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-[box-shadow] duration-300 hover:shadow-xl hover:shadow-brand-secondary/10 hover:border-brand-secondary/40">
+<div class="md:col-span-3 group relative flex flex-col justify-between overflow-visible rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-[box-shadow,border-color] duration-300 hover:shadow-xl hover:shadow-brand-secondary/10 hover:border-brand-secondary/40">
   <div class="absolute inset-0 rounded-3xl bg-gradient-to-tr from-brand-secondary/6 via-brand-primary/4 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none overflow-hidden"></div>
   
   <!-- Subtle background grid -->
   <div class="absolute inset-0 opacity-[0.02] dark:opacity-[0.035] pointer-events-none bg-[radial-gradient(var(--color-border-subtle)_1px,transparent_1px)] bg-[size:16px_16px]"></div>
-
-  <!-- Koko Rocket Mascot (Blazing Fast Performance) -->
-  <div class="absolute -top-10 sm:-top-14 right-6 sm:right-10 z-20 pointer-events-none select-none">
-    <img 
-      src="/koko-cohete.png" 
-      alt="Koko en cohete veloz" 
-      class="w-20 h-20 sm:w-24 sm:h-24 object-contain filter drop-shadow-[0_8px_20px_rgba(90,79,196,0.3)] dark:drop-shadow-[0_8px_24px_rgba(155,141,247,0.45)] transition-transform duration-500 ease-out group-hover:translate-x-1.5 group-hover:-translate-y-2.5 group-hover:scale-110" 
-    />
-  </div>
   
   <!-- Visual Performance Mockup -->
   <div class="relative w-full mb-6 flex flex-col justify-end select-none overflow-visible pt-2">
     
-    <!-- Top Header Label -->
-    <div class="flex items-center justify-between mb-4 px-1">
+    <!-- Top Header Label & Live Tag -->
+    <div class="flex items-center justify-between mb-3 px-0.5">
       <div class="flex items-center gap-2">
         <span class="relative flex h-2 w-2">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
@@ -37,137 +80,161 @@ const { lang = 'es' } = Astro.props;
           {lang === 'es' ? 'TIEMPO DE EJECUCIÓN' : 'EXECUTION TIME'}
         </span>
       </div>
-      <span class="text-[10px] text-brand-primary font-mono font-bold px-2.5 py-0.5 rounded-full bg-bg-surface/80 border border-brand-primary/40 shadow-xs">
-        {lang === 'es' ? '⚡ 100x más rápido' : '⚡ 100x faster'}
-      </span>
+    </div>
+
+    <!-- Chart Legend (Mint: I/O & Scaffolding, Blue: Runtime Boot) -->
+    <div class="flex items-center gap-3.5 mb-4 px-0.5 text-[10px] text-text-muted select-none">
+      <div class="flex items-center gap-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#b8f0d3] dark:bg-[#9fe4c1] shadow-xs"></span>
+        <span>{lang === 'es' ? 'Scaffolding & I/O' : 'Scaffolding & I/O'}</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#70bbf8] dark:bg-[#5ca9f5] shadow-xs"></span>
+        <span>{lang === 'es' ? 'Runtime Engine' : 'Runtime Engine'}</span>
+      </div>
     </div>
 
     <!-- Y-Axis + Chart Container -->
     <div class="flex items-stretch gap-3 w-full relative">
 
-      <!-- Y-Axis Scale (Left) -->
-      <div class="relative flex flex-col justify-between text-[10px] font-mono text-text-muted/70 h-[140px] pr-3 shrink-0 border-r border-border-subtle/70 select-none">
-        <span>150ms</span>
-        <span>100ms</span>
-        <span>50ms</span>
-        <span>0ms</span>
+      <!-- Y-Axis Scale (Left: 150ms, 100ms, 050ms, 000ms) -->
+      <div class="relative flex flex-col justify-between text-[10px] text-text-muted/65 h-[145px] pr-2 shrink-0 select-none pointer-events-none">
+        <span class="leading-none">150ms</span>
+        <span class="leading-none">100ms</span>
+        <span class="leading-none">050ms</span>
+        <span class="leading-none">000ms</span>
       </div>
 
       <!-- Main Chart & Badges Wrapper -->
       <div class="relative flex-1 flex flex-col">
         
-        <!-- Chart Area -->
-        <div class="relative h-[140px] grid grid-cols-3 items-end justify-items-center">
+        <!-- Chart Area with Dashed Grid Lines -->
+        <div class="relative h-[145px] w-full">
           
-          <!-- Visible Dashed Grid Lines -->
+          <!-- 4 Dashed Grid Lines -->
           <div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
-            <div class="border-b border-dashed border-border-subtle/40 w-full"></div>
-            <div class="border-b border-dashed border-border-subtle/40 w-full"></div>
-            <div class="border-b border-dashed border-border-subtle/40 w-full"></div>
+            <div class="border-b border-dashed border-border-subtle/70 dark:border-white/10 w-full"></div>
+            <div class="border-b border-dashed border-border-subtle/70 dark:border-white/10 w-full"></div>
+            <div class="border-b border-dashed border-border-subtle/70 dark:border-white/10 w-full"></div>
+            <div class="border-b border-dashed border-border-subtle/70 dark:border-white/10 w-full"></div>
           </div>
 
-          <!-- Column 1: Node.js -->
-          <div class="flex flex-col items-center justify-end h-full w-full relative group/tower cursor-pointer z-10">
-            <span class="text-[11px] font-mono font-semibold text-text-muted mb-1.5 group-hover/tower:text-[#42b883]">
-              120ms
-            </span>
+          <!-- 3 Columns: Node.js, Go (Koko), Rust -->
+          <div class="relative h-full w-full grid grid-cols-3 items-end justify-items-center z-10">
+            {techComparison.map((tech) => {
+              const tooltipAlign = tech.id === 'node' 
+                ? 'left-0 sm:-left-2' 
+                : tech.id === 'rust' 
+                  ? 'right-0 sm:-right-2' 
+                  : 'left-1/2 -translate-x-1/2';
 
-            <!-- Tooltip -->
-            <div class="absolute bottom-[115px] left-1/2 -translate-x-1/2 w-44 p-3 bg-bg-surface/95 dark:bg-bg-surface border border-border-subtle rounded-2xl shadow-xl opacity-0 pointer-events-none group-hover/tower:opacity-100 transition-opacity duration-200 z-50 backdrop-blur-md">
-              <p class="text-[11px] font-semibold text-text-main mb-1 flex items-center gap-1.5">
-                <img src="/logos/nodejs.svg" alt="" class="w-3.5 h-3.5" /> Node.js CLI
-              </p>
-              <div class="flex flex-col gap-0.5 text-[10px] text-text-muted">
-                <div class="flex justify-between">
-                  <span>{lang === 'es' ? 'Tiempo:' : 'Time:'}</span> 
-                  <span class="font-mono text-text-main font-semibold">120ms</span>
+              const arrowAlign = tech.id === 'node'
+                ? 'left-6'
+                : tech.id === 'rust'
+                  ? 'right-6'
+                  : 'left-1/2 -translate-x-1/2';
+
+              return (
+                <div class="group/bar relative flex flex-col items-center justify-end h-full w-full cursor-pointer">
+                  
+                  <!-- Stack & Tooltip Wrapper (Height matches the pill + time label) -->
+                  <div class="relative flex flex-col items-center justify-end">
+                    
+                    <!-- Floating Tooltip on Hover (Anchored right above each individual pill) -->
+                    <div class={`absolute bottom-[calc(100%+8px)] ${tooltipAlign} w-44 sm:w-48 p-3 bg-bg-surface/95 dark:bg-neutral-900/95 border border-border-subtle dark:border-neutral-800 rounded-2xl shadow-xl opacity-0 pointer-events-none group-hover/bar:opacity-100 group-hover/bar:pointer-events-auto transition-all duration-200 z-50 backdrop-blur-md`}>
+                      
+                      <!-- Caret / Arrow pointing down to the pill -->
+                      <div class={`absolute -bottom-1 ${arrowAlign} w-2 h-2 rotate-45 bg-bg-surface dark:bg-neutral-900 border-r border-b border-border-subtle dark:border-neutral-800`}></div>
+
+                      <div class="flex items-center gap-1.5 mb-1.5 pb-1 border-b border-border-subtle/60">
+                        <img src={tech.logo} alt="" class="w-3.5 h-3.5 object-contain" />
+                        <span class={`text-[11px] font-bold ${tech.isWinner ? 'text-[#00ADD8]' : 'text-text-main'}`}>
+                          {tech.fullName}
+                        </span>
+                      </div>
+                      
+                      <div class="flex flex-col gap-1 text-[10px] text-text-muted">
+                        <div class="flex justify-between items-center">
+                          <span class="flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#b8f0d3] dark:bg-[#9fe4c1]"></span>
+                            {lang === 'es' ? 'Scaffolding:' : 'Scaffolding:'}
+                          </span>
+                          <span class="text-text-main font-semibold">{tech.scaffolding}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                          <span class="flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#70bbf8] dark:bg-[#5ca9f5]"></span>
+                            {lang === 'es' ? 'Runtime:' : 'Runtime:'}
+                          </span>
+                          <span class="text-text-main font-semibold">{tech.runtime}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                          <span>{lang === 'es' ? 'Consumo RAM:' : 'Memory:'}</span>
+                          <span class="text-text-main font-semibold">{tech.memory}</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-1 border-t border-border-subtle/40 text-text-main font-bold">
+                          <span>{lang === 'es' ? 'Tiempo total:' : 'Total time:'}</span>
+                          <span class={tech.isWinner ? 'text-[#00ADD8]' : 'text-text-main'}>
+                            {tech.time} {tech.isWinner ? '⚡' : ''}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Time indicator above pill -->
+                    <span class={`text-[11px] font-bold mb-1.5 transition-colors ${tech.isWinner ? 'text-[#00ADD8]' : 'text-text-muted ' + tech.hoverColor}`}>
+                      {tech.time}
+                    </span>
+
+                    <!-- The Stacked Capsule Pill Bar -->
+                    <div 
+                      class={`bar-pill relative w-12 sm:w-14 rounded-2xl overflow-hidden flex flex-col justify-end transition-all duration-300 ease-out  ${
+                        tech.isWinner 
+                          ? 'shadow-[0_0_24px_rgba(0,173,216,0.35)] ring-1 ring-[#00ADD8]/60 group-hover/bar:shadow-[0_0_30px_rgba(0,173,216,0.5)]' 
+                          : 'shadow-xs hover:shadow-md'
+                      }`}
+                      style={`height: ${tech.heightPx}px; animation-delay: ${tech.delay};`}
+                    >
+                      <!-- Mint Upper Segment (Scaffolding & I/O) -->
+                      <div 
+                        class="w-full bg-[#b8f0d3] dark:bg-[#9fe4c1] transition-colors"
+                        style={`height: ${tech.mintPercent}%;`}
+                      ></div>
+
+                      <!-- Sky Blue Lower Segment (Runtime Engine) -->
+                      <div 
+                        class={`w-full transition-colors ${tech.isWinner ? 'bg-[#00ADD8] dark:bg-[#00ADD8]' : 'bg-[#70bbf8] dark:bg-[#5ca9f5]'}`}
+                        style={`height: ${tech.bluePercent}%;`}
+                      ></div>
+                    </div>
+
+                  </div>
+
                 </div>
-                <div class="flex justify-between">
-                  <span>{lang === 'es' ? 'Consumo:' : 'Memory:'}</span> 
-                  <span class="font-mono">~35MB</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="w-12 h-[105px] rounded-t-xl bg-[#42b883]/10 border-t border-x border-[#42b883]/30 hover:border-[#42b883]/60 hover:bg-[#42b883]/15 shadow-sm flex items-center justify-center bar-node">
-              <div class="w-full h-full rounded-t-xl stripe-node"></div>
-            </div>
-          </div>
-
-          <!-- Column 2: Go Engine (Koko) -->
-          <div class="flex flex-col items-center justify-end h-full w-full relative group/tower cursor-pointer z-10">
-            <span class="text-[11px] font-mono font-extrabold text-[#00ADD8] mb-1.5 flex items-center gap-1">
-              1.2ms
-            </span>
-
-            <!-- Tooltip -->
-            <div class="absolute bottom-[40px] left-1/2 -translate-x-1/2 w-48 p-3 bg-bg-surface/95 dark:bg-bg-surface border border-[#00ADD8]/50 rounded-2xl shadow-xl opacity-0 pointer-events-none group-hover/tower:opacity-100 transition-opacity duration-200 z-50 backdrop-blur-md">
-              <div class="flex items-center gap-1.5 mb-1">
-                <img src="/logos/go.svg" alt="" class="w-4 h-4" />
-                <p class="text-[11px] font-bold text-[#00ADD8]">Go Engine (Koko)</p>
-              </div>
-              <div class="flex flex-col gap-0.5 text-[10px] text-text-muted">
-                <div class="flex justify-between">
-                  <span>{lang === 'es' ? 'Tiempo:' : 'Time:'}</span> 
-                  <span class="font-mono text-[#00ADD8] font-bold">1.2ms (¡El mejor!)</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>{lang === 'es' ? 'Consumo:' : 'Memory:'}</span> 
-                  <span class="font-mono text-text-main font-semibold">~1.5MB</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="w-12 h-[24px] rounded-t-xl bg-gradient-to-t from-[#0092b8] to-[#00ADD8] border-t border-x border-[#00ADD8] shadow-[0_0_24px_rgba(0,173,216,0.45)] hover:brightness-110 relative overflow-hidden bar-go">
-              <div class="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)] animate-[pulse_2s_ease-in-out_infinite]"></div>
-            </div>
-          </div>
-
-          <!-- Column 3: Rust -->
-          <div class="flex flex-col items-center justify-end h-full w-full relative group/tower cursor-pointer z-10">
-            <span class="text-[11px] font-mono font-semibold text-text-muted mb-1.5 group-hover/tower:text-[#e05d44]">
-              2.1ms
-            </span>
-
-            <!-- Tooltip -->
-            <div class="absolute bottom-[50px] left-1/2 -translate-x-1/2 w-44 p-3 bg-bg-surface/95 dark:bg-bg-surface border border-border-subtle rounded-2xl shadow-xl opacity-0 pointer-events-none group-hover/tower:opacity-100 transition-opacity duration-200 z-50 backdrop-blur-md">
-              <p class="text-[11px] font-semibold text-text-main mb-1 flex items-center gap-1.5">
-                <img src="/logos/rust.svg" alt="" class="w-3.5 h-3.5" /> Rust CLI
-              </p>
-              <div class="flex flex-col gap-0.5 text-[10px] text-text-muted">
-                <div class="flex justify-between">
-                  <span>{lang === 'es' ? 'Tiempo:' : 'Time:'}</span> 
-                  <span class="font-mono text-text-main font-semibold">2.1ms</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>{lang === 'es' ? 'Consumo:' : 'Memory:'}</span> 
-                  <span class="font-mono">~2.4MB</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="w-12 h-[34px] rounded-t-xl bg-[#e05d44]/10 border-t border-x border-[#e05d44]/30 hover:border-[#e05d44]/60 hover:bg-[#e05d44]/15 shadow-sm flex items-center justify-center bar-rust">
-              <div class="w-full h-full rounded-t-xl stripe-rust"></div>
-            </div>
+              );
+            })}
           </div>
 
         </div>
 
-        <!-- Tech Badges Below Chart Grid -->
-        <div class="grid grid-cols-3 justify-items-center pt-4">
+        <!-- Tech Badges Below Chart Grid (As it was originally) -->
+        <div class="grid grid-cols-3 justify-items-center pt-4 select-none">
+          <!-- Node.js Badge -->
           <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-bg-surface/90 border border-border-subtle shadow-xs">
             <img src="/logos/nodejs.svg" alt="Node.js" class="w-3.5 h-3.5 object-contain" />
-            <span class="text-[11px] font-mono font-medium text-text-muted">Node</span>
+            <span class="text-[11px] font-medium text-text-muted">Node</span>
           </div>
 
-          <div class="flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#00ADD8] text-white font-mono font-bold border border-[#0092b8] shadow-md shadow-[#00ADD8]/25 scale-105">
+          <!-- Go (Koko) Hero Badge -->
+          <div class="flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#00ADD8] text-white font-bold border border-[#0092b8] shadow-md shadow-[#00ADD8]/25 scale-105">
             <img src="/logos/go.svg" alt="Go" class="w-3.5 h-3.5 object-contain brightness-0 invert" />
             <span class="text-[11px]">Go (Koko)</span>
           </div>
 
+          <!-- Rust Badge -->
           <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-bg-surface/90 border border-border-subtle shadow-xs">
             <img src="/logos/rust.svg" alt="Rust" class="w-3.5 h-3.5 object-contain" />
-            <span class="text-[11px] font-mono font-semibold text-[#e05d44]">Rust</span>
+            <span class="text-[11px] font-semibold text-[#e05d44]">Rust</span>
           </div>
         </div>
 
@@ -193,55 +260,30 @@ const { lang = 'es' } = Astro.props;
 </div>
 
 <style>
-  .bar-node {
-    animation: grow-bar-node 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    transform-origin: bottom;
-  }
-  .bar-go {
-    animation: grow-bar-go 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.15s;
-    transform-origin: bottom;
-  }
-  .bar-rust {
-    animation: grow-bar-rust 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
+  .bar-pill {
+    animation: grow-pill 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
     transform-origin: bottom;
   }
 
-  @keyframes grow-bar-node {
-    from { transform: scaleY(0); }
-    to { transform: scaleY(1); }
-  }
-  @keyframes grow-bar-go {
-    from { transform: scaleY(0); }
-    to { transform: scaleY(1); }
-  }
-  @keyframes grow-bar-rust {
-    from { transform: scaleY(0); }
-    to { transform: scaleY(1); }
-  }
-
-  .stripe-node {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 4px,
-      rgba(66, 184, 131, 0.15) 4px,
-      rgba(66, 184, 131, 0.15) 8px
-    );
-  }
-  .stripe-rust {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 4px,
-      rgba(224, 93, 68, 0.15) 4px,
-      rgba(224, 93, 68, 0.15) 8px
-    );
+  @keyframes grow-pill {
+    from {
+      transform: scaleY(0);
+      opacity: 0.2;
+    }
+    to {
+      transform: scaleY(1);
+      opacity: 1;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bar-node, .bar-go, .bar-rust {
+    .bar-pill {
       animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
     }
   }
 </style>
+
+
 

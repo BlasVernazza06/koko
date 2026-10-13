@@ -13,13 +13,14 @@ const t = footerContent[currentLang] || footerContent.es;
 const langPrefix = currentLang === 'en' ? '/en' : '';
 ---
 
-<footer class={`border-t border-border-subtle/50 pt-16 pb-12 bg-linear-to-b from-bg-base to-bg-surface/30 relative overflow-hidden ${className}`}>
-  <!-- Decorative background glow -->
-  <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-brand-primary/5 rounded-full blur-3xl pointer-events-none"></div>
-  <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-brand-secondary/5 rounded-full blur-3xl pointer-events-none"></div>
+<footer class={`pt-4 sm:pt-6 pb-12 bg-transparent relative overflow-hidden ${className}`}>
+  <!-- Shortened subtle separator line (tapered edges, perfectly unified with page) -->
+  <div class="w-full max-w-md sm:max-w-4xl mx-auto px-6 mb-8 sm:mb-10">
+    <div class="w-full h-px bg-gradient-to-r from-transparent via-border-subtle/90 to-transparent"></div>
+  </div>
 
   <div class="max-w-7xl mx-auto px-6 relative z-10">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-6 pb-12 border-b border-border-subtle/40">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-6 pb-10 border-b border-border-subtle/30">
       
       <!-- Brand & Tagline Section -->
       <div class="md:col-span-5 flex flex-col gap-4">
@@ -131,7 +132,7 @@ const langPrefix = currentLang === 'en' ? '/en' : '';
       <!-- Made with 🐨 and links -->
       <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
         <span class="inline-flex items-center gap-1.5 select-none font-medium">
-          {t.crafted} <img src="/koko-clebrando.png" alt="Koko" class="w-4.5 h-4.5 object-contain inline-block transition-transform duration-300 hover:scale-125 hover:rotate-12" /> by Koko Team
+          {t.crafted} <img src="/koko-clebrando.png" alt="Koko" class="w-7 h-7 object-contain inline-block transition-transform duration-300 hover:scale-125 hover:rotate-12" /> by <a class="hover:underline hover:underline-offset-2" href="https://github.com/BlasVernazza06">@blasvernazza</a>
         </span>
         <div class="h-3 w-px bg-border-subtle/40 hidden sm:block"></div>
         <a href="#" class="hover:text-text-main">{t.privacy}</a>

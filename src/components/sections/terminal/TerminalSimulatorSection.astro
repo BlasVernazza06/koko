@@ -1,6 +1,5 @@
 ---
 import TerminalSimulator from './TerminalSimulator.svelte';
-import SectionDivider from '@/components/ui/SectionDivider.astro';
 import { Sparkles, ShieldCheck, CircleQuestionMark } from '@lucide/svelte';
 
 interface Props {
@@ -17,7 +16,7 @@ const quickCommands = [
 ];
 ---
 
-<div class={`max-w-7xl mx-auto px-6 pt-24 sm:pt-36 lg:pt-44 flex flex-col items-center justify-center relative z-10 ${className}`}>
+<div class={`max-w-7xl mx-auto px-6 pt-24 sm:pt-36 lg:pt-40 pb-20 sm:pb-28 flex flex-col items-center justify-center relative z-10 ${className}`}>
   <!-- Live Terminal Header Pill Bar -->
   <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 select-none scroll-reveal">
     <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-bg-surface/80 border border-border-subtle backdrop-blur-md text-xs font-mono text-text-muted">
@@ -51,7 +50,4 @@ const quickCommands = [
       </div>
     ))}
   </div>
-
-  <!-- Section Transition Divider -->
-  <SectionDivider />
 </div>

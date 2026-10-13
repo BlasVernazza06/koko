@@ -6,14 +6,23 @@ interface Props {
 const { lang = 'es' } = Astro.props;
 ---
 
-<div class="md:col-span-3 group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-[box-shadow] duration-300 hover:shadow-xl hover:shadow-brand-primary/10 hover:border-brand-primary/40">
+<div class="md:col-span-3 group relative flex flex-col justify-between overflow-visible rounded-3xl border border-border-subtle bg-bg-surface/40 backdrop-blur-md p-6 sm:p-8 transition-[box-shadow,border-color] duration-300 hover:shadow-xl hover:shadow-emerald-500/10 hover:border-emerald-500/40">
   <!-- Interactive backdrop glow -->
-  <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/8 via-transparent to-brand-secondary/6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+  <div class="absolute inset-0 rounded-3xl bg-gradient-to-tr from-emerald-500/6 via-brand-primary/4 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none overflow-hidden"></div>
 
   <!-- Subtle background grid -->
   <div class="absolute inset-0 opacity-[0.025] dark:opacity-[0.04] pointer-events-none bg-[radial-gradient(var(--color-border-subtle)_1px,transparent_1px)] bg-[size:16px_16px]"></div>
 
-  <!-- Card Visual: Pipeline Stepper -->
+  <!-- Koko Guardian Mascot with Protective Shield -->
+  <div class="absolute -top-10 sm:-top-14 right-6 sm:right-10 z-20 pointer-events-none select-none">
+    <img 
+      src="/koko-shield.png" 
+      alt="Koko guardián con escudo de protección" 
+      class="w-20 h-20 sm:w-24 sm:h-24 object-contain filter drop-shadow-[0_8px_20px_rgba(16,185,129,0.3)] dark:drop-shadow-[0_8px_24px_rgba(52,211,153,0.45)] transition-transform duration-500 ease-out group-hover:translate-x-1.5 group-hover:-translate-y-2.5 group-hover:scale-110" 
+    />
+  </div>
+
+  <!-- Card Visual: koko doctor Diagnostics Terminal -->
   <div class="relative w-full mb-6 select-none overflow-hidden rounded-2xl border border-border-subtle bg-bg-surface/90 dark:bg-bg-surface/90 p-4 sm:p-5 shadow-xs backdrop-blur-md">
 
     <!-- Terminal bar / Window Header -->
@@ -24,28 +33,58 @@ const { lang = 'es' } = Astro.props;
           <span class="w-2.5 h-2.5 rounded-full bg-[#febc2e] opacity-80"></span>
           <span class="w-2.5 h-2.5 rounded-full bg-[#28c840] opacity-80"></span>
         </div>
-        <div class="flex items-center gap-1.5 ml-2 px-2 py-0.5 rounded-md bg-bg-base/60 border border-border-subtle/50">
-          <span class="text-[10px] font-mono text-brand-secondary font-bold">›_</span>
-          <span class="text-[11px] font-mono text-text-main font-semibold tracking-wide">koko init --recipe fullstack</span>
+        <div class="flex items-center gap-1.5 ml-2 px-2.5 py-0.5 rounded-md bg-bg-base/70 border border-border-subtle/50">
+          <span class="text-[10px] font-mono text-emerald-500 font-bold">›_</span>
+          <span class="text-[11px] font-mono text-text-main font-semibold tracking-wide">koko doctor --fix</span>
         </div>
       </div>
       <div class="flex items-center gap-1.5 text-[10px] font-mono text-text-muted">
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span>pipeline engine</span>
+        <span>doctor engine</span>
       </div>
     </div>
 
-    <!-- Pipeline Steps Container -->
+    <!-- Diagnostic Steps Container -->
     <div class="pipeline-wrapper relative flex flex-col gap-1.5 text-[12px] font-sans">
 
       <!-- Vertical Progress Connector Line (Track & Active Beam) -->
       <div class="absolute left-[29px] top-[24px] bottom-[24px] w-[2px] bg-border-subtle/60 pointer-events-none z-0">
-        <div class="pipeline-progress-bar w-full h-0 bg-gradient-to-b from-brand-primary via-brand-secondary to-emerald-400 transition-[height] duration-500 rounded-full"></div>
+        <div class="pipeline-progress-bar w-full h-0 bg-gradient-to-b from-brand-primary via-emerald-400 to-emerald-500 transition-[height] duration-500 rounded-full"></div>
       </div>
 
-      <!-- Step 1: Initializing -->
-      <div class="pipeline-step step-1 relative flex items-center gap-3 px-3 py-2 rounded-xl">
-        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border">
+      <!-- Step 1: Manifest Validation -->
+      <div class="pipeline-step step-1 relative flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300">
+        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border transition-all duration-300">
+          <!-- Spinner -->
+          <svg class="step-spinner absolute w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="2" x2="12" y2="6"></line>
+            <line x1="12" y1="18" x2="12" y2="22"></line>
+            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+            <line x1="2" y1="12" x2="6" y2="12"></line>
+            <line x1="18" y1="12" x2="22" y2="12"></line>
+            <line x1="6.34" y1="17.66" x2="9.17" y2="14.83"></line>
+            <line x1="14.83" y1="9.17" x2="17.66" y2="6.34"></line>
+          </svg>
+          <!-- Check Icon -->
+          <svg class="step-check absolute w-4.5 h-4.5 opacity-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <div class="flex flex-col justify-center min-w-0">
+          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none truncate">
+            {lang === 'es' ? 'Manifiesto koko.config.json' : 'koko.config.json Manifest'}
+          </span>
+          <span class="step-detail text-text-muted/70 text-[11px] font-mono mt-1 opacity-0 transition-opacity duration-300 truncate">
+            {lang === 'es' ? 'Esquema y arquitectura validados' : 'Schema & rules validated'}
+          </span>
+        </div>
+        <span class="step-time ml-auto self-center text-[10px] font-mono opacity-0 transition-opacity duration-300 shrink-0 bg-border-subtle/50 border border-border-subtle px-2 py-0.5 rounded-md text-text-muted">0.2ms</span>
+      </div>
+
+      <!-- Step 2: Dependency Drift Scanner -->
+      <div class="pipeline-step step-2 relative flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300">
+        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border transition-all duration-300">
           <svg class="step-spinner absolute w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="2" x2="12" y2="6"></line>
             <line x1="12" y1="18" x2="12" y2="22"></line>
@@ -60,76 +99,20 @@ const { lang = 'es' } = Astro.props;
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
         </div>
-        <div class="flex flex-col justify-center">
-          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none">
-            {lang === 'es' ? 'Inicializando proyecto' : 'Initializing project'}
+        <div class="flex flex-col justify-center min-w-0">
+          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none truncate">
+            {lang === 'es' ? 'Escaneo de Desviación (Drift)' : 'Dependency Drift Scanner'}
           </span>
-          <span class="step-detail text-text-muted/70 text-[11px] font-mono mt-1 opacity-0 transition-opacity duration-300">
-            {lang === 'es' ? 'Leyendo configuración local...' : 'Reading local config...'}
-          </span>
-        </div>
-        <span class="step-time ml-auto self-center text-[10px] font-mono opacity-0 transition-opacity duration-300 shrink-0 bg-border-subtle/50 border border-border-subtle px-2 py-0.5 rounded-md text-text-muted">0.3ms</span>
-      </div>
-
-      <!-- Step 2: Installing -->
-      <div class="pipeline-step step-2 relative flex items-center gap-3 px-3 py-2 rounded-xl">
-        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border">
-          <svg class="step-spinner absolute w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="2" x2="12" y2="6"></line>
-            <line x1="12" y1="18" x2="12" y2="22"></line>
-            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
-            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
-            <line x1="2" y1="12" x2="6" y2="12"></line>
-            <line x1="18" y1="12" x2="22" y2="12"></line>
-            <line x1="6.34" y1="17.66" x2="9.17" y2="14.83"></line>
-            <line x1="14.83" y1="9.17" x2="17.66" y2="6.34"></line>
-          </svg>
-          <svg class="step-check absolute w-4.5 h-4.5 opacity-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-        </div>
-        <div class="flex flex-col justify-center">
-          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none">
-            {lang === 'es' ? 'Instalando dependencias' : 'Installing dependencies'}
-          </span>
-          <span class="step-detail text-text-muted/70 text-[11px] font-mono mt-1 opacity-0 transition-opacity duration-300">
-            {lang === 'es' ? 'Resolviendo paquetes offline...' : 'Resolving packages offline...'}
-          </span>
-        </div>
-        <span class="step-time ml-auto self-center text-[10px] font-mono opacity-0 transition-opacity duration-300 shrink-0 bg-border-subtle/50 border border-border-subtle px-2 py-0.5 rounded-md text-text-muted">0.8ms</span>
-      </div>
-
-      <!-- Step 3: Configuring -->
-      <div class="pipeline-step step-3 relative flex items-center gap-3 px-3 py-2 rounded-xl">
-        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border">
-          <svg class="step-spinner absolute w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="2" x2="12" y2="6"></line>
-            <line x1="12" y1="18" x2="12" y2="22"></line>
-            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
-            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
-            <line x1="2" y1="12" x2="6" y2="12"></line>
-            <line x1="18" y1="12" x2="22" y2="12"></line>
-            <line x1="6.34" y1="17.66" x2="9.17" y2="14.83"></line>
-            <line x1="14.83" y1="9.17" x2="17.66" y2="6.34"></line>
-          </svg>
-          <svg class="step-check absolute w-4.5 h-4.5 opacity-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-        </div>
-        <div class="flex flex-col justify-center">
-          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none">
-            {lang === 'es' ? 'Configurando stack' : 'Configuring stack'}
-          </span>
-          <span class="step-detail text-text-muted/70 text-[11px] font-mono mt-1 opacity-0 transition-opacity duration-300">
-            {lang === 'es' ? 'Aplicando boilerplate...' : 'Applying boilerplate...'}
+          <span class="step-detail text-text-muted/70 text-[11px] font-mono mt-1 opacity-0 transition-opacity duration-300 truncate">
+            {lang === 'es' ? 'Sincronizado con Catálogo Maestro' : 'Aligned with Master Catalog'}
           </span>
         </div>
         <span class="step-time ml-auto self-center text-[10px] font-mono opacity-0 transition-opacity duration-300 shrink-0 bg-border-subtle/50 border border-border-subtle px-2 py-0.5 rounded-md text-text-muted">0.4ms</span>
       </div>
 
-      <!-- Step 4: Ready -->
-      <div class="pipeline-step step-4 relative flex items-center gap-3 px-3 py-2 rounded-xl">
-        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border">
+      <!-- Step 3: Docker & Port Conflict Prevention -->
+      <div class="pipeline-step step-3 relative flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300">
+        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border transition-all duration-300">
           <svg class="step-spinner absolute w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="2" x2="12" y2="6"></line>
             <line x1="12" y1="18" x2="12" y2="22"></line>
@@ -144,15 +127,43 @@ const { lang = 'es' } = Astro.props;
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
         </div>
-        <div class="flex flex-col justify-center">
-          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none">
-            {lang === 'es' ? 'Proyecto listo 🎉' : 'Project ready 🎉'}
+        <div class="flex flex-col justify-center min-w-0">
+          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none truncate">
+            {lang === 'es' ? 'Puertos Docker e Infraestructura' : 'Docker Ports & Infrastructure'}
           </span>
-          <span class="step-detail text-text-muted/70 text-[11px] font-mono mt-1 opacity-0 transition-opacity duration-300">
-            {lang === 'es' ? '¡Todo en orden en 1.5ms!' : 'Everything ready in 1.5ms!'}
+          <span class="step-detail text-text-muted/70 text-[11px] font-mono mt-1 opacity-0 transition-opacity duration-300 truncate">
+            {lang === 'es' ? 'Postgres:5432 libre sin colisiones' : 'Postgres:5432 free & collisionless'}
           </span>
         </div>
-        <span class="step-time ml-auto self-center text-[10px] font-mono opacity-0 transition-opacity duration-300 shrink-0 text-brand-primary font-bold bg-brand-primary/10 border border-brand-primary/35 px-2 py-0.5 rounded-md shadow-xs">1.5ms</span>
+        <span class="step-time ml-auto self-center text-[10px] font-mono opacity-0 transition-opacity duration-300 shrink-0 bg-border-subtle/50 border border-border-subtle px-2 py-0.5 rounded-md text-text-muted">0.3ms</span>
+      </div>
+
+      <!-- Step 4: Auto-Repair & Healthy Status -->
+      <div class="pipeline-step step-4 relative flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300">
+        <div class="step-icon relative z-10 w-8.5 h-8.5 rounded-xl flex items-center justify-center shrink-0 border transition-all duration-300">
+          <svg class="step-spinner absolute w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="2" x2="12" y2="6"></line>
+            <line x1="12" y1="18" x2="12" y2="22"></line>
+            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+            <line x1="2" y1="12" x2="6" y2="12"></line>
+            <line x1="18" y1="12" x2="22" y2="12"></line>
+            <line x1="6.34" y1="17.66" x2="9.17" y2="14.83"></line>
+            <line x1="14.83" y1="9.17" x2="17.66" y2="6.34"></line>
+          </svg>
+          <svg class="step-check absolute w-4.5 h-4.5 opacity-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <div class="flex flex-col justify-center min-w-0">
+          <span class="step-label text-text-muted/60 font-semibold text-[13px] tracking-tight leading-none truncate">
+            {lang === 'es' ? 'Arquitectura 100% Íntegra 🛡️' : '100% Healthy Architecture 🛡️'}
+          </span>
+          <span class="step-detail text-text-muted/70 text-[11px] font-mono mt-1 opacity-0 transition-opacity duration-300 truncate">
+            {lang === 'es' ? '¡Auto-reparación --fix completada!' : 'Auto-repair --fix completed!'}
+          </span>
+        </div>
+        <span class="step-time ml-auto self-center text-[10px] font-mono opacity-0 transition-opacity duration-300 shrink-0 text-emerald-500 font-bold bg-emerald-500/10 border border-emerald-500/35 px-2 py-0.5 rounded-md shadow-xs">1.2ms</span>
       </div>
 
     </div>
@@ -161,15 +172,15 @@ const { lang = 'es' } = Astro.props;
   <!-- Card Copy -->
   <div class="mt-auto relative z-15 select-none">
     <div class="flex items-center gap-2 mb-2">
-      <div class="w-1 h-4 bg-brand-secondary rounded-full"></div>
-      <h3 class="text-lg font-bold text-text-main lang-es">Pipelines de Generación</h3>
-      <h3 class="text-lg font-bold text-text-main lang-en">Generation Pipelines</h3>
+      <div class="w-1 h-4 bg-emerald-500 rounded-full"></div>
+      <h3 class="text-lg font-bold text-text-main lang-es">Diagnóstico con koko doctor</h3>
+      <h3 class="text-lg font-bold text-text-main lang-en">Diagnostics with koko doctor</h3>
     </div>
     <p class="text-xs sm:text-sm text-text-muted leading-relaxed lang-es">
-      Koko ejecuta pasos secuenciales al crear tu proyecto: inicializa, instala, configura y entrega todo listo en milisegundos.
+      Audita y protege la integridad de tu arquitectura en milisegundos: detecta desviaciones (drift) en dependencias, valida esquemas y resuelve conflictos con auto-reparación <code class="text-emerald-500 font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">--fix</code>.
     </p>
     <p class="text-xs sm:text-sm text-text-muted leading-relaxed lang-en">
-      Koko runs sequential steps when scaffolding your project: initializes, installs, configures, and delivers everything ready in milliseconds.
+      Audit and safeguard architectural integrity in milliseconds: detect dependency drift, validate manifest schemas, and eliminate conflicts with automated <code class="text-emerald-500 font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">--fix</code> repair.
     </p>
   </div>
 </div>
@@ -182,10 +193,10 @@ const { lang = 'es' } = Astro.props;
   }
 
   .pipeline-step.is-active .step-icon {
-    color: var(--brand-primary);
-    border-color: var(--brand-primary);
+    color: #10b981;
+    border-color: #10b981;
     background: var(--bg-surface);
-    box-shadow: 0 0 16px color-mix(in srgb, var(--brand-primary) 30%, transparent);
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
   }
   .pipeline-step.is-active .step-label {
     color: var(--text-main) !important;
@@ -196,7 +207,7 @@ const { lang = 'es' } = Astro.props;
     opacity: 1 !important;
   }
   .pipeline-step.is-active {
-    background: color-mix(in srgb, var(--brand-primary) 5%, transparent);
+    background: color-mix(in srgb, #10b981 6%, transparent);
   }
 
   .pipeline-step.is-active .step-spinner {
@@ -235,16 +246,16 @@ const { lang = 'es' } = Astro.props;
 
   .pipeline-step.step-4.is-done .step-icon {
     color: #ffffff;
-    border-color: var(--brand-primary);
-    background: var(--brand-primary);
-    box-shadow: 0 0 14px color-mix(in srgb, var(--brand-primary) 40%, transparent);
+    border-color: #10b981;
+    background: #10b981;
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.45);
   }
   .pipeline-step.step-4.is-done .step-label {
     color: var(--text-main) !important;
     opacity: 1 !important;
   }
   .pipeline-step.step-4.is-done .step-time {
-    color: var(--brand-primary) !important;
+    color: #10b981 !important;
     opacity: 1 !important;
   }
 
@@ -270,9 +281,9 @@ const { lang = 'es' } = Astro.props;
   (function () {
     const STEPS = [
       { sel: '.step-1', activeAt: 0,    doneAt: 1200, progress: '25%' },
-      { sel: '.step-2', activeAt: 1300, doneAt: 2600, progress: '50%' },
-      { sel: '.step-3', activeAt: 2700, doneAt: 3900, progress: '75%' },
-      { sel: '.step-4', activeAt: 4000, doneAt: 5200, progress: '100%' },
+      { sel: '.step-2', activeAt: 1300, doneAt: 2500, progress: '50%' },
+      { sel: '.step-3', activeAt: 2600, doneAt: 3800, progress: '75%' },
+      { sel: '.step-4', activeAt: 3900, doneAt: 5100, progress: '100%' },
     ];
     const CYCLE = 7000;
     let activeIntervals: number[] = [];
@@ -358,5 +369,6 @@ const { lang = 'es' } = Astro.props;
     document.addEventListener('astro:after-swap', init);
   })();
 </script>
+
 
 

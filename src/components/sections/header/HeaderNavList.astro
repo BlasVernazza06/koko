@@ -57,17 +57,18 @@ const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es')
 </nav>
 
 <style>
-  /* Morphing transition and seamless union for nav-dropdown */
+  /* Morphing transition and crisp text rendering for nav-dropdown */
   :global(.nav-dropdown) {
     pointer-events: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
-    transform: translateY(6px) scale(0.99);
-    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-                visibility 0.2s ease-out;
-    will-change: opacity, transform;
-    contain: layout style;
+    transform: translate(-50%, 6px);
+    transition: opacity 0.15s ease-out,
+                transform 0.15s ease-out,
+                visibility 0.15s ease-out;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
     transform-origin: top center;
   }
 
@@ -76,31 +77,18 @@ const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es')
     pointer-events: auto !important;
     visibility: visible !important;
     opacity: 1 !important;
-    transform: translateY(0) scale(1);
+    transform: translate(-50%, 0);
   }
 
-  /* Seamless visual morph bridge: bridge element fusing nav item with modal */
+  /* Invisible bridge to keep hover active across gap without rendering any visual rectangle */
   .has-dropdown::after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    bottom: -14px;
     left: -4px;
     right: -4px;
-    height: 12px;
+    height: 16px;
     background: transparent;
     z-index: 55;
-  }
-
-  /* When hovering an item with dropdown, seamlessly mask the seam between nav bar and dropdown */
-  .has-dropdown:hover::before,
-  .has-dropdown:focus-within::before {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: -8px;
-    right: -8px;
-    height: 14px;
-    background-color: var(--bg-surface);
-    z-index: 52;
   }
 </style>
