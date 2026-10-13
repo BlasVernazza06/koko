@@ -27,7 +27,7 @@ export const ctaBlueprints: CtaBlueprint[] = [
   },
   {
     id: 'enterprise',
-    logo: '/logos/turborepo.svg',
+    logo: '/logos/nestjs.svg',
     title: 'Enterprise Core',
     metaEs: 'Turborepo · NestJS · Auth',
     metaEn: 'Turborepo · NestJS · Auth',
