@@ -1,0 +1,28 @@
+---
+import CtaBlueprintsFan from './CtaBlueprintsFan.astro';
+import CtaHeadline from './CtaHeadline.astro';
+import CtaActions from './CtaActions.astro';
+
+interface Props {
+  lang?: string;
+  class?: string;
+}
+
+const { lang = 'es', class: className = '' } = Astro.props;
+const currentLang = (lang || 'es') as 'es' | 'en';
+const langPrefix = currentLang === 'en' ? '/en' : '';
+---
+
+<section id="cta" class={`w-full max-w-6xl px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-16 sm:pb-24 mx-auto relative select-none font-sans ${className}`}>
+  <!-- Subtle Soft Atmospheric Glow (Radial glow with seamless falloff) -->
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] max-w-full h-[420px] bg-radial from-brand-primary/10 via-brand-secondary/5 to-transparent blur-3xl pointer-events-none rounded-full"></div>
+
+  <!-- 1. Arc of Floating Stack Cards -->
+  <CtaBlueprintsFan langPrefix={langPrefix} />
+
+  <!-- 2. Inspiring Headline, Badge & Subtitle -->
+  <CtaHeadline />
+
+  <!-- 3. Actions: Visual Builder, Copy Command & Docs -->
+  <CtaActions currentLang={currentLang} />
+</section>

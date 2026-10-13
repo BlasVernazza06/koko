@@ -1,0 +1,37 @@
+---
+import { MoveUpRight, BookOpen } from '@lucide/svelte';
+import CtaCopyCommand from './CtaCopyCommand.svelte';
+
+interface Props {
+  currentLang?: 'es' | 'en';
+  class?: string;
+}
+
+const { currentLang = 'es', class: className = '' } = Astro.props;
+const langPrefix = currentLang === 'en' ? '/en' : '';
+---
+
+<div class={`mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto ${className}`}>
+  <!-- Primary Action: Visual Builder -->
+  <a
+    href={`${langPrefix}/builder`}
+    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-sm font-semibold bg-primary text-bg-base hover:opacity-90 shadow-md hover:shadow-lg transition-transform duration-150 active:scale-95 cursor-pointer group shrink-0"
+  >
+    <span class="lang-es">Configurar en Visual Builder</span>
+    <span class="lang-en">Configure in Visual Builder</span>
+    <MoveUpRight class="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+  </a>
+
+  <!-- Quickstart Command Chip (1-Click Copy with Svelte 5 Rune) -->
+  <CtaCopyCommand client:visible />
+
+  <!-- Secondary Action: Documentation -->
+  <a
+    href={`${langPrefix}/docs`}
+    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-semibold bg-bg-surface hover:bg-bg-base border border-border-subtle text-text-main shadow-2xs active:scale-95 transition-colors transition-transform duration-150 cursor-pointer shrink-0"
+  >
+    <BookOpen class="size-4 text-text-muted" />
+    <span class="lang-es">Explorar Docs</span>
+    <span class="lang-en">Explore Docs</span>
+  </a>
+</div>

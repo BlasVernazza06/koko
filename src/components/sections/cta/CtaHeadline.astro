@@ -1,0 +1,27 @@
+---
+import { Sparkles } from '@lucide/svelte';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class={`relative z-10 max-w-3xl mx-auto text-center flex flex-col items-center ${className}`}>
+  <!-- Main Title -->
+  <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-extrabold tracking-tight text-text-main leading-[1.12]">
+    <span class="lang-es">¿Listo para construir tu próxima gran idea?</span>
+    <span class="lang-en">Ready to build your next big idea?</span>
+  </h2>
+
+  <!-- Subtitle -->
+  <p class="mt-4 sm:mt-5 text-sm sm:text-base md:text-lg text-text-muted max-w-2xl leading-relaxed">
+    <span class="lang-es">
+      Pasa de un directorio vacío a una arquitectura modular completa para producción. Sin configuraciones manuales, sin errores de compatibilidad y sin fricción.
+    </span>
+    <span class="lang-en">
+      Go from an empty directory to a complete production-grade architecture in seconds. No manual glue code, no conflicting dependencies, zero friction.
+    </span>
+  </p>
+</div>

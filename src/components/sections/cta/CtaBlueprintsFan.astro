@@ -1,0 +1,19 @@
+---
+import CtaRecipeCard from './CtaRecipeCard.astro';
+import { ctaBlueprints } from '@/data/cta.data';
+
+interface Props {
+  langPrefix?: string;
+  class?: string;
+}
+
+const { langPrefix = '', class: className = '' } = Astro.props;
+---
+
+<div class={`relative w-full max-w-4xl mx-auto pt-2 pb-10 flex items-center justify-center ${className}`}>
+  <div class="flex items-center justify-center gap-2.5 sm:gap-4 md:gap-5 px-2 overflow-visible">
+    {ctaBlueprints.map((blueprint, index) => (
+      <CtaRecipeCard blueprint={blueprint} langPrefix={langPrefix} index={index} />
+    ))}
+  </div>
+</div>

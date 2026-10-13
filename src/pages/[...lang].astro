@@ -6,7 +6,7 @@ import HeroSection from '@/components/sections/hero/HeroSection.astro';
 import TerminalSimulatorSection from '@/components/sections/terminal/TerminalSimulatorSection.astro';
 import FeaturesSection from '@/components/sections/features/FeaturesSection.astro';
 import FaqSection from '@/components/sections/faq/FaqSection.astro';
-import DocsSection from '@/components/sections/docs/DocsSection.astro';
+import CtaSection from '@/components/sections/cta/CtaSection.astro';
 import FooterSection from '@/components/sections/footer/FooterSection.astro';
 
 export function getStaticPaths() {
@@ -49,8 +49,8 @@ const description = currentLang === 'es'
     <!-- FAQ Section -->
     <FaqSection lang={currentLang} />
 
-    <!-- Docs Section -->
-    <DocsSection lang={currentLang} />
+    <!-- SpaceFS-inspired CTA Section -->
+    <CtaSection lang={currentLang} />
 
     <!-- Footer -->
     <FooterSection lang={currentLang} />

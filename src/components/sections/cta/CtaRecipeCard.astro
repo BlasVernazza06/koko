@@ -1,0 +1,43 @@
+---
+import type { CtaBlueprint } from '@/types/cta.types';
+
+interface Props {
+  blueprint: CtaBlueprint;
+  langPrefix?: string;
+  index?: number;
+}
+
+const { blueprint, langPrefix = '', index = 0 } = Astro.props;
+const link = `${langPrefix}/builder?recipe=${blueprint.recipeId || blueprint.id}`;
+---
+
+<a 
+  href={link}
+  class={`relative group/card transition-all duration-300 hover:scale-110 hover:z-30 hover:rotate-0 cursor-pointer block ${blueprint.rotate} ${blueprint.hiddenOnMobile ? 'hidden sm:block' : 'block'}`}
+  style={`transition-delay: ${index * 30}ms;`}
+  aria-label={blueprint.title}
+>
+  <div class={`w-[115px] sm:w-[138px] md:w-[154px] rounded-2xl border bg-bg-surface/90 backdrop-blur-md p-3.5 sm:p-4 shadow-sm hover:shadow-xl flex flex-col justify-between h-[135px] sm:h-[155px] md:h-[168px] relative overflow-hidden transition-all duration-200 ${blueprint.accentColor}`}>
+    
+    <!-- Top Card Header: Official Tech Logo & Micro Tag -->
+    <div class="flex items-start justify-between gap-1.5">
+      <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-bg-base/80 border border-border-subtle/60 flex items-center justify-center p-1.5 shadow-2xs group-hover/card:scale-105 transition-transform">
+        <img src={blueprint.logo} alt="" class="w-full h-full object-contain" />
+      </div>
+      <span class="text-[9px] font-mono font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-full border border-border-subtle/60 bg-bg-base/70 text-text-muted">
+        {blueprint.tag}
+      </span>
+    </div>
+
+    <!-- Bottom Card Copy -->
+    <div class="flex flex-col gap-0.5 mt-auto">
+      <h4 class="text-xs sm:text-[13px] font-bold text-text-main leading-tight line-clamp-1">
+        {blueprint.title}
+      </h4>
+      <p class="text-[10px] font-mono text-text-muted leading-tight line-clamp-1">
+        <span class="lang-es">{blueprint.metaEs}</span>
+        <span class="lang-en">{blueprint.metaEn}</span>
+      </p>
+    </div>
+  </div>
+</a>
