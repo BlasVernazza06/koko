@@ -854,6 +854,42 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
             'Koko es totalmente multiplataforma y ha sido probado exhaustivamente en Windows (PowerShell, CMD y WSL2), macOS (arquitecturas Apple Silicon M1/M2/M3 y x86_64 Intel) y todas las distribuciones principales de Linux.'
           ],
           tags: ['general', 'sistemas operativos', 'compatibilidad']
+        },
+        {
+          anchorId: 'koko-add-workflow',
+          title: '¿Cómo funciona "koko add" para inyectar servicios en proyectos existentes?',
+          body: [
+            'A partir de la versión v2.0, Koko incluye el subcomando `koko add <servicio|addon>`. Si iniciaste un proyecto sin pagos o email y más adelante necesitas Stripe, Resend o componentes de shadcn/ui, no necesitas configurar paquetes ni variables a mano.',
+            'Al ejecutar `koko add stripe`, Koko actualiza atómicamente el manifiesto `koko.config.json`, inyecta los paquetes npm en el workspace correspondiente, añade las variables de entorno a `.env` y copia los archivos de plantilla necesarios.'
+          ],
+          tags: ['cli', 'módulos', 'personalización', 'configuración']
+        },
+        {
+          anchorId: 'universal-auto-wiring',
+          title: '¿Qué es el Universal Auto-Wiring de plantillas en Go?',
+          body: [
+            'Koko v2.0 introduce helpers semánticos condicionales en su motor `text/template` con delimitadores `[[` y `]]` (`hasAuth`, `hasPayment`, `hasEmail`, `isAPI`, `isORM`).',
+            'Esto garantiza que los archivos generados solo importen y envuelvan en proveedores (ej. TRPCReactProvider, Stripe, AuthClient) los servicios reales que seleccionaste, eliminando imports rotos y código huérfano.'
+          ],
+          tags: ['go', 'plantillas', 'arquitectura']
+        },
+        {
+          anchorId: 'decoupled-saas-services',
+          title: '¿Por qué Pagos (Stripe/Polar) y Email (Resend/Brevo) están desacoplados?',
+          body: [
+            'A diferencia de addons de UI como lucide o motion que son multi-select, los servicios SaaS de pagos y correo transaccional requieren clientes dedicados y endpoints de webhooks con arquitecturas de selección única.',
+            'En Koko v2.0 cuentan con pasos dedicados en el asistente interactivo y flags directos en CLI (`--payments stripe` y `--email resend`).'
+          ],
+          tags: ['arquitectura', 'módulos', 'saas']
+        },
+        {
+          anchorId: 'crypto-secrets-env',
+          title: '¿Cómo genera Koko secretos criptográficos seguros en el .env?',
+          body: [
+            'Koko CLI utiliza el paquete nativo `crypto/rand` de Go para generar cadenas Base64 URL-safe de 32 bytes con entropía criptográfica real.',
+            'Claves como `BETTER_AUTH_SECRET`, `NEXTAUTH_SECRET` o `JWT_SECRET` ya no usan textos genéricos de ejemplo, protegiendo tus sesiones y tokens desde el primer segundo sin pasos manuales.'
+          ],
+          tags: ['seguridad', 'devops', 'configuración']
         }
       ]
     }
@@ -1681,6 +1717,42 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
             'Koko is completely cross-platform and thoroughly tested on Windows (PowerShell, CMD, WSL2), macOS (Apple Silicon M1/M2/M3 and Intel x86_64), and all major Linux distributions.'
           ],
           tags: ['general', 'os', 'compatibility']
+        },
+        {
+          anchorId: 'koko-add-workflow',
+          title: 'How does "koko add" inject services into existing projects?',
+          body: [
+            'Starting in v2.0, Koko includes the `koko add <service|addon>` subcommand. If you started a project without payments or email and later need Stripe, Resend, or shadcn/ui components, you don\'t have to configure packages or variables manually.',
+            'When executing `koko add stripe`, Koko atomically updates the `koko.config.json` manifest, injects npm packages into the relevant workspace, appends environment variables to `.env`, and copies required template files.'
+          ],
+          tags: ['cli', 'modules', 'customization', 'configuration']
+        },
+        {
+          anchorId: 'universal-auto-wiring',
+          title: 'What is Universal Go Template Auto-Wiring?',
+          body: [
+            'Koko v2.0 introduces conditional semantic helpers in its Go `text/template` engine using `[[` and `]]` delimiters (`hasAuth`, `hasPayment`, `hasEmail`, `isAPI`, `isORM`).',
+            'This guarantees that generated source files only import and wire up providers (e.g., TRPCReactProvider, Stripe, AuthClient) for services you actually selected, eliminating orphan code and broken imports.'
+          ],
+          tags: ['go', 'templates', 'architecture']
+        },
+        {
+          anchorId: 'decoupled-saas-services',
+          title: 'Why are SaaS Payments (Stripe/Polar) and Email (Resend/Brevo) decoupled?',
+          body: [
+            'Unlike UI addons such as lucide or motion which are multi-selectable, SaaS infrastructure services like payments and transactional email require dedicated SDK initializations and webhook endpoints with single-select architecture.',
+            'In Koko v2.0 they have dedicated steps in the interactive wizard and direct CLI flags (`--payments stripe` and `--email resend`).'
+          ],
+          tags: ['architecture', 'modules', 'saas']
+        },
+        {
+          anchorId: 'crypto-secrets-env',
+          title: 'How does Koko generate cryptographic secrets inside .env files?',
+          body: [
+            'Koko CLI leverages Go\'s native `crypto/rand` package to generate 32-byte Base64 URL-safe strings with genuine cryptographic entropy.',
+            'Keys like `BETTER_AUTH_SECRET`, `NEXTAUTH_SECRET`, or `JWT_SECRET` no longer use static placeholders, securing your sessions and tokens from the first second without manual intervention.'
+          ],
+          tags: ['security', 'devops', 'configuration']
         }
       ]
     }

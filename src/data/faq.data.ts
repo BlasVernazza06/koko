@@ -160,13 +160,43 @@ export const faqsEs: FAQItem[] = [
     id: "cli-commands-flags",
     category: "config",
     question: "¿Qué comandos y flags ofrece Koko CLI?",
-    answer: "Cuenta con <code>koko init [nombre]</code> (acepta flags como <code>--frontend</code>, <code>--backend</code>, <code>--database</code>, <code>--orm</code>, <code>--api</code>, <code>--addons</code>, <code>--package-manager</code>, <code>--recipie</code> y <code>--default</code>), <code>koko doctor</code> (con <code>--fix</code> y <code>--dir</code> para diagnosticar y sincronizar tu proyecto con <code>koko.config.json</code>), <code>koko --version</code> y <code>koko --help</code> para asistencia rápida en terminal."
+    answer: "Cuenta con <code>koko init [nombre]</code> (acepta flags como <code>--frontend</code>, <code>--backend</code>, <code>--database</code>, <code>--orm</code>, <code>--api</code>, <code>--addons</code>, <code>--payments</code>, <code>--email</code>, <code>--package-manager</code>, <code>--recipie</code> y <code>--default</code>), <code>koko add &lt;service|addon&gt;</code> para inyección post-creación, <code>koko doctor</code> (con <code>--fix</code> para auto-reparación), <code>koko --version</code> y <code>koko --help</code>."
+  },
+  {
+    id: "koko-add-injector",
+    category: "config",
+    question: "¿Cómo funciona el comando koko add para inyectar servicios en proyectos existentes?",
+    answer: "A partir de la v2.0, el subcomando <code>koko add &lt;servicio|addon&gt;</code> te permite incorporar herramientas a un proyecto ya creado sin reconfigurar a mano. Por ejemplo, al correr <code>koko add stripe</code>, <code>koko add resend</code> o <code>koko add shadcn</code>, Koko inspecciona tu proyecto, actualiza atómicamente <code>koko.config.json</code>, instala las dependencias npm requeridas, añade las variables de entorno necesarias en tu <code>.env</code> y genera los archivos base del servicio."
+  },
+  {
+    id: "koko-doctor-fix",
+    category: "config",
+    question: "¿Qué analiza koko doctor y cómo repara discrepancias con el flag --fix?",
+    answer: "<code>koko doctor</code> compara en milisegundos el estado real de tu código en disco (<code>package.json</code>, esquemas de ORM, layouts) contra el manifiesto <code>koko.config.json</code>. Si detecta desviaciones (drift) como librerías agregadas o cambios de ORM, puedes ejecutar <code>koko doctor --fix</code> (o <code>-f</code>) para sincronizar y auto-reparar el manifiesto automáticamente sin riesgo de inconsistencias."
+  },
+  {
+    id: "universal-auto-wiring",
+    category: "stacks",
+    question: "¿Qué es el Universal Auto-Wiring de plantillas en Go y cómo evita código huérfano?",
+    answer: "Koko utiliza el motor nativo <code>text/template</code> de Go con delimitadores personalizados <code>[[</code> y <code>]]</code> y funciones semánticas condicionales (<code>hasAuth</code>, <code>hasPayment</code>, <code>hasEmail</code>, <code>isAPI</code>, <code>isORM</code>). Esto asegura que al generar el proyecto o inyectar un servicio, solo se importen y cableen en los archivos de inicio (como <code>RootLayout</code> o clientes de API) los componentes y SDKs seleccionados, garantizando 0 código muerto y 0 imports rotos."
+  },
+  {
+    id: "decoupled-payments-email",
+    category: "stacks",
+    question: "¿Por qué los servicios de Pagos y Email están desacoplados en Koko v2.0?",
+    answer: "A diferencia de librerías de UI o utilidades que son de selección múltiple, los proveedores de infraestructura SaaS como pagos (<a href=\"https://stripe.com\" target=\"_blank\" rel=\"noopener noreferrer\"><code>Stripe</code></a>, <a href=\"https://polar.sh\" target=\"_blank\" rel=\"noopener noreferrer\"><code>Polar</code></a>) y correo transaccional (<a href=\"https://resend.com\" target=\"_blank\" rel=\"noopener noreferrer\"><code>Resend</code></a>, <a href=\"https://brevo.com\" target=\"_blank\" rel=\"noopener noreferrer\"><code>Brevo</code></a>) requieren clientes dedicados y webhooks unificados. En v2.0 cuentan con pasos dedicados de selección única en el asistente TUI y flags dedicados (<code>--payments</code> y <code>--email</code>)."
+  },
+  {
+    id: "crypto-rand-secrets",
+    category: "devops",
+    question: "¿Cómo genera Koko secretos criptográficos seguros en el archivo .env?",
+    answer: "Para evitar contraseñas débiles o placeholders inseguros en desarrollo, Koko CLI utiliza el paquete criptográfico nativo de Go <a href=\"https://pkg.go.dev/crypto/rand\" target=\"_blank\" rel=\"noopener noreferrer\"><code>crypto/rand</code></a>. Al inicializar servicios como Better-Auth, NextAuth o JWT, genera cadenas aleatorias URL-safe en Base64 de 32 bytes de alta entropía (ej. <code>BETTER_AUTH_SECRET</code>, <code>JWT_SECRET</code>) listas y seguras desde el primer segundo."
   },
   {
     id: "stack-evolution",
     category: "config",
     question: "¿Cómo puedo actualizar o evolucionar mi stack tras la creación inicial?",
-    answer: "Gracias a que Koko genera código limpio y modular, puedes agregar nuevos paquetes con tu gestor habitual o consultar la documentación de Koko para extender módulos de autenticación (<a href=\"https://www.better-auth.com\" target=\"_blank\" rel=\"noopener noreferrer\"><code>Better-Auth</code></a>, <a href=\"https://clerk.com\" target=\"_blank\" rel=\"noopener noreferrer\"><code>Clerk</code></a>) y contenedores adicionales."
+    answer: "Gracias a que Koko genera código modular y rastrea el proyecto en <code>koko.config.json</code>, puedes ejecutar <code>koko add &lt;servicio&gt;</code> para inyectar módulos de pagos, email o UI, o sincronizar dependencias manuales ejecutando <code>koko doctor --fix</code>."
   },
   {
     id: "contribute-bugs",
@@ -318,13 +348,43 @@ export const faqsEn: FAQItem[] = [
     id: "cli-commands-flags",
     category: "config",
     question: "Which commands and flags does Koko CLI provide?",
-    answer: "It provides <code>koko init [name]</code> (accepts flags such as <code>--frontend</code>, <code>--backend</code>, <code>--database</code>, <code>--orm</code>, <code>--api</code>, <code>--addons</code>, <code>--package-manager</code>, <code>--recipie</code>, and <code>--default</code>), <code>koko doctor</code> (with <code>--fix</code> and <code>--dir</code> to diagnose and sync project state with <code>koko.config.json</code>), <code>koko --version</code>, and <code>koko --help</code> for quick command-line assistance."
+    answer: "It provides <code>koko init [name]</code> (accepts flags such as <code>--frontend</code>, <code>--backend</code>, <code>--database</code>, <code>--orm</code>, <code>--api</code>, <code>--addons</code>, <code>--payments</code>, <code>--email</code>, <code>--package-manager</code>, <code>--recipie</code>, and <code>--default</code>), <code>koko add &lt;service|addon&gt;</code> for post-creation injection, <code>koko doctor</code> (with <code>--fix</code> for automated stack repair), <code>koko --version</code>, and <code>koko --help</code>."
+  },
+  {
+    id: "koko-add-injector",
+    category: "config",
+    question: "How does the koko add command inject services into existing projects?",
+    answer: "Starting in v2.0, the <code>koko add &lt;service|addon&gt;</code> subcommand lets you incorporate tools into an already existing project without manual setup. For instance, running <code>koko add stripe</code>, <code>koko add resend</code>, or <code>koko add shadcn</code> inspects your workspace, atomically updates <code>koko.config.json</code>, installs npm packages, appends required environment variables to <code>.env</code>, and copies essential template files."
+  },
+  {
+    id: "koko-doctor-fix",
+    category: "config",
+    question: "What does koko doctor diagnose and how does --fix repair manifest drift?",
+    answer: "<code>koko doctor</code> analyzes your workspace in milliseconds, comparing disk state (<code>package.json</code>, ORM schemas, framework files) against <code>koko.config.json</code>. If discrepancies or architectural drift are detected, running <code>koko doctor --fix</code> (or <code>-f</code>) automatically updates the manifest safely and transactionally."
+  },
+  {
+    id: "universal-auto-wiring",
+    category: "stacks",
+    question: "What is Universal Go Template Auto-Wiring and how does it prevent orphan code?",
+    answer: "Koko leverages Go's native <code>text/template</code> engine with custom delimiters <code>[[</code> and <code>]]</code> and semantic condition helpers (<code>hasAuth</code>, <code>hasPayment</code>, <code>hasEmail</code>, <code>isAPI</code>, <code>isORM</code>). This guarantees that boilerplate files (such as <code>RootLayout</code> or API providers) only import and wire up the services actually selected, resulting in zero dead code and zero broken imports."
+  },
+  {
+    id: "decoupled-payments-email",
+    category: "stacks",
+    question: "Why are SaaS Payments and Email services decoupled in Koko v2.0?",
+    answer: "Unlike general UI addons or utilities which are multi-selectable, SaaS infrastructure services like payments (<a href=\"https://stripe.com\" target=\"_blank\" rel=\"noopener noreferrer\"><code>Stripe</code></a>, <a href=\"https://polar.sh\" target=\"_blank\" rel=\"noopener noreferrer\"><code>Polar</code></a>) and transactional email (<a href=\"https://resend.com\" target=\"_blank\" rel=\"noopener noreferrer\"><code>Resend</code></a>, <a href=\"https://brevo.com\" target=\"_blank\" rel=\"noopener noreferrer\"><code>Brevo</code></a>) require dedicated client initializations and webhook endpoints. In v2.0, they feature dedicated single-select steps in the interactive TUI and separate CLI flags (<code>--payments</code> and <code>--email</code>)."
+  },
+  {
+    id: "crypto-rand-secrets",
+    category: "devops",
+    question: "How does Koko generate cryptographic secrets inside .env files?",
+    answer: "To safeguard local and production environments, Koko no longer relies on predictable static strings. It uses Go's cryptographically secure <a href=\"https://pkg.go.dev/crypto/rand\" target=\"_blank\" rel=\"noopener noreferrer\"><code>crypto/rand</code></a> package to generate 32-byte Base64 URL-safe strings with high entropy for variables like <code>BETTER_AUTH_SECRET</code>, <code>NEXTAUTH_SECRET</code>, and <code>JWT_SECRET</code> out of the box."
   },
   {
     id: "stack-evolution",
     category: "config",
     question: "How can I update or evolve my stack after the initial scaffolding?",
-    answer: "Because Koko generates clean and modular code, you can add new libraries with your package manager or follow Koko documentation guides to extend authentication modules (<a href=\"https://www.better-auth.com\" target=\"_blank\" rel=\"noopener noreferrer\"><code>Better-Auth</code></a>, <a href=\"https://clerk.com\" target=\"_blank\" rel=\"noopener noreferrer\"><code>Clerk</code></a>) and extra containers."
+    answer: "Because Koko generates modular code and maintains <code>koko.config.json</code>, you can run <code>koko add &lt;service&gt;</code> to inject payment, email, or UI modules, or sync manual dependency updates with <code>koko doctor --fix</code>."
   },
   {
     id: "contribute-bugs",
