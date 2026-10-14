@@ -786,7 +786,7 @@
     <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-xs sm:text-sm font-bold text-brand-primary tracking-widest uppercase select-none">
       <span>Wizard Builder</span>
     </div>
-    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-6 text-text-main">
+    <h1 class="text-4xl sm:text-6xl font-bold tracking-tight mb-6 text-text-main">
       {t.title}
     </h1>
     <p class="text-base sm:text-lg text-text-muted max-w-3xl mx-auto leading-relaxed">

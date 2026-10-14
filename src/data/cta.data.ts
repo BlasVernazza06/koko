@@ -33,7 +33,7 @@ export const ctaBlueprints: CtaBlueprint[] = [
     metaEn: 'Turborepo · NestJS · Auth',
     tag: 'Clean Arch',
     rotate: 'rotate-0 -translate-y-2 sm:-translate-y-3 scale-105 z-20',
-    accentColor: 'border-brand-primary/40 hover:border-brand-primary/70 shadow-lg shadow-brand-primary/10 ring-1 ring-brand-primary/20',
+    accentColor: 'border-red-500/40 hover:border-red-500/70 shadow-lg shadow-red-500/10 ring-1 ring-red-500/20',
     recipeId: 'enterprise',
     hiddenOnMobile: false
   },

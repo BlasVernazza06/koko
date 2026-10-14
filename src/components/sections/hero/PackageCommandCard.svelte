@@ -76,7 +76,7 @@
     <!-- Sliding Pill Background Indicator -->
     {#if indicatorStyle.ready}
       <div
-        class="absolute rounded-full bg-bg-base shadow-xs border border-border-subtle transition-[left,width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+        class="sliding-pill absolute rounded-full bg-bg-base shadow-xs border border-border-subtle pointer-events-none"
         style="left: {indicatorStyle.left}px; top: {indicatorStyle.top}px; width: {indicatorStyle.width}px; height: {indicatorStyle.height}px;"
       ></div>
     {/if}
@@ -124,3 +124,11 @@
     </button>
   </div>
 </div>
+
+<style>
+  .sliding-pill {
+    transition: left 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                width 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: left, width;
+  }
+</style>
