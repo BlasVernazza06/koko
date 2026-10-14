@@ -8,6 +8,11 @@
   let activeCategory = $state<FAQCategoryId>('general');
   let openFaqId = $state<string | null>(null);
 
+  // Sliding indicator state for categories
+  let containerRef = $state<HTMLElement | null>(null);
+  let buttonRefs = $state<Record<string, HTMLButtonElement | null>>({});
+  let indicatorStyle = $state({ left: 0, top: 0, width: 0, height: 0, ready: false });
+
   const faqs = $derived(lang === 'es' ? faqsEs : faqsEn);
   const categories = $derived(lang === 'es' ? faqCategoriesEs : faqCategoriesEn);
   const filteredFaqs = $derived(faqs.filter(f => f.category === activeCategory));
@@ -20,6 +25,48 @@
     activeCategory = catId;
     openFaqId = null;
   }
+
+  function updateIndicator() {
+    const activeBtn = buttonRefs[activeCategory];
+    if (activeBtn && containerRef) {
+      indicatorStyle = {
+        left: activeBtn.offsetLeft,
+        top: activeBtn.offsetTop,
+        width: activeBtn.offsetWidth,
+        height: activeBtn.offsetHeight,
+        ready: true
+      };
+    }
+  }
+
+  $effect(() => {
+    // React to category or language changes
+    const _ = activeCategory;
+    const __ = lang;
+    updateIndicator();
+  });
+
+  $effect(() => {
+    if (typeof window === 'undefined') return;
+
+    // Initial calculation after render
+    const frameId = requestAnimationFrame(updateIndicator);
+
+    const handleResize = () => updateIndicator();
+    window.addEventListener('resize', handleResize);
+
+    let resizeObserver: ResizeObserver | null = null;
+    if (containerRef && typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => updateIndicator());
+      resizeObserver.observe(containerRef);
+    }
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener('resize', handleResize);
+      if (resizeObserver) resizeObserver.disconnect();
+    };
+  });
 </script>
 
 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start w-full">
@@ -35,12 +82,25 @@
     </div>
 
     <!-- Categories Container -->
-    <nav class="flex flex-col gap-1.5 p-1.5 rounded-2xl border border-border-subtle/40 bg-bg-surface/20 backdrop-blur-xs relative z-10 shadow-2xs" id="faq-categories">
+    <nav 
+      bind:this={containerRef}
+      class="relative flex flex-col gap-1.5 p-1.5 rounded-2xl border border-border-subtle/40 bg-badge-bg backdrop-blur-xs z-10 shadow-2xs" 
+      id="faq-categories"
+    >
+      <!-- Sliding Indicator Background -->
+      {#if indicatorStyle.ready}
+        <div
+          class="sliding-indicator absolute rounded-xl bg-bg-base shadow-xs border border-border-subtle pointer-events-none"
+          style="left: {indicatorStyle.left}px; top: {indicatorStyle.top}px; width: {indicatorStyle.width}px; height: {indicatorStyle.height}px;"
+        ></div>
+      {/if}
+
       {#each categories as cat}
         <button 
           type="button"
+          bind:this={buttonRefs[cat.id]}
           onclick={() => setCategory(cat.id)}
-          class="flex items-center w-full px-4 py-2.5 rounded-xl text-left text-xs sm:text-sm font-bold cursor-pointer select-none {activeCategory === cat.id ? 'bg-bg-surface/80 text-text-main border border-border-subtle/50 shadow-xs' : 'text-text-muted hover:text-text-main hover:bg-bg-surface/40 border border-transparent'}"
+          class="relative z-10 flex items-center w-full px-4 py-2.5 rounded-xl text-left text-xs sm:text-sm cursor-pointer select-none active:scale-98 transition-colors duration-200 {activeCategory === cat.id ? 'text-text-main font-semibold' : 'text-text-muted hover:text-text-main font-normal'}"
         >
           {cat.label}
         </button>
@@ -84,6 +144,14 @@
 </div>
 
 <style>
+  .sliding-indicator {
+    transition: top 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                left 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                width 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                height 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: top, left, width, height;
+  }
+
   .faq-content-grid {
     display: grid;
     grid-template-rows: 0fr;
