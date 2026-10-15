@@ -16,7 +16,7 @@ const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es')
   <div class="relative group py-1 has-dropdown">
     <a 
       href={currentLang === 'es' ? '/docs' : '/en/docs'}
-      class="text-[13px] font-medium text-text-muted hover:text-text-main flex items-center gap-1.5 cursor-pointer relative py-0.5"
+      class="text-[13px] font-medium text-text-main flex items-center gap-1.5 cursor-pointer relative py-0.5"
     >
       <span class="lang-es">Docs</span>
       <span class="lang-en">Docs</span>
@@ -32,7 +32,7 @@ const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es')
   <div class="relative py-1 group">
     <a 
       href={currentLang === 'es' ? '/#faq' : '/en/#faq'}
-      class="text-[13px] font-medium text-text-muted hover:text-text-main py-0.5 relative block"
+      class="text-[13px] font-medium text-text-main py-0.5 relative block"
     >
       <span class="lang-es">FAQ</span>
       <span class="lang-en">FAQ</span>
@@ -43,7 +43,7 @@ const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es')
   <div class="relative group py-1 has-dropdown">
     <a 
       href={currentLang === 'es' ? '/builder' : '/en/builder'}
-      class="text-[13px] font-medium text-text-muted hover:text-text-main flex items-center gap-1.5 cursor-pointer relative py-0.5"
+      class="text-[13px] font-medium text-text-main flex items-center gap-1.5 cursor-pointer relative py-0.5"
     >
       <span class="lang-es">Recetas</span>
       <span class="lang-en">Showcase</span>

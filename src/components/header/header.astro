@@ -48,7 +48,7 @@ const currentLang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es';
       <!-- 2. Wizard CTA (High-contrast pill with ↗) -->
       <a
         href={currentLang === 'es' ? '/builder' : '/en/builder'}
-        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-text-main text-bg-base hover:opacity-90 shadow-sm transition-transform duration-150 cursor-pointer active:scale-95 group/wz shrink-0 border border-text-main/10"
+        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-primary text-white hover:opacity-90 shadow-sm transition-transform duration-150 cursor-pointer active:scale-95 group/wz shrink-0 border border-text-main/10"
         title="Visual Builder"
       >
         <span>Visual Builder</span>
