@@ -1,6 +1,7 @@
 export interface CtaBlueprint {
   id: string;
   logo: string;
+  logoDark?: string;
   title: string;
   metaEs: string;
   metaEn: string;

@@ -51,7 +51,8 @@ export const ctaBlueprints: CtaBlueprint[] = [
   },
   {
     id: 'astro',
-    logo: '/logos/astro.svg',
+    logo: '/logos/astro-light.svg',
+    logoDark: '/logos/astro-dark.svg',
     title: 'Modern Static',
     metaEs: 'Astro 6 · Svelte 5 · Tailwind',
     metaEn: 'Astro 6 · Svelte 5 · Tailwind',
