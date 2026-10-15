@@ -23,12 +23,6 @@ const title = isJson ? 'koko.config.json' : 'Terminal';
     <!-- Window title -->
     <span class="text-[11px] font-semibold text-text-muted/80">{title}</span>
     <!-- Empty element for spacing symmetry -->
-    <div class="w-12 shrink-0"></div>
-  </div>
-  
-  <!-- Code Area -->
-  <div class="p-4 font-mono text-[11px] sm:text-xs flex justify-between items-start gap-4 text-brand-primary whitespace-pre overflow-x-auto">
-    <code class="text-text-main flex-1 leading-relaxed">{code}</code>
     <button 
       data-copy-text={code}
       data-lang-es={lang === 'es' ? 'es' : 'en'}
@@ -39,6 +33,11 @@ const title = isJson ? 'koko.config.json' : 'Terminal';
       </span>
       <span class="btn-text shrink-0">{lang === 'es' ? 'Copiar' : 'Copy'}</span>
     </button>
+  </div>
+  
+  <!-- Code Area -->
+  <div class="p-4 font-mono text-[11px] sm:text-xs flex justify-between items-start gap-4 text-brand-primary whitespace-pre overflow-x-auto">
+    <code class="text-text-main flex-1 leading-relaxed">{code}</code>
   </div>
 </div>
 

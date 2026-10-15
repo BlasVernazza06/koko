@@ -43,38 +43,44 @@ const activeCategory = activeSection ? activeSection.category : categories[0];
             />
           </button>
 
-          <!-- Accordion List Body -->
-          <ul 
-            class={`space-y-1 pl-3 border-l border-border-subtle/60 ml-2 transition-[max-height,opacity] duration-200 overflow-hidden category-list ${isExpanded ? 'max-h-[1200px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}
+          <!-- Accordion List Body with smooth grid-template-rows animation -->
+          <div 
+            class={`category-accordion-wrapper ${isExpanded ? 'is-expanded' : ''}`}
           >
-            {categorySections.map((item) => {
-              const isActive = item.id === activeSectionId;
-              return (
-                <li>
-                  <a 
-                    href={`${basePath}/${item.id}`}
-                    class={`block text-sm py-1.5 px-3 rounded-lg hover:bg-border-subtle/50 hover:text-text-main group/nav-link
-                      ${isActive 
-                        ? 'bg-brand-primary/10 !text-brand-primary !font-bold border border-brand-primary/20 shadow-xs border-l-2 border-l-brand-primary' 
-                        : 'text-text-muted'}`}
-                  >
-                    {item.title}
-                  </a>
-                  {isActive && item.subItems && (
-                    <ul class="mt-1 pl-3 space-y-1 border-l border-border-subtle/40 text-sm text-text-muted">
-                      {item.subItems.map((sub) => (
-                        <li>
-                          <a href={`${basePath}/${item.id}#${sub.id}`} class="hover:text-brand-primary block py-1 hover:pl-1 transition-transform duration-150">
-                            {sub.title}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+            <div class="overflow-hidden min-h-0">
+              <ul 
+                class="space-y-1 pl-3 border-l border-border-subtle/60 ml-2 py-1 category-list"
+              >
+                {categorySections.map((item) => {
+                  const isActive = item.id === activeSectionId;
+                  return (
+                    <li>
+                      <a 
+                        href={`${basePath}/${item.id}`}
+                        class={`block text-sm py-1.5 px-3 rounded-lg hover:bg-border-subtle/50 hover:text-text-main group/nav-link
+                          ${isActive 
+                            ? 'bg-brand-primary/10 !text-brand-primary !font-bold border border-brand-primary/20 shadow-xs border-l-2 border-l-brand-primary' 
+                            : 'text-text-muted'}`}
+                      >
+                        {item.title}
+                      </a>
+                      {isActive && item.subItems && (
+                        <ul class="mt-1 pl-3 space-y-1 border-l border-border-subtle/40 text-sm text-text-muted">
+                          {item.subItems.map((sub) => (
+                            <li>
+                              <a href={`${basePath}/${item.id}#${sub.id}`} class="hover:text-brand-primary block py-1 hover:pl-1 transition-transform duration-150">
+                                {sub.title}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
         </div>
       );
     })}
@@ -99,7 +105,7 @@ const activeCategory = activeSection ? activeSection.category : categories[0];
         </p>
         <a 
           href={lang === 'es' ? '/builder' : '/en/builder'} 
-          class="inline-flex items-center justify-center w-full px-3 py-1.5 text-xs font-bold text-bg-base bg-brand-primary rounded-xl hover:bg-brand-primary/95 transition-transform duration-150 shadow-sm hover:shadow-md cursor-pointer hover:translate-y-[-1px]"
+          class="inline-flex items-center justify-center w-full px-3 py-1.5 text-xs font-bold text-white/80 bg-brand-primary rounded-xl hover:bg-brand-primary/95 transition-transform duration-150 shadow-sm hover:shadow-md cursor-pointer hover:translate-y-[-1px]"
         >
           {lang === 'es' ? 'Probar Generador' : 'Try Generator'}
         </a>
@@ -117,20 +123,42 @@ const activeCategory = activeSection ? activeSection.category : categories[0];
   .scrollable-sections::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
   }
+
+  /* Smooth grid accordion animation */
+  .category-accordion-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 250ms cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .category-accordion-wrapper.is-expanded {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .category-accordion-wrapper {
+      transition: none;
+    }
+  }
 </style>
 
 <script>
-  // Setup accordion toggle interaction with exclusive single-open behavior
+  // Setup accordion toggle interaction with smooth transitions
   document.addEventListener('DOMContentLoaded', () => {
     const setupAccordions = () => {
       const groups = document.querySelectorAll('.category-group');
 
       groups.forEach((group) => {
         const toggle = group.querySelector('.category-toggle');
-        const list = group.querySelector('.category-list') as HTMLElement;
+        const wrapper = group.querySelector('.category-accordion-wrapper');
         const chevron = group.querySelector('.chevron-icon');
 
-        if (toggle && list) {
+        if (toggle && wrapper) {
           if (toggle.getAttribute('data-listener-setup') === 'true') return;
           toggle.setAttribute('data-listener-setup', 'true');
 
@@ -140,22 +168,18 @@ const activeCategory = activeSection ? activeSection.category : categories[0];
             if (isExpanded) {
               // Close this category
               toggle.setAttribute('aria-expanded', 'false');
-              list.style.maxHeight = '0px';
-              list.style.opacity = '0';
-              list.style.pointerEvents = 'none';
+              wrapper.classList.remove('is-expanded');
               chevron?.classList.remove('rotate-180');
             } else {
               // Close ALL other categories first (single open accordion)
               groups.forEach((otherGroup) => {
                 if (otherGroup !== group) {
                   const otherToggle = otherGroup.querySelector('.category-toggle');
-                  const otherList = otherGroup.querySelector('.category-list') as HTMLElement;
+                  const otherWrapper = otherGroup.querySelector('.category-accordion-wrapper');
                   const otherChevron = otherGroup.querySelector('.chevron-icon');
-                  if (otherToggle && otherList) {
+                  if (otherToggle && otherWrapper) {
                     otherToggle.setAttribute('aria-expanded', 'false');
-                    otherList.style.maxHeight = '0px';
-                    otherList.style.opacity = '0';
-                    otherList.style.pointerEvents = 'none';
+                    otherWrapper.classList.remove('is-expanded');
                     otherChevron?.classList.remove('rotate-180');
                   }
                 }
@@ -163,9 +187,7 @@ const activeCategory = activeSection ? activeSection.category : categories[0];
 
               // Open this category
               toggle.setAttribute('aria-expanded', 'true');
-              list.style.maxHeight = '1200px';
-              list.style.opacity = '1';
-              list.style.pointerEvents = 'auto';
+              wrapper.classList.add('is-expanded');
               chevron?.classList.add('rotate-180');
             }
           });

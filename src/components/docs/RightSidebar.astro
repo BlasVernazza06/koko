@@ -44,7 +44,7 @@ const faqTopics = lang === 'es' ? [
 <aside class="w-60 shrink-0 hidden xl:flex flex-col sticky top-24 self-start h-[calc(100vh-8rem)] select-none pl-4 text-xs">
   
   <!-- Scrollable Top Content Area (TOC or FAQ Topics) -->
-  <div class="flex-1 overflow-y-auto overflow-x-hidden pr-1 space-y-4 scrollable-sidebar-body">
+  <div class="flex-1 overflow-y-auto overflow-x-visible pr-1 space-y-4 scrollable-sidebar-body">
     {isFaq ? (
       <div class="space-y-3">
         <h5 class="text-xs font-bold uppercase tracking-wider text-text-main flex items-center gap-1.5">
@@ -71,7 +71,7 @@ const faqTopics = lang === 'es' ? [
         </div>
       </div>
     ) : (
-      <div>
+      <div class="pl-2">
         <h5 class="text-xs font-bold uppercase tracking-wider text-text-main mb-4 flex items-center gap-1.5">
           <CircleQuestionMark size={12} />
           {lang === 'es' ? 'En esta página' : 'On this page'}
@@ -80,7 +80,7 @@ const faqTopics = lang === 'es' ? [
         <ul class="relative border-l-2 border-border-subtle/60 space-y-4 pl-4 text-xs text-text-muted" id="toc-list">
           {outlines.map((item, idx) => (
             <li class={`relative ${item.isNested ? 'pl-3' : ''}`} data-anchor={item.anchorId}>
-              <div class={`toc-bullet absolute -left-[22px] top-1.5 w-2 h-2 rounded-full border bg-bg-base ring-brand-primary/0 ${
+              <div class={`toc-bullet absolute -left-[21px] top-1.5 w-2 h-2 rounded-full border bg-bg-base ring-brand-primary/0 transition-all duration-150 ${
                 idx === 0 
                   ? 'border-brand-primary bg-brand-primary ring-4 ring-brand-primary/20' 
                   : 'border-transparent bg-border-subtle/60'
