@@ -317,11 +317,16 @@
     else if (bindingKey === 'withTesting') withTesting = !withTesting;
   }
 
-  let stepScrollContainer: HTMLDivElement | null = $state(null);
+  let stepperRoot: HTMLDivElement | null = $state(null);
+
   function changeStep(idx: number) {
     activeStep = idx;
-    if (stepScrollContainer) {
-      stepScrollContainer.scrollTop = 0;
+    if (typeof window !== 'undefined') {
+      const builderElement = document.querySelector('.builder-container') || stepperRoot;
+      if (builderElement) {
+        const topOffset = builderElement.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: Math.max(0, topOffset), behavior: 'smooth' });
+      }
     }
   }
 
@@ -436,7 +441,7 @@
 
   {#if viewMode === 'stepper'}
     <!-- STEPPER LAYOUT -->
-    <div in:fade={{ duration: 120 }} class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+    <div bind:this={stepperRoot} in:fade={{ duration: 120 }} class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start scroll-mt-24">
       <!-- Steps Navigation Sidebar (Sticky to accompany scroll) -->
       <div class="md:col-span-4 flex flex-row md:flex-col gap-3 overflow-x-auto pb-4 md:pb-0 md:pr-4 md:border-r border-border-subtle/30 select-none custom-scrollbar relative md:sticky md:top-24 md:self-start">
         {#each steps as step, idx}
@@ -446,29 +451,29 @@
           <button
             type="button"
             onclick={() => changeStep(idx)}
-            class="flex items-center gap-3.5 p-3 rounded-2xl text-left hover:bg-bg-base cursor-pointer shrink-0 group w-auto md:w-full relative select-none
+            class="flex items-center gap-3.5 p-3 rounded-2xl text-left hover:bg-bg-base/80 cursor-pointer shrink-0 group w-auto md:w-full relative select-none border transition-all duration-200
               {isActive 
-                ? 'bg-brand-primary/[0.08] text-brand-primary font-bold shadow-xs' 
+                ? 'bg-gradient-to-r from-brand-primary/[0.12] to-brand-primary/[0.03] border-brand-primary/40 text-brand-primary font-bold shadow-xs' 
                 : isCompleted
-                  ? 'text-brand-primary/80 hover:bg-bg-surface/30'
-                  : 'text-text-muted hover:text-text-main hover:bg-bg-surface/40'}"
+                  ? 'border-transparent text-text-main/80 hover:border-border-subtle/50'
+                  : 'border-transparent text-text-muted hover:text-text-main hover:border-border-subtle/40'}"
           >
-            <div class="w-9 h-9 flex items-center justify-center transition-transform duration-200 shrink-0 relative
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 shrink-0 relative
               {isActive 
-                ? 'text-brand-primary scale-110 drop-shadow-[0_0_8px_rgba(90,79,196,0.3)]' 
+                ? 'bg-brand-primary text-white shadow-sm shadow-brand-primary/30 scale-105' 
                 : isCompleted
-                  ? 'text-brand-primary/80'
-                  : 'text-text-muted group-hover:text-text-main'}"
+                  ? 'bg-brand-primary/10 text-brand-primary'
+                  : 'bg-bg-surface/60 text-text-muted group-hover:text-text-main group-hover:bg-bg-surface'}"
             >
-              <StepIcon size={18} />
+              <StepIcon size={16} />
             </div>
             
-            <div class="hidden sm:flex flex-col gap-0.5">
-              <span class="text-[10px] md:text-xs uppercase tracking-widest font-extrabold leading-none
-                {isActive ? 'text-brand-primary' : 'text-text-main/80'}">
+            <div class="hidden sm:flex flex-col gap-0.5 min-w-0">
+              <span class="text-[11px] md:text-xs uppercase tracking-wider font-extrabold leading-none truncate
+                {isActive ? 'text-brand-primary' : 'text-text-main'}">
                 {step.title}
               </span>
-              <span class="text-[9px] md:text-[10px] opacity-75 font-medium leading-none mt-1.5">{step.desc}</span>
+              <span class="text-[10px] opacity-75 font-medium leading-none mt-1 truncate">{step.desc}</span>
             </div>
           </button>
         {/each}
@@ -488,33 +493,12 @@
             <p class="text-xs text-text-muted mt-1.5 font-medium leading-relaxed">{steps[activeStep].desc}</p>
           </div>
 
-          <!-- Options Container with Internal Scroll and Bottom Gradient Indicator -->
-          <div class="relative">
-            <div 
-              bind:this={stepScrollContainer}
-              class="max-h-[460px] md:max-h-[500px] overflow-y-auto pr-2 pb-6 space-y-6 custom-scrollbar scroll-smooth"
-            >
-              <!-- Step Fields -->
+          <!-- Options Container -->
+          <div class="space-y-6">
+            <!-- Step Fields -->
               {#if activeStep === 0}
                 <!-- Step 1: Proyecto -->
                 <div class="space-y-6" in:fade={{ duration: 100 }}>
-                  <!-- Project Name Input -->
-                  <div class="space-y-2.5">
-                    <label for="pname" class="block text-xs font-extrabold uppercase tracking-widest text-text-muted border-l-3 border-brand-primary pl-3 select-none">
-                      {t.projectNameLabel}
-                    </label>
-                    <div class="relative flex items-center bg-bg-base border border-border-subtle rounded-xl px-4 py-3 hover:border-brand-primary/40 focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10 shadow-2xs">
-                      <Settings size={16} class="text-brand-primary/70 mr-3 animate-pulse" aria-hidden="true" />
-                      <input
-                        id="pname"
-                        type="text"
-                        bind:value={projectName}
-                        placeholder="my-koko-app"
-                        class="w-full bg-transparent border-none outline-none text-sm text-text-main placeholder-text-muted/40 p-0 focus:ring-0 font-mono font-bold tracking-wide"
-                      />
-                    </div>
-                  </div>
-
                   <!-- Package Manager -->
                   {#if pmLayer}
                     <div class="space-y-3">
@@ -821,10 +805,6 @@
                 </div>
               {/if}
             </div>
-
-            <!-- Subtle bottom shadow/gradient indicating more scrollable content -->
-            <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-bg-base via-bg-base/60 to-transparent rounded-b-xl"></div>
-          </div>
         </div>
 
         <!-- Stepper Navigation Controls -->
@@ -865,23 +845,6 @@
   {:else}
     <!-- EXPANDED/SCROLL LAYOUT -->
     <div in:fade={{ duration: 120 }} class="space-y-8">
-      <!-- Project Name Input -->
-      <div class="rounded-3xl border border-border-subtle bg-bg-surface/30 p-6 shadow-xs hover:border-brand-primary/25">
-        <label for="pname-exp" class="block text-xs font-extrabold uppercase tracking-widest text-text-muted mb-3.5 select-none border-l-3 border-brand-primary pl-3">
-          {t.projectNameLabel}
-        </label>
-        <div class="relative flex items-center bg-bg-base border border-border-subtle rounded-xl px-4 py-3.5 hover:border-brand-primary/40 focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10">
-          <Settings size={18} class="text-brand-primary/70 mr-3 animate-pulse" aria-hidden="true" />
-          <input
-            id="pname-exp"
-            type="text"
-            bind:value={projectName}
-            placeholder="my-koko-app"
-            class="w-full bg-transparent border-none outline-none text-base text-text-main placeholder-text-muted/40 p-0 focus:ring-0 font-mono font-bold tracking-wide"
-          />
-        </div>
-      </div>
-
       <!-- Technology Layers mapped dynamically (including email) -->
       {#each currentLayers as layer (layer.key)}
         {@const LayerIcon = layer.icon}

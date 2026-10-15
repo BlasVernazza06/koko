@@ -775,29 +775,16 @@
 <style>
   .builder-container {
     position: relative;
-    padding-top: 3rem;
+    padding-top: 0.5rem;
     padding-bottom: 3rem;
   }
 </style>
 
-<div class="w-full max-w-[92rem] mx-auto px-8 py-12 font-sans space-y-12 builder-container relative z-10">
-  <!-- Header -->
-  <div class="text-center mb-16">
-    <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-xs sm:text-sm font-bold text-brand-primary tracking-widest uppercase select-none">
-      <span>Wizard Builder</span>
-    </div>
-    <h1 class="text-4xl sm:text-6xl font-bold tracking-tight mb-6 text-text-main">
-      {t.title}
-    </h1>
-    <p class="text-base sm:text-lg text-text-muted max-w-3xl mx-auto leading-relaxed">
-      {t.subtitle}
-    </p>
-  </div>
-
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+<div class="w-full max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-4 font-sans builder-container relative z-10">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
     
     <!-- LEFT: CONFIGURATION CONTROLS (8 cols) -->
-    <div class="lg:col-span-8 space-y-10">
+    <div class="lg:col-span-8 space-y-6">
       <VisualControls
         bind:projectName
         bind:selectedFront
@@ -820,9 +807,10 @@
       />
     </div>
 
-    <!-- RIGHT: COMMAND & STRUCTURE DISPLAY (4 cols) -->
-    <div class="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
+    <!-- RIGHT: PROJECT NAME, STACK & COMMAND DISPLAY (4 cols) -->
+    <div class="lg:col-span-4 lg:sticky lg:top-20 space-y-4">
       <VisualPreview
+        bind:projectName
         {generatedCommand}
         {structurePreview}
         selectedTechs={selectedTechOptions}

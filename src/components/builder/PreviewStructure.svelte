@@ -43,6 +43,21 @@
     setTimeout(checkScroll, 50);
   }
 
+  function handleWheel(e: WheelEvent) {
+    if (!scrollContainer) return;
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+    const isAtTop = scrollTop <= 0 && e.deltaY < 0;
+    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1 && e.deltaY > 0;
+
+    // Prevent window scrolling while cursor is inside tree container unless reached extreme boundary
+    if (!isAtTop && !isAtBottom) {
+      e.stopPropagation();
+      scrollContainer.scrollTop += e.deltaY;
+      e.preventDefault();
+      checkScroll();
+    }
+  }
+
   function getItemDepth(item: any): number {
     if (item.depth !== undefined) return item.depth;
     if (item.quadIndent) return 4;
@@ -75,11 +90,11 @@
 
   const translations = {
     es: {
-      structureTitle: 'Estructura de Directorios Generada',
+      structureTitle: 'Estructura Generada',
       scrollMore: 'Desplaza para ver más archivos'
     },
     en: {
-      structureTitle: 'Generated Directory Structure',
+      structureTitle: 'Generated Structure',
       scrollMore: 'Scroll to explore more files'
     }
   };
@@ -102,9 +117,12 @@
   .tree-scroll::-webkit-scrollbar-thumb:hover {
     background: var(--brand-primary);
   }
+  /* Ensure the container traps wheel scrolling and does not bubble to window */
   .tree-scroll {
     scrollbar-width: thin;
-    scrollbar-color: rgba(150, 150, 170, 0.2) transparent;
+    scrollbar-color: rgba(150, 150, 170, 0.3) transparent;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Tree hierarchy guide line */
@@ -122,33 +140,19 @@
 </style>
 
 <!-- Generated Structure Container -->
-<div class="rounded-2xl p-6 overflow-hidden relative">
-  <!-- Header -->
-  <div class="flex items-center justify-between gap-2.5 mb-4 pb-2 border-b border-border-subtle select-none">
-    <div class="flex items-center gap-2">
-      <Folder size={16} class="text-brand-secondary" aria-hidden="true" />
-      <span class="text-xs font-bold uppercase tracking-widest text-text-muted">
-        {t.structureTitle}
-      </span>
-    </div>
-    
-    <!-- Active items counter / indicator -->
-    <span class="text-[10px] font-mono text-text-muted/70 bg-bg-surface px-2 py-0.5 rounded-md border border-border-subtle/50">
-      {structurePreview.length} items
-    </span>
-  </div>
-
+<div class="rounded-2xl p-1 overflow-hidden relative">
   <div class="relative">
     <!-- Top Subtle Fade Mask when scrolled down -->
     {#if canScrollUp}
       <div class="pointer-events-none absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-bg-base to-transparent z-10 transition-opacity duration-300"></div>
     {/if}
 
-    <!-- Scrollable Tree View -->
+    <!-- Scrollable Tree View Container -->
     <div 
       bind:this={scrollContainer}
       onscroll={checkScroll}
-      class="tree-scroll space-y-1 font-mono text-xs sm:text-sm text-text-muted max-h-[300px] overflow-y-auto pr-2 pb-6 relative select-none"
+      onwheel={handleWheel}
+      class="tree-scroll space-y-1 font-mono text-xs sm:text-[13px] text-text-muted h-[220px] max-h-[220px] overflow-y-auto pr-2 pb-6 relative select-none"
     >
       {#each structurePreview as item, idx}
         {@const depth = getItemDepth(item)}
@@ -197,11 +201,17 @@
 
     <!-- Bottom Subtle Gradient Fade + Scroll Cue Indicator -->
     {#if canScrollDown}
-      <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-bg-base via-bg-base/80 to-transparent z-10 flex items-end justify-center pb-1 transition-opacity duration-300">
-        <div class="pointer-events-auto flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-bg-surface/90 border border-border-subtle/80 text-[10.5px] font-sans font-semibold text-text-muted shadow-sm backdrop-blur-sm animate-pulse">
+      <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-bg-base/90 via-bg-base/60 to-transparent z-10 flex items-end justify-center pb-1 transition-opacity duration-300">
+        <button 
+          type="button"
+          onclick={() => {
+            if (scrollContainer) scrollContainer.scrollBy({ top: 120, behavior: 'smooth' });
+          }}
+          class="pointer-events-auto flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-bg-surface/90 hover:bg-bg-surface border border-border-subtle/80 text-[10px] font-sans font-semibold text-text-muted hover:text-text-main shadow-xs backdrop-blur-sm cursor-pointer transition-colors"
+        >
           <span>{t.scrollMore}</span>
-          <ArrowDown size={10} class="text-brand-secondary" />
-        </div>
+          <ArrowDown size={10} class="text-brand-secondary animate-bounce" />
+        </button>
       </div>
     {/if}
   </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Check, Copy } from '@lucide/svelte';
+  import { Check, Copy, ChevronDown, ChevronUp } from '@lucide/svelte';
 
   let {
     generatedCommand = '',
@@ -14,17 +14,22 @@
   }>();
 
   let isCopied = $state(false);
+  let isExpanded = $state(false);
 
   const translations = {
     es: {
       commandLabel: 'CLI COMMAND',
       copiedBtn: 'Copiado',
-      copyBtn: 'Copiar'
+      copyBtn: 'Copiar',
+      expandCmd: 'Ver comando completo',
+      collapseCmd: 'Comprimir'
     },
     en: {
       commandLabel: 'CLI COMMAND',
       copiedBtn: 'Copied',
-      copyBtn: 'Copy'
+      copyBtn: 'Copy',
+      expandCmd: 'View full flags',
+      collapseCmd: 'Collapse'
     }
   };
 
@@ -74,10 +79,10 @@
     }, 2000);
   }
 
-  // Base command line with trailing backslash if there are flags
+  // Base command line with trailing backslash if there are flags (when expanded)
   const highlightedBaseCmd = $derived.by(() => {
     if (!parsedCommand.baseCmd) return '';
-    const slashHtml = hasFlags ? ` <span class="text-slate-500 font-bold">\\</span>` : '';
+    const slashHtml = (hasFlags && isExpanded) ? ` <span class="text-slate-500 font-bold">\\</span>` : '';
     return `<span class="text-slate-100 font-semibold">${parsedCommand.baseCmd}</span>${slashHtml}`;
   });
 
@@ -94,7 +99,7 @@
 
 <div class="space-y-3 font-sans">
   <!-- Header Layout: Title on Left, Selector on Right -->
-  <div class="flex items-center justify-between pb-3 select-none">
+  <div class="flex items-center justify-between pb-2 select-none">
     <div class="flex items-center gap-1.5">
       <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-text-muted">
         {t.commandLabel}
@@ -136,23 +141,29 @@
       </div>
     </div>
   </div>
-  <div class="h-px bg-border-subtle w-full !mt-0 !mb-3"></div>
+  <div class="h-px bg-border-subtle w-full !mt-0 !mb-2.5"></div>
 
   <!-- Command Box Container -->
-  <div class="border border-border-subtle/50 dark:border-border-subtle rounded-2xl bg-[#0c0b14] dark:bg-[#07060b] shadow-[0_4px_24px_rgba(0,0,0,0.18)] p-3.5 sm:p-4 font-mono text-xs sm:text-[13px] tracking-wide relative">
+  <div class="border border-border-subtle/50 dark:border-border-subtle rounded-2xl bg-[#0c0b14] dark:bg-[#07060b] shadow-[0_4px_24px_rgba(0,0,0,0.18)] p-3 sm:p-3.5 font-mono text-xs sm:text-[13px] tracking-wide relative">
     
     <!-- Top Row: Base Command & Flags on Left + Copy Button on Right -->
-    <div class="flex items-start justify-between gap-3">
-      <div class="flex items-start gap-2.5 min-w-0 flex-1 overflow-x-auto no-scrollbar scroll-smooth py-0.5">
+    <div class="flex items-start justify-between gap-2.5">
+      <div class="flex items-start gap-2 min-w-0 flex-1 overflow-x-auto no-scrollbar scroll-smooth py-0.5">
         <span class="text-brand-primary select-none font-extrabold text-sm shrink-0 leading-relaxed">$</span>
-        <div class="space-y-1.5 font-mono text-xs sm:text-[13px] tracking-wide select-all text-slate-300 min-w-0 flex-1">
+        <div class="space-y-1.5 font-mono text-xs sm:text-[12.5px] tracking-wide select-all text-slate-300 min-w-0 flex-1">
           <!-- Base Command Line -->
           <div class="whitespace-nowrap leading-relaxed">
             {@html highlightedBaseCmd}
+            {#if !isExpanded && hasFlags}
+              <span class="text-slate-500 font-mono text-[11px] ml-1.5 select-none bg-white/5 px-1.5 py-0.5 rounded border border-white/10">
+                +{parsedCommand.flags.length} flags
+              </span>
+            {/if}
           </div>
-          <!-- Multi-line formatted flags -->
-          {#if hasFlags}
-            <div class="space-y-1.5 pl-4 sm:pl-5">
+          
+          <!-- Multi-line formatted flags (Only shown when expanded) -->
+          {#if isExpanded && hasFlags}
+            <div class="space-y-1.5 pl-3 sm:pl-4 pt-1 border-t border-white/5">
               {#each highlightedFlags as line}
                 <div class="whitespace-nowrap leading-relaxed">{@html line}</div>
               {/each}
@@ -161,11 +172,11 @@
         </div>
       </div>
 
-      <!-- Copy Button inside the box (Always visible, top right, never covers text) -->
+      <!-- Copy Button inside the box -->
       <button
         type="button"
         onclick={copyCommand}
-        class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[10.5px] font-mono font-bold uppercase tracking-wider cursor-pointer active:scale-95 shadow-md select-none shrink-0
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[10.5px] font-mono font-bold uppercase tracking-wider cursor-pointer active:scale-95 shadow-md select-none shrink-0 transition-colors
           {isCopied
             ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400 shadow-emerald-500/10'
             : 'bg-white/10 hover:bg-white/15 border-white/15 text-slate-200 hover:text-white hover:border-white/25'}"
@@ -179,15 +190,37 @@
         {/if}
       </button>
     </div>
+
+    <!-- Collapsible Toggle Trigger (Only when there are flags to toggle) -->
+    {#if hasFlags}
+      <div class="pt-2.5 mt-2 border-t border-white/10 flex items-center justify-between">
+        <button
+          type="button"
+          onclick={() => isExpanded = !isExpanded}
+          class="flex items-center gap-1.5 text-[10.5px] font-mono text-slate-400 hover:text-brand-primary cursor-pointer transition-colors select-none"
+        >
+          {#if isExpanded}
+            <ChevronUp size={13} class="text-brand-secondary" />
+            <span>{t.collapseCmd}</span>
+          {:else}
+            <ChevronDown size={13} class="text-brand-primary" />
+            <span>{t.expandCmd} ({parsedCommand.flags.length})</span>
+          {/if}
+        </button>
+        <span class="text-[9.5px] text-slate-500 font-mono">
+          {isExpanded ? 'vista detallada' : 'vista compacta'}
+        </span>
+      </div>
+    {/if}
   </div>
 
   <!-- CTA Button to download native binary from GitHub Releases -->
-  <div class="flex justify-end pt-1">
+  <div class="flex justify-end pt-0.5">
     <a
       href="https://github.com/BlasVernazza06/koko-cli/releases"
       target="_blank"
       rel="noopener noreferrer"
-      class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-brand-primary/20 bg-bg-base hover:bg-brand-primary/5 text-brand-primary rounded-xl text-[10px] font-extrabold uppercase tracking-wider shadow-2xs hover:shadow-sm select-none"
+      class="inline-flex items-center gap-1.5 px-2.5 py-1 border border-brand-primary/20 bg-bg-base hover:bg-brand-primary/5 text-brand-primary rounded-xl text-[10px] font-extrabold uppercase tracking-wider shadow-2xs hover:shadow-sm select-none"
     >
       <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 fill-none stroke-current stroke-[2]" aria-hidden="true">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
