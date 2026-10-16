@@ -47,6 +47,15 @@ describe('Project Name Validation & Sanitization', () => {
     }
   });
 
+  it('should block Linux/Unix reserved system names', () => {
+    const linuxReserved = ['etc', 'root', 'bin', 'dev', 'var', 'usr', 'node_modules'];
+    for (const name of linuxReserved) {
+      const result = validateProjectName(name);
+      expect(result.valid).toBe(false);
+      expect(result.error).toContain('Linux/Unix');
+    }
+  });
+
   it('should sanitize multi-word inputs by converting spaces to hyphens', () => {
     const sanitized = sanitizeProjectName('Awesome Koko Project  2026');
     expect(sanitized).toBe('awesome-koko-project-2026');
