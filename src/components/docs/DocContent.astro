@@ -5,6 +5,7 @@ import DocCodeBlock from '@/components/docs/DocCodeBlock.astro';
 import DocDirectoryTree from '@/components/docs/DocDirectoryTree.astro';
 import DocPagination from '@/components/docs/DocPagination.astro';
 import DocFaq from '@/components/docs/DocFaq.svelte';
+import DocFlagItem from '@/components/docs/DocFlagItem.astro';
 import { Link } from '@lucide/svelte';
 
 interface Props {
@@ -21,7 +22,7 @@ const nextSection = currentIndex < sections.length - 1 ? sections[currentIndex +
 const basePath = lang === 'es' ? '/docs' : '/en/docs';
 ---
 
-<main class="flex-1 min-w-0 max-w-3xl pb-20">
+<main class="flex-1 min-w-0 max-w-4xl xl:max-w-none pb-20">
   
   <!-- Breadcrumbs -->
   <nav class="flex items-center gap-2 text-xs text-text-muted mb-4 font-mono select-none">
@@ -81,19 +82,29 @@ const basePath = lang === 'es' ? '/docs' : '/en/docs';
           </div>
 
           {block.bullets && (
-            <ul class="list-disc pl-5 text-sm text-text-muted space-y-2 leading-relaxed">
-              {block.bullets.map((bullet) => {
-                const parts = bullet.split(' - ');
-                if (parts.length > 1) {
-                  return (
-                    <li>
-                      <strong>{parts[0]}</strong> - {parts.slice(1).join(' - ')}
-                    </li>
-                  );
-                }
-                return <li>{bullet}</li>;
-              })}
-            </ul>
+            <div class="space-y-2 my-3">
+              {block.bullets.some(b => b.trim().startsWith('-') || b.trim().startsWith('--')) ? (
+                <div class="grid grid-cols-1 gap-2.5 not-prose">
+                  {block.bullets.map((bullet) => (
+                    <DocFlagItem text={bullet} />
+                  ))}
+                </div>
+              ) : (
+                <ul class="list-disc pl-5 text-sm text-text-muted space-y-2 leading-relaxed">
+                  {block.bullets.map((bullet) => {
+                    const parts = bullet.split(' - ');
+                    if (parts.length > 1) {
+                      return (
+                        <li>
+                          <strong>{parts[0]}</strong> - {parts.slice(1).join(' - ')}
+                        </li>
+                      );
+                    }
+                    return <li>{bullet}</li>;
+                  })}
+                </ul>
+              )}
+            </div>
           )}
 
           {block.pre && (

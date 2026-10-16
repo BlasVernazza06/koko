@@ -1,0 +1,58 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+
+// Parsea patrones de flags:
+// Formatos comunes:
+// "-f, --frontend <framework> - Descripción"
+// "--database <motor> - Descripción: postgres, mongodb..."
+// "--default - Descripción..."
+const flagMatch = text.match(/^((?:-[a-zA-Z], )?--[a-zA-Z0-9_-]+(?: <[^>]+>)?)(?: - (.*))?$/);
+
+let flagSyntax = '';
+let flagArg = '';
+let description = text;
+
+if (flagMatch) {
+  const fullFlag = flagMatch[1].trim();
+  description = flagMatch[2] ? flagMatch[2].trim() : '';
+
+  const argMatch = fullFlag.match(/^(.*?)( <[^>]+>)$/);
+  if (argMatch) {
+    flagSyntax = argMatch[1];
+    flagArg = argMatch[2].trim();
+  } else {
+    flagSyntax = fullFlag;
+  }
+}
+---
+
+{flagMatch ? (
+  <div class="rounded-xl border border-border-subtle/80 bg-bg-surface/40 hover:bg-bg-surface/70 hover:border-brand-primary/30 p-3 sm:p-3.5 transition-colors shadow-2xs group my-2">
+    <div class="flex flex-wrap items-baseline gap-2 mb-1.5">
+      <!-- Flag Badge -->
+      <span class="font-mono text-xs font-bold text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-2.5 py-0.5 rounded-md shadow-2xs">
+        {flagSyntax}
+      </span>
+      
+      <!-- Argument Token (ej: <framework>, <motor>) -->
+      {flagArg && (
+        <span class="font-mono text-[11px] font-semibold text-brand-secondary bg-brand-secondary/10 border border-brand-secondary/20 px-2 py-0.5 rounded-md">
+          {flagArg}
+        </span>
+      )}
+    </div>
+
+    <!-- Description -->
+    {description && (
+      <p class="text-xs sm:text-sm text-text-muted leading-relaxed pl-0.5">
+        {description}
+      </p>
+    )}
+  </div>
+) : (
+  <li class="leading-relaxed">{text}</li>
+)}

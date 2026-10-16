@@ -237,6 +237,20 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           body: [
             'Durante la creación física de los archivos, Koko muestra un spinner animado paso a paso indicando la generación en memoria (Virtual File System), escritura segura en disco, inicialización de Git y creación del archivo `koko.config.json` con el tiempo total transcurrido en segundos.'
           ]
+        },
+        {
+          anchorId: 'keyboard-controls',
+          title: 'Atajos de Teclado y Controles del Wizard',
+          body: [
+            'La interfaz de terminal está diseñada para ser operada 100% mediante el teclado con soporte para ergonomía moderna y atajos estilo Vim:'
+          ],
+          bullets: [
+            '↑ / ↓ o k / j - Navegar verticalmente entre las opciones de la lista.',
+            'Enter - Confirmar selección y avanzar a la siguiente etapa de configuración.',
+            'Espacio (Space) - Alternar selección de addons múltiples (Multi-select).',
+            'Esc - Volver a la pantalla o campo anterior sin cancelar el proceso.',
+            'Ctrl + C - Cancelar y salir limpiamente del asistente de inicialización.'
+          ]
         }
       ]
     },
@@ -300,6 +314,28 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
               pre: 'koko init api-go -f none -b go_chi --database postgres --orm gorm -p go_mod'
             }
           ]
+        },
+        {
+          anchorId: 'command-add',
+          title: 'Inyección Dinámica de Addons (koko add)',
+          body: [
+            'El comando `koko add <addon>` te permite incorporar herramientas de infraestructura, pagos, autenticación o UI a un proyecto Koko existente semanas o meses después de su creación inicial, sin reconfiguración manual.',
+            '• Verificación de Contexto e Idempotencia: Koko lee `koko.config.json` en la raíz. Si el servicio ya está configurado, te avisa cordialmente sin duplicar código ni corromper archivos.',
+            '• Inyección de Dependencias Oficiales: Consulta el Catálogo Maestro de Koko y añade la versión exacta en los workspaces correspondientes (`apps/web`, `apps/api` o raíz).',
+            '• Adición No Destructiva de Variables (.env): Agrega de forma segura los bloques de configuración requeridos en `.env` y `.env.example` respetando tus variables existentes.'
+          ],
+          bullets: [
+            'stripe - Pagos globales con Stripe (añade STRIPE_SECRET_KEY y NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).',
+            'polar - Pagos y monetización de desarrolladores con Polar.sh.',
+            'resend - Envío transaccional de correos electrónicos con SDK de Resend.',
+            'brevo - Plataforma de marketing y emails transaccionales con Brevo.',
+            'shadcn - Componentes base de UI y utilidades de Tailwind CSS.',
+            'lucide - Paquete oficial de iconos optimizados Lucide Icons.',
+            'zod - Tipado estricto y validación de esquemas en TypeScript.',
+            'docker - Orquestación de contenedores y servicios con docker-compose.yml.',
+            'github_actions - Workflows de CI/CD para compilación, testing y chequeos de integridad.'
+          ],
+          pre: '# Ejemplo: Inyectar pagos con Stripe en un proyecto existente\nkoko add stripe\n\n# Ejemplo: Agregar servicio de emails con Resend\nkoko add resend\n\n# Ejemplo: Incorporar componentes de shadcn/ui\nkoko add shadcn'
         },
         {
           anchorId: 'command-doctor',
@@ -1100,6 +1136,20 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
           body: [
             'During physical file generation, Koko displays an animated progress spinner reporting Virtual File System (VFS) creation, disk writes, Git setup, and `koko.config.json` generation with precise timing benchmarks in seconds.'
           ]
+        },
+        {
+          anchorId: 'keyboard-controls',
+          title: 'Keyboard Shortcuts & Navigation Controls',
+          body: [
+            'The terminal interface is engineered for high-speed keyboard operations with first-class Vim and standard navigation shortcuts:'
+          ],
+          bullets: [
+            '↑ / ↓ or k / j - Navigate up and down across the options menu.',
+            'Enter - Confirm current selection and advance to next configuration step.',
+            'Space - Toggle individual addon checkboxes in multi-select prompts.',
+            'Esc - Go back to previous step without terminating execution.',
+            'Ctrl + C - Safely cancel and terminate wizard execution.'
+          ]
         }
       ]
     },
@@ -1163,6 +1213,28 @@ export const docsData: Record<'es' | 'en', DocSection[]> = {
               pre: 'koko init api-go -f none -b go_chi --database postgres --orm gorm -p go_mod'
             }
           ]
+        },
+        {
+          anchorId: 'command-add',
+          title: 'Dynamic Addon Injection (koko add)',
+          body: [
+            'The `koko add <addon>` subcommand allows you to inject payment, authentication, email, or UI services into an existing Koko workspace weeks or months after creation, without manual wiring.',
+            '• Context & Idempotency Check: Koko inspects the local `koko.config.json` manifest. If the service is already configured, it alerts you gracefully without duplicating code.',
+            '• Official Dependencies Catalog: Queries Koko Master Catalog and installs exact versions in the appropriate workspace (`apps/web`, `apps/api`, or root).',
+            '• Safe Environment Injection (.env): Safely appends required secret and publishable keys to `.env` and `.env.example` without overwriting existing variables.'
+          ],
+          bullets: [
+            'stripe - Global payment processing with Stripe (injects STRIPE_SECRET_KEY and NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).',
+            'polar - Developer-first payment integration with Polar.sh.',
+            'resend - Transactional email delivery powered by Resend SDK.',
+            'brevo - Marketing and transactional email engine with Brevo.',
+            'shadcn - Base UI component primitives and Tailwind CSS utilities.',
+            'lucide - Official Lucide Icons icon pack.',
+            'zod - Strict runtime validation and type-safety with Zod.',
+            'docker - Containerized developer infrastructure via docker-compose.yml.',
+            'github_actions - CI/CD pipeline workflows for linting, testing, and integrity checks.'
+          ],
+          pre: '# Example: Inject Stripe payments into an existing project\nkoko add stripe\n\n# Example: Add transactional email service with Resend\nkoko add resend\n\n# Example: Incorporate shadcn/ui components\nkoko add shadcn'
         },
         {
           anchorId: 'command-doctor',
