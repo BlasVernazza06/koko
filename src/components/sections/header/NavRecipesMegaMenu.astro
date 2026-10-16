@@ -24,7 +24,7 @@ const { currentLang = 'es' } = Astro.props;
     <div class="grid grid-cols-2 gap-3 mt-4">
       {recipesDropdownItems.map((recipe) => (
         <a 
-          href={currentLang === 'en' ? `/en/builder?preset=${recipe.id}` : `/builder?preset=${recipe.id}`} 
+          href={currentLang === 'en' ? `/en/builder?preset=${recipe.id}#recipe-${recipe.id}` : `/builder?preset=${recipe.id}#recipe-${recipe.id}`} 
           class="group/card flex items-center gap-3 p-3 rounded-xl border border-border-subtle bg-bg-base hover:border-brand-primary/40 text-left cursor-pointer transition-colors duration-150"
         >
           <div class="w-9 h-9 rounded-lg bg-bg-surface border border-border-subtle flex items-center justify-center shrink-0">

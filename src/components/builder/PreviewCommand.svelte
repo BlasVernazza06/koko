@@ -148,7 +148,7 @@
     
     <!-- Top Row: Base Command & Flags on Left + Copy Button on Right -->
     <div class="flex items-start justify-between gap-2.5">
-      <div class="flex items-start gap-2 min-w-0 flex-1 overflow-x-auto no-scrollbar scroll-smooth py-0.5">
+      <div class="flex items-start gap-2 min-w-0 flex-1 overflow-x-auto cmd-horizontal-scroll scroll-smooth py-0.5">
         <span class="text-brand-primary select-none font-extrabold text-sm shrink-0 leading-relaxed">$</span>
         <div class="space-y-1.5 font-mono text-xs sm:text-[12.5px] tracking-wide select-all text-slate-300 min-w-0 flex-1">
           <!-- Base Command Line -->
@@ -161,9 +161,9 @@
             {/if}
           </div>
           
-          <!-- Multi-line formatted flags (Only shown when expanded) -->
+          <!-- Multi-line formatted flags with internal scroll limit -->
           {#if isExpanded && hasFlags}
-            <div class="space-y-1.5 pl-3 sm:pl-4 pt-1 border-t border-white/5">
+            <div class="flags-scroll space-y-1.5 pl-3 sm:pl-4 pt-1.5 border-t border-white/10 max-h-[120px] sm:max-h-[140px] overflow-y-auto overscroll-contain pr-1">
               {#each highlightedFlags as line}
                 <div class="whitespace-nowrap leading-relaxed">{@html line}</div>
               {/each}
@@ -207,9 +207,6 @@
             <span>{t.expandCmd} ({parsedCommand.flags.length})</span>
           {/if}
         </button>
-        <span class="text-[9.5px] text-slate-500 font-mono">
-          {isExpanded ? 'vista detallada' : 'vista compacta'}
-        </span>
       </div>
     {/if}
   </div>
@@ -239,5 +236,45 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  /* Sleek horizontal scrollbar for long command text */
+  .cmd-horizontal-scroll::-webkit-scrollbar {
+    height: 3px;
+  }
+  .cmd-horizontal-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .cmd-horizontal-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+  }
+  .cmd-horizontal-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--brand-primary);
+  }
+  .cmd-horizontal-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    overscroll-behavior-x: contain;
+  }
+
+  /* Sleek dark scrollbar for expanded flags */
+  .flags-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  .flags-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .flags-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+  }
+  .flags-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--brand-primary);
+  }
+  .flags-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    overscroll-behavior-y: contain;
   }
 </style>

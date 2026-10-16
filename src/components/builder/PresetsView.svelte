@@ -70,7 +70,7 @@
   const t = $derived(lang === 'en' ? translations.en : translations.es);
 </script>
 
-<div class="space-y-6">
+<div id="recipes-section" class="space-y-6 scroll-mt-28">
   <div class="border-l-3 border-brand-primary pl-3.5 mb-8 select-none">
     <span class="block text-sm font-extrabold uppercase tracking-widest text-text-main">{t.templatesLabel}</span>
     <span class="block text-xs text-text-muted mt-1.5 font-medium leading-relaxed">{t.templatesSubtitle}</span>
@@ -79,11 +79,12 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
     {#each templates as template}
       <button
+        id={"recipe-" + template.id}
         type="button"
         onclick={() => {
           onapply(template.config, template);
         }}
-        class="flex flex-col justify-between items-start gap-5 p-6 rounded-2xl border border-border-subtle bg-bg-base text-left hover:border-brand-primary/45 hover:shadow-[0_12px_35px_-15px_rgba(90,79,196,0.12)] hover:-translate-y-0.5 transition-transform duration-200 active:scale-[0.99] cursor-pointer w-full group"
+        class="scroll-mt-28 flex flex-col justify-between items-start gap-5 p-6 rounded-2xl border border-border-subtle bg-bg-base text-left hover:border-brand-primary/45 hover:shadow-[0_12px_35px_-15px_rgba(90,79,196,0.12)] hover:-translate-y-0.5 transition-transform duration-200 active:scale-[0.99] cursor-pointer w-full group"
       >
         <div class="space-y-4 w-full">
           <!-- Recipe Header: Icon + Name -->

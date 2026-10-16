@@ -43,10 +43,18 @@
   let withLinter = $state(isInfraDefault('linter', false));
   let withTesting = $state(isInfraDefault('testing', false));
   let withTurborepo = $state(true);
+  let activeTab = $state<'manual' | 'presets'>('manual');
 
   onMount(() => {
     const params = new URLSearchParams(window.location.search);
     const presetId = params.get('preset');
+    const hash = window.location.hash;
+
+    // Si viene con parámetro preset o hash de recetas, activar la pestaña de recetas
+    if (presetId || hash === '#recipes' || hash === '#recipes-section' || hash.startsWith('#recipe-')) {
+      activeTab = 'presets';
+    }
+
     if (presetId) {
       const template = templates.find(t => t.id === presetId);
       if (template) {
@@ -67,7 +75,29 @@
         withCi = template.config.withCi || false;
         withLinter = template.config.withLinter || false;
         withTesting = template.config.withTesting || false;
+
+        // Desplazamiento suave hasta la tarjeta de la receta seleccionada
+        setTimeout(() => {
+          const targetEl = document.getElementById(`recipe-${presetId}`) || document.getElementById('recipes-section');
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 150);
       }
+    } else if (hash.startsWith('#recipe-')) {
+      setTimeout(() => {
+        const targetEl = document.querySelector(hash);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 150);
+    } else if (hash === '#recipes' || hash === '#recipes-section') {
+      setTimeout(() => {
+        const targetEl = document.getElementById('recipes-section');
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
     } else {
       if (params.has('frontend')) selectedFront = params.get('frontend')!;
       else if (params.has('front')) selectedFront = params.get('front')!;
@@ -775,12 +805,12 @@
 <style>
   .builder-container {
     position: relative;
-    padding-top: 0.5rem;
-    padding-bottom: 3rem;
+    padding-top: 0.25rem;
+    padding-bottom: 2rem;
   }
 </style>
 
-<div class="w-full max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-4 font-sans builder-container relative z-10">
+<div class="w-full max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-1 sm:py-2 font-sans builder-container relative z-10">
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
     
     <!-- LEFT: CONFIGURATION CONTROLS (8 cols) -->
@@ -803,6 +833,7 @@
         bind:withLinter
         bind:withTesting
         bind:withTurborepo
+        bind:activeTab
         {lang}
       />
     </div>

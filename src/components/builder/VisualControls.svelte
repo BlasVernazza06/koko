@@ -71,6 +71,7 @@
     withLinter = $bindable(true),
     withTesting = $bindable(false),
     withTurborepo = $bindable(true),
+    activeTab = $bindable<'manual' | 'presets'>('manual'),
     lang = 'es'
   } = $props<{
     projectName: string;
@@ -90,6 +91,7 @@
     withLinter: boolean;
     withTesting: boolean;
     withTurborepo: boolean;
+    activeTab?: 'manual' | 'presets';
     lang: string;
   }>();
 
@@ -118,8 +120,6 @@
       toastVisible = true;
     }
   }
-
-  let activeTab = $state<'manual' | 'presets'>('manual');
 </script>
 
 <style>
