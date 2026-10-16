@@ -55,4 +55,56 @@ describe('Deployment & Production Integrity Gate (Cloudflare Edge & SEO)', () =>
     expect(pkg.scripts.typecheck).toBe('astro check');
     expect(pkg.scripts.test).toBe('vitest run');
   });
+
+  it('should have pnpm-lock.yaml strictly synchronized with package.json specs to prevent CI build crashes', () => {
+    const pkgPath = path.join(ROOT_DIR, 'package.json');
+    const pnpmLockPath = path.join(ROOT_DIR, 'pnpm-lock.yaml');
+    expect(fs.existsSync(pnpmLockPath)).toBe(true);
+
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+    const pnpmLockContent = fs.readFileSync(pnpmLockPath, 'utf-8');
+
+    // Extract dependencies from importers > .: in pnpm-lock.yaml
+    const expectedDeps = { ...pkg.dependencies };
+    const expectedDevDeps = { ...pkg.devDependencies };
+
+    for (const [dep, spec] of Object.entries(expectedDeps)) {
+      // In YAML format under importers: .: dependencies:
+      // dep:
+      //   specifier: <spec>
+      const escapedDep = dep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const escapedSpec = (spec as string).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`['"]?${escapedDep}['"]?:[\\s\\r\\n]+specifier:\\s*['"]?${escapedSpec}['"]?`);
+      expect(
+        regex.test(pnpmLockContent),
+        `Dependency "${dep}: ${spec}" from package.json is missing or desynchronized in pnpm-lock.yaml! Run "pnpm install --lockfile-only" to sync.`
+      ).toBe(true);
+    }
+
+    for (const [dep, spec] of Object.entries(expectedDevDeps)) {
+      const escapedDep = dep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const escapedSpec = (spec as string).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`['"]?${escapedDep}['"]?:[\\s\\r\\n]+specifier:\\s*['"]?${escapedSpec}['"]?`);
+      expect(
+        regex.test(pnpmLockContent),
+        `DevDependency "${dep}: ${spec}" from package.json is missing or desynchronized in pnpm-lock.yaml! Run "pnpm install --lockfile-only" to sync.`
+      ).toBe(true);
+    }
+  });
+
+  it('should have package-lock.json strictly synchronized with package.json specs', () => {
+    const pkgPath = path.join(ROOT_DIR, 'package.json');
+    const pkgLockPath = path.join(ROOT_DIR, 'package-lock.json');
+    expect(fs.existsSync(pkgLockPath)).toBe(true);
+
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+    const pkgLock = JSON.parse(fs.readFileSync(pkgLockPath, 'utf-8'));
+
+    const lockRootPackages = pkgLock.packages?.[''] || {};
+    const lockDeps = lockRootPackages.dependencies || {};
+    const lockDevDeps = lockRootPackages.devDependencies || {};
+
+    expect(lockDeps).toEqual(pkg.dependencies);
+    expect(lockDevDeps).toEqual(pkg.devDependencies);
+  });
 });
