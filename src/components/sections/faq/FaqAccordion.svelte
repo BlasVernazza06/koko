@@ -100,7 +100,7 @@
           type="button"
           bind:this={buttonRefs[cat.id]}
           onclick={() => setCategory(cat.id)}
-          class="relative z-10 flex items-center w-full px-4 py-2.5 rounded-xl text-left text-xs sm:text-sm cursor-pointer select-none active:scale-98 transition-colors duration-200 {activeCategory === cat.id ? 'text-text-main font-semibold' : 'text-text-muted hover:text-text-main font-normal'}"
+          class="relative z-10 flex items-center w-full px-4 py-2.5 rounded-xl text-left text-xs sm:text-sm cursor-pointer select-none active:scale-98 {activeCategory === cat.id ? 'text-text-main font-semibold' : 'text-text-muted hover:text-text-main font-normal'}"
         >
           {cat.label}
         </button>

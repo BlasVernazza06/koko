@@ -133,7 +133,7 @@
                 </span>
                 <span class="text-[10px] text-text-muted/60 font-medium">Click en × para quitar</span>
               </div>
-              <div class="flex flex-wrap gap-2 overflow-y-auto pr-1 flex-1">
+              <div class="flex flex-wrap gap-1.5 overflow-y-auto pr-1 flex-1 content-start">
                 {#each selectedTechs as tech (tech.layerKey + '-' + tech.id)}
                   <div class="inline-block">
                     <SelectedTechBadge

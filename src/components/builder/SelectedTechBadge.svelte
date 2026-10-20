@@ -12,7 +12,7 @@
   }>();
 </script>
 
-<div class="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-xl border border-border-subtle bg-bg-surface/30 backdrop-blur-xs text-xs font-semibold text-text-main shadow-xs select-none hover:border-brand-secondary/35">
+<div class="inline-flex items-center gap-1.5 py-0.5 px-2 rounded-lg border border-border-subtle bg-bg-surface/30 backdrop-blur-xs text-xs font-semibold text-text-main shadow-xs select-none hover:border-brand-secondary/35">
   {#if iconComponent}
     <div class="w-4.5 h-4.5 flex items-center justify-center shrink-0">
       {#if typeof iconComponent === 'string'}

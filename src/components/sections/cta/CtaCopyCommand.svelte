@@ -25,7 +25,7 @@
 <button
   type="button"
   onclick={copyToClipboard}
-  class={`w-full sm:w-auto inline-flex items-center justify-between sm:justify-center gap-2.5 px-4 py-2.5 rounded-full bg-bg-surface hover:bg-bg-surface/90 border border-border-subtle hover:border-brand-primary/40 text-text-main text-xs font-mono shadow-xs transition-all duration-150 cursor-pointer group shrink-0 ${className}`}
+  class={`w-full sm:w-auto inline-flex items-center justify-between sm:justify-center gap-2.5 px-4 py-2.5 rounded-full bg-bg-surface hover:bg-bg-surface/90 border border-border-subtle hover:border-brand-primary/40 text-text-main text-xs font-mono shadow-xs cursor-pointer group shrink-0 ${className}`}
   title="Copiar comando"
 >
   <span class="text-brand-secondary font-bold select-none">›_</span>

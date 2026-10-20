@@ -289,7 +289,7 @@
               tabindex="0"
               onclick={() => selectCommand(idx)}
               onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCommand(idx); } }}
-              class="w-full text-left flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-200 cursor-pointer shadow-xs backdrop-blur-md select-none
+              class="w-full text-left flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl cursor-pointer shadow-xs backdrop-blur-md select-none
                 {selectedIndex === idx 
                   ? 'bg-bg-surface/95 border-2 border-brand-primary/60 shadow-sm ring-1 ring-brand-primary/20' 
                   : 'bg-bg-surface/50 hover:bg-bg-surface/90 border border-border-subtle/70 hover:border-brand-primary/40'}"
@@ -311,7 +311,7 @@
               <button
                 type="button"
                 onclick={(e) => { e.stopPropagation(); copyText(item.cmd); }}
-                class="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer active:scale-95 shrink-0
+                class="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium cursor-pointer active:scale-95 shrink-0
                   {copiedCommand === item.cmd 
                     ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' 
                     : 'bg-bg-base/80 hover:bg-bg-base text-text-muted hover:text-text-main border border-border-subtle/80 hover:border-brand-primary/40'}"
