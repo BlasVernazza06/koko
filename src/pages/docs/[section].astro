@@ -22,7 +22,8 @@ const activeSection = docsData.es.find(s => s.id === activeSectionId) || docsDat
 <Layout lang="es" title={`Koko Docs — ${activeSection.title}`} description={`Aprende cómo estructurar, configurar y optimizar tus proyectos usando Koko. Sección: ${activeSection.title}.`}>
   <div class="min-h-[calc(100vh-3.5rem)] bg-bg-base text-text-main flex flex-col relative font-sans">
     
-    
+    <!-- Ambient brand background glow & particle drift -->
+    <AmbientGlow />
     <DustDriftCanvas />
 
     <!-- Docs Layout Container (Amplitud optimizada en eje X estilo DevTools) -->

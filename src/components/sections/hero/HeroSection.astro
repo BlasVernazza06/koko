@@ -26,14 +26,14 @@ const { lang = 'es', class: className = '' } = Astro.props;
   </div>
 
   <!-- Bottom Scroll-Down Indicator Button (Anchored to the very bottom edge of viewport) -->
-  <div id="hero-scroll-indicator" class="hero-motion-item absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center transition-all duration-300 pointer-events-auto z-20">
+  <div id="hero-scroll-indicator" class="hero-motion-item absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center transition-opacity duration-300 pointer-events-auto z-20">
     <a
       href="#terminal"
-      class="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg-surface/85 hover:bg-bg-surface border border-border-subtle hover:border-brand-primary/50 text-text-muted hover:text-text-main shadow-sm backdrop-blur-md transition-all duration-200 cursor-pointer text-xs font-mono select-none"
+      class="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg-surface/85 hover:bg-bg-surface border border-border-subtle hover:border-brand-primary/50 text-text-muted hover:text-text-main shadow-sm backdrop-blur-md cursor-pointer text-xs font-mono select-none"
       aria-label={lang === 'es' ? 'Desplazarse hacia abajo al simulador' : 'Scroll down to interactive simulator'}
       title={lang === 'es' ? 'Explorar' : 'Explore'}
     >
-      <span class="text-[11px] font-sans text-text-muted group-hover:text-text-main transition-colors">
+      <span class="text-[11px] font-sans text-text-muted group-hover:text-text-main">
         <span class="lang-es">Explorar</span>
         <span class="lang-en">Explore</span>
       </span>
@@ -75,7 +75,7 @@ const { lang = 'es', class: className = '' } = Astro.props;
           scale: [0.985, 1],
         },
         {
-          delay: stagger(0.09, { start: 0.05 }),
+          delay: stagger(0.09, { startDelay: 0.05 }),
           duration: 0.65,
           ease: [0.16, 1, 0.3, 1],
         }

@@ -21,7 +21,7 @@ const { class: className = '' } = Astro.props;
     const canvas = document.getElementById('flow-field-canvas') as HTMLCanvasElement | null;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d', { alpha: true });
+    const ctx = canvas.getContext('2d', { alpha: true })!;
     if (!ctx) return;
 
     let animId: number;
